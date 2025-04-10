@@ -21,7 +21,7 @@
   
   <!-- 회원가입 처리 -->
   <insert id="setMemberJoinOk" parameterType="com.spring.springProject3.vo.MemberVo">
-    insert into member values (#{vo.mid}, #{vo.pwd}, #{vo.nickName}, #{vo.name}, #{vo.gender}, #{vo.birthday}, #{vo.tel}, #{vo.address}, #{vo.email}, 'NO', 2)
+    insert into member values (default, #{vo.mid}, #{vo.pwd}, #{vo.nickName}, #{vo.name}, #{vo.gender}, #{vo.birthday}, #{vo.tel}, #{vo.address}, #{vo.email}, 'NO', 2)
   </insert>
   
   <!-- 카카오 회원 자동 가입 처리 -->

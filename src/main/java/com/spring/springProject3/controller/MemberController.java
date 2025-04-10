@@ -222,8 +222,8 @@ public class MemberController {
  		messageHelper.setText(content, true);
  		
  		// 본문에 기재된 그림파일의 경로
- 		FileSystemResource file = new FileSystemResource(request.getSession().getServletContext().getRealPath("/resources/data/images/"));
- 		messageHelper.addInline("", file);
+ 		FileSystemResource file = new FileSystemResource(request.getSession().getServletContext().getRealPath("/resources/images/band.jpg"));
+ 		messageHelper.addInline("band.jpg", file);
  		
  		// 메일 전송하기
  		mailSender.send(message);
