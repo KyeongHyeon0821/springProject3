@@ -15,6 +15,10 @@ create table inquiry (
 		foreign key (mid) references member(mid) 
 );
 
+insert into inquiry values (default, 'admin', '문의합니다', '결제/환불문의', default, '', '결제가 안된거같습니다.', '', default);
+select count(*) from inquiry;
+select * from inquiry;
+
 desc inquiry;
 
 /* 1:1 문의 답변글 */

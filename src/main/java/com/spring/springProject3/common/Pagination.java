@@ -21,18 +21,16 @@ public class Pagination {
 		
 		
 		if(section.equals("inquiry")) {
-			if(part.equals("")) totRecCnt = inquiryDao.getInquiryTotRecCnt();
-			else totRecCnt = inquiryDao.getInquiryTotRecCntSearch(part, searchString);
+			totRecCnt = inquiryDao.getInquiryTotRecCnt();
 		}
 		
-		
-		if(section.equals("inquiry") && !searchString.equals("")) {
-			search = part;
-			if(totRecCnt != 0) pageSize = totRecCnt;
-			if(part.equals("title")) searchStr = "글제목";
-			else if(part.equals("nickName")) searchStr = "닉네임";
-			else searchStr = "글내용";
-		}
+//		if(section.equals("inquiry") && !searchString.equals("")) {
+//			search = part;
+//			if(totRecCnt != 0) pageSize = totRecCnt;
+//			if(part.equals("title")) searchStr = "글제목";
+//			else if(part.equals("nickName")) searchStr = "닉네임";
+//			else searchStr = "글내용";
+//		}
 		
 		int totPage = (totRecCnt % pageSize) == 0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize) + 1;
 		int startIndexNo = (pag - 1) * pageSize;
