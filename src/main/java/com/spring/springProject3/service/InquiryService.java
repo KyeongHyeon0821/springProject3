@@ -1,5 +1,5 @@
 package com.spring.springProject3.service;
 
-public interface WebMessageService {
+public interface InquiryService {
 
 }
