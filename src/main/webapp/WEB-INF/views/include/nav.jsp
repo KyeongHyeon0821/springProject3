@@ -50,15 +50,11 @@
 	      </div>
 	    </div>
 	    <div class="w3-dropdown-hover w3-hide-small">
-	      <button class="w3-padding-large w3-button" title="More" onclick="location.href='${ctp}/member/memberMain'">MyPage <i class="fa fa-caret-down"></i></button>     
+	      <button class="w3-padding-large w3-button" title="More" onclick="location.href='${ctp}/member/memberMain'">고객센터 <i class="fa fa-caret-down"></i></button>     
 	      <div class="w3-dropdown-content w3-bar-block w3-card-4">
-	        <a href="${ctp}/schedule/schedule" class="w3-bar-item w3-button">일정관리</a>
-	        <a href="${ctp}/webMessage/webMessage" class="w3-bar-item w3-button">웹메세지</a>
-	        <a href="${ctp}/member/memberList" class="w3-bar-item w3-button">회원리스트</a>
-	        <a href="${ctp}/member/pwdCheck/p" class="w3-bar-item w3-button">비밀번호변경</a>
-	        <a href="${ctp}/member/pwdCheck/u" class="w3-bar-item w3-button">회원정보수정</a>
-	        <a href="javascript:deleteCheck()" class="w3-bar-item w3-button">회원탈퇴</a>
-	        <c:if test="${sLevel == 0}"> <a href="${ctp}/admin/adminMain" class="w3-bar-item w3-button">관리자메뉴</a></c:if>
+	        <a href="${ctp}/faq/faqForm" class="w3-bar-item w3-button">FAQ</a> <!-- 회원FAQ와 사업자FAQ를 나누는 부분은 ? -->
+	        <a href="${ctp}/webMessage/message" class="w3-bar-item w3-button">1:1 문의</a>
+	        <a href="${ctp}/" class="w3-bar-item w3-button">실시간문의</a> <!-- 확정X -->
 	      </div>
 	    </div>
     	<a href="${ctp}/member/memberLogout" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Logout</a>
