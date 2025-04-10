@@ -35,7 +35,7 @@
 		<constructor-arg index="0" ref="sqlSessionFactory" />
 	</bean>
 
-	<mybatis-spring:scan base-package="com.spring.JspringProject.dao"/>
+	<mybatis-spring:scan base-package="com.spring.springProject3.dao"/>
 	
 	<!-- 메일처리를 위한 라이브러리를 Bean으로 등록 -->
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">

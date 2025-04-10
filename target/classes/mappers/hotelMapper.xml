@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.springProject3.dao.HotelDao">
+  
+  
+  <select id="getHotelList" resultType="com.spring.springProject3.vo.HotelVo">
+		select * from hotel order by idx desc;  	
+  </select>
+  
+  
+  <insert id="setHotelInput">
+  	insert into hotel values (default, #{vo.mid}, #{vo.name}, #{vo.address}, #{vo.tel}, #{vo.description}, #{vo.thumbnail}, #{vo.images}, default);
+  </insert>
+</mapper>
