@@ -1,0 +1,53 @@
+package com.spring.springProject3.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.spring.springProject3.dao.MemberDao;
+import com.spring.springProject3.vo.MemberVo;
+
+@Service
+public class MemberServiceImpl implements MemberService {
+
+    @Autowired
+    MemberDao memberDao;
+
+    @Override
+    public MemberVo getMemberIdCheck(String mid) {
+        return memberDao.getMemberIdCheck(mid);
+    }
+
+    @Override
+    public int setMemberJoinOk(MemberVo vo) {
+        return memberDao.setMemberJoinOk(vo);
+    }
+
+    @Override
+    public MemberVo getMemberNickNameEmailCheck(String nickName, String email) {
+        return memberDao.getMemberNickNameEmailCheck(nickName, email);
+    }
+
+    @Override
+    public MemberVo getMemberNickCheck(String nickName) {
+        return memberDao.getMemberNickCheck(nickName);
+    }
+
+    @Override
+    public void setMemberDeleteCheck(String mid) {
+        memberDao.setMemberDeleteCheck(mid);
+    }
+
+    @Override
+    public int setMemberPwdChange(String mid, String pwd) {
+        return memberDao.setMemberPwdChange(mid, pwd);
+    }
+
+    @Override
+    public int setMemberUpdateOk(MemberVo vo) {
+        return memberDao.setMemberUpdateOk(vo);
+    }
+
+    @Override
+    public void setKakaoMemberInput(String mid, String nickName, String email, String pwd) {
+        memberDao.setKakaoMemberInput(mid, nickName, email, pwd);
+    }
+}
