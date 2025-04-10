@@ -4,14 +4,10 @@
 <html>
 <head>
 	<title>Home</title>
+<jsp:include page="/WEB-INF/views/include/bs5.jsp" />
 </head>
 <body>
-<h1>
-	Hello world!  
-</h1>
-<P>  The time on the server is ${serverTime}. </P>
-<h2>안녕하세요1</h2>
-<h2>안녕하세요2</h2>
-<h2>안녕하세요3</h2>
+<jsp:include page="/WEB-INF/views/include/nav.jsp" />
+<h1>Hello world!</h1>
 </body>
 </html>
