@@ -10,11 +10,8 @@
   <script>
     'use strict';
     
-    <c:if test="${not empty message}">
-    	alert("${message}");
-  	</c:if>
-  	
-  	location.href = "${ctp}/${url}";
+    if('${message}' != "") alert("${message}");
+    location.href = "${ctp}/${url}";
   </script>
 </head>
 <body>

@@ -15,13 +15,16 @@ public class MessageController {
     @RequestMapping(value = "/message/{msgFlag}", method = RequestMethod.GET)
     public String getMessage(Model model, @PathVariable String msgFlag,
             HttpSession session,
-            // @RequestParam(name="mid", defaultValue="", required=false) String mid
             @RequestParam(name="nickName", defaultValue="", required=false) String nickName
     	) {
   
 		if(msgFlag.equals("memberJoinOk")) {
-			model.addAttribute("message", "회원 가입이 완료되었습니다.\\n로그인후 사용하세요.");
+			model.addAttribute("message", "회원 가입이 완료되었습니다.\\n로그인 후 사용하세요.");
 			model.addAttribute("url", "member/memberLogin");
+		}
+		else if(msgFlag.equals("idCheckNo")) {
+			model.addAttribute("message", "아이디가 중복되었습니다.\\n확인하시고 다시 입력하세요.");
+			model.addAttribute("url", "member/memberJoin");
 		}
 		else if(msgFlag.equals("memberJoinNo")) {
 			model.addAttribute("message", "회원 가입에 실패하였습니다.\\n다시 회원가입 해주세요.");
