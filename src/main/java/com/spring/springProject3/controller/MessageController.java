@@ -22,6 +22,10 @@ public class MessageController {
 			model.addAttribute("message", "호텔이 등록되었습니다.");
 			model.addAttribute("url", "hotel/hotelList");
 		}
+		else if(msgFlag.equals("hotelInputError")) {
+			model.addAttribute("message", "호텔 등록 중 오류가 발생했습니다. \\n다시 시도해주세요.");
+			model.addAttribute("url", "hotel/hotelInput");
+		}
 		
 		
 		return "include/message";

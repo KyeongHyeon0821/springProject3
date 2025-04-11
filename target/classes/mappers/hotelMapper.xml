@@ -2,12 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.springProject3.dao.HotelDao">
   
-  
+  <!-- 호텔리스트 조회 -->
   <select id="getHotelList" resultType="com.spring.springProject3.vo.HotelVo">
 		select * from hotel order by idx desc;  	
   </select>
   
+  <!-- 호텔 조회 (idx)-->
+  <select id="getHotel" resultType="com.spring.springProject3.vo.HotelVo">
+  	select * from hotel where idx = #{idx};
+  </select>
   
+  <!-- 호텔 등록 -->
   <insert id="setHotelInput">
   	insert into hotel values (default, #{vo.mid}, #{vo.name}, #{vo.address}, #{vo.tel}, #{vo.description}, #{vo.thumbnail}, #{vo.images}, default);
   </insert>

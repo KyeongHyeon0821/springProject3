@@ -12,4 +12,6 @@ public interface HotelService {
 
 	int setHotelInput(HotelVo vo, MultipartFile thumbnailFile);
 
+	HotelVo getHotel(int idx);
+
 }

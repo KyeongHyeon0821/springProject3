@@ -12,4 +12,6 @@ public interface HotelDao {
 
 	int setHotelInput(@Param("vo") HotelVo vo);
 
+	HotelVo getHotel(@Param("idx") int idx);
+
 }

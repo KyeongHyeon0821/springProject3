@@ -20,7 +20,7 @@
 				<th style="width:15%">대표사진</th><td><img src="${ctp}/hotelThumbnail/${vo.thumbnail}" width="200px" /></td>
 			</tr>
 			<tr>
-				<th>이름</th><td>${vo.name}</td>
+				<th>이름</th><td><a href="${ctp}/hotel/hotelDetail?idx=${vo.idx}">${vo.name}</a></td>
 			</tr>
 			<tr>
 				<th>주소</th><td>${vo.address}</td>

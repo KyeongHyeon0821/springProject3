@@ -23,10 +23,10 @@
           <a class="nav-link" href="#">고객센터</a>
         </li>  
         <li class="nav-item">
-          <a class="nav-link" href="#">로그인</a>
+          <a class="nav-link" href="${ctp}/member/memberLogin">로그인</a>
         </li>  
         <li class="nav-item">
-          <a class="nav-link" href="#">로그아웃</a>
+          <a class="nav-link" href="${ctp}/member/memberLogout">로그아웃</a>
         </li>  
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">더보기</a>
