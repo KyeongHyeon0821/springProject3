@@ -12,4 +12,10 @@ public interface InquiryDao {
 
 	List<InquiryVo> getInquiryList(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize);
 
+	int setInquiryInputOk(@Param("vo") InquiryVo vo);
+
+	InquiryVo getInquiryDetail(@Param("idx") int idx);
+
+	int setInquiryDelete(@Param("idx") int idx);
+
 }

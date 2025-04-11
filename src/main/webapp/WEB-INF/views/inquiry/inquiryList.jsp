@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,26 +32,31 @@
     a:hover {
       text-decoration: underline;
     }
+
   </style>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <h3 class="text-center m-5">1:1 문의 리스트</h3>
 
+<div class="text-end" style="width: 80%; margin: 0 auto;">
+	<a href="inquiryInput" class="btn btn-info btn-sm text-decoration-none mb-3">1:1문의쓰기</a>
+</div>
+
 <table>
   <tr>
-    <th>번호</th>
-    <th>제목</th>
-    <th>분류</th>
-    <th>작성일</th>
-    <th>상태</th>
+   	<th>번호</th>
+   	<th>제목</th>
+   	<th>분류</th>
+   	<th>작성일</th>
+   	<th>상태</th>
   </tr>
 
   <c:forEach var="vo" items="${vos}">
     <tr>
       <td>${vo.idx}</td>
       <td>
-        <a href="/inquiry/detail?idx=${vo.idx}">
+        <a href="${ctp}/inquiry/inquiryDetail?idx=${vo.idx}">
           ${vo.title}
         </a>
       </td>

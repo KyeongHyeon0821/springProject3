@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.springProject3.common.Pagination;
 import com.spring.springProject3.service.InquiryService;
@@ -37,4 +38,44 @@ public class InquiryController {
 		
 		return "inquiry/inquiryList";
 	}
+	
+	// 1:1문의 입력 폼 보기
+	@RequestMapping(value = "/inquiryInput", method = RequestMethod.GET)
+	public String iquriyInputGet() {
+		return "inquiry/inquiryInput";
+	}
+	
+	// 1:1문의 업로드 처리
+	@RequestMapping(value = "/inquiryInput", method = RequestMethod.POST)
+	public String inquiryInputPost(MultipartFile mFile, InquiryVo vo) {
+		int res = inquiryService.setInquiryInputOk(mFile, vo);
+		
+		if(res !=0) return "redirect:/message/inquiryInputOk";
+		else return "redirect:/message/inquiryInputNo";
+	}
+	
+	// 1:1문의 상세보기 폼 보기
+	@RequestMapping(value = "/inquiryDetail", method = RequestMethod.GET)
+	public String inquiryDetail(int idx, Model model) {
+	    InquiryVo vo = inquiryService.getInquiryDetail(idx);
+	    
+	    model.addAttribute("vo", vo);
+	    
+	    return "inquiry/inquiryDetail";
+	}
+	
+	// 1:1문의 상세보기에서 삭제처리
+	@RequestMapping(value = "/inquiryDeleteCheck", method = RequestMethod.GET)
+	public String inquiryDeleteCheckGet(int idx) {
+		InquiryVo vo = inquiryService.getInquiryDetail(idx);
+		if(vo.getContent().indexOf("src=\"/") != -1) inquiryService.imgDelete(vo.getContent());
+		
+		int res = inquiryService.setInquiryDelete(idx);
+		
+		if(res != 0) return "redirect:/message/inquiryDeleteCheckOk";
+		else return "redirect:/message/inquiryDeleteCheckNo";
+	}
+	
+	
+	
 }

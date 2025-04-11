@@ -10,4 +10,19 @@
   		select * from inquiry order by idx desc limit #{startIndexNo},#{pageSize};
   </select>
   
+  <select id="getInquiryDetail" resultType="com.spring.springProject3.vo.InquiryVo">
+  		select * from inquiry where idx = #{idx};
+  </select>
+  
+  
+  <insert id="setInquiryInputOk">
+  		insert into inquiry values (default,#{vo.mid},#{vo.title},#{vo.part},default,#{vo.reservation},#{vo.content},#{vo.fSName},default);
+  </insert>
+  
+  
+  
+  
+  <delete id="setInquiryDelete">
+  		delete * from inquiry where idx = #{idx};
+  </delete>
 </mapper>
