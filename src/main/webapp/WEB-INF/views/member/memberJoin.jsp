@@ -97,11 +97,12 @@
     let nickCheckSw = 0;
     
     // 정규식 정의
-    let regMid = /^[a-zA-Z0-9_-]{5,20}$/;
+    let regMid = /^[a-zA-Z0-9_-]{4,20}$/;
+    let regPwd = /^[a-zA-Z0-9!@#$%^&*]{4,16}$/;
     let regNickName = /^[가-힣a-zA-Z0-9_]{2,}$/;
     let regName = /^[가-힣a-zA-Z]+$/;
     let regEmail = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
-    let regTel = /\d{2,3}-\d{3,4}-\d{4}$/g;
+    let regTel = /^\d{3}-\d{3,4}-\d{4}$/;
     
     // 회원가입에 필요한 정보 체크 (정규식)
     function fCheck() {
@@ -129,14 +130,14 @@
       let submitFlag = 0;
       
       if(!regMid.test(mid)) {
-        alert("아이디는 5~20자의 영문 소문자, 숫자, 특수기호(_),(-)만 사용 가능합니다.");
+        alert("아이디는 4~20자의 영문 소문자, 숫자, 특수기호(_),(-)만 사용 가능합니다.");
         myform.mid.focus();
         return false;
       }
-      else if(pwd.length < 8 || pwd.length > 16) {
-        alert("비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 사용해 주세요.");
-        myform.pwd.focus();
-        return false;
+      else if (!regPwd.test(pwd)) {
+    	  alert("비밀번호는 4~16자 사이이며, 영문, 숫자, 특수문자(!@#$%^&*)를 사용해주세요.");
+    	  myform.pwd.focus();
+    	  return false;
       }
       else if(!regNickName.test(nickName)) {
         alert("닉네임은 2자 이상만 사용가능합니다.");

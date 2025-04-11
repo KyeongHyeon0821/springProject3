@@ -62,8 +62,8 @@
       <tr>
         <td class="text-center">
           <input type="checkbox" name="idSave" checked /> 아이디저장 &nbsp;&nbsp;&nbsp;
-          [<a href="javascript:midSearch()">아이디 찾기</a>] /
-          [<a href="javascript:pwdSearch()">비밀번호 찾기</a>]
+          <a href="javascript:midSearch()">아이디 찾기</a> /
+          <a href="javascript:pwdSearch()">비밀번호 찾기</a>
         </td>
       </tr>
     </table>

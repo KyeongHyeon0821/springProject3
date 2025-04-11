@@ -230,12 +230,12 @@ public class MemberController {
  	}
     
     // 회원 메인 (마이페이지)
-    @RequestMapping(value = "/memberMain", method = RequestMethod.GET)
-    public String memberMainGet(HttpSession session, Model model) {
+    @RequestMapping(value = "/memberMyPage", method = RequestMethod.GET)
+    public String memberMyPageGet(HttpSession session, Model model) {
         String mid = (String) session.getAttribute("sMid");
         MemberVo mVo = memberService.getMemberIdCheck(mid);
         model.addAttribute("mVo", mVo);
-        return "member/memberMain";
+        return "member/memberMyPage";
     }
     
     // 로그아웃 처리
@@ -274,7 +274,7 @@ public class MemberController {
         }
         return "redirect:/";
     }
-    
+
     // 비밀번호 변경 처리
     @PostMapping("/pwdChange")
     public String pwdChangePost(HttpSession session, String pwd) {
@@ -293,7 +293,7 @@ public class MemberController {
         return "member/memberUpdate";
     }
     
- // 회원 정보 수정 처리
+    // 회원 정보 수정 처리
     @RequestMapping(value = "/memberUpdate", method = RequestMethod.POST)
     public String memberUpdatePost(HttpSession session, MemberVo vo) {
         // 닉네임 중복 체크: 수정 시 기존 닉네임이 아닌 경우에만 확인
