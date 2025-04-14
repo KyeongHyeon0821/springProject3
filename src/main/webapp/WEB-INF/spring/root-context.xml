@@ -18,7 +18,7 @@
 	<!-- Datasource를 Bean등록/설정(DB연동을 위한 환경설정) -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/springproject3_wgy" />
+		<property name="url" value="jdbc:mysql://localhost:3306/springproject3" />
 		<property name="username" value="root" />
 		<property name="password" value="1234" />
 	</bean>	
