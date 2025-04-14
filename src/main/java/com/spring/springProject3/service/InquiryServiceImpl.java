@@ -35,7 +35,7 @@ public class InquiryServiceImpl implements InquiryService {
 	@Override
 	public int setInquiryInputOk(MultipartFile mFile, InquiryVo vo) {
 		String fName = mFile.getOriginalFilename();
-		if(fName != null) {
+		if(fName != null && !fName.equals("")) {
 			try {
 				String sFileName = projectProvide.saveFileName(fName);
 				writeFile(mFile, sFileName);
@@ -65,25 +65,54 @@ public class InquiryServiceImpl implements InquiryService {
 		return inquiryDao.getInquiryDetail(idx);
 	}
 
+
+
 	// 1:1문의 작성했던 글 삭제하기
 	@Override
-	public void imgDelete(String content) {
+	public int setInquiryDelete(int idx) {
+		InquiryVo vo = inquiryDao.getInquiryDetail(idx);
+		
+		if(vo.getFSName() != null && !vo.getFSName().equals("")) {
 	    HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 	    String realPath = request.getSession().getServletContext().getRealPath("/resources/data/inquiry/");
+	    File file = new File(realPath + vo.getFSName());
+	    if(file.exists()) file.delete();	    
+		}
+	  return inquiryDao.setInquiryDelete(idx);
+	}
 
-	    while(content.indexOf("src=\"/") != -1) {
-	        content = content.substring(content.indexOf("src=\"/") + 5);
-	        String imgFile = content.substring(0, content.indexOf("\""));
-
-	        String filePath = realPath + imgFile.substring(imgFile.lastIndexOf("/") + 1);
-	        File file = new File(filePath);
-	        if(file.exists()) file.delete();
-	    }
+	// 1:1문의 작성했던 글 수정하기
+	@Override
+	public int setInquiryUpdate(MultipartFile mFile, InquiryVo vo) {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+    String realPath = request.getSession().getServletContext().getRealPath("/resources/data/inquiry/");
+		
+		String fName = mFile.getOriginalFilename();
+		if(fName != null && !fName.equals("")) {
+			try {
+				if(vo.getFSName() != null && !vo.getFSName().equals("")) {
+					File file = new File(realPath + vo.getFSName());
+			    if(file.exists()) file.delete();
+				}
+				
+				String sFileName = projectProvide.saveFileName(fName);
+				writeFile(mFile, sFileName);
+				vo.setFSName(sFileName);
+			} catch (IOException e) { e.printStackTrace(); }
+		}
+		
+		return inquiryDao.setInquiryUpdate(vo);
 	}
 
 	@Override
-	public int setInquiryDelete(int idx) {
-	    return inquiryDao.setInquiryDelete(idx);
+	public int setInquiryImageDelete(int idx, String fSName) {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+    String realPath = request.getSession().getServletContext().getRealPath("/resources/data/inquiry/");
+    
+		File file = new File(realPath + fSName);
+    if(file.exists()) file.delete();
+    
+		return inquiryDao.setInquiryImageDelete(idx);
 	}
 
 

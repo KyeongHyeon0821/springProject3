@@ -1,5 +1,6 @@
 package com.spring.springProject3.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -14,7 +15,7 @@ public class MessageController {
 
 	@RequestMapping(value = "/message/{msgFlag}", method = RequestMethod.GET)
 	public String getMessage(Model model, @PathVariable String msgFlag,
-			HttpSession session,
+			HttpSession session, HttpServletRequest request,
 			@RequestParam(name="mid", defaultValue = "", required = false) String mid,
 			@RequestParam(name="idx", defaultValue = "0", required = false) int idx,
 			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
@@ -40,6 +41,14 @@ public class MessageController {
 		}
 		else if(msgFlag.equals("inquiryDeleteCheckNo")) {
 			model.addAttribute("message", "작성하신 문의글 삭제가 실패되었습니다.");
+			model.addAttribute("url", "inquiry/inquiryDetail?idx="+idx);
+		}
+		else if(msgFlag.equals("inquiryUpdateOk")) {
+			model.addAttribute("message", "작성하신 문의글이 수정되었습니다.");
+			model.addAttribute("url", "inquiry/inquiryDetail?idx="+request.getParameter("idx"));
+		}
+		else if(msgFlag.equals("inquiryUpdateNo")) {
+			model.addAttribute("message", "작성하신 문의글 수정이 실패되었습니다.");
 			model.addAttribute("url", "inquiry/inquiryDetail?idx="+idx);
 		}
 		

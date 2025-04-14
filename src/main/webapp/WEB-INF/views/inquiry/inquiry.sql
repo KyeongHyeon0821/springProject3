@@ -10,7 +10,7 @@ create table inquiry (
 		reservation varchar(50),                      /* 예약 번호 */
 		content text not null,                           /* 문의 내역 */
 		fSName varchar(200),                          /* 문의시에 올린 서버에 저장되는 이름*/
-		reply varchar(10) default '답변 대기중',      /* 답변 여부(답변대기중/답변완료/답변보류) */
+		reply varchar(10) default '답변대기중',      /* 답변 여부(답변대기중/답변완료/답변보류) */
 		primary key (idx),
 		foreign key (mid) references member(mid) 
 );

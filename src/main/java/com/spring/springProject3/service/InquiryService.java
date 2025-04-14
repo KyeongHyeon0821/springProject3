@@ -14,9 +14,11 @@ public interface InquiryService {
 
 	InquiryVo getInquiryDetail(int idx);
 
-	void imgDelete(String content);
-
 	int setInquiryDelete(int idx);
+
+	int setInquiryUpdate(MultipartFile mFile, InquiryVo vo);
+
+	int setInquiryImageDelete(int idx, String fSName);
 
 
 

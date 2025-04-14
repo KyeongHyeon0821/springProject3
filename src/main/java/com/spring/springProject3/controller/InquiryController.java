@@ -1,13 +1,19 @@
 package com.spring.springProject3.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.springProject3.common.Pagination;
@@ -56,26 +62,53 @@ public class InquiryController {
 	
 	// 1:1문의 상세보기 폼 보기
 	@RequestMapping(value = "/inquiryDetail", method = RequestMethod.GET)
-	public String inquiryDetail(int idx, Model model) {
-	    InquiryVo vo = inquiryService.getInquiryDetail(idx);
-	    
-	    model.addAttribute("vo", vo);
-	    
-	    return "inquiry/inquiryDetail";
+	public String inquiryDetailGet(int idx, Model model) {
+    InquiryVo vo = inquiryService.getInquiryDetail(idx);
+    
+    model.addAttribute("vo", vo);
+    
+    return "inquiry/inquiryDetail";
 	}
 	
 	// 1:1문의 상세보기에서 삭제처리
 	@RequestMapping(value = "/inquiryDeleteCheck", method = RequestMethod.GET)
 	public String inquiryDeleteCheckGet(int idx) {
 		InquiryVo vo = inquiryService.getInquiryDetail(idx);
-		if(vo.getContent().indexOf("src=\"/") != -1) inquiryService.imgDelete(vo.getContent());
+
+		//System.out.println("vo : " + vo);
 		
 		int res = inquiryService.setInquiryDelete(idx);
-		
+	
 		if(res != 0) return "redirect:/message/inquiryDeleteCheckOk";
 		else return "redirect:/message/inquiryDeleteCheckNo";
 	}
 	
+	// 1:1문의 상세보기에서 수정 폼 보기
+	@RequestMapping(value = "/inquiryUpdateCheck", method = RequestMethod.GET)
+	public String inquiryUpdateCheckGet(Model model, int idx) {
+		InquiryVo vo = inquiryService.getInquiryDetail(idx);
+		
+		model.addAttribute("vo", vo);
+		return "inquiry/inquiryUpdate";
+	}
 	
+	// 1:1문의 상세보기에서 수정 처리
+	@RequestMapping(value = "/inquiryUpdateCheck", method = RequestMethod.POST)
+	public String inquiryUpdateCheckPost(MultipartFile mFile, InquiryVo vo) {
+		System.out.println("vo : " + vo);
+		
+    int res = inquiryService.setInquiryUpdate(mFile, vo);
+
+    if (res != 0) return "redirect:/message/inquiryUpdateOk?idx="+vo.getIdx();
+    else return "redirect:/message/inquiryUpdateNo?idx="+vo.getIdx();
+	}
+	
+	// 그림파일만 삭제처리
+	@ResponseBody
+	@PostMapping("/imageDelete")
+	public String imageDeleteGet(int idx, String fSName) {
+		return inquiryService.setInquiryImageDelete(idx, fSName) + "";
+	}
+
 	
 }

@@ -3,6 +3,7 @@ package com.spring.springProject3.common;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spring.springProject3.dao.AdminDao;
 import com.spring.springProject3.dao.InquiryDao;
 import com.spring.springProject3.vo.PageVo;
 
@@ -11,6 +12,9 @@ public class Pagination {
 	
 	@Autowired
 	InquiryDao inquiryDao;
+	
+	@Autowired
+	AdminDao adminDao;
 
 	public PageVo getTotRecCnt(int pag, int pageSize, String section, String part, String searchString) {
 		PageVo vo = new PageVo();
@@ -22,6 +26,10 @@ public class Pagination {
 		
 		if(section.equals("inquiry")) {
 			totRecCnt = inquiryDao.getInquiryTotRecCnt();
+		}
+		else if(section.equals("adminInquiry")) {
+			String choice = searchString;
+			totRecCnt = adminDao.getInquiryTotRecCnt(choice);
 		}
 		
 //		if(section.equals("inquiry") && !searchString.equals("")) {

@@ -3,6 +3,7 @@ package com.spring.springProject3.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.springProject3.vo.InquiryVo;
 
@@ -17,5 +18,9 @@ public interface InquiryDao {
 	InquiryVo getInquiryDetail(@Param("idx") int idx);
 
 	int setInquiryDelete(@Param("idx") int idx);
+
+	int setInquiryUpdate(@Param("vo") InquiryVo vo);
+
+	int setInquiryImageDelete(@Param("idx") int idx);
 
 }
