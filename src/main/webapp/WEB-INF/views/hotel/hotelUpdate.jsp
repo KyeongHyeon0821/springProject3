@@ -7,79 +7,132 @@
 	<meta charset="UTF-8">
 	<title>hotelUpdate.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
+	<script src="${ctp}/ckeditor/ckeditor.js"></script>
+	<script>
+		'use strict';
+		
+		// 호텔 정보 수정 처리
+		function fCheck() {
+			
+			// 유효성 체크
+			let name = $("#name").val().trim();
+			let address = $("#address").val().trim();
+			let tel = $("#tel").val().trim();
+			let thumbnailFile = $("#thumbnailFile").val(); // 썸네일 파일 이름
+			let regTel = /^\d{3,4}-\d{3,4}-\d{4}$/; // 연락처 정규식 (3~4)-(3~4)-(4)
+			
+			if(name == "") {
+				alert("호텔 이름을 입력해주세요.");
+				return false;
+			}
+			else if (name.length > 100) {
+	      alert("호텔 이름은 100자 이내로 입력해주세요.");
+	      $("#name").focus();
+	      return false;
+	    }
+			
+			if (address == "") {
+	      alert("호텔 주소를 입력해주세요.");
+	      $("#address").focus();
+	      return false;
+	    } 
+			else if (address.length > 200) {
+	      alert("호텔 주소는 200자 이내로 입력해주세요.");
+	      $("#address").focus();
+	      return false;
+	    }
+			
+			if(tel != "" && !regTel.test(tel)) {
+				alert("전화번호 형식이 올바르지 않습니다.\n예: 02-123-4567, 010-1234-5678, 0505-123-4567");
+			  $("#tel").focus();
+			  return false;
+			}
+			else if (tel.length > 20) {
+	      alert("호텔 연락처는 20자 이내로 입력해주세요.");
+	      $("#tel").focus();
+	      return false;
+	    }
+			
+			// 파일 등록 처리
+			let ext = thumbnailFile.substring(thumbnailFile.lastIndexOf(".")+1).toLowerCase();
+			let maxSize = 1024 * 1024 * 20; // 한번에 업로드할 파일의 최대용랑을 20mb로 한정
+			
+			let fileSize = document.getElementById("thumbnailFile").files[0].size;
+			if(fileSize > maxSize) {
+				alert("업로드할 파일의 최대용량은 20mb 입니다.");
+				$("#thumbnailFile").focus();
+				return false;
+			}
+			else if(ext !="jpg" && ext !="gif" && ext !="png" && ext !="jpeg" && ext !="webp") {
+				alert("업로드 가능 파일은 'jpg/gif/png/jpeg/webp' 입니다.");
+				$("#thumbnailFile").focus();
+				return false;
+			}
+			
+			// 모든 조건 통과 시
+			return true;
+		}
+	</script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <div class="container">
 	<h2>🏨 호텔 정보 수정</h2>
 
-	<form method="post" action="${ctp}/hotelUpdate" enctype="multipart/form-data">
-	  <input type="hidden" name="idx" value="${vo.idx}"/>
-	  <label>호텔 이름</label>
-	  <input type="text" name="name" value="${vo.name}"/>
-	  
-	  <label>연락처</label>
-	  <input type="text" name="tel" value="${vo.tel}"/>
-	
-	  <label>주소</label>
-	  <input type="text" name="address" value="${vo.address}"/>
-	
-	  <label>호텔 소개</label>
-	  <textarea name="description">${vo.description}</textarea>
-	
-	  <label>대표 썸네일</label>
-	  <input type="file" name="thumbnailFile" />
-	
-	  <button type="submit">수정하기</button>
-	</form>
-	
-	<hr/>
-	
-	<h3>💤 등록된 객실 목록</h3>
-	<c:if test="${empty roomList}">
-	  <p>아직 등록된 객실이 없습니다.</p>
-	</c:if>
-	<c:forEach var="room" items="${roomList}">
-	  <div style="border:1px solid #ddd; margin:10px; padding:10px;">
-	    <strong>${room.name}</strong> (₩${room.price})
-	    <br/>최대인원: ${room.maxPeople}명 / 반려견: ${room.petSizeLimit}, 최대 ${room.petCountLimit}마리
-	    <br/><img src="${ctp}/roomThumbnail/${room.thumbnail}" width="100px"/>
-	  </div>
-	</c:forEach>
-	
-	<hr/>
-	
-	<h3>➕ 객실 등록</h3>
-	<form method="post" action="${ctp}/roomInput" enctype="multipart/form-data">
-	  <input type="hidden" name="hotelIdx" value="${vo.idx}"/>
-	
-	  <label>객실명</label>
-	  <input type="text" name="name"/>
-	
-	  <label>가격</label>
-	  <input type="number" name="price"/>
-	
-	  <label>최대 인원</label>
-	  <input type="number" name="maxPeople"/>
-	
-	  <label>반려견 크기 제한</label>
-	  <select name="petSizeLimit">
-	    <option>소형</option>
-	    <option>중형</option>
-	    <option>대형</option>
-	  </select>
-	
-	  <label>반려견 수 제한</label>
-	  <input type="number" name="petCountLimit" value="1"/>
-	
-	  <label>썸네일 이미지</label>
-	  <input type="file" name="thumbnailFile"/>
-	
-	  <label>객실 이미지들</label>
-	  <input type="file" name="roomImages" multiple/>
-	
-	  <button type="submit">객실 등록</button>
-	</form>
+	<form name="hotelForm" method="post" onsubmit="return fCheck();" enctype="multipart/form-data">
+		<input type="hidden" name="idx" value="${vo.idx}" />
+		<input type="hidden" name="oThumbnail" value="${vo.thumbnail}" />
+    <table class="table table-bordered">
+      <tr>
+        <th>호텔 이름</th>
+        <td><input type="text" name="name" id="name" value="${vo.name}" required autofocus class="form-control"/></td>
+      </tr>
+      <tr>
+        <th>호텔 주소</th>
+        <td><input type="text" name="address" id="address" value="${vo.address}" required class="form-control"/></td>
+      </tr>
+      <tr>
+        <th>호텔 연락처</th>
+        <td><input type="tel" name="tel" id="tel" value="${vo.tel}" class="form-control"/></td>
+      </tr>
+      <tr>
+        <th>호텔 소개</th>
+        <td><textarea rows="6" name="description" id="description" class="form-control">${vo.description}</textarea></td>
+      </tr>
+      <tr>
+      	<th>기존 등록된 썸네일 미리보기</th>
+      	<td><img src="${ctp}/hotelThumbnail/${vo.thumbnail}" width="150px" /></td>
+      </tr>
+      <tr>
+        <th>대표 사진(썸네일)</th>
+        <td><input type="file" name="thumbnailFile" id="thumbnailFile" class="form-control" accept=".jpg,.gif,.png,.jpeg,.webp"/></td>
+      </tr>
+      <tr>
+        <th>사진 등록</th>
+        <td>
+        	<div class="text-muted" style="margin-bottom:5px;">
+			      ※ 사진만 등록 가능합니다. 여러 장의 이미지는 마우스로 드래그하여 추가할 수 있습니다.
+			    </div>
+        	<textarea rows="6" name="images" id="CKEDITOR" class="form-control">${vo.images}</textarea>
+          <script>
+            CKEDITOR.replace("images",{
+            	height:450,
+            	filebrowserUploadUrl:"hotelImageUpload?mid=admin",
+            	uploadUrl:"hotelImageUpload?mid=admin" 
+            });
+          </script>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" class="text-center">
+          <input type="submit" value="호텔정보수정" class="btn btn-success me-2"/>
+          <input type="reset" value="다시입력" class="btn btn-warning me-2"/>
+          <input type="button" value="돌아가기" onclick="location.href='${ctp}/hotel/hotelDetail?idx=${vo.idx}';" class="btn btn-info"/>
+        </td>
+      </tr>
+    </table>
+    <input type="hidden" name="mid" value="admin"/>
+  </form>
 </div>
 </body>
 </html>

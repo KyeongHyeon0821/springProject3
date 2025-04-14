@@ -14,4 +14,8 @@ public interface HotelService {
 
 	HotelVo getHotel(int idx);
 
+	int setHotelStatusUpdate(int idx, String status);
+
+	int setHotelUpdate(HotelVo vo, MultipartFile thumbnailFile);
+
 }

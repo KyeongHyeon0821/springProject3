@@ -69,25 +69,26 @@ public class HotelServiceImpl implements HotelService {
 			}
 		}
 		images = images.substring(0, images.length() -1);
-		vo.setImages(images);
+		//vo.setImages(images);
 		
 		// 3.파일 복사처리
-		String[] imagesArr = vo.getImages().split("/");
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/");
+		String origFilePath = realPath + "imagesTemp/";
+		String copyFilePath = realPath +  "hotelImages/";
+		
+		String[] imagesArr = images.split("/");
 		for(String image : imagesArr) {
-			fileCopyCheck(image);
+			fileCopyCheck(origFilePath+image, copyFilePath+image);
 		}
 		
 		// 4.DB 저장 처리
+		vo.setImages(vo.getImages().replace("/imagesTemp", "/hotelImages"));
 		return hotelDao.setHotelInput(vo);
 	}
 	
 	// 파일 복사처리
-	private void fileCopyCheck(String image) {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/");
-		
-		String origFilePath = realPath + "imagesTemp/" + image;
-		String copyFilePath = realPath + "hotelImages/" + image;
+	private void fileCopyCheck(String origFilePath, String copyFilePath) {
 		
 		try {
 			FileInputStream fis = new FileInputStream(new File(origFilePath));
@@ -123,8 +124,117 @@ public class HotelServiceImpl implements HotelService {
 		fos.close();
 	}
 
+	// 호텔 상세보기
 	@Override
 	public HotelVo getHotel(int idx) {
 		return hotelDao.getHotel(idx);
+	}
+
+	// 호텔 상태 업데이트
+	@Override
+	public int setHotelStatusUpdate(int idx, String status) {
+		return hotelDao.setHotelStatusUpdate(idx, status);
+	}
+
+	// 호텔 정보 수정 처리
+	@Override
+	public int setHotelUpdate(HotelVo vo, MultipartFile thumbnailFile) {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/");
+		
+		// 썸네일 파일 null 또는 비었을 때 기존 썸네일 이름으로 저장
+	  if(thumbnailFile == null || thumbnailFile.isEmpty()) {
+	  	vo.setThumbnail(vo.getOThumbnail());
+	  }
+	  else { // 썸네일 이미지 변경 했을 경우
+	  	// 기존 썸네일 이미지 삭제 처리
+	  	String thubmnailFilePath = realPath + "hotelThumbnail/" +vo.getOThumbnail();
+	  	fileDelete(thubmnailFilePath);
+	  	// 썸네일 파일 이름 중복처리 후 서버에 저장처리
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+			String oFileName = thumbnailFile.getOriginalFilename(); // 업로드한 파일명 가져오기
+			String sFileName = vo.getMid() + "_" + sdf.format(date) + "_" + oFileName; // 호텔 등록자 아이디 + "_" + 날짜 + "_" + oFileName;
+			try {
+				writeFile(thumbnailFile, sFileName); // 파일을 서버로 저장처리하는 메소드 호출
+			} catch (Exception e) {
+				e.printStackTrace();
+				return 0;
+			}
+			vo.setThumbnail(sFileName);
+	  }
+		
+	  // 썸네일 외 이미지들의 파일이 변경 되었다면 존 이미지들 삭제 처리 후 새로 업로드된 이미지들 복사(imagesTemp -> hotelImages)
+		HotelVo dbVo = hotelDao.getHotel(vo.getIdx());
+		
+		if(!dbVo.getImages().equals(vo.getImages())) { // 기존 이미지 내용과 수정 된 이미지 내용이 다르다면 실행
+			// 기존 이미지들 삭제
+			if(dbVo.getImages() != null && !dbVo.getImages().equals("")) imgDelete(dbVo.getImages());
+			
+			// 썸네일 외 이미지들 파일 이름 가공
+			String images = "";
+			if(vo.getImages() != null && !vo.getImages().equals("")) {
+				String imagesTemp = vo.getImages();
+				//      0         1         2         3         4
+				//      012345678901234567890123456789012345678901234567890123456789
+				// <img src="/springProject3/data/imagesTemp/admin_250411102640_Image20250325143808.jpg" style="height:853px; width:1280px" />
+				int position = 37;
+				String nextImg = imagesTemp.substring(imagesTemp.indexOf("src=\"/") + position);
+				boolean hasImage = true;
+				
+				while(hasImage) {
+					String imgFileName = nextImg.substring(0, nextImg.indexOf("\""));
+					images += imgFileName + "/";
+					
+					if(nextImg.indexOf("src=\"/") == -1) hasImage = false;
+					else nextImg = nextImg.substring(nextImg.indexOf("src=\"/") + position);
+				}
+			}
+			
+			if(images != null && !images.equals("")) images = images.substring(0, images.length() -1);
+			//vo.setImages(images);
+			
+			// 파일 복사처리
+			String origFilePath = realPath + "imagesTemp/";
+			String copyFilePath = realPath +  "hotelImages/";
+			String[] imagesArr = images.split("/");
+			for(String image : imagesArr) {
+				fileCopyCheck(origFilePath + image, copyFilePath + image);
+			}
+		}
+		
+		// DB 저장 처리
+		vo.setImages(vo.getImages().replace("/imagesTemp", "/hotelImages"));
+		
+		return hotelDao.setHotelUpdate(vo);
+	}
+
+	// 이미지 파일 삭제 처리
+	private void imgDelete(String images) {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/");
+		//  0         1         2         3         4
+		//      012345678901234567890123456789012345678901234567890123456789
+		// <img src="/springProject3/data/hotelImages/admin_250411102640_Image20250325143808.jpg" style="height:853px; width:1280px" />
+		int position = 38;
+		String nextImg = images.substring(images.indexOf("src=\"/") + position);
+		boolean hasImage = true;
+		
+		while(hasImage) {
+			String imgFile = nextImg.substring(0, nextImg.indexOf("\""));
+			
+			String origFilePath = realPath + "hotelImages/" + imgFile;
+			
+			fileDelete(origFilePath);
+			
+			if(nextImg.indexOf("src=\"/") == -1) hasImage = false;
+			else nextImg = nextImg.substring(nextImg.indexOf("src=\"/") + position);
+		}
+	}
+	
+	//파일 삭제 처리
+	private void fileDelete(String origFilePath) {
+		File delFile = new File(origFilePath);
+		if(delFile.exists()) delFile.delete();
 	}
 }

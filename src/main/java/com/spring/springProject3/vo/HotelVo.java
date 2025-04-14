@@ -37,4 +37,6 @@ public class HotelVo {
 	private String images;
 	
 	private String regDate;
+	
+	private String oThumbnail;
 }

@@ -4,7 +4,7 @@
   
   <!-- 호텔리스트 조회 -->
   <select id="getHotelList" resultType="com.spring.springProject3.vo.HotelVo">
-		select * from hotel order by idx desc;  	
+		select * from hotel where status = '정상' order by idx desc;  	
   </select>
   
   <!-- 호텔 조회 (idx)-->
@@ -14,6 +14,15 @@
   
   <!-- 호텔 등록 -->
   <insert id="setHotelInput">
-  	insert into hotel values (default, #{vo.mid}, #{vo.name}, #{vo.address}, #{vo.tel}, #{vo.description}, #{vo.thumbnail}, #{vo.images}, default);
+  	insert into hotel values (default, #{vo.mid}, #{vo.name}, #{vo.address}, #{vo.tel}, #{vo.description}, #{vo.thumbnail}, #{vo.images}, default, default);
   </insert>
+  
+  <update id="setHotelStatusUpdate">
+  	update hotel set status = #{status} where idx = #{idx};
+  </update>
+  
+  <update id="setHotelUpdate">
+  	update hotel set name=#{vo.name},address=#{vo.address},tel=#{vo.tel},description=#{vo.description},thumbnail=#{vo.thumbnail},images=#{vo.images} where idx = #{vo.idx};
+  </update>
+  
 </mapper>

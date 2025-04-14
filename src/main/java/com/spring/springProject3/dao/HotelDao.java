@@ -14,4 +14,8 @@ public interface HotelDao {
 
 	HotelVo getHotel(@Param("idx") int idx);
 
+	int setHotelStatusUpdate(@Param("idx") int idx, @Param("status") String status);
+
+	int setHotelUpdate(@Param("vo") HotelVo vo);
+
 }

@@ -74,7 +74,9 @@
 				$("#thumbnailFile").focus();
 				return false;
 			}
-			else return true;
+			
+			// 모든 조건 통과시
+			return true;
 		}
 	</script>
 </head>
@@ -107,7 +109,11 @@
       </tr>
       <tr>
         <th>사진 등록</th>
-        <td><textarea rows="6" name="images" id="CKEDITOR" class="form-control" placeholder="사진 업로드"></textarea>
+        <td>
+        	<div class="text-muted" style="margin-bottom:5px;">
+			      ※ 사진만 등록 가능합니다. 여러 장의 이미지는 마우스로 드래그하여 추가할 수 있습니다.
+			    </div>
+        	<textarea rows="6" name="images" id="CKEDITOR" class="form-control"></textarea>
           <script>
             CKEDITOR.replace("images",{
             	height:450,

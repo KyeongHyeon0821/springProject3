@@ -60,8 +60,7 @@ public class HotelController {
 	  }
 	  int res = hotelService.setHotelInput(vo, thumbnailFile);
 		if(res !=0 ) return "redirect:/message/hotelInputOk";
-		
-		return "redirect:/message/hotelInputNo";
+		else return "redirect:/message/hotelInputNo";
 	}
 	
 	// 호텔 등록 - ckeditor에서의 그림 파일 업로드시 수행처리되는 메소드 
@@ -108,12 +107,30 @@ public class HotelController {
 		return "hotel/hotelDetail";
 	}
 	
-	// 호텔 수정 페이지 보기
+	// 호텔 정보 수정 페이지 보기
 	@RequestMapping(value =  "/hotelUpdate", method = RequestMethod.GET)
 	public String hotelUpdateGet(Model model, int idx) {
 		HotelVo vo = hotelService.getHotel(idx);
 		model.addAttribute("vo", vo);
 		return "hotel/hotelUpdate";
+	}
+	
+	// 호텔 정보 수정 처리
+	@RequestMapping(value =  "/hotelUpdate", method = RequestMethod.POST)
+	public String hotelUpdatePost(HotelVo vo, MultipartFile thumbnailFile) {
+	
+	  int res = hotelService.setHotelUpdate(vo, thumbnailFile);
+		if(res !=0 ) return "redirect:/message/hotelUpdateOk?idx="+vo.getIdx();
+		else return "redirect:/message/hotelUpdateNo"+vo.getIdx();
+	}
+	
+	// 호텔 삭제신청 처리
+	@RequestMapping(value =  "/hotelDeleteCheck", method = RequestMethod.GET)
+	public String hotelDeleteCheckGet(int idx) {
+		int res = hotelService.setHotelStatusUpdate(idx, "등록취소요청");
+		
+		if(res !=0 ) return "redirect:/message/hotelDeleteCheckOk";
+		else return "redirect:/message/hotelDeleteCheckNo?idx="+idx;
 	}
 	
 	

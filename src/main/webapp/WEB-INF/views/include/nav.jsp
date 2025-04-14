@@ -20,9 +20,6 @@
           <a class="nav-link" href="#">관리자</a>
         </li>  
         <li class="nav-item">
-          <a class="nav-link" href="#">고객센터</a>
-        </li>  
-        <li class="nav-item">
           <a class="nav-link" href="${ctp}/member/memberLogin">로그인</a>
         </li>  
         <li class="nav-item">
@@ -31,9 +28,18 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">더보기</a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">마이페이지</a></li>
+            <li><a class="dropdown-item" href="${ctp}/member/memberMyPage">마이페이지</a></li>
             <li><a class="dropdown-item" href="#">더보기</a></li>
             <li><a class="dropdown-item" href="#">더보기</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">고객센터</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="${ctp}/inquiry/inquiryList">1:1문의</a></li> 
+            <li><a class="dropdown-item" href="${ctp}/admin/inquiry/adInquiryList">1:1문의(관리자답변)</a></li>
+            <li><a class="dropdown-item" href="#">FQA</a></li>
+            <li><a class="dropdown-item" href="#">Q&A</a></li>
           </ul>
         </li>
       </ul>
