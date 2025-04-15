@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.springProject3.common.ProjectProvide;
 import com.spring.springProject3.dao.InquiryDao;
+import com.spring.springProject3.vo.InquiryReplyVo;
 import com.spring.springProject3.vo.InquiryVo;
 
 @Service
@@ -27,8 +28,8 @@ public class InquiryServiceImpl implements InquiryService {
 	ProjectProvide projectProvide;
 
 	@Override
-	public List<InquiryVo> getInquiryList(int startIndexNo, int pageSize) {
-		return inquiryDao.getInquiryList(startIndexNo, pageSize);
+	public List<InquiryVo> getInquiryList(int startIndexNo, int pageSize, String mid) {
+		return inquiryDao.getInquiryList(startIndexNo, pageSize, mid);
 	}
 
 	// 1:1문의작성글에 사진까지 올릴수있음!
@@ -113,6 +114,11 @@ public class InquiryServiceImpl implements InquiryService {
     if(file.exists()) file.delete();
     
 		return inquiryDao.setInquiryImageDelete(idx);
+	}
+
+	@Override
+	public InquiryReplyVo getInquiryReply(int idx) {
+		return inquiryDao.getInquiryReply(idx);
 	}
 
 

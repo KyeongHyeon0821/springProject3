@@ -22,10 +22,12 @@ public class Pagination {
 		int totRecCnt = 0;
 		String search = "";
 		String searchStr = "";
+		String mid = "";
 		
 		
 		if(section.equals("inquiry")) {
-			totRecCnt = inquiryDao.getInquiryTotRecCnt();
+			mid = part;
+			totRecCnt = inquiryDao.getInquiryTotRecCnt(mid);
 		}
 		else if(section.equals("adminInquiry")) {
 			String choice = searchString;

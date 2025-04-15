@@ -51,6 +51,14 @@ public class MessageController {
 			model.addAttribute("message", "작성하신 문의글 수정이 실패되었습니다.");
 			model.addAttribute("url", "inquiry/inquiryDetail?idx="+idx);
 		}
+		else if(msgFlag.equals("inquiryReplyOk")) {
+			model.addAttribute("message", "작성하신 답변이 등록되었습니다.");
+			model.addAttribute("url", "admin/adInquiryDetail?idx="+request.getParameter("idx"));
+		}
+		else if(msgFlag.equals("inquiryReplyNo")) {
+			model.addAttribute("message", "작성하신 답변등록이 실패되었습니다.");
+			model.addAttribute("url", "admin/adInquiryDetail?idx="+idx);
+		}
 		
 		
 		

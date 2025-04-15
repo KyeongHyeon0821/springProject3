@@ -32,4 +32,4 @@ create table inquiryReply(
 );
 
 desc inquiryReply;
-
+select *,(select reIdx from inquiryReply where inquiryIdx=a.idx) as reIdx,(select reContent from inquiryReply where inquiryIdx=a.idx) as reContent  from inquiry a where idx = 2;

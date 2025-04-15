@@ -1,33 +1,96 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>1:1 문의 상세보기</title>
+  <title>1:1 문의 상세보기 관리</title>
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
   <script>
  		'use strict';
  		
- 		function inquiryUpdateCheck(){
- 			let ans = confirm("해당 문의글을 수정하시겠습니까?");
- 			if(!ans) return false;
- 			else location.href="${ctp}/inquiry/inquiryUpdateCheck?idx=${vo.idx}";
+ 		function inquiryReplyInput() {
+ 			let idx = ${vo.idx};
+ 			let reContent = $("#reContent").val();
+ 			if(reContent == "") {
+ 				alert("답변을 입력하세요.");
+ 				replyForm.reContent.focus();
+ 				return false;
+ 			}
+ 			let query = {
+ 					idx : idx,
+ 					reContent : reContent
+ 			}
+ 			$.ajax({
+ 				url : "${ctp}/admin/inquiry/adInquiryDetail",
+ 				type : "post",
+ 				data : query,
+ 				success:function(res) {
+ 					if(res != "0") {
+ 						alert("답변이 등록되었습니다.");
+ 						location.reload();
+ 					}
+ 					else alert("답변 등록 실패");
+ 				},
+ 			error:function() { alert("전송오류"); }
+ 			});
  		}
  		
- 		function inquiryDeleteCheck(){
- 			let ans = confirm("해당 문의글을 삭제하시겠습니까?");
- 			if(!ans) return false;
- 			else location.href="${ctp}/inquiry/inquiryDeleteCheck?idx=${vo.idx}";
+ 		function inquiryReplyUpdateReady() {
+ 			$("#btnReplyUpdate").hide();
+ 			$("#btnReplyUpdateOk").show();
+ 			$("#reContent").attr("readonly", false);
  		}
  		
+ 		function inquiryReplyUpdateOk() {
+ 			let reContent = $("#reContent").val();
+ 			
+ 			if(reContent.trim() == "") {
+ 				alert("수정할 답변을 입력하세요.");
+ 				return false;
+ 			}
+ 			let query = {
+ 					reIdx : ${vo.reIdx},
+ 					reContent : reContent
+ 			}
+ 			$.ajax({
+ 				url : "${ctp}/admin/inquiry/adInquiryDetailUpdate",
+ 				type : "post",
+ 				data : query,
+ 				success:function(res) {
+ 					if(res != "0"){
+ 						alert("답변이 수정되었습니다.");
+ 						location.reload();
+ 					}
+ 					else ("답변 수정 실패");
+ 				},
+ 				error : function() { alert("전송오류"); }
+ 			});
+ 		}
+ 		
+ 		function inquiryHoldCheck() {
+ 			$.ajax({
+ 				url : "${ctp}/admin/inquiry/adInquiryDetailHold",
+ 				type : "post",
+ 				data : {idx : ${vo.idx}},
+ 				success:function(res) {
+ 					if(res != "0"){
+ 						alert("답변이 보류되었습니다.");
+ 						location.reload();
+ 					}
+ 					else ("답변 보류 실패");
+ 				},
+ 				error : function() { alert("전송오류"); }
+ 			});
+ 		}
   </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 
-<h3 class="text-center m-5">1:1 문의 상세보기</h3>
+<h3 class="text-center m-5">1:1 문의 상세보기 관리</h3>
 
 <div class="container d-flex justify-content-center">
   <div style="width: 80%;">
@@ -88,21 +151,31 @@
   </tr>
 </table>
     <div class="text-center mt-4">
-      <c:if test="${vo.reply != '답변완료' && vo.reply != '답변보류'}">
-	    	<input type="button" value="수정하기" onclick="inquiryUpdateCheck()" class="btn btn-warning m-1">
-	    	<input type="button" value="삭제하기" onclick="inquiryDeleteCheck()" class="btn btn-danger m-1">
+      <c:if test="${vo.reply != '답변보류'}">
+    		<input type="button" value="보류하기" onclick="inquiryHoldCheck()" class="btn btn-warning m-1">
     	</c:if>
-      <button class="btn btn-secondary" onclick="location.href='${ctp}/inquiry/inquiryList';">목록으로</button>
+      <button class="btn btn-secondary" onclick="location.href='${ctp}/admin/inquiry/adInquiryList';">목록으로</button>
     </div>
-		<c:if test="${vo.reply == '답변완료'}">
-		  <hr class="border-secondary">
-		  <div class="border rounded p-3 bg-light">
-		    <br/>
-		    <p class="mt-2" style="white-space: pre-line;">${vo.reContent}</p>
-		  </div>
-		</c:if>
+    <div class="container mt-5">
+		  <form name="replyForm" method="post" action="${ctp}/admin/inquiry/adInquiryDetail?idx=${vo.idx}">
+		    <div class="mb-3">
+		      <label for="reContent" class="form-label fw-bold">답변글 작성</label>
+		      <textarea name="reContent" id="reContent" class="form-control" rows="6" placeholder="답변글을 작성해주세요." ${not empty vo.reContent ? 'readonly' : ''}>${vo.reContent}</textarea>
+		    </div>
+		    <div class="text-end">
+		      <c:if test="${empty vo.reContent}">
+			      <input type="button" value="답변등록" id="btnReplyInput" onclick="inquiryReplyInput()" class="btn btn-primary">
+		      </c:if>
+		      <c:if test="${!empty vo.reContent}">
+			      <input type="button" value="답변수정" id="btnReplyUpdate" onclick="inquiryReplyUpdateReady()" class="btn btn-warning">
+		      </c:if>
+		      <input type="button" value="수정완료" id="btnReplyUpdateOk" onclick="inquiryReplyUpdateOk()" class="btn btn-info" style="display:none">
+		    </div>
+		  </form>
+		</div>
   </div>
 </div>
+
 
 <p><br/></p>
 

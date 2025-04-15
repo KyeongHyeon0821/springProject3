@@ -13,4 +13,9 @@ public class InquiryVo {
 	private String content;
 	private String fSName;
 	private String reply;
+	
+	private int reIdx;
+	private int inquiryIdx;
+	private String reWDate;
+	private String reContent;
 }

@@ -1,10 +1,8 @@
 package com.spring.springProject3.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,13 +29,16 @@ public class InquiryController {
 	@Autowired
 	Pagination pagination;
 
+	// 1:1문의 리스트 보기
 	@RequestMapping(value = "inquiryList", method = RequestMethod.GET)
-	public String inquiryListGet(Model model,
+	public String inquiryListGet(Model model, HttpSession session,
 			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
-			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize,
+			@RequestParam(name="mid", defaultValue = "", required = false) String mid
 		) {
-		PageVo pageVo = pagination.getTotRecCnt(pag,pageSize,"inquiry","","");	// (페이지번호,한 페이지분량,section,part,검색어)
-		List<InquiryVo> vos = inquiryService.getInquiryList(pageVo.getStartIndexNo(), pageSize);
+		//String mid = (String) session.getAttribute("sMid");
+		PageVo pageVo = pagination.getTotRecCnt(pag,pageSize,"inquiry",mid,"");	// (페이지번호,한 페이지분량,section,part,검색어)
+		List<InquiryVo> vos = inquiryService.getInquiryList(pageVo.getStartIndexNo(), pageSize, mid);
 		
 		model.addAttribute("pageVo", pageVo);
 		model.addAttribute("vos", vos);
@@ -64,8 +65,10 @@ public class InquiryController {
 	@RequestMapping(value = "/inquiryDetail", method = RequestMethod.GET)
 	public String inquiryDetailGet(int idx, Model model) {
     InquiryVo vo = inquiryService.getInquiryDetail(idx);
-    
+    //InquiryReplyVo replyVo = inquiryService.getInquiryReply(idx);
+    //System.out.println("vo : " + vo);
     model.addAttribute("vo", vo);
+    //model.addAttribute("replyVo", replyVo);
     
     return "inquiry/inquiryDetail";
 	}
@@ -87,7 +90,7 @@ public class InquiryController {
 	@RequestMapping(value = "/inquiryUpdateCheck", method = RequestMethod.GET)
 	public String inquiryUpdateCheckGet(Model model, int idx) {
 		InquiryVo vo = inquiryService.getInquiryDetail(idx);
-		
+		//System.out.println("vo : " + vo);
 		model.addAttribute("vo", vo);
 		return "inquiry/inquiryUpdate";
 	}
@@ -95,7 +98,7 @@ public class InquiryController {
 	// 1:1문의 상세보기에서 수정 처리
 	@RequestMapping(value = "/inquiryUpdateCheck", method = RequestMethod.POST)
 	public String inquiryUpdateCheckPost(MultipartFile mFile, InquiryVo vo) {
-		System.out.println("vo : " + vo);
+		//System.out.println("vo : " + vo);
 		
     int res = inquiryService.setInquiryUpdate(mFile, vo);
 

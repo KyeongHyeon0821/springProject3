@@ -75,7 +75,7 @@
   <c:forEach var="vo" items="${vos}">
     <tr>
       <td>
-        <a href="${ctp}/inquiry/inquiryDetail?idx=${vo.idx}">
+        <a href="${ctp}/admin/inquiry/adInquiryDetail?idx=${vo.idx}">
           ${vo.title}
         </a>
       </td>

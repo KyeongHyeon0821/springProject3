@@ -12,20 +12,28 @@
     <if test='choice != "전체"'> select * from inquiry where reply=#{choice}; </if>
   </select>
   
-  <!-- 
+  
   <select id="getInquiryDetail" resultType="com.spring.springProject3.vo.InquiryVo">
-  	select * from inquiry where idx = #{idx};
+  	select *,(select reIdx from inquiryReply where inquiryIdx=a.idx) as reIdx,(select reContent from inquiryReply where inquiryIdx=a.idx) as reContent from inquiry a where idx = #{idx};
   </select>
   
-  
-  <insert id="setInquiryInputOk">
-		insert into inquiry values (default,#{vo.mid},#{vo.title},#{vo.part},default,#{vo.reservation},#{vo.content},#{vo.fSName},default);
+
+  <insert id="setInquiryReplyOk">
+		insert into inquiryReply values (default,#{idx},default,#{reContent})
   </insert>
-  
-  <update id="setInquiryUpdate">
-  	update inquiry set title=#{vo.title},reservation=#{vo.reservation},content=#{vo.content},fSName=#{vo.fSName} where idx=#{vo.idx};
+   
+  <update id="setInquiryReplyStatusOk">
+  	update inquiry set reply='답변완료' where idx=#{idx};
   </update>
   
+  <update id="setAdInquiryDetailUpdate">
+  	update inquiryReply set reContent=#{reContent} where reIdx=#{reIdx};
+  </update>
+  
+  <update id="setAdInquiryDetailHold">
+  	update inquiry set reply='답변보류' where idx=#{idx};
+  </update>
+<!-- 
   <update id="setInquiryImageDelete">
   	update inquiry set fSName='' where idx=#{idx};
   </update>

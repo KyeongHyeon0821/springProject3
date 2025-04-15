@@ -9,6 +9,16 @@ public interface AdminService {
 	List<InquiryVo> getInquiryList(int startIndexNo, int pageSize);
 
 	List<InquiryVo> getInquiryList(int startIndexNo, int pageSize, String choice);
+
+	InquiryVo getInquiryDetail(int idx);
+
+	int setInquiryReplyOk(int idx, String reContent);
+
+	void setInquiryReplyStatusOk(int idx);
+
+	int setAdInquiryDetailUpdate(int reIdx, String reContent);
+
+	int setAdInquiryDetailHold(int idx);
 	
 	
 }

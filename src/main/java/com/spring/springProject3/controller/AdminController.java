@@ -8,11 +8,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.springProject3.common.Pagination;
 import com.spring.springProject3.service.AdminService;
-import com.spring.springProject3.service.InquiryService;
 import com.spring.springProject3.service.MemberService;
 import com.spring.springProject3.vo.InquiryVo;
 import com.spring.springProject3.vo.MemberVo;
@@ -61,7 +62,7 @@ public class AdminController {
 		return "admin/member/memberInfor";
 	}
 	
-	// 1:1상담 리스트 보기
+	// 1:1문의 리스트 보기
 	@GetMapping("/inquiry/adInquiryList")
 	public String adInquiryListGet(Model model,
 			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
@@ -76,4 +77,37 @@ public class AdminController {
 		model.addAttribute("choice", choice);
 		return "admin/inquiry/adInquiryList";
 	}
+	
+	// 1:1문의 상세보기 폼 보기
+	@RequestMapping(value = "/inquiry/adInquiryDetail", method = RequestMethod.GET)
+	public String adInquiryDetailGet(Model model, int idx) {
+		InquiryVo vo = adminService.getInquiryDetail(idx);
+		model.addAttribute("vo", vo);
+		
+		return "admin/inquiry/adInquiryDetail";
+	}
+	
+	// 1:1문의 답변등록하기
+	@ResponseBody
+	@RequestMapping(value = "/inquiry/adInquiryDetail", method = RequestMethod.POST)
+	public String inquiryReplyPost(int idx, String reContent) {
+		adminService.setInquiryReplyStatusOk(idx);
+		return adminService.setInquiryReplyOk(idx, reContent) + "";
+	}
+	
+	// 1:1문의 답변 수정
+	@ResponseBody
+	@RequestMapping(value = "/inquiry/adInquiryDetailUpdate", method = RequestMethod.POST)
+	public String inquiryReplyUpdatePost(int reIdx, String reContent) {
+		return adminService.setAdInquiryDetailUpdate(reIdx, reContent) + "";
+	}
+	
+	// 1:1문의 보류
+	@ResponseBody
+	@RequestMapping(value = "/inquiry/adInquiryDetailHold", method = RequestMethod.POST)
+	public String adInquiryDetailHoldPost(int idx) {
+		return adminService.setAdInquiryDetailHold(idx) + "";
+	}
+	
 }
+

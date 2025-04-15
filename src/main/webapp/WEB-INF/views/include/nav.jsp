@@ -36,7 +36,7 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">고객센터</a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="${ctp}/inquiry/inquiryList">1:1문의</a></li>
+            <li><a class="dropdown-item" href="${ctp}/inquiry/inquiryList?mid=hkd1234">1:1문의</a></li>
             <li><a class="dropdown-item" href="${ctp}/admin/inquiry/adInquiryList">1:1문의(관리자답변)</a></li>
             <li><a class="dropdown-item" href="#">FQA</a></li>
             <li><a class="dropdown-item" href="#">Q&A</a></li>
