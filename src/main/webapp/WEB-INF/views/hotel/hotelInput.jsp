@@ -8,6 +8,7 @@
 	<title>hotelInput.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
 	<script src="${ctp}/ckeditor/ckeditor.js"></script>
+	<link rel="stylesheet" href="${ctp}/css/kakaoMap.css" />
 	<script>
 		'use strict';
 		
@@ -19,10 +20,11 @@
 			let address = $("#address").val().trim();
 			let tel = $("#tel").val().trim();
 			let thumbnailFile = $("#thumbnailFile").val(); // 썸네일 파일 이름
-			let regTel = /^\d{3,4}-\d{3,4}-\d{4}$/; // 연락처 정규식 (3~4)-(3~4)-(4)
+			let regTel = /^\d{2,4}-\d{3,4}-\d{4}$/; // 연락처 정규식 (2~4)-(3~4)-(4)
 			
 			if(name == "") {
 				alert("호텔 이름을 입력해주세요.");
+				$("#name").focus();
 				return false;
 			}
 			else if (name.length > 100) {
@@ -78,13 +80,43 @@
 			// 모든 조건 통과시
 			return true;
 		}
+		
+		// 썸네일 이미지 미리보기
+		function thumbnailCheck(e) {
+	    if(e.files && e.files[0]) {
+	      let reader = new FileReader();
+	      reader.onload = function(e) {
+	        document.getElementById("thumbnailPreview").src = e.target.result;
+	      }
+	      reader.readAsDataURL(e.files[0]);
+	    }
+	  }
+		
 	</script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <div class="container">
-	<h2>호 텔 등 록</h2>
+	<h2>🏨호 텔 등 록</h2>
 	<hr class="border-secondary">
+	
+	<div class="map_wrap">
+    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+    <div id="menu_wrap" class="bg_white">
+      <div class="option">
+        <div>
+          <form onsubmit="searchPlaces(); return false;">
+            키워드 : <input type="text" value="반려견 동반 호텔" id="keyword" size="15"> 
+            <button type="submit">검색하기</button> 
+          </form>
+        </div>
+      </div>
+      <hr>
+      <ul id="placesList"></ul>
+      <div id="pagination"></div>
+    </div>
+	</div>
+	
 	<form name="hotelForm" method="post" onsubmit="return fCheck();" enctype="multipart/form-data">
     <table class="table table-bordered">
       <tr>
@@ -105,7 +137,11 @@
       </tr>
       <tr>
         <th>대표 사진(썸네일)</th>
-        <td><input type="file" name="thumbnailFile" id="thumbnailFile" required class="form-control" accept=".jpg,.gif,.png,.jpeg,.webp"/></td>
+        <td><input type="file" name="thumbnailFile" id="thumbnailFile" onchange="thumbnailCheck(this)" required class="form-control" accept=".jpg,.gif,.png,.jpeg,.webp"/></td>
+      </tr>
+      <tr>
+        <th>썸네일 미리보기</th>
+        <td><img id="thumbnailPreview" width="150px"></td>
       </tr>
       <tr>
         <th>사진 등록</th>
@@ -113,7 +149,7 @@
         	<div class="text-muted" style="margin-bottom:5px;">
 			      ※ 사진만 등록 가능합니다. 여러 장의 이미지는 마우스로 드래그하여 추가할 수 있습니다.
 			    </div>
-        	<textarea rows="6" name="images" id="CKEDITOR" class="form-control"></textarea>
+        	<textarea rows="6" name="images" id="images" class="form-control"></textarea>
           <script>
             CKEDITOR.replace("images",{
             	height:450,
@@ -133,6 +169,9 @@
     </table>
     <input type="hidden" name="mid" value="admin"/>
   </form>
+  
 </div>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f5f016ee8ec4b87750154cd5e9d07dfb&libraries=services"></script>
+<script type="text/javascript" src="${ctp}/js/kakaoMap.js"></script>
 </body>
 </html>

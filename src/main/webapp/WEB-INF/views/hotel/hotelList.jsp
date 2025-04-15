@@ -17,7 +17,7 @@
 	<c:forEach var="vo" items="${vos}" varStatus="st">
 		<table class="table table-bordered mb-5">
 			<tr>
-				<th style="width:15%">대표사진</th><td><img src="${ctp}/hotelThumbnail/${vo.thumbnail}" width="200px" /></td>
+				<th style="width:15%">대표사진</th><td><img src="${ctp}/hotelThumbnail/s_${vo.thumbnail}"/></td>
 			</tr>
 			<tr>
 				<th>이름</th><td><a href="${ctp}/hotel/hotelDetail?idx=${vo.idx}">${vo.name}</a></td>

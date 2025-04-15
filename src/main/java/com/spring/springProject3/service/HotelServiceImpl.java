@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.spring.springProject3.dao.HotelDao;
 import com.spring.springProject3.vo.HotelVo;
 
+import net.coobird.thumbnailator.Thumbnailator;
+
 @Service
 public class HotelServiceImpl implements HotelService {
 
@@ -32,9 +33,11 @@ public class HotelServiceImpl implements HotelService {
 		return hotelDao.getHotelList();
 	}
 	
-	// 호텔 등록 처리 (1.썸네일 파일 저장처리, 2.이미지 파일들 이름 가공처리, 3.실제 업로드 된 이미지 파일만 복사처리, 4.DB 저장처리)
+	// 호텔 등록 처리 (1.썸네일 파일 저장처리, 2.썸네일용 이미지 파일 생성 3.이미지 파일들 이름 가공처리, 4.실제 업로드 된 이미지 파일만 복사처리, 5.DB 저장처리)
 	@Override
 	public int setHotelInput(HotelVo vo, MultipartFile thumbnailFile) {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/");
 		
 		// 1.썸네일 파일 이름 중복처리 후 서버에 저장처리
 		Date date = new Date();
@@ -49,7 +52,11 @@ public class HotelServiceImpl implements HotelService {
 		}
 		vo.setThumbnail(sFileName);
 		
-		// 2.썸네일 외 이미지들 파일 이름 가공
+		// 2. 썸네일용 이미지 파일 만들기 (s_mid_날짜_oFileName)
+		String thumbnailPath = realPath + "hotelThumbnail/";
+		setThumbnailCreate(thumbnailFile,thumbnailPath, sFileName);
+		
+		// 3.썸네일 외 이미지들 파일 이름 가공 (파일 복사 하기 위함)
 		String images = "";
 		if(vo.getImages() != null && !vo.getImages().equals("")) {
 			String imagesTemp = vo.getImages();
@@ -68,12 +75,11 @@ public class HotelServiceImpl implements HotelService {
 				else nextImg = nextImg.substring(nextImg.indexOf("src=\"/") + position);
 			}
 		}
-		images = images.substring(0, images.length() -1);
+		if(!images.equals("") && images!=null) images = images.substring(0, images.length() -1);
 		//vo.setImages(images);
 		
-		// 3.파일 복사처리
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/");
+		// 4.파일 복사처리
+		
 		String origFilePath = realPath + "imagesTemp/";
 		String copyFilePath = realPath +  "hotelImages/";
 		
@@ -87,7 +93,28 @@ public class HotelServiceImpl implements HotelService {
 		return hotelDao.setHotelInput(vo);
 	}
 	
-	// 파일 복사처리
+	// 썸네일용 이미지 파일 만들기
+	private void setThumbnailCreate(MultipartFile file, String realPath, String sFileName) {
+		try {
+			
+			// 썸네일 파일이 저장될 경로설정
+			File realFileName = new File(realPath + sFileName);
+			file.transferTo(realFileName);
+			
+			// 썸메일 이미지 생성 저장하기
+			String thumbnailSaveName = realPath + "s_" + sFileName;
+			File thumbnailFile = new File(thumbnailSaveName);
+			
+			int width = 160;
+			int height = 120;
+			Thumbnailator.createThumbnail(realFileName, thumbnailFile, width, height);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// 5. 파일 복사처리
 	private void fileCopyCheck(String origFilePath, String copyFilePath) {
 		
 		try {
@@ -150,6 +177,8 @@ public class HotelServiceImpl implements HotelService {
 	  	// 기존 썸네일 이미지 삭제 처리
 	  	String thubmnailFilePath = realPath + "hotelThumbnail/" +vo.getOThumbnail();
 	  	fileDelete(thubmnailFilePath);
+	  	thubmnailFilePath = realPath + "hotelThumbnail/" + "s_" + vo.getOThumbnail();
+	  	fileDelete(thubmnailFilePath);
 	  	// 썸네일 파일 이름 중복처리 후 서버에 저장처리
 			Date date = new Date();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
@@ -162,12 +191,17 @@ public class HotelServiceImpl implements HotelService {
 				return 0;
 			}
 			vo.setThumbnail(sFileName);
+			// 썸네일용 이미지 파일 만들기 (s_mid_날짜_oFileName)
+			String thumbnailPath = realPath + "hotelThumbnail/";
+			setThumbnailCreate(thumbnailFile, thumbnailPath, sFileName);
 	  }
 		
-	  // 썸네일 외 이미지들의 파일이 변경 되었다면 존 이미지들 삭제 처리 후 새로 업로드된 이미지들 복사(imagesTemp -> hotelImages)
+	  
+	  // 썸네일 외 이미지들의 파일이 변경 되었다면 기존 이미지들 삭제 처리 후 새로 업로드된 이미지들 복사(imagesTemp -> hotelImages)
 		HotelVo dbVo = hotelDao.getHotel(vo.getIdx());
 		
-		if(!dbVo.getImages().equals(vo.getImages())) { // 기존 이미지 내용과 수정 된 이미지 내용이 다르다면 실행
+		if((dbVo.getImages() == null && vo.getImages() != null) || 
+		    (dbVo.getImages() != null && !dbVo.getImages().equals(vo.getImages()))) { // 기존 이미지 내용과 수정 된 이미지 내용이 다르다면 실행
 			// 기존 이미지들 삭제
 			if(dbVo.getImages() != null && !dbVo.getImages().equals("")) imgDelete(dbVo.getImages());
 			

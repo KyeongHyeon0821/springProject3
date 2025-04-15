@@ -8,6 +8,7 @@
 	<title>hotelUpdate.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
 	<script src="${ctp}/ckeditor/ckeditor.js"></script>
+	<link rel="stylesheet" href="${ctp}/css/kakaoMap.css" />
 	<script>
 		'use strict';
 		
@@ -19,7 +20,7 @@
 			let address = $("#address").val().trim();
 			let tel = $("#tel").val().trim();
 			let thumbnailFile = $("#thumbnailFile").val(); // 썸네일 파일 이름
-			let regTel = /^\d{3,4}-\d{3,4}-\d{4}$/; // 연락처 정규식 (3~4)-(3~4)-(4)
+			let regTel = /^\d{2,4}-\d{3,4}-\d{4}$/; // 연락처 정규식 (2~4)-(3~4)-(4)
 			
 			if(name == "") {
 				alert("호텔 이름을 입력해주세요.");
@@ -72,12 +73,43 @@
 			// 모든 조건 통과 시
 			return true;
 		}
+		
+		
+		// 썸네일 이미지 미리보기
+		function thumbnailCheck(e) {
+	    if(e.files && e.files[0]) {
+	      let reader = new FileReader();
+	      reader.onload = function(e) {
+	        document.getElementById("thumbnailPreview").src = e.target.result;
+	      }
+	      reader.readAsDataURL(e.files[0]);
+	    }
+	    $("#beforeThumbnailPreview").hide();
+	  }
 	</script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <div class="container">
 	<h2>🏨 호텔 정보 수정</h2>
+	<hr class="border-secondary">
+	
+	<div class="map_wrap">
+    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+    <div id="menu_wrap" class="bg_white">
+      <div class="option">
+        <div>
+          <form onsubmit="searchPlaces(); return false;">
+            키워드 : <input type="text" value="${vo.address}" id="keyword" size="15"> 
+            <button type="submit">검색하기</button> 
+          </form>
+        </div>
+      </div>
+      <hr>
+      <ul id="placesList"></ul>
+      <div id="pagination"></div>
+    </div>
+	</div>
 
 	<form name="hotelForm" method="post" onsubmit="return fCheck();" enctype="multipart/form-data">
 		<input type="hidden" name="idx" value="${vo.idx}" />
@@ -100,12 +132,15 @@
         <td><textarea rows="6" name="description" id="description" class="form-control">${vo.description}</textarea></td>
       </tr>
       <tr>
-      	<th>기존 등록된 썸네일 미리보기</th>
-      	<td><img src="${ctp}/hotelThumbnail/${vo.thumbnail}" width="150px" /></td>
+        <th>대표 사진(썸네일)</th>
+        <td><input type="file" name="thumbnailFile" id="thumbnailFile" class="form-control" onchange="thumbnailCheck(this)" accept=".jpg,.gif,.png,.jpeg,.webp"/></td>
       </tr>
       <tr>
-        <th>대표 사진(썸네일)</th>
-        <td><input type="file" name="thumbnailFile" id="thumbnailFile" class="form-control" accept=".jpg,.gif,.png,.jpeg,.webp"/></td>
+      	<th>썸네일 미리보기</th>
+      	<td>
+      		<img id="beforeThumbnailPreview" src="${ctp}/hotelThumbnail/${vo.thumbnail}" width="150px" />
+      		<img id="thumbnailPreview" width="150px">
+      	</td>
       </tr>
       <tr>
         <th>사진 등록</th>
@@ -126,7 +161,7 @@
       <tr>
         <td colspan="2" class="text-center">
           <input type="submit" value="호텔정보수정" class="btn btn-success me-2"/>
-          <input type="reset" value="다시입력" class="btn btn-warning me-2"/>
+          <input type="button" onclick="location.reload()" value="다시입력" class="btn btn-warning me-2"/>
           <input type="button" value="돌아가기" onclick="location.href='${ctp}/hotel/hotelDetail?idx=${vo.idx}';" class="btn btn-info"/>
         </td>
       </tr>
@@ -134,5 +169,8 @@
     <input type="hidden" name="mid" value="admin"/>
   </form>
 </div>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f5f016ee8ec4b87750154cd5e9d07dfb&libraries=services"></script>
+<script type="text/javascript" src="${ctp}/js/kakaoMap.js"></script>
 </body>
 </html>

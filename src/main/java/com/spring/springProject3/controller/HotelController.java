@@ -58,6 +58,7 @@ public class HotelController {
 	    System.out.println("썸네일 파일이 비어있습니다.");
 	    return "redirect:/message/hotelInputError";
 	  }
+	  
 	  int res = hotelService.setHotelInput(vo, thumbnailFile);
 		if(res !=0 ) return "redirect:/message/hotelInputOk";
 		else return "redirect:/message/hotelInputNo";
@@ -124,7 +125,7 @@ public class HotelController {
 		else return "redirect:/message/hotelUpdateNo"+vo.getIdx();
 	}
 	
-	// 호텔 삭제신청 처리
+	// 호텔 등록취소요청 처리
 	@RequestMapping(value =  "/hotelDeleteCheck", method = RequestMethod.GET)
 	public String hotelDeleteCheckGet(int idx) {
 		int res = hotelService.setHotelStatusUpdate(idx, "등록취소요청");
