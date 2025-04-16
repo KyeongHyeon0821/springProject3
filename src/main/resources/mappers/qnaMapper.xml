@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.springProject3.dao.QnaDao">
+
+<select id="getQnaList" resultType="int">
+	select * from qna order by idx desc;
+</select>
+
+
+
+
+
+
+
+
+
+
+<insert id="setQnaInputOk">
+  insert into qna values (default, default, #{mid}, #{nickName}, #{title}, #{email}, #{content}, #{ansLevel}, #{openSw}, #{qnaSw}, default, #{delCheck})
+</insert>
+
+
+</mapper>

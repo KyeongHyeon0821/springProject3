@@ -16,6 +16,6 @@ public class MemberController {
 	
 	@GetMapping("/memberList")
 	public String memberListGet() {
-		return "/member/memberList";
+		return "member/memberList";
 	}
 }

@@ -147,7 +147,7 @@
         </tr>
       </table>
       <%-- <input type="hidden" name="mid" value="${sMid}"/> --%>
-      <input type="hidden" name="mid" value="hkd1234"/>
+      <input type="hidden" name="mid" value="hkd1234"/> <!-- 수정해야함 -->
     </form>
   </div>
 </div>

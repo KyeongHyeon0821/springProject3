@@ -30,13 +30,13 @@ public class InquiryController {
 	Pagination pagination;
 
 	// 1:1문의 리스트 보기
-	@RequestMapping(value = "inquiryList", method = RequestMethod.GET)
+	@RequestMapping(value = "/inquiryList", method = RequestMethod.GET)
 	public String inquiryListGet(Model model, HttpSession session,
 			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
 			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize,
 			@RequestParam(name="mid", defaultValue = "", required = false) String mid
 		) {
-		//String mid = (String) session.getAttribute("sMid");
+		//String mid = (String) session.getAttribute("sMid"); 나중에 주석 풀어서 사용해야함!
 		PageVo pageVo = pagination.getTotRecCnt(pag,pageSize,"inquiry",mid,"");	// (페이지번호,한 페이지분량,section,part,검색어)
 		List<InquiryVo> vos = inquiryService.getInquiryList(pageVo.getStartIndexNo(), pageSize, mid);
 		
