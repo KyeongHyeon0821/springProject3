@@ -13,7 +13,7 @@
 <p><br/></p>
 <div class="container">
 	<h2>관리자 대시보드</h2>
-  
+  <h2>이곳은 관리자 구역입니다.</h2>
 </div>
 <p><br/></p>
 </body>
