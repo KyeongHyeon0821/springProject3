@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.springProject3.dao.MemberDao">
+
+  <select id="getMemberList" resultType="com.spring.springProject3.vo.MemberVo">
+		select * from member order by idx desc;
+  </select>
+
+	<select id="getMemberIdxSearch" resultType="com.spring.springProject3.vo.MemberVo">
+		select * from member where idx=#{idx};
+	</select>
+  
+  
+</mapper>
