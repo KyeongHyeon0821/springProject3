@@ -18,4 +18,10 @@ public interface HotelService {
 
 	int setHotelUpdate(HotelVo vo, MultipartFile thumbnailFile);
 
+	int getHotelLike(String mid, int idx);
+
+	int setHotelLikeOk(String mid, int hotelIdx);
+
+	int setHotelLikeNo(String mid, int hotelIdx);
+
 }

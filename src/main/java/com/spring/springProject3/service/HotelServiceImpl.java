@@ -271,4 +271,19 @@ public class HotelServiceImpl implements HotelService {
 		File delFile = new File(origFilePath);
 		if(delFile.exists()) delFile.delete();
 	}
+
+	@Override
+	public int getHotelLike(String mid, int idx) {
+		return hotelDao.getHotelLike(mid, idx);
+	}
+
+	@Override
+	public int setHotelLikeOk(String mid, int hotelIdx) {
+		return hotelDao.setHotelLikeOk(mid, hotelIdx);
+	}
+
+	@Override
+	public int setHotelLikeNo(String mid, int hotelIdx) {
+		return hotelDao.setHotelLikeNo(mid, hotelIdx);
+	}
 }

@@ -96,3 +96,19 @@ create table reservation (
   foreign key (mid) references member(mid) on delete cascade,
   foreign key (roomIdx) references room(idx) on delete cascade
 );
+
+
+/* 찜 테이블 */
+create table hotelLike (
+	idx int auto_increment primary key,				/* 찜 번호 */
+	mid varchar(20) not null,									/* 찜한 회원 아이디 */
+	hotelIdx int not null,										/* 찜한 호텔 아이디 */
+	likedDate datetime default now(),					/* 찜한 날짜 */
+	UNIQUE KEY (mid, hotelIdx),
+	foreign key (mid) references member(mid) on delete cascade,
+  foreign key (hotelIdx) references hotel(idx) on delete cascade
+);
+
+insert into hotelLike values(default, 'admin', 29, default);
+select * from hotellike;
+

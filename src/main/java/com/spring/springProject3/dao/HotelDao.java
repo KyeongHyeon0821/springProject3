@@ -18,4 +18,10 @@ public interface HotelDao {
 
 	int setHotelUpdate(@Param("vo") HotelVo vo);
 
+	int getHotelLike(@Param("mid") String mid, @Param("idx") int idx);
+
+	int setHotelLikeOk(@Param("mid") String mid, @Param("hotelIdx") int hotelIdx);
+
+	int setHotelLikeNo(@Param("mid") String mid, @Param("hotelIdx") int hotelIdx);
+
 }

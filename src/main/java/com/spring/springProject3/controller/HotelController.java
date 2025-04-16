@@ -11,14 +11,17 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.springProject3.service.HotelService;
@@ -102,9 +105,17 @@ public class HotelController {
 	
 	// 호텔 상세페이지 보기
 	@RequestMapping(value =  "/hotelDetail", method = RequestMethod.GET)
-	public String hotelDetailGet(Model model, int idx) {
+	public String hotelDetailGet(Model model, int idx, HttpSession session) {
 		HotelVo vo = hotelService.getHotel(idx);
+		//String mid = (String) session.getAttribute("sMid");
+		String mid = "admin";
+		String hotelLike = "";
+		int res = hotelService.getHotelLike(mid, idx);
+		
+		if(res != 0) hotelLike = "Ok";
+		else hotelLike = "No";
 		model.addAttribute("vo", vo);
+		model.addAttribute("hotelLike", hotelLike);
 		return "hotel/hotelDetail";
 	}
 	
@@ -134,5 +145,18 @@ public class HotelController {
 		else return "redirect:/message/hotelDeleteCheckNo?idx="+idx;
 	}
 	
+	// 호텔 찜 추가
+	@ResponseBody
+	@RequestMapping(value = ("/hotelLikeOk"), method = RequestMethod.POST)
+	public String hotelLikeOkPost(String mid, int hotelIdx) {
+		return hotelService.setHotelLikeOk(mid, hotelIdx) + "";
+	}
+	
+	// 호텔 찜 취소
+	@ResponseBody
+	@RequestMapping(value = ("/hotelLikeNo"), method = RequestMethod.POST)
+	public String hotelLikeNoPost(String mid, int hotelIdx) {
+		return hotelService.setHotelLikeNo(mid, hotelIdx) + "";
+	}
 	
 }

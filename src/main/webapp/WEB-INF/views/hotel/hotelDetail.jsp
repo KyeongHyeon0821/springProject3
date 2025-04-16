@@ -19,10 +19,65 @@
 	<script>
 		'use strict';
 		
+		// 호텔 등록취소 요청
 		function hotelDeleteCheck() {
-			let ans = confirm("해당 호텔 삭제 신청을 진행하시겠습니까?");
+			let ans = confirm("해당 호텔 등록 취소를 요청하시겠습니까?");
 			if(!ans) return false;
 			else location.href="hotelDeleteCheck?idx=${vo.idx}";
+		}
+		
+		// 호텔 찜 추가하기
+		function hotelLikeOk() {
+			//let mid = ${sMid};
+			//let hotelIdx = ${vo.idx};
+			let mid = 'admin';
+			let hotelIdx = ${vo.idx};
+			
+			$.ajax({
+				url : "hotelLikeOk",
+				type : "post",
+				data : {
+					mid : mid,
+					hotelIdx, hotelIdx
+				},
+				success : function(res) {
+					if(res == "1") {
+						$("#likeImg").attr("src", "${ctp}/images/heartRed.png");
+						$("#likeFn").attr("href", "javascript:hotelLikeNo()");
+					}
+					else {
+						alert("다시 시도해주세요.");
+					}
+				},
+				error : function() { alert("다시 시도해주세요."); }
+			});
+		}
+		
+		// 호텔 찜 취소하기
+		function hotelLikeNo() {
+			//let mid = ${sMid};
+			//let hotelIdx = ${vo.idx};
+			let mid = 'admin';
+			let hotelIdx = ${vo.idx};
+			
+			$.ajax({
+				url : "hotelLikeNo",
+				type : "post",
+				data : {
+					mid : mid,
+					hotelIdx, hotelIdx
+				},
+				success : function(res) {
+					if(res == "1") {
+						$("#likeImg").attr("src", "${ctp}/images/heartBlack.png");
+						$("#likeFn").attr("href", "javascript:hotelLikeOk()");
+					}
+					else {
+						alert("다시 시도해주세요.");
+					}
+				},
+				error : function() { alert("다시 시도해주세요."); }
+			});
 		}
 	</script>
 </head>
@@ -30,6 +85,14 @@
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <div class="container">
 	<h2>${vo.name}</h2>
+	<c:if test="${hotelLike == 'Ok'}">
+		<a id="likeFn" href="javascript:hotelLikeNo()"><img id="likeImg" src="${ctp}/images/heartRed.png" /></a>
+	</c:if>
+	<c:if test="${hotelLike == 'No'}">
+		<a id="likeFn" href="javascript:hotelLikeOk()"><img id="likeImg" src="${ctp}/images/heartBlack.png" /></a>
+	</c:if>
+	
+	
 	<h5>🏨 ${vo.address}</h5>
 	<div><img src="${ctp}/hotelThumbnail/${vo.thumbnail}" title="${vo.name}" alt="대표이미지" width="400px"/></div>
 	
@@ -39,7 +102,10 @@
 	<div>호텔 소개</div>
 	<div>${vo.description}</div>
 	<p>위치 : ${vo.address}</p>
-	<div id="map" style="width:100%;height:350px;"></div>
+	
+	<div id="mapContainer" style="cursor:pointer;">
+		<div id="map" style="width:100%;height:350px;"></div>
+	</div>
 	
 	<div class="mt-3">
 		<a href="#" class="btn btn-outline-primary">객실 보기</a>
@@ -48,7 +114,7 @@
 	</div>
 	<%-- <c:if test="${vo.mid == sMid}"> --%>
 		<a href="hotelUpdate?idx=${vo.idx}" class="btn btn-outline-warning">호텔 정보 수정</a>
-		<a href="javascript:hotelDeleteCheck()" class="btn btn-outline-danger">호텔 등록 취소 요청</a>
+		<a href="javascript:hotelDeleteCheck()" class="btn btn-danger">호텔 등록 취소 요청</a>
 <%-- 	</c:if> --%>
 
 </div>
@@ -73,7 +139,7 @@
 		
 		console.log(document.getElementById('map')); // 지도 요소 확인
 		
-		//map.setDraggable(true); // 지도 드래그 막기
+		map.setDraggable(false); // 지도 드래그 막기
 		map.setZoomable(false); // 지도 확대,축소 막기
 		// 더블 클릭 확대 막기
 		kakao.maps.event.addListener(map, 'dblclick', function(event) {
@@ -107,10 +173,8 @@
 		        map.setCenter(coords);
 		    } 
 		});    
-	</script>
 	
-	<!-- 지도 클릭 시 전체 화면을 열기 위한 스크립트 -->
-	<script>
+	 	// 지도 클릭 시 전체 화면을 열기 위한 스크립트
     // 기존 지도 클릭 시 모달로 지도를 띄우기
     document.getElementById('map').addEventListener('click', function() {
         // 모달 지도 표시
@@ -148,6 +212,19 @@
     function closeModalMap() {
         document.getElementById('modalMapContainer').style.display = 'none';
     }
-</script>
+    
+    
+    // 지도 위에 마우스 올렸을 때 커서 변경
+    document.addEventListener("DOMContentLoaded", function () {
+  	  setTimeout(() => {
+  	    const mapArea = document.querySelector('#map > div');
+  	    if (mapArea) {
+  	      mapArea.style.cursor = 'grab';
+  	    } else {
+  	      console.warn('지도 내부 요소를 찾을 수 없습니다.');
+  	    }
+  	  }, 500); // 지도가 렌더링될 시간 기다려줌
+  	});
+	</script>
 </body>
 </html>
