@@ -5,18 +5,19 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>adminContent.jsp</title>
+  <title>message.jsp</title>
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
+  <script>
+    'use strict';
+    
+    if('${message}' != "") alert("${message}");
+    location.href = "${ctp}/${url}";
+  </script>
 </head>
 <body>
 <p><br/></p>
-<!-- Main Content -->
-<main class="col px-4 py-4" id="main-content">
-  <h2>환영합니다!</h2>
-  <p>왼쪽 메뉴에서 항목을 선택하세요.</p>
-</main>
-
-<p><br/></p>
+<div class="container">
+  
+</div>
 </body>
 </html>

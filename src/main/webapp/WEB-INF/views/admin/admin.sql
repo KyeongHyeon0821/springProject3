@@ -1,5 +1,11 @@
 show tables;
 
+
+
+
+-- 공부용입니다 프로젝트용 아닙니다--
+
+
 select * from member;
 
 select mid from member where userDel='OK';

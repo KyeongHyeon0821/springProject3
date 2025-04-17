@@ -7,8 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.springProject3.service.AdminService;
 import com.spring.springProject3.service.MemberService;
@@ -45,6 +47,7 @@ public class AdminController {
 		
 		return "/admin/member/memberList";
 	}
+	
 	// 개별 회원 정보 상세보기
 	@GetMapping("/memberInfor/{idx}")
 	public String memberInforGet(Model model, @PathVariable int idx) {
@@ -52,4 +55,20 @@ public class AdminController {
 		model.addAttribute("vo",vo);
 		return "/admin/member/memberInfor";
 	}
+	
+	// 선택된 회원 레벨 등급 변경처리
+	@ResponseBody
+	@PostMapping("/memberLevelChange")
+	public String memberLevelChangePost(int level, int idx) {
+		return adminService.setMemberLevelChange(level,idx)+"";
+	}
+	
+	// 선택된 회원 전체적으로 등급 변경하기
+	@ResponseBody
+	@PostMapping("member/memberLevelSelectCheck")
+	public String memberLevelSelectCheckPost(String idxSelectArray, int levelSelect) {
+		return adminService.setMemberLevelSelectCheck(idxSelectArray,levelSelect);
+	}
+	
+	
 }

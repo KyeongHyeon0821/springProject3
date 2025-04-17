@@ -9,5 +9,6 @@
 <body>
 <!-- search -->
 <jsp:include page="/WEB-INF/views/include/homeMain.jsp" />
+<jsp:include page="/WEB-INF/views/include/mainModal.jsp" />
 </body>
 </html>

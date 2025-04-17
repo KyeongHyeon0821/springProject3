@@ -6,7 +6,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>test.jsp</title>
+	<title>mainModal.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp" />
 	<script>
 		'use strict';
@@ -35,18 +35,13 @@
 <body>
 <p><br/></p>
 <div class="container">
-  <h2>모달 테스트</h2>
+  <h2>메인 모달</h2>
   <div class="row">
   	<div class="col">
 	  	<button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#myModal1">
   			어디로 가세요?
 			</button>
 		</div>
-  	<div class="col">
-  		<button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#myModal2" >
-  			인원수<br/>객실1개2명
-  		</button>
-  	</div>
 	</div>
 </div>
 <hr/>
@@ -77,7 +72,6 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-danger" data-bs-dismiss="modal">close</button>
 			</div>	
-				
 		</div>
 	</div>
 </div>
