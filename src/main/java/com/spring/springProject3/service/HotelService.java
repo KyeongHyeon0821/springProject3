@@ -24,4 +24,6 @@ public interface HotelService {
 
 	int setHotelLikeNo(String mid, int hotelIdx);
 
+	List<Integer> getLikedHotelListIdx(String mid);
+
 }

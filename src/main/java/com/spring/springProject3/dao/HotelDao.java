@@ -24,4 +24,6 @@ public interface HotelDao {
 
 	int setHotelLikeNo(@Param("mid") String mid, @Param("hotelIdx") int hotelIdx);
 
+	List<Integer> getLikedHotelListIdx(@Param("mid") String mid);
+
 }

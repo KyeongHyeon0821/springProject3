@@ -286,4 +286,9 @@ public class HotelServiceImpl implements HotelService {
 	public int setHotelLikeNo(String mid, int hotelIdx) {
 		return hotelDao.setHotelLikeNo(mid, hotelIdx);
 	}
+
+	@Override
+	public List<Integer> getLikedHotelListIdx(String mid) {
+		return hotelDao.getLikedHotelListIdx(mid);
+	}
 }

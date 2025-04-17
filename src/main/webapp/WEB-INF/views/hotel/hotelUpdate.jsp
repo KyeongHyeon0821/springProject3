@@ -19,7 +19,7 @@
 			let name = $("#name").val().trim();
 			let address = $("#address").val().trim();
 			let tel = $("#tel").val().trim();
-			let thumbnailFile = $("#thumbnailFile").val(); // 썸네일 파일 이름
+			let thumbnailFile = $("#thumbnailFile").val();
 			let regTel = /^\d{2,4}-\d{3,4}-\d{4}$/; // 연락처 정규식 (2~4)-(3~4)-(4)
 			
 			if(name == "") {
@@ -54,20 +54,25 @@
 	      return false;
 	    }
 			
-			// 파일 등록 처리
-			let ext = thumbnailFile.substring(thumbnailFile.lastIndexOf(".")+1).toLowerCase();
-			let maxSize = 1024 * 1024 * 20; // 한번에 업로드할 파일의 최대용랑을 20mb로 한정
+			// 썸네일 파일 변경시 파일 용량 체크, 확장자 체크
+			let file = document.getElementById("thumbnailFile").files[0];
 			
-			let fileSize = document.getElementById("thumbnailFile").files[0].size;
-			if(fileSize > maxSize) {
-				alert("업로드할 파일의 최대용량은 20mb 입니다.");
-				$("#thumbnailFile").focus();
-				return false;
-			}
-			else if(ext !="jpg" && ext !="gif" && ext !="png" && ext !="jpeg" && ext !="webp") {
-				alert("업로드 가능 파일은 'jpg/gif/png/jpeg/webp' 입니다.");
-				$("#thumbnailFile").focus();
-				return false;
+			if(file) {
+				let ext = thumbnailFile.substring(thumbnailFile.lastIndexOf(".")+1).toLowerCase();
+				let maxSize = 1024 * 1024 * 20; // 한번에 업로드할 파일의 최대용랑을 20mb로 한정
+				
+				let fileSize = document.getElementById("thumbnailFile").files[0].size;
+				if(fileSize > maxSize) {
+					alert("업로드할 파일의 최대용량은 20mb 입니다.");
+					$("#thumbnailFile").focus();
+					return false;
+				}
+				
+				if(ext !="jpg" && ext !="gif" && ext !="png" && ext !="jpeg" && ext !="webp") {
+					alert("업로드 가능 파일은 'jpg/gif/png/jpeg/webp' 입니다.");
+					$("#thumbnailFile").focus();
+					return false;
+				}
 			}
 			
 			// 모든 조건 통과 시

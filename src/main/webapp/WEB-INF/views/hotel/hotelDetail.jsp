@@ -28,10 +28,13 @@
 		
 		// 호텔 찜 추가하기
 		function hotelLikeOk() {
-			//let mid = ${sMid};
-			//let hotelIdx = ${vo.idx};
-			let mid = 'admin';
+			let mid = '${sMid}';
 			let hotelIdx = ${vo.idx};
+			
+			if(mid == "") {
+				alert("로그인 후 이용해주세요.");
+				return false;
+			}
 			
 			$.ajax({
 				url : "hotelLikeOk",
@@ -55,10 +58,13 @@
 		
 		// 호텔 찜 취소하기
 		function hotelLikeNo() {
-			//let mid = ${sMid};
-			//let hotelIdx = ${vo.idx};
-			let mid = 'admin';
+			let mid = '${sMid}';
 			let hotelIdx = ${vo.idx};
+			
+			if(mid == "") {
+				alert("로그인 후 이용해주세요.");
+				return false;
+			}
 			
 			$.ajax({
 				url : "hotelLikeNo",
@@ -108,14 +114,15 @@
 	</div>
 	
 	<div class="mt-3">
-		<a href="#" class="btn btn-outline-primary">객실 보기</a>
-		<a href="#" class="btn btn-outline-success">리뷰 보기</a>
-		<a href="${ctp}/hotel/hotelList" class="btn btn-info">돌아가기</a>
+		<a href="${ctp}/hotel/hotelList" class="btn btn-secondary">돌아가기</a>
+	
+		<c:if test="${vo.mid == sMid}">
+			<a href="${ctp}/room/roomInput?hotelIdx=${vo.idx}" class="btn btn-primary">객실 등록</a>
+			<a href="hotelUpdate?idx=${vo.idx}" class="btn btn-warning">호텔 정보 수정</a>
+			<a href="javascript:hotelDeleteCheck()" class="btn btn-danger">호텔 등록 취소 요청</a>
+		</c:if>
+	
 	</div>
-	<%-- <c:if test="${vo.mid == sMid}"> --%>
-		<a href="hotelUpdate?idx=${vo.idx}" class="btn btn-outline-warning">호텔 정보 수정</a>
-		<a href="javascript:hotelDeleteCheck()" class="btn btn-danger">호텔 등록 취소 요청</a>
-<%-- 	</c:if> --%>
 
 </div>
 
@@ -137,7 +144,6 @@
 		// 지도를 생성합니다    
 		var map = new kakao.maps.Map(mapContainer, mapOption);
 		
-		console.log(document.getElementById('map')); // 지도 요소 확인
 		
 		map.setDraggable(false); // 지도 드래그 막기
 		map.setZoomable(false); // 지도 확대,축소 막기

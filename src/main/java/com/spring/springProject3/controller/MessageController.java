@@ -14,12 +14,12 @@ public class MessageController {
 
 	@RequestMapping(value = "/message/{msgFlag}", method = RequestMethod.GET)
 	public String getMessage(Model model, @PathVariable String msgFlag, HttpSession session,
-			@RequestParam(name="idx", defaultValue = "0", required = false) int idx,
+			@RequestParam(name="hotelIdx", defaultValue = "0", required = false) int hotelIdx,
 			@RequestParam(name="nickName", defaultValue="", required=false) String nickName
 		) {
 		
 		if(msgFlag.equals("hotelInputNo")) {
-			model.addAttribute("message", "호텔 등록이 실패되었습니다.");
+			model.addAttribute("message", "호텔 등록에 실패했습니다.\\n다시 시도해주세요.");
 			model.addAttribute("url", "hotel/hotelInput");
 		}
 		else if(msgFlag.equals("hotelInputOk")) {
@@ -27,7 +27,7 @@ public class MessageController {
 			model.addAttribute("url", "hotel/hotelList");
 		}
 		else if(msgFlag.equals("hotelInputError")) {
-			model.addAttribute("message", "호텔 등록 중 오류가 발생했습니다. \\n다시 시도해주세요.");
+			model.addAttribute("message", "호텔 등록 중 오류가 발생했습니다.\\n다시 시도해주세요.");
 			model.addAttribute("url", "hotel/hotelInput");
 		}
 		else if(msgFlag.equals("hotelDeleteCheckOk")) {
@@ -36,15 +36,23 @@ public class MessageController {
 		}
 		else if(msgFlag.equals("hotelDeleteCheckNo")) {
 			model.addAttribute("message", "호텔 등록 취소 신청 처리 중 문제가 발생했습니다. 다시 시도해주세요.");
-			model.addAttribute("url", "hotel/hotelDetail?idx="+idx);
+			model.addAttribute("url", "hotel/hotelDetail?idx="+hotelIdx);
 		}
 		else if(msgFlag.equals("hotelUpdateOk")) {
 			model.addAttribute("message", "호텔 정보가 수정되었습니다.");
-			model.addAttribute("url", "hotel/hotelDetail?idx="+idx);
+			model.addAttribute("url", "hotel/hotelDetail?idx="+hotelIdx);
 		}
 		else if(msgFlag.equals("hotelUpdateNo")) {
-			model.addAttribute("message", "호텔 정보 수정 중 오류가 발생했습니다. \\n다시 시도해주세요.");
-			model.addAttribute("url", "hotel/hotelUpdate?idx="+idx);
+			model.addAttribute("message", "호텔 정보 수정 중 오류가 발생했습니다.\\n다시 시도해주세요.");
+			model.addAttribute("url", "hotel/hotelUpdate?idx="+hotelIdx);
+		}
+		else if(msgFlag.equals("roomInputOk")) {
+			model.addAttribute("message", "객실이 등록되었습니다.");
+			model.addAttribute("url", "hotel/hotelDetail?idx="+hotelIdx);
+		}
+		else if(msgFlag.equals("roomInputNo")) {
+			model.addAttribute("message", "객실 등록에 실패했습니다.\\n다시 시도해주세요.");
+			model.addAttribute("url", "hotel/roomInput?hotelIdx="+hotelIdx);
 		}
 		
 		

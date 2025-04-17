@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -36,8 +37,15 @@ public class HotelController {
 	
 	// 호텔 리스트
 	@RequestMapping("/hotelList")
-	public String hotelListGet(Model model) {
+	public String hotelListGet(Model model, HttpSession session) {
+		String mid = session.getAttribute("sMid") + "";
 		List<HotelVo> vos = hotelService.getHotelList();
+		
+		if(!mid.equals("")) {
+			List<Integer> likedHotelListIdx = hotelService.getLikedHotelListIdx(mid);
+			model.addAttribute("likedHotelListIdx", likedHotelListIdx);
+		}
+		
 		model.addAttribute("vos", vos);
 		return "hotel/hotelList";
 	}
@@ -107,8 +115,7 @@ public class HotelController {
 	@RequestMapping(value =  "/hotelDetail", method = RequestMethod.GET)
 	public String hotelDetailGet(Model model, int idx, HttpSession session) {
 		HotelVo vo = hotelService.getHotel(idx);
-		//String mid = (String) session.getAttribute("sMid");
-		String mid = "admin";
+		String mid = (String) session.getAttribute("sMid");
 		String hotelLike = "";
 		int res = hotelService.getHotelLike(mid, idx);
 		
@@ -132,8 +139,8 @@ public class HotelController {
 	public String hotelUpdatePost(HotelVo vo, MultipartFile thumbnailFile) {
 	
 	  int res = hotelService.setHotelUpdate(vo, thumbnailFile);
-		if(res !=0 ) return "redirect:/message/hotelUpdateOk?idx="+vo.getIdx();
-		else return "redirect:/message/hotelUpdateNo"+vo.getIdx();
+		if(res !=0 ) return "redirect:/message/hotelUpdateOk?hotelIdx="+vo.getIdx();
+		else return "redirect:/message/hotelUpdateNo?hotelIdx="+vo.getIdx();
 	}
 	
 	// 호텔 등록취소요청 처리
@@ -142,7 +149,7 @@ public class HotelController {
 		int res = hotelService.setHotelStatusUpdate(idx, "등록취소요청");
 		
 		if(res !=0 ) return "redirect:/message/hotelDeleteCheckOk";
-		else return "redirect:/message/hotelDeleteCheckNo?idx="+idx;
+		else return "redirect:/message/hotelDeleteCheckNo?hotelIdx="+idx;
 	}
 	
 	// 호텔 찜 추가

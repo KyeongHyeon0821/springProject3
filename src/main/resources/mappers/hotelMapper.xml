@@ -7,6 +7,11 @@
 		select * from hotel where status = '정상' order by idx desc;  	
   </select>
   
+  <!-- 찜한 호텔 리스트 idx 조회 -->
+  <select id="getLikedHotelListIdx" resultType="Integer">
+	  select hotelIdx from hotelLike where mid = #{mid};
+  </select>
+  
   <!-- 호텔 조회 (idx)-->
   <select id="getHotel" resultType="com.spring.springProject3.vo.HotelVo">
   	select * from hotel where idx = #{idx};

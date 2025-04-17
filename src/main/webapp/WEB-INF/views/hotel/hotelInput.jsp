@@ -45,7 +45,7 @@
 	    }
 			
 			if(thumbnailFile == "") {
-				alert("업로드할 파일을 선택하세요");
+				alert("업로드할 썸네일 파일을 선택하세요");
 				$("#thumbnailFile").focus();
 				return false;
 			}
@@ -61,7 +61,7 @@
 	      return false;
 	    }
 			
-			// 파일 등록 처리
+			// 썸네일 파일 용량 체크, 확장자 체크
 			let ext = thumbnailFile.substring(thumbnailFile.lastIndexOf(".")+1).toLowerCase();
 			let maxSize = 1024 * 1024 * 20; // 한번에 업로드할 파일의 최대용랑을 20mb로 한정
 			
@@ -71,7 +71,8 @@
 				$("#thumbnailFile").focus();
 				return false;
 			}
-			else if(ext !="jpg" && ext !="gif" && ext !="png" && ext !="jpeg" && ext !="webp") {
+			
+			if(ext !="jpg" && ext !="gif" && ext !="png" && ext !="jpeg" && ext !="webp") {
 				alert("업로드 가능 파일은 'jpg/gif/png/jpeg/webp' 입니다.");
 				$("#thumbnailFile").focus();
 				return false;
@@ -161,13 +162,13 @@
       </tr>
       <tr>
         <td colspan="2" class="text-center">
-          <input type="submit" value="호텔등록" class="btn btn-success me-2"/>
+          <input type="submit" value="등록하기" class="btn btn-success me-2"/>
           <input type="reset" value="다시입력" class="btn btn-warning me-2"/>
           <input type="button" value="돌아가기" onclick="location.href='${ctp}/';" class="btn btn-info"/>
         </td>
       </tr>
     </table>
-    <input type="hidden" name="mid" value="admin"/>
+    <input type="hidden" name="mid" value="${sMid}"/>
   </form>
   
 </div>
