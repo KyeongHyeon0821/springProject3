@@ -17,9 +17,11 @@
         <li class="nav-item">
           <a class="nav-link" href="${ctp}/hotel/hotelInput">호텔등록</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">관리자</a>
-        </li>  
+        <c:if test="${sMid == 'admin'}">
+	        <li class="nav-item">
+	          <a class="nav-link" href="">관리자</a>
+	        </li> 
+        </c:if> 
         <!-- 로그인 상태 아닐 때만 로그인 표시 -->
         <c:if test="${empty sessionScope.sLogin}">
           <li class="nav-item">

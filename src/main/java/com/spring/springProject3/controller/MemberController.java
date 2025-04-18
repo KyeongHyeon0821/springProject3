@@ -74,73 +74,74 @@ public class MemberController {
     @RequestMapping(value = "/memberLogin", method = RequestMethod.POST)
     public String memberLoginPost(HttpSession session, HttpServletRequest request, HttpServletResponse response, String mid, String pwd, String idSave) {
     	final long LOCK_DURATION = 60 * 1000; // 1분
-
-        // 실패 횟수 및 제한 시간 확인
-        Integer failCount = (Integer) session.getAttribute("loginFailCount");
-        Long lockTime = (Long) session.getAttribute("lockTime");
-        
-        if (failCount == null) failCount = 0;
-        
-        // 1분 내에 5회 실패 시 로그인 차단
-        if (failCount >= 5 && lockTime != null) {
-            long elapsed = System.currentTimeMillis() - lockTime;
-            if (elapsed < LOCK_DURATION) {
-                long remaining = (LOCK_DURATION - elapsed) / 1000;
-                session.setAttribute("remainingTime", remaining);
-                return "redirect:/message/loginLockTimer";
-            } else {
-                // 제한 시간 지난 경우 초기화
-                session.removeAttribute("lockTime");
-                session.setAttribute("loginFailCount", 0);
-                failCount = 0;
-            }
-        }
+      // 실패 횟수 및 제한 시간 확인
+      Integer failCount = (Integer) session.getAttribute("loginFailCount");
+      Long lockTime = (Long) session.getAttribute("lockTime");
+      
+      if (failCount == null) failCount = 0;
+      
+      // 1분 내에 5회 실패 시 로그인 차단
+      if (failCount >= 5 && lockTime != null) {
+          long elapsed = System.currentTimeMillis() - lockTime;
+          if (elapsed < LOCK_DURATION) {
+              long remaining = (LOCK_DURATION - elapsed) / 1000;
+              session.setAttribute("remainingTime", remaining);
+              return "redirect:/message/loginLockTimer";
+          } else {
+              // 제한 시간 지난 경우 초기화
+              session.removeAttribute("lockTime");
+              session.setAttribute("loginFailCount", 0);
+              failCount = 0;
+          }
+      }
     	
+      System.out.println("1.pwd : " + pwd);
     	MemberVo vo = memberService.getMemberIdCheck(mid);
-        if (vo != null && vo.getUserDel().equals("NO") && passwordEncoder.matches(pwd, vo.getPwd())) {
-            // 1. 세션 설정
-            String strLevel = "";
-            if (vo.getLevel() == 0) strLevel = "관리자";
-            else if (vo.getLevel() == 1) strLevel = "사업자";
-            else if (vo.getLevel() == 2) strLevel = "일반회원";
-            
-            session.setAttribute("sMid", mid);
-            session.setAttribute("sNickName", vo.getNickName());
-            session.setAttribute("sLevel", vo.getLevel());
-            session.setAttribute("strLevel", strLevel);
-            session.setAttribute("sLogin", "로그인");
-            
-            // 2. 쿠키 처리
-            if (idSave != null && idSave.equals("on")) {
-                Cookie cookieMid = new Cookie("cMid", vo.getMid());
-                cookieMid.setPath("/");
-                cookieMid.setMaxAge(60 * 60 * 24 * 7); // 7일
-                response.addCookie(cookieMid);
-            } else {
-                Cookie[] cookies = request.getCookies();
-                if (cookies != null) {
-                    for (Cookie cookie : cookies) {
-                        if (cookie.getName().equals("cMid")) {
-                            cookie.setPath("/");
-                            cookie.setMaxAge(0);
-                            response.addCookie(cookie);
-                            break;
-                        }
-                    }
-                }
-            }
-            return "redirect:/message/memberLoginOk";
-        } else {
-        	failCount++;
-            session.setAttribute("loginFailCount", failCount);
+      if (vo != null && vo.getUserDel().equals("NO") && pwd.equals(vo.getPwd())) {
+    	//if (vo != null && vo.getUserDel().equals("NO") && passwordEncoder.matches(pwd, vo.getPwd())) {
+          // 1. 세션 설정
+          String strLevel = "";
+          if (vo.getLevel() == 0) strLevel = "관리자";
+          else if (vo.getLevel() == 1) strLevel = "사업자";
+          else if (vo.getLevel() == 2) strLevel = "일반회원";
+          
+          session.setAttribute("sMid", mid);
+          session.setAttribute("sNickName", vo.getNickName());
+          session.setAttribute("sLevel", vo.getLevel());
+          session.setAttribute("strLevel", strLevel);
+          session.setAttribute("sLogin", "로그인");
+          
+          // 2. 쿠키 처리
+          if (idSave != null && idSave.equals("on")) {
+              Cookie cookieMid = new Cookie("cMid", vo.getMid());
+              cookieMid.setPath("/");
+              cookieMid.setMaxAge(60 * 60 * 24 * 7); // 7일
+              response.addCookie(cookieMid);
+          } else {
+              Cookie[] cookies = request.getCookies();
+              if (cookies != null) {
+                  for (Cookie cookie : cookies) {
+                      if (cookie.getName().equals("cMid")) {
+                          cookie.setPath("/");
+                          cookie.setMaxAge(0);
+                          response.addCookie(cookie);
+                          break;
+                      }
+                  }
+              }
+          }
+          return "redirect:/message/memberLoginOk";
+      } else {
+    	  failCount++;
+        session.setAttribute("loginFailCount", failCount);
 
-            if (failCount >= 5) {
-                session.setAttribute("lockTime", System.currentTimeMillis());
-                session.setAttribute("remainingTime", 60L); // 60초 제한
-                return "redirect:/message/loginLockTimer";
-            }
-            return "redirect:/message/memberLoginNo";
+        if (failCount >= 5) {
+            session.setAttribute("lockTime", System.currentTimeMillis());
+            session.setAttribute("remainingTime", 60L); // 60초 제한
+            return "redirect:/message/loginLockTimer";
         }
+        return "redirect:/message/memberLoginNo";
+      }
     }
     // 카카오 로그인 처리
     @RequestMapping(value = "/kakaoLogin", method = RequestMethod.GET)

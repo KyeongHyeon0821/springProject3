@@ -8,17 +8,12 @@
 	<title>homeMain.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp" />
 	<link rel="stylesheet" type="text/css" href="${ctp}/css/linkMain.css"/>
+	<link rel="stylesheet" type="text/css" href="${ctp}/css/linkModal.css"/>
 	<style>
 		ul, li {
 			text-decoration: none;
 			list-style: none;
 		}
-				
-		body.modal-open {
-  		padding-right: 0 !important;
-		}
-		
-
 	</style>
 </head>
 <body>
@@ -44,12 +39,30 @@
 		  <li class="nav-item">
 		    <a class="nav-link" href="${ctp}/member/memberLogout">로그아웃</a>
 		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link" href="#" role="button" data-bs-toggle="modal" data-bs-target="#myModal2" id="customButton2">마이페이지</a>
+		  <li class="nav-item dropdown">
+		    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">더보기</a>
+		    <ul class="dropdown-menu">
+		      <li><a class="dropdown-item" href="${ctp}/member/memberMyPage">마이페이지</a></li>
+		      <li><a class="dropdown-item" href="#">더보기</a></li>
+		      <li><a class="dropdown-item" href="#">더보기</a></li>
+		    </ul>
 		  </li>
 		</c:if>
-	    <li class="nav-item">
-        <a class="nav-link" href="#" role="button" data-bs-toggle="modal" data-bs-target="#myModal3" id="customButton3">고객센터</a>
+	    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">고객센터</a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="${ctp}/inquiry/inquiryList">1:1문의</a></li>
+          <li><a class="dropdown-item" href="#">FQA</a></li>
+          <li><a class="dropdown-item" href="${ctp}/qna/qnaList">Q&A</a></li>
+        </ul>
+      </li>
+	    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">고객센터</a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="${ctp}/inquiry/inquiryList">1:1문의</a></li>
+          <li><a class="dropdown-item" href="#">FQA</a></li>
+          <li><a class="dropdown-item" href="${ctp}/qna/qnaList">Q&A</a></li>
+        </ul>
       </li>
     </ul>
 <%--     <div class="nav-cart">
@@ -63,6 +76,7 @@
       <div class="cart-count">3</div> --%>
     </div>
 </nav>
+ 
 
 <section class="hero">
   <div class="hero-content">
@@ -369,6 +383,18 @@
 
 
 
+<!-- 모달창1 -->
 
+
+
+<div class="modal-dialog modal-dialog-scrollable">
+	<div class="">
+		<h2 class="fs-5">Popover in a modal</h2>
+  	<p>This <button class="btn btn-secondary" data-bs-toggle="popover" title="Popover title" data-bs-content="Popover body content is set in this attribute.">button</button> triggers a popover on click.</p>
+	</div>
+</div>
+<script>
+
+</script>
 </body>
 </html>
