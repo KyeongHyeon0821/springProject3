@@ -1,5 +1,7 @@
 package com.spring.springProject3.service;
 
+import java.util.List;
+
 import com.spring.springProject3.vo.MemberVo;
 
 public interface MemberService {
@@ -27,5 +29,11 @@ public interface MemberService {
 	void updatePassword(String mid, String pwd);
 
 	MemberVo getMemberBizNoCheck(String businessNo);
+	
+	List<MemberVo> getMemberList();
+
+	MemberVo getMemberIdxSearch(int idx);
+
+
 
 }

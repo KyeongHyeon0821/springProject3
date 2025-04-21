@@ -81,7 +81,7 @@
 	        alert("인증번호가 발송되었습니다. 메일을 확인해주세요.");
 	        let str = '<div class="input-group">';
 	        str += '<input type="text" name="checkKey" id="checkKey" class="form-control"/>';
-	        str += '<button type="button" onclick="emailCeritificationOk()" class="btn btn-primary btn-sm ms-2 rounded">인증번호확인</button>';
+	        str += '<button type="button" onclick="emailCeritificationOk()" class="btn btn-primary btn-sm rounded">인증번호확인</button>';
 	        str += '</div>';
 	        $("#demo").html(str);
 	      } else {
@@ -222,13 +222,9 @@
     .btn-info:hover {
       background-color: #02b757;
     }
-    .btn-success {
-      background-color: #02b757;
-      border: none;
-    }
-    .btn-success:hover {
-      background-color: #009345;
-    }
+    
+    
+    
     .btn-secondary {
       background-color: #ebebeb;
       color: #333;
@@ -237,6 +233,14 @@
     .btn-secondary:hover {
       background-color: #ddd;
     }
+    .btn-green {
+	  background-color: #02b757;
+	  color: white;
+	  border: none;
+	}
+	.btn-green:hover {
+	  background-color: #009345;
+	}
     #demo {
       margin-bottom: 1rem;
     }
@@ -247,7 +251,6 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<jsp:include page="/WEB-INF/views/include/slide2.jsp" />
 <p><br/></p>
 	<h3 class="text-center mb-4">
   	  <img src="${ctp}/images/logo.png" width="150px"/><br/>
@@ -287,13 +290,16 @@
 	      <input type="hidden" name="name" value="${vo.name}" />
 	    </td>
 	  </tr>
-      <tr>
-		<th class="bg-secondary-subtle">성별</th>
-		<td style="padding-top: 0.9rem;">
-		  <span style="padding-left: 6px;">${vo.gender}</span>
-		  <input type="hidden" name="gender" value="${vo.gender}" />
-		</td>
-	  </tr>
+      <c:if test="${sessionScope.sLogin ne 'kakao'}">
+		<tr>
+		  <th class="bg-secondary-subtle">성별</th>
+		  <td style="padding-top: 0.9rem;">
+		    <span style="padding-left: 6px;">${vo.gender}</span>
+		    <input type="hidden" name="gender" value="${vo.gender}" />
+		  </td>
+		</tr>
+	  </c:if>
+
       <tr>
         <th class="bg-secondary-subtle">이메일</th>
         <td>
@@ -402,10 +408,11 @@
     </div>
       <div class="text-center mt-4">
 	    <div class="d-flex justify-content-center gap-2 mb-3">
-    	  <input type="button" value="회원정보수정" onclick="fCheck()" class="btn btn-success" />
-    	  <input type="button" value="돌아가기" onclick="location.href='${ctp}/member/memberMain';" class="btn btn-primary" />
+    	  <input type="button" value="회원정보수정" onclick="fCheck()" class="btn btn-green" />
   		</div>
-  		<a href="${ctp}/member/pwdCheck/d" class="btn btn-danger">회원 탈퇴</a>
+  		<div style="text-align: right; margin-right: 10px; margin-top: 10px;">
+		  <a href="${ctp}/member/pwdCheck/d" style="font-size: 1rem; color: #cc0000;">회원 탈퇴하기</a>
+		</div>
 	  </div>
     <input type="hidden" name="email">
     <input type="hidden" name="tel">

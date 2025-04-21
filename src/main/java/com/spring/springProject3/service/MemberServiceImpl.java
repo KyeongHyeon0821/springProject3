@@ -1,5 +1,7 @@
 package com.spring.springProject3.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,5 +73,14 @@ public class MemberServiceImpl implements MemberService {
 	public MemberVo getMemberBizNoCheck(String businessNo) {
 	    return memberDao.getMemberBizNoCheck(businessNo);
 	}
+	
+	@Override
+	public List<MemberVo> getMemberList() {
+		return memberDao.getMemberList();
+	}
 
+	@Override
+	public MemberVo getMemberIdxSearch(int idx) {
+		return memberDao.getMemberIdxSearch(idx);
+	}
 }

@@ -16,7 +16,7 @@
     	let rePwd = document.getElementById("rePwd").value;
     	
     	if(pwd != rePwd) {
-    		alert("비밀번호가 일치하지 않습니다. 확인후 다시 변경하세요");
+    		alert("비밀번호가 일치하지 않습니다. 확인후 다시 입력하세요.");
     		document.getElementById("pwd").focus();
     	}
     	else myform.submit();
@@ -25,28 +25,28 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<jsp:include page="/WEB-INF/views/include/slide2.jsp" />
 <p><br/></p>
-<div class="container">
-  <h2 class="text-center">비밀번호 변경</h2>
-  <form name="myform" method="post" action="${ctp}/member/pwdChange">
-  	<table class="table table-bordered text-center">
-      <tr>
-        <th>새로운 비밀번호</th>
-        <td><input type="password" name="pwd" id="pwd" placeholder="새로운 비밀번호를 입력하세요." required class="form-control" /></td>
-      </tr>
-      <tr>
-        <th>비밀번호 확인</th>
-        <td><input type="password" name="rePwd" id="rePwd" placeholder="비밀번호를 한번더 입력해 주세요." required class="form-control" /></td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <input type="button" value="비밀번호변경" onclick="pwdCheck()" class="btn btn-success me-2"/>
-          <input type="button" value="돌아가기" onclick="location.href='${ctp}/member/memberMain';" class="btn btn-primary"/>
-        </td>
-      </tr>
-    </table>
-  </form>
+<div class="container" style="max-width: 500px;">
+  <div class="card shadow-sm p-4">
+    <h3 class="text-center mb-4">비밀번호 변경</h3>
+
+    <form name="myform" method="post" action="${ctp}/member/pwdChange">
+      <div class="mb-3">
+        <label for="pwd" class="form-label fw-bold">새로운 비밀번호</label>
+        <input type="password" name="pwd" id="pwd" placeholder="새로운 비밀번호를 입력하세요." required class="form-control" />
+      </div>
+
+      <div class="mb-4">
+        <label for="rePwd" class="form-label fw-bold">비밀번호 확인</label>
+        <input type="password" name="rePwd" id="rePwd" placeholder="비밀번호를 한 번 더 입력해 주세요." required class="form-control" />
+      </div>
+
+      <div class="d-flex justify-content-center gap-2">
+        <button type="button" onclick="pwdCheck()" class="btn btn-success">비밀번호변경</button>
+        <button type="button" onclick="location.href='${ctp}/member/memberMyPage'" class="btn px-4 py-2" style="background-color: #eeeeee; color: #333; border-radius: 8px; font-weight: 500;">돌아가기</button>
+      </div>
+    </form>
+  </div>
 </div>
 <p><br/></p>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />

@@ -19,20 +19,27 @@
         <li class="nav-item">
           <a class="nav-link" href="#">관리자</a>
         </li>  
-        <li class="nav-item">
-          <a class="nav-link" href="${ctp}/member/memberLogin">로그인</a>
-        </li>  
-        <li class="nav-item">
-          <a class="nav-link" href="${ctp}/member/memberLogout">로그아웃</a>
-        </li>  
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">더보기</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="${ctp}/member/memberMyPage">마이페이지</a></li>
-            <li><a class="dropdown-item" href="#">더보기</a></li>
-            <li><a class="dropdown-item" href="#">더보기</a></li>
-          </ul>
-        </li>
+        <!-- 로그인 상태 아닐 때만 로그인 표시 -->
+        <c:if test="${empty sessionScope.sLogin}">
+          <li class="nav-item">
+            <a class="nav-link" href="${ctp}/member/memberLogin">로그인</a>
+          </li>
+        </c:if>
+        <!-- 로그인 상태일 때만 로그아웃 & 마이페이지 표시 -->
+				<c:if test="${not empty sessionScope.sLogin}">
+				  <li class="nav-item">
+				    <a class="nav-link" href="${ctp}/member/memberLogout">로그아웃</a>
+				  </li>
+				  <li class="nav-item dropdown">
+				    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">더보기</a>
+				    <ul class="dropdown-menu">
+				      <li><a class="dropdown-item" href="${ctp}/member/memberMyPage">마이페이지</a></li>
+				      <li><a class="dropdown-item" href="#">더보기</a></li>
+				      <li><a class="dropdown-item" href="#">더보기</a></li>
+				    </ul>
+				  </li>
+				</c:if>
+        
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">고객센터</a>
           <ul class="dropdown-menu">

@@ -20,7 +20,6 @@ public class MemberVo {
 	private String email;
 	private String userDel;
 	private int level;
-	
 	private String userInfor;
 	private String businessNo;
 }

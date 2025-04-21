@@ -28,63 +28,104 @@
     }
     
     function loginCheck() {
-    	  const mid = document.getElementById("mid").value.trim();
-    	  const pwd = document.getElementById("pwd").value.trim();
+    	const mid = document.getElementById("mid").value.trim();
+    	const pwd = document.getElementById("pwd").value.trim();
 
-    	  if (mid === "") {
-    	    alert("아이디를 입력하세요.");
-    	    document.getElementById("mid").focus();
-    	    return false;
-    	  }
-
-    	  if (pwd === "") {
-    	    alert("비밀번호를 입력하세요.");
-    	    document.getElementById("pwd").focus();
-    	    return false;
-    	  }
-
-    	  return true;
+    	if (mid === "") {
+    	  alert("아이디를 입력하세요.");
+    	  document.getElementById("mid").focus();
+    	  return false;
     	}
 
+    	if (pwd === "") {
+    	  alert("비밀번호를 입력하세요.");
+    	  document.getElementById("pwd").focus();
+    	  return false;
+    	}
+
+    	return true;
+    }
+    
+    function togglePwdVisibility() {
+    	const pwdInput = document.getElementById("pwd");
+    	pwdInput.type = pwdInput.type === "password" ? "text" : "password";
+    }
+
   </script>
+<style>
+    .login-box {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 30px;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+      background-color: #fff;
+    }
+    .form-control {
+      height: 50px;
+      font-size: 1rem;
+    }
+    .btn-success {
+      background-color: #2e7d32;
+      border: none;
+    }
+    .btn-success:hover {
+      background-color: #27692b;
+    }
+    .kakao-btn img {
+      width: 100%;
+    }
+    .login-links {
+      text-align: center;
+      margin-top: 10px;
+    }
+    .login-links a {
+      text-decoration: none;
+      color: #555;
+      margin: 0 5px;
+    }
+    .login-links a:hover {
+      text-decoration: underline;
+    }
+</style>
+
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<jsp:include page="/WEB-INF/views/include/slide2.jsp" />
-<p><br/></p>
-<div class="container" style="max-width: 500px;">
+<div class="login-box text-center">
   <form name="myform" method="post" onsubmit="return loginCheck()">
-    <h3 class="text-center mb-4">
-    <img src="${ctp}/images/logo.png" width="150px"/></h3>
+    <img src="${ctp}/images/logo.png" width="150px" class="mb-3" />
     <div class="mb-3">
-      <label for="mid" class="form-label">아이디</label>
-      <input type="text" name="mid" id="mid" value="${mid}" placeholder="아이디를 입력하세요" autofocus class="form-control" />
+      <input type="text" name="mid" id="mid" value="${mid}" class="form-control" placeholder="아이디를 입력해주세요" autofocus />
     </div>
     <div class="mb-3">
-      <label for="pwd" class="form-label">비밀번호</label>
-      <input type="password" name="pwd" id="pwd" value="0000" placeholder="비밀번호를 입력하세요." class="form-control" />
+      <input type="password" name="pwd" id="pwd" class="form-control" placeholder="비밀번호를 입력해주세요" />
     </div>
 
-    <div class="d-flex justify-content-center gap-2 mb-3 align-items-center">
-      <button type="submit" class="btn btn-success d-flex justify-content-center align-items-center" style="min-width: 70px; height: 38px; padding: 0;">로그인</button>
-      <a href="javascript:kakaoLogin()" class="btn p-0" style="background-color: transparent; border: none;">
-        <img src="${ctp}/images/kakao_login_medium.png" width="75px"/>
-      </a>
-      <a href="${ctp}/member/memberJoin" class="btn btn-primary d-flex justify-content-center align-items-center" style="min-width: 90px; height: 38px; padding: 0;">회원가입</a>
+    <div class="form-check mb-3 text-start">
+      <input type="checkbox" class="form-check-input" id="idSave" name="idSave" checked />
+      <label class="form-check-label" for="idSave">아이디 저장</label>
     </div>
 
-    <div class="d-flex justify-content-center align-items-center gap-3">
-      <div class="form-check mb-0">
-        <input type="checkbox" class="form-check-input" id="idSave" name="idSave" checked>
-        <label class="form-check-label" for="idSave">아이디 저장</label>
-      </div>
-      <a href="${ctp}/member/memberFindId" class="text-decoration-none">아이디 찾기</a>
-      <span>/</span>
-      <a href="${ctp}/member/memberFindPwd" class="text-decoration-none">비밀번호 찾기</a>
+    <div class="d-grid gap-2 mb-2">
+      <button type="submit" class="btn btn-success">로그인</button>
+    </div>
+
+    <div class="mb-3 d-grid">
+	  <button type="button" onclick="kakaoLogin()" class="btn btn-warning w-100" style="background-color: #FEE500; color: #3c1e1e; font-weight: bold; border: none;">
+  		<i class="bi bi-chat-fill" style="margin-right: 5px;"></i> 카카오 로그인
+	  </button>
+	</div>
+
+    <div class="login-links">
+      <a href="${ctp}/member/memberFindId">아이디 찾기</a> |
+      <a href="${ctp}/member/memberFindPwd">비밀번호 찾기</a> |
+      <a href="${ctp}/member/memberJoin">회원가입</a>
     </div>
   </form>
 </div>
-<p><br/></p>
+
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>
 </html>

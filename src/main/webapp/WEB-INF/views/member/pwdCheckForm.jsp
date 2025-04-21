@@ -8,28 +8,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>pwdCheckForm.jsp</title>
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
+  
+  <script>
+    function checkDeleteForm() {
+      const pwd = document.getElementById('pwd').value;
+      if (!pwd) {
+        alert('비밀번호를 입력하세요.');
+        return false;
+      }
+
+      const pwdFlag = '${pwdFlag}';
+      if (pwdFlag === 'd') {
+        return confirm('정말 탈퇴하시겠습니까?\n※ 탈퇴 시 동일 아이디로는 재가입이 불가능합니다.');
+      }
+      
+      return true;
+    }
+  </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<jsp:include page="/WEB-INF/views/include/slide2.jsp" />
 <p><br/></p>
-<div class="container">
-  <h2 class="text-center">비밀번호 확인</h2>
-  <c:if test="${pwdFlag == 'p'}"><div class="text-center text-danger mb-2">(<b>현재 비밀번호를 입력하세요</b>)</div></c:if>
-  <form name="myform" method="post">
-  	<table class="table table-bordered text-center">
-      <tr>
-        <th>비밀번호</th>
-        <td><input type="password" name="pwd" id="pwd" placeholder="비밀번호를 입력하세요." required class="form-control" /></td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <input type="submit" value="비밀번호확인" class="btn btn-success me-2"/>
-          <input type="button" value="돌아가기" onclick="location.href='${ctp}/member/memberMain';" class="btn btn-primary"/>
-        </td>
-      </tr>
-    </table>
-  </form>
+<div class="container" style="max-width: 500px;">
+  <div class="card shadow-sm p-4">
+    <h3 class="text-center mb-3">비밀번호 확인</h3>
+    <c:if test="${pwdFlag == 'p'}">
+      <div class="text-center text-danger mb-3">(현재 비밀번호를 입력하세요)</div>
+    </c:if>
+
+    <form method="post" onsubmit="return checkDeleteForm();">
+      <div class="mb-3">
+        <label for="pwd" class="form-label fw-bold">비밀번호</label>
+        <input type="password" name="pwd" id="pwd" class="form-control" placeholder="비밀번호를 입력하세요." required />
+      </div>
+
+      <div class="d-flex justify-content-center gap-2">
+        <button type="submit" class="btn btn-success">비밀번호확인</button>
+        <button type="button" onclick="location.href='${ctp}/member/memberMyPage'" class="btn px-4 py-2" style="background-color: #eeeeee; color: #333; border-radius: 8px; font-weight: 500;">돌아가기</button>
+      </div>
+    </form>
+  </div>
 </div>
 <p><br/></p>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />

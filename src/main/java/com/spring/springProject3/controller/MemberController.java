@@ -1,5 +1,6 @@
 package com.spring.springProject3.controller;
 
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -27,7 +28,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.spring.springProject3.service.MemberService;
+import com.spring.springProject3.service.PetService;
 import com.spring.springProject3.vo.MemberVo;
+import com.spring.springProject3.vo.PetVo;
 
 @Controller
 @RequestMapping("/member")
@@ -35,6 +38,9 @@ public class MemberController {
     
     @Autowired
     MemberService memberService;
+    
+    @Autowired
+    PetService petService;
     
     @Autowired
     JavaMailSender mailSender;
@@ -157,7 +163,7 @@ public class MemberController {
             memberService.setKakaoMemberInput(mid, nickName, email, passwordEncoder.encode(pwd));
             vo = memberService.getMemberIdCheck(mid);
             // 임시 비밀번호를 이메일로 전송
-            mailSend(email, "임시비밀번호를 발송하였습니다.", "임시비밀번호 : " + pwd);
+            mailSend(email, "[withPET] 임시 비밀번호", pwd);
             session.setAttribute("sLoginNew", "OK");
         }
         
@@ -226,7 +232,7 @@ public class MemberController {
         UUID uid = UUID.randomUUID();
         String emailKey = uid.toString().substring(0,8);
         session.setAttribute("sEmailKey", emailKey);
-        mailSend(email, "이메일 인증키입니다.", "인증키 : " + emailKey);
+        mailSend(email, "[withPET] 이메일 인증키", emailKey);
         return "1";
     }
     
@@ -239,36 +245,74 @@ public class MemberController {
         return (checkKey.equals(sCheckKey)) ? "1" : "0";
     }
     
-    // 메일 전송하기(인증번호, 아이디찾기, 비밀번호 찾기)
- 	public void mailSend(String toMail, String title, String mailFlag) throws MessagingException {
- 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
- 		String content = "";		
- 		
- 		MimeMessage message = mailSender.createMimeMessage();
- 		MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
- 		
- 		// 메일보관함에 메세지 내용 저장...후... 처리
- 		messageHelper.setTo(toMail);
- 		messageHelper.setSubject(title);
- 		messageHelper.setText(content);
- 		
- 		// 메세지에 추가로 필요한 사항을 messageHelper에 추가로 넣어준다.
- 		content = content.replace("\n", "<br>");
- 		content += "<br><hr><h3>"+mailFlag+"</h3><br>";
- 		content += "<p><img src=\"cid:\" width='550px'></p>";
- 		content += "<p>방문하기 : <a href='http://withpet'>withpet</a></p>";
- 		content += "<hr>";
- 		messageHelper.setText(content, true);
- 		
- 		// 본문에 기재된 그림파일의 경로
- 		FileSystemResource file = new FileSystemResource(request.getSession().getServletContext().getRealPath("/resources/images/band.jpg"));
- 		messageHelper.addInline("band.jpg", file);
- 		
- 		// 메일 전송하기
- 		mailSender.send(message);
- 	}
-    
-    // 회원 메인 (마이페이지)
+ // 메일 전송하기 (인증번호, 임시 비밀번호)
+    public void mailSend(String toMail, String title, String mailFlag) throws MessagingException {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+
+        messageHelper.setTo(toMail);
+
+        // 메일 제목/내용 분기
+        String mainTitle = "";
+        String description = "";
+        String subMessage = "";
+        String subject = title;
+        String prefix = "";
+
+        if (title.contains("임시 비밀번호")) {
+            subject = "[withPET] 임시 비밀번호";
+            mainTitle = "🐾 withPET 임시 비밀번호 안내";
+            description = "회원님의 요청으로 아래와 같이 임시 비밀번호를 발급해드렸습니다.";
+            subMessage = "보안을 위해 <strong>로그인 후 반드시 비밀번호를 변경</strong>해 주세요.";
+            prefix = "임시 비밀번호 : ";
+        } else if (title.contains("인증키")) {
+            subject = "[withPET] 이메일 인증키";
+            mainTitle = "🐾 withPET 이메일 인증 안내";
+            description = "회원가입을 위해 이메일 인증이 필요합니다.";
+            subMessage = "아래 인증키를 입력해 주세요.";
+            prefix = "인증키 : ";
+        }
+
+        messageHelper.setSubject(subject);
+
+        // HTML 메일 본문 구성
+        String content = "";
+        content += "<div style='font-family:Arial,sans-serif; font-size:16px; color:#333; max-width:600px; margin:0 auto; padding:20px; border:1px solid #eee; border-radius:8px;'>";
+        content += "<div style='text-align:center; margin-bottom:10px;'>";
+        content += "<img src='cid:logo' alt='withPet 로고' style='max-width:180px;'/>";
+        content += "</div>";
+
+        content += "<h2 style='color:#2e7d32; text-align:center; margin-top:0;'>" + mainTitle + "</h2>";
+        content += "<p>안녕하세요, <strong>withPET</strong>입니다.</p>";
+        content += "<p>" + description + "<br/>" + subMessage + "</p>";
+
+        content += "<div style='padding:15px; background:#f9f9f9; border:1px solid #ccc; border-radius:5px; margin:20px 0; text-align:center;'>";
+        content += "<span style='font-size:18px; color:#000; font-weight:bold;'>임시 비밀번호 : </span>";
+        content += "<span style='font-size:18px; color:#2e7d32; font-weight:bold;'>" + mailFlag + "</span>";
+        content += "</div>";
+
+        content += "<p style='text-align:center;'><a href='http://localhost:9090/springProject3/' style='background-color:#2e7d32; color:#fff; padding:10px 20px; text-decoration:none; border-radius:4px;'>withPET 바로가기</a></p>";
+
+        content += "<hr style='margin:40px 0;'>";
+        content += "<p style='font-size:12px; color:#999;'>본 메일은 발신전용입니다. 문의사항은 홈페이지를 통해 남겨주세요.</p>";
+        content += "</div>";
+
+        // 본문 적용
+        messageHelper.setText(content, true);
+
+        // 로고 이미지 연결
+        FileSystemResource file = new FileSystemResource(
+            request.getSession().getServletContext().getRealPath("/resources/images/logo.png"));
+        messageHelper.addInline("logo", file);
+
+        // 메일 전송
+        mailSender.send(message);
+    }
+
+
+    // 마이페이지(일반회원, 사업자회원)
     @RequestMapping(value = "/memberMyPage", method = RequestMethod.GET)
     public String memberMyPageGet(HttpSession session, Model model) {
         String mid = (String) session.getAttribute("sMid");
@@ -285,7 +329,17 @@ public class MemberController {
         }
         
         model.addAttribute("mVo", mVo);
-        return "member/memberMyPage";
+        
+        // 반려견 리스트 조회 추가
+        List<PetVo> dogList = petService.getPetList(mid);
+        model.addAttribute("dogList", dogList);
+
+        // level 값에 따라 다른 JSP로 보내기
+        if (mVo.getLevel() == 1) {
+            return "member/memberMyPageBiz"; // 사업자회원
+        } else {
+            return "member/memberMyPage"; // 일반회원
+        }
     }
     
     // 로그아웃 처리
@@ -318,7 +372,7 @@ public class MemberController {
             memberService.setMemberDeleteCheck(mid);
             return "redirect:/message/memberDeleteCheck";
         } else if (pwdFlag.equals("p")) {
-            return "member/memberPassCheckForm";
+            return "member/pwdChange";
         } else if (pwdFlag.equals("u")) {
             return "redirect:/member/memberUpdate";
         }
@@ -403,7 +457,7 @@ public class MemberController {
 
         // 4. 이메일로 임시 비밀번호 전송
         try {
-            mailSend(email, "임시비밀번호를 발송하였습니다.", "임시비밀번호 : " + tempPwd);
+            mailSend(email, "[withPET] 임시 비밀번호", tempPwd);
         } catch (MessagingException e) {
             e.printStackTrace();
             model.addAttribute("msg", "이메일 전송에 실패했습니다.");

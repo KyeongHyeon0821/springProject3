@@ -1,5 +1,6 @@
 package com.spring.springProject3.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -13,9 +14,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MessageController {
 
 	@RequestMapping(value = "/message/{msgFlag}", method = RequestMethod.GET)
-	public String getMessage(Model model, @PathVariable String msgFlag, HttpSession session,
+	public String getMessage(Model model, @PathVariable String msgFlag,
+			HttpSession session, HttpServletRequest request,
 			@RequestParam(name="hotelIdx", defaultValue = "0", required = false) int hotelIdx,
-			@RequestParam(name="nickName", defaultValue="", required=false) String nickName
+			@RequestParam(name="nickName", defaultValue="", required=false) String nickName,
+			@RequestParam(name="mid", defaultValue = "", required = false) String mid,
+			@RequestParam(name="idx", defaultValue = "0", required = false) int idx,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize,
+			@RequestParam(name="search", defaultValue = "", required = false) String search,
+			@RequestParam(name="searchString", defaultValue = "", required = false) String searchString,
+			@RequestParam(name="part", defaultValue = "전체", required = false) String part,
+			@RequestParam(name="mSw", defaultValue = "1", required = false) String mSw,
+			@RequestParam(name="tempFlag", defaultValue = "", required = false) String tempFlag
 		) {
 		
 		if(msgFlag.equals("hotelInputNo")) {
@@ -72,9 +83,21 @@ public class MessageController {
 		}
 		else if(msgFlag.equals("memberLoginOk")) {
 		    if (nickName == null || nickName.equals("")) {
-		        nickName = (String) session.getAttribute("sNickName"); // 세션에서 대체로 꺼내기
+		        nickName = (String) session.getAttribute("sNickName");
 		    }
-		    model.addAttribute("message", nickName + " 회원님 로그인 되셨습니다.");
+
+		    String msg;
+
+		    // 카카오 자동가입인 경우
+		    if ("OK".equals(session.getAttribute("sLoginNew"))) {
+		        msg = "카카오 회원가입이 완료되었습니다.\\n임시 비밀번호가 이메일로 발송되었습니다.";
+		        session.removeAttribute("sLoginNew");
+		    } else {
+		        // 일반 로그인
+		        msg = nickName + " 회원님 로그인 되셨습니다.";
+		    }
+		    
+		    model.addAttribute("message", msg);
 		    model.addAttribute("url", "member/memberMyPage");
 		}
 		else if(msgFlag.equals("memberLoginNo")) {
@@ -103,7 +126,7 @@ public class MessageController {
 			model.addAttribute("url", "member/memberLogin");
 		}
 		else if(msgFlag.equals("pwdChangeOk")) {
-			model.addAttribute("message", "비밀번호를 변경이 완료되었습니다.\\n다시 로그인해 주세요.");
+			model.addAttribute("message", "비밀번호 변경이 완료되었습니다.\\n다시 로그인해 주세요.");
 			session.invalidate();
 			model.addAttribute("url", "member/memberLogin");
 		}
@@ -137,6 +160,76 @@ public class MessageController {
 		    model.addAttribute("message", "로그인이 필요합니다.");
 		    model.addAttribute("url", "member/memberLogin");
 		}
+		
+		
+		
+		
+		
+		if(msgFlag.equals("inquiryInputOk")) {
+			model.addAttribute("message", "작성하신 글이 등록되었습니다.");
+			model.addAttribute("url", "inquiry/inquiryList");
+		}
+		else if(msgFlag.equals("inquiryInputNo")) {
+			model.addAttribute("message", "작성하신 글 등록이 실패되었습니다.");
+			model.addAttribute("url", "inquiry/inquiryInput");
+		}
+		else if(msgFlag.equals("inquiryDeleteCheckOk")) {
+			model.addAttribute("message", "작성하신 문의글을 삭제하였습니다.");
+			model.addAttribute("url", "inquiry/inquiryList");
+		}
+		else if(msgFlag.equals("inquiryDeleteCheckNo")) {
+			model.addAttribute("message", "작성하신 문의글 삭제가 실패되었습니다.");
+			model.addAttribute("url", "inquiry/inquiryDetail?idx="+idx);
+		}
+		else if(msgFlag.equals("inquiryUpdateOk")) {
+			model.addAttribute("message", "작성하신 문의글이 수정되었습니다.");
+			model.addAttribute("url", "inquiry/inquiryDetail?idx="+request.getParameter("idx"));
+		}
+		else if(msgFlag.equals("inquiryUpdateNo")) {
+			model.addAttribute("message", "작성하신 문의글 수정이 실패되었습니다.");
+			model.addAttribute("url", "inquiry/inquiryDetail?idx="+idx);
+		}
+		else if(msgFlag.equals("inquiryReplyOk")) {
+			model.addAttribute("message", "작성하신 답변이 등록되었습니다.");
+			model.addAttribute("url", "admin/adInquiryDetail?idx="+request.getParameter("idx"));
+		}
+		else if(msgFlag.equals("inquiryReplyNo")) {
+			model.addAttribute("message", "작성하신 답변등록이 실패되었습니다.");
+			model.addAttribute("url", "admin/adInquiryDetail?idx="+idx);
+		}
+		else if(msgFlag.equals("qnaInputOk")) {
+			model.addAttribute("message", "작성하신 QnA가 등록되었습니다");
+			model.addAttribute("url", "qna/qnaList");
+		}
+		else if(msgFlag.equals("qnaInputNo")) {
+			model.addAttribute("message", "작성하신 QnA 등록이 실패되었습니다.");
+			model.addAttribute("url", "qna/qnaInput");
+		}
+		else if(msgFlag.equals("qnaDeleteOk")) {
+			model.addAttribute("message", "작성하신 QnA가 삭제되었습니다.");
+			model.addAttribute("url", "qna/qnaList");
+		}
+		else if(msgFlag.equals("qnaDeleteNo")) {
+			model.addAttribute("message", "작성하신 QnA 삭제가 실패되었습니다.");
+			model.addAttribute("url", "qna/qnaDetail?idx="+idx);
+		}
+		else if(msgFlag.equals("qnaUpdateOk")) {
+			model.addAttribute("message", "작성하신 QnA가 수정되었습니다.");
+			model.addAttribute("url", "qna/qnaList");
+		}
+		else if(msgFlag.equals("qnaUpdateNo")) {
+			model.addAttribute("message", "작성하신 QnA 수정이 실패되었습니다.");
+			model.addAttribute("url", "qna/qnaDetail?idx="+idx);
+		}
+		else if(msgFlag.equals("qnaInputAdminOk")) {
+			model.addAttribute("message", "관리자님의 QnA답변이 등록되었습니다.");
+			model.addAttribute("url", "qna/qnaList");
+		}
+		else if(msgFlag.equals("qnaInputUserOk")) {
+			model.addAttribute("message", "QnA답변이 등록되었습니다.");
+			model.addAttribute("url", "qna/qnaList");
+		}
+
 		
 		
 		return "include/message";
