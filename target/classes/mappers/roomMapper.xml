@@ -2,5 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.springProject3.dao.RoomDao">
   
+  <!-- 객실 등록 처리 -->
+  <insert id="setRoomInput">
+  	insert into room values(default, #{vo.hotelIdx}, #{vo.name}, #{vo.price}, #{vo.maxPeople}, #{vo.petSizeLimit}, #{vo.petCountLimit}, #{vo.thumbnail}, #{vo.images}, default, default);
+  </insert>
+  
+  <!-- 객실의 옵션 등록 처리 -->
+  <insert id="setRoomOptions">
+  	insert into roomOptions values(#{roomIdx}, #{optionIdx});
+  </insert>
+  
+  <!-- 전체 옵션 리스트 조회 -->
+  <select id="getOptionList" resultType="com.spring.springProject3.vo.OptionVo">
+  	select * from options;
+  </select>
+  
+  <!-- 객실 max idx 가져오기 -->
+  <select id="getMaxIdx" resultType="int">
+		select max(idx) from room;  
+  </select>
   
 </mapper>

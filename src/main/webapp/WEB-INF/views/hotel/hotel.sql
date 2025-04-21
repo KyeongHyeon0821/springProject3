@@ -1,19 +1,19 @@
 show tables;
 create table member (
    idx         int not null auto_increment,         /* 회원 고유번호 */
-   mid         varchar(20) not null,               /* 아이디(중복불허/수정가능) */
+   mid         varchar(20) not null,                /* 아이디(중복불허/수정가능) */
    pwd         varchar(100) not null,               /* 비밀번호(BCryptPasswordEncoder) */
-   nickName   varchar(20) not null,               /* 닉네임(중복불허/수정가능) */
-   name      varchar(10) not null,               /* 성명(수정불가능) */
-   gender      char(2)      not null default '남자',      /* 성별(수정불가능) */
+   nickName   varchar(20) not null,                 /* 닉네임(중복불허/수정가능) */
+   name      varchar(10) not null,                  /* 성명(수정불가능) */
+   gender      char(2)      not null default '남자', /* 성별(수정불가능) */
    birthday   datetime default now(),               /* 생일 */
-   tel         varchar(15),                     /* 전화번호 */
-   address      varchar(100),                     /* 주소(다음 우편번호 API 사용) */
-   email      varchar(50) not null,               /* 이메일(회원가입시 인증 또는 '아이디/비밀번호'분실시 사용 - 정규식 필수 체크 */
-   userDel      char(2) default 'NO',               /* 회원 탈퇴신청여부(NO:현재 활동중, OK:탈퇴신청중) */
-   level      int default 2,                     /* 회원등급(0:관리자, 1:사업자회원, 2:일반회원) */
-   businessNo  varchar(20),                     /* 사업자등록번호(수정불가능) */
-   userInfor    varchar(10) default '공개',            /* 정보 공개여부(공개/비공개) */
+   tel         varchar(15),                    		  /* 전화번호 */
+   address      varchar(100),                    	 /* 주소(다음 우편번호 API 사용) */
+   email      varchar(50) not null,                /* 이메일(회원가입시 인증 또는 '아이디/비밀번호'분실시 사용 - 정규식 필수 체크 */
+   userDel      char(2) default 'NO',              /* 회원 탈퇴신청여부(NO:현재 활동중, OK:탈퇴신청중) */
+   level      int default 2,                       /* 회원등급(0:관리자, 1:사업자회원, 2:일반회원) */
+   businessNo  varchar(20),                    		 /* 사업자등록번호(수정불가능) */
+   userInfor    varchar(10) default '공개',         /* 정보 공개여부(공개/비공개) */
    primary key (idx),
    unique key (mid)
 );
@@ -29,7 +29,7 @@ select * from member;
 
 /* 호텔 테이블 */
 create table hotel(
-	idx int auto_increment,							/* 호텔 번호 */
+	idx int auto_increment,							/* 호텔 아이디 */
 	mid varchar(20) not null,						/* 호텔 등록자 아이디 */
 	name varchar(100) not null,				  /* 호텔 이름 */
 	address varchar(200) not null,			/* 호텔 주소 */
@@ -39,6 +39,8 @@ create table hotel(
 	images text,												/* 호텔 이미지 */
 	regDate datetime default now(), 		/* 등록 날짜 */
 	status varchar(20) default '정상',		/* 호텔 상태 (정상/등록취소요청/비활성화/등록취소완료) */
+	x double,														/* 경도 */
+	y double,														/* 위도 */
 	primary key(idx),
 	foreign key(mid) references member(mid)
 );
@@ -52,7 +54,7 @@ insert into hotel values(default, 'admin', '소테츠호텔즈 더 스프라지�
 
 /* 호텔 객실 테이블 */
 create table room(
-	idx int auto_increment,						/* 객실 번호 */
+	idx int auto_increment,						/* 객실 아이디 */
 	hotelIdx int not null,						/* 연결된 호텔 아이디 */
 	name varchar(50) not null,				/* 객실명 */
 	price int not null,								/* 객실 1박 요금 */
@@ -66,26 +68,6 @@ create table room(
 	primary key(idx),
 	foreign key(hotelIdx) references hotel(idx) on delete cascade
 );
-
-
-/* 옵션 테이블 */
-create table option (
-  idx int auto_increment,         /* 옵션 번호 */
-  name varchar(50) not null,      /* 옵션 이름 */
-  primary key (id)
-);
-
-
-
-/* 객실-옵션 연결 테이블 */
-create table room_option (
-  roomIdx int not null,							/* 객실 번호 */
-  optionIdx int not null,						/* 옵션 번호 */
-  primary key (roomIdx, optionIdx),
-  foreign key (roomIdx) references room(idx) on delete cascade,
-  foreign key (optionIdx) references option(idx) on delete cascade
-);
-
 
 
 
@@ -114,6 +96,8 @@ create table hotelLike (
 	foreign key (mid) references member(mid) on delete cascade,
   foreign key (hotelIdx) references hotel(idx) on delete cascade
 );
+
+
 
 insert into hotelLike values(default, 'admin', 29, default);
 select * from hotellike;

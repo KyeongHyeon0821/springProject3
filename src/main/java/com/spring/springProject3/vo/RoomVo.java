@@ -11,6 +11,7 @@ public class RoomVo {
 	private int idx;
 	private int hotelIdx;
 	private String name;
+	private String roomNumber;
 	private int price;
 	private int maxPeople;
 	private String petSizeLimit;

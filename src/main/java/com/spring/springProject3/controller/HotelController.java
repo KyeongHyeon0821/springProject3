@@ -50,30 +50,35 @@ public class HotelController {
 		return "hotel/hotelList";
 	}
 	
+	
 	// 호텔 등록폼 보기
 	@RequestMapping(value =  "/hotelInput", method = RequestMethod.GET)
-	public String hotelInputGet() {
+	public String hotelInput2Get() {
 		return "hotel/hotelInput";
 	}
 	
-	// 호텔 등록 처리하기
+	// 호텔 등록 처리하기2
 	@RequestMapping(value =  "/hotelInput", method = RequestMethod.POST)
-	public String hotelInputPost(@Validated HotelVo vo, BindingResult bindingResult, MultipartFile thumbnailFile) {
+	public String hotelInput2Post(@Validated HotelVo vo, BindingResult bindingResult, MultipartFile thumbnailFile) {
+		System.out.println("x : " + vo.getX());
+		System.out.println("y : " + vo.getY());
 		// 백엔드 체크 에러 발생 시 처리
 		if(bindingResult.hasErrors()) {
 			System.out.println("에러 내용 : " + bindingResult);
 			return "redirect:/message/hotelInputError";
 		}
-	  // 썸네일 파일 null 또는 비었을 때 처리
-	  if(thumbnailFile == null || thumbnailFile.isEmpty()) {
-	    System.out.println("썸네일 파일이 비어있습니다.");
-	    return "redirect:/message/hotelInputError";
-	  }
-	  
-	  int res = hotelService.setHotelInput(vo, thumbnailFile);
+		// 썸네일 파일 null 또는 비었을 때 처리
+		if(thumbnailFile == null || thumbnailFile.isEmpty()) {
+			System.out.println("썸네일 파일이 비어있습니다.");
+			return "redirect:/message/hotelInputError";
+		}
+		
+		int res = hotelService.setHotelInput(vo, thumbnailFile);
 		if(res !=0 ) return "redirect:/message/hotelInputOk";
 		else return "redirect:/message/hotelInputNo";
 	}
+	
+
 	
 	// 호텔 등록 - ckeditor에서의 그림 파일 업로드시 수행처리되는 메소드 
 	@RequestMapping(value =  "/hotelImageUpload")

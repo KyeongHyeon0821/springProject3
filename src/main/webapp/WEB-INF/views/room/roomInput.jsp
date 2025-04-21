@@ -97,8 +97,18 @@
 		<input type="hidden" name="hotelIdx" value="${hotelIdx}" />
 		
 		<div class="mb-3">
+			<label for="hotelName" class="form-label">호텔명</label>
+			<input type="text" value="${vo.name}" name="hotelName" id="hotelName" class="form-control" readonly />
+		</div>
+		
+		<div class="mb-3">
 			<label for="name" class="form-label">객실명</label>
 			<input type="text" name="name" id="name" class="form-control" required />
+		</div>
+		
+		<div class="mb-3">
+			<label for="roomNumber" class="form-label">객실 번호</label>
+			<input type="text" name="roomNumber" id="roomNumber" class="form-control" required />
 		</div>
 
 		<div class="mb-3">
@@ -147,7 +157,15 @@
 			<label for="images" class="form-label">객실 이미지 (여러 장 가능)</label>
 			<input type="file" name="imageFiles" id="imageFiles" class="form-control" accept=".jpg,.gif,.png,.jpeg,.webp" multiple />
 		</div>
-
+		
+		<div class="mb-3">
+		  <label class="form-label">객실 옵션</label><br/>
+		  <c:forEach var="option" items="${optionList}">
+		    <input type="checkbox" name="options" value="${option.idx}" id="option${option.idx}" />
+		    <label for="option${option.idx}">${option.name}</label>&nbsp;&nbsp;
+		  </c:forEach>
+		</div>
+		
 		<div class="mb-3 text-center">
 			<input type="submit" value="등록하기" class="btn btn-primary">
 			<a href="${ctp}/hotel/hotelDetail?idx=${hotelIdx}" class="btn btn-secondary">돌아가기</a>
