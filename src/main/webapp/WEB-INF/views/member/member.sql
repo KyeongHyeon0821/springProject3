@@ -1,4 +1,4 @@
--- 프로젝트용 -- 
+-- 프로젝트용 (김아름) -- 
 
 
 
@@ -16,11 +16,11 @@ create table member (
    birthday   datetime default now(),
    level      int default 2,
    userDel      char(2) default 'NO',
-   userInfor char(3) default '공개',								/* 회원 정보 공개여부(공배/비공개) */
+   userInfor char(3) default '공개',								/* 회원 정보 공개여부(공개/비공개) */
 	 visitCnt	int default 0,											/* 총 방문수 */
 	 todayCnt	int default 0,											/* 오늘 방문한 횟수 */
 	 startDate datetime default now(),							/* 최초 가입일 */
-	 lastDate datetime default now(),	
+	 lastDate datetime default now(),								/* 가장 나중에 방문한 날짜*/
    primary key (idx),
    unique key (mid)
 );
@@ -65,13 +65,14 @@ desc complaint;
 /*
  * 신고처리 테이블 : boardIdx필드와 pdsIdx필드 삭제후, partIdx필드(해당 part의 고유번호)추가, progress필드 추가
 	// 신고 처리하기
-	// complaintSw : H(감추기-board테이블의 complaint필드값을 'HI' , complaint테이블의 progress필드값을 '처리완료(H)')
+	// complaintSw : H(감추기-보드테이블의 complaint필드값을 'HI' , complaint테이블의 progress필드값을 '처리완료(H)')
 	// complaintSw : S(보이기-신고해제-board테이블의 complaint필드값을 'NO' , complaint테이블의 progress필드값을 '처리완료(S)')
 	// complaintSw : D(삭제하기-board테이블의 해당레코드 삭제처리 , complaint테이블의 progress필드값을 '처리완료(D)')
 */
 
 
 
+/* 이 아래부터는 무시하셔도 됩니다. */
 
 create table board (
   idx		int not null auto_increment,	/* 게시글의 고유번호 */

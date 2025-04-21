@@ -2,6 +2,8 @@ package com.spring.springProject3.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.springProject3.service.AdminService;
+import com.spring.springProject3.service.HotelService;
 import com.spring.springProject3.service.MemberService;
+import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.MemberVo;
 
 @Controller
@@ -21,7 +25,10 @@ import com.spring.springProject3.vo.MemberVo;
 public class AdminController {
 	
 	@Autowired
-	AdminService adminService; 
+	AdminService adminService;
+	
+	@Autowired
+	HotelService hotelService;
 	
 	@Autowired
 	MemberService memberService;
@@ -38,6 +45,18 @@ public class AdminController {
 	public String admiContentGet() {
 		return "/admin/adminContent";
 	}
+	
+	// 관리자 메인화면(대시보드)폼 보기
+	@GetMapping("/dashBoard/dashBoard")
+	public String adminMainFormGet() {
+		return "/admin/dashBoard/dashBoard";
+	}
+	
+	
+	
+	
+	
+	
 	
 	// 회원리스트 보기
 	@GetMapping("/member/memberList")
@@ -56,19 +75,22 @@ public class AdminController {
 		return "/admin/member/memberInfor";
 	}
 	
-	// 선택된 회원 레벨 등급 변경처리
-	@ResponseBody
-	@PostMapping("/memberLevelChange")
-	public String memberLevelChangePost(int level, int idx) {
-		return adminService.setMemberLevelChange(level,idx)+"";
+	
+	
+	// 호텔리스트 부르기
+	@RequestMapping("/hotelList")
+	public String hotelListGet(Model model, HttpSession session) {
+		String mid = session.getAttribute("sMid") + "";
+		List<HotelVo> vos = hotelService.getHotelList();
+		
+		if(!mid.equals("")) {
+			List<Integer> likedHotelListIdx = hotelService.getLikedHotelListIdx(mid);
+			model.addAttribute("likedHotelListIdx", likedHotelListIdx);
+		}
+		model.addAttribute("vos", vos);
+		return "hotel/hotelList";
 	}
 	
-	// 선택된 회원 전체적으로 등급 변경하기
-	@ResponseBody
-	@PostMapping("member/memberLevelSelectCheck")
-	public String memberLevelSelectCheckPost(String idxSelectArray, int levelSelect) {
-		return adminService.setMemberLevelSelectCheck(idxSelectArray,levelSelect);
-	}
 	
 	
 }

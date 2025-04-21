@@ -30,9 +30,9 @@
 		}
 		.custom-modal-position1{
 			position: absolute;
-			top: var(--modal-top, 0);
-			left: var(--modal-left, 0);
-			margin: 0;
+			top: var(--modal-top, 20%);
+			left: var(--modal-left, 20%);
+			margin: 0 auto;
 			transform: none;
 		}
 		.custom-modal-position2{
@@ -40,7 +40,7 @@
 			text-align: center;
 			position: absolute;
 			top: var(--modal-top, 100);
-			left: var(--modal-left, 550);
+			left: var(--modal-left, 50%);
 			margin: 0;
 			transform: none;
 		}
@@ -109,20 +109,11 @@
 		<div class="modal-content">
 			
 			<!-- modal header -->
-			<div class="modal-header">
-				<input type="text" id="myInput" class="input-group" placeholder="어디로 가세요?">
-				<button type="button" id="myBtn" class="btn" onclick="myInputReset()">X</button>
-			</div>
-			
 			<!-- modal body -->
 			<div class="modal-body">
-        <h3>Some text to enable scrolling..</h3>
-        <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-        <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-
-        <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p> 
-      </div>
-			
+				<input type="text" id="myInput" class="input-group" placeholder="어디로 가세요?">
+				<button type="button" id="myBtn" class="btn" onclick="myInputReset()">X</button>
+			</div>			
 			<!-- modal footer -->
 			<div class="modal-footer">
 				<button type="button" class="btn btn-danger" data-bs-dismiss="modal">close</button>
@@ -141,7 +132,7 @@
 			<!-- modal body -->
 			<div class="modal-body text-center">
         <ul class="list-unstyled">
-        	<li><a href="#">더보기</a></li>
+        	<li><a href="#">마이페이지</a></li>
         	<li><a href="#">더보기</a></li>
         	<li><a href="#">더보기</a></li>
         </ul>

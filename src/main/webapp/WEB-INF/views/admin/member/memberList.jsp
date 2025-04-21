@@ -119,6 +119,9 @@
     }
   </script>
   <style>
+  	body {
+  		background-color: #F6F5F2;
+  	}
     a {text-decoration: none}
     a:hover {
       text-decoration: underline;

@@ -18,13 +18,79 @@
   		padding-right: 0 !important;
 		}
 		
+		.nav-container {
+		  display: grid;
+		  grid-template-columns: auto 1fr auto;
+		  align-items: center;
+		  padding: 20px;
+		  max-width: 1400px;
+		  margin: 0 auto;
+		}
+		
+		.hero {
+			width: 1400px;
+			background-repeat: no-repeat;
+		  background-image: url("https://cdn.pixabay.com/photo/2023/09/25/10/46/krka-8274679_960_720.jpg");
+		  background-size: cover;
+		  background-position: center;
+		  color: white;
+		  padding: 100px 0;
+		  margin: 45 auto 0 auto;
+		  border: background;
+		  border-radius: 20px;
+		}
 
+		/* Style The Dropdown Button */
+		.dropbtn {
+		  color: black;
+		  padding: 16px;
+		  font-size: 16px;
+		  border: none;
+		  cursor: pointer;
+		}
+		
+		/* The container <div> - needed to position the dropdown content */
+		.dropdown {
+		  position: relative;
+		  display: inline-block;
+		}
+		
+		/* Dropdown Content (Hidden by Default) */
+		.dropdown-content {
+		  display: none;
+		  position: absolute;
+		  background-color: #f9f9f9;
+		  min-width: 160px;
+		  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+		  z-index: 1;
+		}
+		
+		/* Links inside the dropdown */
+		.dropdown-content a {
+		  color: black;
+		  padding: 12px 16px;
+		  text-decoration: none;
+		  display: block;
+		}
+		
+		/* Change color of dropdown links on hover */
+		.dropdown-content a:hover {background-color: #f1f1f1}
+		
+		/* Show the dropdown menu on hover */
+		.dropdown:hover .dropdown-content {
+		  display: block;
+		}
+		
+		/* Change the background color of the dropdown button when the dropdown content is shown */
+		.dropdown:hover .dropbtn {
+		  background-color: #eee;
+		}
 	</style>
 </head>
 <body>
 <nav>
   <div class="nav-container">
-    <a href="#" class="logo" style="display:flex; line-height: 80px;"><img src="${ctp}/images/logo.png" width="80px"/>withPet</a>
+    <a href="${ctp}/" class="logo" style="display:flex; line-height: 80px;"><img src="${ctp}/images/logo.png" width="80px"/>withPet</a>
     <ul class="nav-links">
     	<li>
       	<a href="${ctp}/hotel/hotelInput">숙박시설 등록</a>
@@ -41,27 +107,23 @@
       </c:if>
               <!-- 로그인 상태일 때만 로그아웃 & 마이페이지 표시 -->
 			<c:if test="${not empty sessionScope.sLogin}">
-		  <li class="nav-item">
-		    <a class="nav-link" href="${ctp}/member/memberLogout">로그아웃</a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link" href="#" role="button" data-bs-toggle="modal" data-bs-target="#myModal2" id="customButton2">마이페이지</a>
-		  </li>
-		</c:if>
-	    <li class="nav-item">
-        <a class="nav-link" href="#" role="button" data-bs-toggle="modal" data-bs-target="#myModal3" id="customButton3">고객센터</a>
+		  	<li class="nav-item">
+		    	<a class="nav-link" href="${ctp}/member/memberLogout">로그아웃</a>
+		  	</li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="${ctp}/member/memberMyPage">마이페이지</a>
+			  </li>
+			</c:if>
+	    <li class="nav-item dropdown">
+        <a class="nav-link dropbtn" href="#" role="button" data-bs-toggle="modal" data-bs-target="#myModal3" id="customButton3">고객센터</a>
+        <div class="dropdown-content">
+			    <a href="#">1:1문의</a>
+			    <a href="#">FQA</a>
+			    <a href="#">Q&A</a>
+				</div>
       </li>
     </ul>
-<%--     <div class="nav-cart">
-      <div class="cart-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="9" cy="21" r="1"></circle>
-          <circle cx="20" cy="21" r="1"></circle>
-          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-        </svg>
-      </div>
-      <div class="cart-count">3</div> --%>
-    </div>
+   </div>
 </nav>
 
 <section class="hero">
@@ -71,12 +133,12 @@
       <p></p>
       <div class="row hero-row">
       	<div class="col">
-      		<button id="cta-button" class="me-3" data-bs-toggle="modal" data-bs-target="#myModal1">어디로 가시나요?</button>
+      		<a href="${ctp}/hotel/hotelList" class="cta-button">어디로 가시나요?</a>
+      		<button id="cta-button" class="me-3" data-bs-toggle="modal" data-bs-target="#myModal1">테스트중</button>
       	</div>
       </div>
     </div>
     <div class="hero-image">
-      <img src="https://cdn.pixabay.com/photo/2018/03/07/19/51/grass-3206938_960_720.jpg" alt="" />
     </div>
   </div>
 </section>

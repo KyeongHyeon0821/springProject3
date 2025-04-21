@@ -39,14 +39,7 @@ nav {
   z-index: 100;
 }
 
-.nav-container {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  padding: 20px;
-  max-width: 1400px;
-  margin: 0 auto;
-}
+
 
 .logo {
   font-size: 24px;
@@ -112,13 +105,6 @@ nav {
   font-weight: bold;
 }
 
-.hero {
-  background: linear-gradient(to right, rgba(163, 209, 198, 0.9), rgba(251, 255, 228, 0.7));
-  background-size: cover;
-  background-position: center;
-  color: white;
-  padding: 100px 0;
-}
 
 .hero-content {
   display: grid;
@@ -160,7 +146,7 @@ nav {
 }
 #cta-button {
   display: inline-block;
-  background-color: var(--secondary);
+  background-color: var(--danger);
   color: var(--dark);
   padding: 12px 30px;
   border-radius: var(--radius);

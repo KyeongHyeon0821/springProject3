@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>memberMyPage.jsp</title>
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
+  <jsp:include page="/WEB-INF/views/include/mainModal.jsp"/>
   <style>
     body {
       background-color: #f9fefb;
@@ -64,7 +65,6 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<jsp:include page="/WEB-INF/views/include/slide2.jsp" />
 <p><br/></p>
 <div class="container">
 <h3 class="text-center mb-4">

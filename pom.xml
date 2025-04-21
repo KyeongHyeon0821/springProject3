@@ -293,10 +293,15 @@
     </dependency>
 		
 		
+		<!-- validation 등록을 위한 라이브러리 -->
 		
-		
-		
-		
+		<!-- BackEnd 체크를 위한 validator라이브러리(유효성검사) -->
+		<!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+		<dependency>
+	    <groupId>org.hibernate.validator</groupId>
+	    <artifactId>hibernate-validator</artifactId>
+	    <version>6.2.0.Final</version>
+		</dependency>
 		
 		
 		
