@@ -54,7 +54,7 @@
         </a>
       </li>
       <li>
-        <a href="${ctp}/admin/member/memberList" target="adminContent">
+        <a href="${ctp}/admin/member/memberList/2" target="adminContent">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
 					  <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
 					</svg>
@@ -62,7 +62,7 @@
         </a>
       </li>
       <li>
-        <a href="${ctp}/admin/member/memberList" target="adminContent">
+        <a href="${ctp}/admin/member/memberList/1" target="adminContent">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-square" viewBox="0 0 16 16">
 				  	<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
 				  	<path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>

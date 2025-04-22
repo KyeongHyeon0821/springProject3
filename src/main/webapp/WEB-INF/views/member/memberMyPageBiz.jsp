@@ -57,7 +57,6 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<jsp:include page="/WEB-INF/views/include/slide2.jsp" />
 <p><br/></p>
 <div class="container">
 <h3 class="text-center mb-4">

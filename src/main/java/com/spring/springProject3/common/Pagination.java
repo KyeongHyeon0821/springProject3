@@ -3,16 +3,22 @@ package com.spring.springProject3.common;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring.springProject3.dao.BoardDao;
+import com.spring.springProject3.dao.AdminDao;
+import com.spring.springProject3.dao.InquiryDao;
+import com.spring.springProject3.dao.QnaDao;
 import com.spring.springProject3.vo.PageVo;
 
 @Service
 public class Pagination {
 	
 	@Autowired
-	BoardDao boardDao;
+	InquiryDao inquiryDao;
 	
-
+	@Autowired
+	AdminDao adminDao;
+	
+	@Autowired
+	QnaDao qnaDao;
 
 	public PageVo getTotRecCnt(int pag, int pageSize, String section, String part, String searchString) {
 		PageVo vo = new PageVo();
@@ -20,29 +26,29 @@ public class Pagination {
 		int totRecCnt = 0;
 		String search = "";
 		String searchStr = "";
+		String mid = ""; 
 		
-//		검색어가 넘어왔을경우 처리하는 부분
-//		if(!searchString.equals("/")) {	// searchString : 'title/공지'
-//			search = searchString.split("/")[0];
-//			searchString = searchString.split("/")[1];
-//		}
 		
-		if(section.equals("board")) {
-			if(part.equals("")) totRecCnt = boardDao.getBoardTotRecCnt();
-			else totRecCnt = boardDao.getBoardTotRecCntSearch(part, searchString);
+		if(section.equals("inquiry")) {
+			mid = part; 
+			totRecCnt = inquiryDao.getInquiryTotRecCnt(mid);
 		}
-		/*
-		 * else if(section.equals("pds")) { totRecCnt = pdsDao.getPdsTotRecCnt(part); }
-		 * else if(section.equals("webMessage")) { String mid = part; int mSw =
-		 * Integer.parseInt(searchString); totRecCnt = webMessageDao.getTotRecCnt(mid,
-		 * mSw); }
-		 */
+		else if(section.equals("adminInquiry")) {
+			String choice = searchString;
+			totRecCnt = adminDao.getInquiryTotRecCnt(choice);
+		}
+		else if(section.equals("qna")) { 
+			totRecCnt = qnaDao.getQnaTotRecCnt(); 
+		}
+		else if(section.equals("qna")) { 
+			totRecCnt = qnaDao.getQnaTotRecCntSearch(part, searchString); 
+		}
+		 
 		
-		// 검색기(search(part)와 searchString)를 통한 리스트를 구현하기위한 처리
-		if(section.equals("pds") && !searchString.equals("")) {
+		if(section.equals("qna") && !searchString.equals("")) {
 			search = part;
 			if(totRecCnt != 0) pageSize = totRecCnt;
-			if(part.equals("title")) searchStr = "글제목";
+			if(part.equals("title")) searchStr = "제목";
 			else if(part.equals("nickName")) searchStr = "닉네임";
 			else searchStr = "글내용";
 		}

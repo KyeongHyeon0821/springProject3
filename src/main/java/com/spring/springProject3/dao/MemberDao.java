@@ -9,7 +9,7 @@ import com.spring.springProject3.vo.MemberVo;
 public interface MemberDao {
 
 		// 아름
-		List<MemberVo> getMemberList();
+		List<MemberVo> getMemberList(@Param("section") int section);
 		
 		MemberVo getMemberIdxSearch(@Param("idx") int idx);
 	
@@ -27,7 +27,7 @@ public interface MemberDao {
 
     MemberVo getMemberNickCheck(@Param("nickName") String nickName);
 
-    void setMemberDeleteCheck(@Param("mid") String mid);
+    void setMemberDeleteCheck(@Param("mid") String mid,@Param("level") int level);
 
     int setMemberPwdChange(@Param("mid") String mid, @Param("pwd") String pwd);
 
@@ -39,6 +39,8 @@ public interface MemberDao {
     
     void updatePassword(@Param("mid") String mid, @Param("pwd") String pwd);
 
-	MemberVo getMemberBizNoCheck(String businessNo);
+    MemberVo getMemberBizNoCheck(String businessNo);
+
+		void setVisitCount(@Param("mid") String mid);
 
 }

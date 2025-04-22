@@ -95,11 +95,15 @@ public class MemberController {
           }
       }
     	
-      System.out.println("1.pwd : " + pwd);
     	MemberVo vo = memberService.getMemberIdCheck(mid);
       if (vo != null && vo.getUserDel().equals("NO") && pwd.equals(vo.getPwd())) {
     	//if (vo != null && vo.getUserDel().equals("NO") && passwordEncoder.matches(pwd, vo.getPwd())) {
-          // 1. 세션 설정
+        	
+      		// 0. 방문수 증가
+      		memberService.setVisitCount(mid);   //방문수 + 1
+      	
+      	
+      		// 1. 세션 설정
           String strLevel = "";
           if (vo.getLevel() == 0) strLevel = "관리자";
           else if (vo.getLevel() == 1) strLevel = "사업자";
@@ -110,6 +114,7 @@ public class MemberController {
           session.setAttribute("sLevel", vo.getLevel());
           session.setAttribute("strLevel", strLevel);
           session.setAttribute("sLogin", "로그인");
+
           
           // 2. 쿠키 처리
           if (idSave != null && idSave.equals("on")) {
@@ -143,6 +148,8 @@ public class MemberController {
         return "redirect:/message/memberLoginNo";
       }
     }
+    
+    
     // 카카오 로그인 처리
     @RequestMapping(value = "/kakaoLogin", method = RequestMethod.GET)
     public String kakaoLoginGet(HttpSession session, HttpServletRequest request, HttpServletResponse response,
@@ -202,8 +209,9 @@ public class MemberController {
             return "redirect:/message/idCheckNo";
         }
         // 비밀번호 암호화
-        vo.setPwd(passwordEncoder.encode(vo.getPwd()));
+        //vo.setPwd(passwordEncoder.encode(vo.getPwd()));
         
+        System.out.println("vo : " + vo);
         int res = memberService.setMemberJoinOk(vo);
         return (res != 0) ? "redirect:/message/memberJoinOk" : "redirect:/message/memberJoinNo";
     }
@@ -274,8 +282,8 @@ public class MemberController {
  		messageHelper.setText(content, true);
  		
  		// 본문에 기재된 그림파일의 경로
- 		FileSystemResource file = new FileSystemResource(request.getSession().getServletContext().getRealPath("/resources/images/band.jpg"));
- 		messageHelper.addInline("band.jpg", file);
+ 		FileSystemResource file = new FileSystemResource(request.getSession().getServletContext().getRealPath("/resources/images/bandmember.jpg"));
+ 		messageHelper.addInline("bandmember.jpg", file);
  		
  		// 메일 전송하기
  		mailSender.send(message);
@@ -318,8 +326,10 @@ public class MemberController {
     // 비밀번호 확인 후 처리 (탈퇴, 비밀번호 변경, 회원 정보 수정)
     @RequestMapping(value = "/pwdCheck/{pwdFlag}", method = RequestMethod.POST)
     public String pwdCheckPost(HttpSession session, @PathVariable String pwdFlag, String pwd) {
+    		int level = (int) session.getAttribute("sLevel");
         String mid = (String) session.getAttribute("sMid");
-        if (!passwordEncoder.matches(pwd, memberService.getMemberIdCheck(mid).getPwd())) {
+        
+        if (!pwd.equals(memberService.getMemberIdCheck(mid).getPwd())) {
             if (pwdFlag.equals("d"))
                 return "redirect:/message/pwdCheckNo";
             else if (pwdFlag.equals("p"))
@@ -327,8 +337,16 @@ public class MemberController {
             else if (pwdFlag.equals("u"))
                 return "redirect:/message/pwdCheckNoU";
         }
+//        if (!passwordEncoder.matches(pwd, memberService.getMemberIdCheck(mid).getPwd())) {
+//        	if (pwdFlag.equals("d"))
+//        		return "redirect:/message/pwdCheckNo";
+//        	else if (pwdFlag.equals("p"))
+//        		return "redirect:/message/pwdCheckNoP";
+//        	else if (pwdFlag.equals("u"))
+//        		return "redirect:/message/pwdCheckNoU";
+//        }
         if (pwdFlag.equals("d")) {
-            memberService.setMemberDeleteCheck(mid);
+            memberService.setMemberDeleteCheck(mid, level);
             return "redirect:/message/memberDeleteCheck";
         } else if (pwdFlag.equals("p")) {
             return "member/memberPassCheckForm";

@@ -3,8 +3,8 @@
 <mapper namespace="com.spring.springProject3.dao.MemberDao">
 
 	<!-- 아름 -->
-	  <select id="getMemberList" resultType="com.spring.springProject3.vo.MemberVo">
-		select * from member order by idx desc;
+	<select id="getMemberList" resultType="com.spring.springProject3.vo.MemberVo">
+		select *,datediff(now(), lastDate) as deleteDiff from member where (#{section}=1 and (level=1 or level=888)) or (#{section}=2 and (level=2 or level=0 or level=999)) order by idx desc;
   </select>
 
 	<select id="getMemberIdxSearch" resultType="com.spring.springProject3.vo.MemberVo">
@@ -54,7 +54,7 @@
   
   <!-- 회원가입 처리 -->
   <insert id="setMemberJoinOk" parameterType="com.spring.springProject3.vo.MemberVo">
-    insert into member values (default, #{vo.mid}, #{vo.pwd}, #{vo.nickName}, #{vo.name}, #{vo.gender}, #{vo.birthday}, #{vo.tel}, #{vo.address}, #{vo.email}, 'NO', #{vo.level}, #{vo.businessNo}, #{vo.userInfor})
+    insert into member values (default, #{vo.mid}, #{vo.pwd}, #{vo.nickName}, #{vo.name}, #{vo.gender}, #{vo.birthday}, #{vo.tel}, #{vo.address}, #{vo.email}, 'NO', #{vo.level}, #{vo.businessNo}, #{vo.userInfor}, default, default, default, default)
   </insert>
   
   <!-- 카카오 회원 자동 가입 처리 -->
@@ -65,10 +65,23 @@
 
 
 
+
+
+
+	<!-- 회원 방문수 증가 처리 -->
+	<update id="setVisitCount">
+		update member set visitCnt = visitCnt + 1 , lastDate = now() where mid = #{mid}
+	</update>
   
   <!-- 회원 탈퇴 처리 -->
   <update id="setMemberDeleteCheck" parameterType="String">
-    update member set userDel = 'OK' where mid = #{mid}
+		update member set userDel = 'OK', level = 
+		<choose>
+			<when test="level == 1">888</when>
+			<when test="level == 2">999</when>
+		</choose>
+		where mid = #{mid} and level in (1,2) and level = #{level}
+		
   </update>
   
   <!-- 비밀번호 변경 처리 -->

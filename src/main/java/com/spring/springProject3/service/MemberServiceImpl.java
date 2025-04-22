@@ -16,16 +16,16 @@ public class MemberServiceImpl implements MemberService {
     MemberDao memberDao;
     
     //아름
-  	@Override
-  	public List<MemberVo> getMemberList() {
-  		return memberDao.getMemberList();
-  	}
 
+  	@Override
+  	public List<MemberVo> getMemberList(int section) {
+  		return memberDao.getMemberList(section);
+  	}
+  	
   	@Override
   	public MemberVo getMemberIdxSearch(int idx) {
   		return memberDao.getMemberIdxSearch(idx);
   	}
-    
     
     
     
@@ -53,8 +53,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void setMemberDeleteCheck(String mid) {
-        memberDao.setMemberDeleteCheck(mid);
+    public void setMemberDeleteCheck(String mid, int level) {
+        memberDao.setMemberDeleteCheck(mid, level);
     }
 
     @Override
@@ -91,5 +91,25 @@ public class MemberServiceImpl implements MemberService {
 	public MemberVo getMemberBizNoCheck(String businessNo) {
 	    return memberDao.getMemberBizNoCheck(businessNo);
 	}
+
+	@Override
+	public void setVisitCount(String mid) {
+			memberDao.setVisitCount(mid);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

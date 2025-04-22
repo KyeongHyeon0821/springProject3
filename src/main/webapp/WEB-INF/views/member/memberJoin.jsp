@@ -377,7 +377,6 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<jsp:include page="/WEB-INF/views/include/slide2.jsp" />
 <p><br/></p>
 	<h3 class="text-center mb-4">
   	  <img src="${ctp}/images/logo.png" width="150px"/><br/>
@@ -426,7 +425,7 @@
       <tr>
         <th class="bg-secondary-subtle">성별</th>
         <td>
-          <input type="radio" name="gender" id="gender1" value="남자" checked> 남자 &nbsp;
+          <input type="radio" name="gender" id="gender1" value="남자" checked> 남자&nbsp;
           <input type="radio" name="gender" id="gender2" value="여자"> 여자
         </td>
       </tr>

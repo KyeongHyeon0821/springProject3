@@ -1,8 +1,11 @@
 package com.spring.springProject3.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.spring.springProject3.vo.ComplaintVo;
+import com.spring.springProject3.vo.InquiryVo;
 
 public interface AdminDao {
 
@@ -10,4 +13,20 @@ public interface AdminDao {
 
 	void setBoardTableComplaintOk(@Param("partidx") int partIdx);
 
+	List<InquiryVo> getInquiryList(@Param("startIndexNo") int startIndexNo, @Param("pageSize") int pageSize);
+
+	int getInquiryTotRecCnt(@Param("choice") String choice);
+
+	List<InquiryVo> getInquiryList(@Param("startIndexNo") int startIndexNo, @Param("pageSize") int pageSize, @Param("choice") String choice);
+
+	InquiryVo getInquiryDetail(@Param("idx") int idx);
+
+	int setInquiryReplyOk(@Param("idx") int idx, @Param("reContent") String reContent);
+
+	void setInquiryReplyStatusOk(@Param("idx") int idx);
+
+	int setAdInquiryDetailUpdate(@Param("reIdx") int reIdx, @Param("reContent") String reContent);
+
+	int setAdInquiryDetailHold(@Param("idx") int idx);
+	
 }

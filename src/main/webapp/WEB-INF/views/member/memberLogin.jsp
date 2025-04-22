@@ -93,7 +93,6 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<jsp:include page="/WEB-INF/views/include/slide2.jsp" />
 <div class="login-box text-center">
   <form name="myform" method="post" onsubmit="return loginCheck()">
     <img src="${ctp}/images/logo.png" width="150px" class="mb-3" />

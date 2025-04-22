@@ -58,6 +58,7 @@ select date_add(now(), interval -10 hour);
 select datediff(now(), '2025-3-18');
 select datediff('2025-3-18', now());
 
+select datediff(now(), lastDate);
 
 -- 2. 뒤에서 앞을 뺌
 select timestampdiff(minute, '2025-3-18 15:30:0', now());

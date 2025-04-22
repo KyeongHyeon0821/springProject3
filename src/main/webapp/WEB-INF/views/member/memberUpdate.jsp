@@ -251,7 +251,6 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<jsp:include page="/WEB-INF/views/include/slide2.jsp" />
 <p><br/></p>
 	<h3 class="text-center mb-4">
   	  <img src="${ctp}/images/logo.png" width="150px"/><br/>

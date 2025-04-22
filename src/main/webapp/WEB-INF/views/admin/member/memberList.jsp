@@ -18,7 +18,7 @@
   		location.href = "memberList?level=" + level;
   	
   	}
-  	// 회원 등급 변경처리
+/*   	// 회원 등급 변경처리
   	function levelChange(e) {
 //  		alert(" value : " + myform.level.value);
 //  		alert(" value : " + e.value);
@@ -48,7 +48,7 @@
 				},
 				error:function() { alert("전송오류!"); }
 			});
-  	}
+  	} */
 		
     // 닉네임 클릭시 모달을 통해서 회원 '닉네임/아이디/사진' 보여주기
     function imgInfor(nickName, mid, photo) {
@@ -78,7 +78,7 @@
       }
     }
     
-    // 여러개 선택항목 등급변경처리
+    /* // 여러개 선택항목 등급변경처리
     function levelSelectCheck() {
     	let idx = document.getElementById("idx");
     	let select = document.getElementById("levelSelect");
@@ -116,7 +116,7 @@
     		  alert("전송 실패~~");
     	  }
       });
-    }
+    } */
   </script>
   <style>
   	body {
@@ -132,30 +132,23 @@
 <body>
 <p><br/></p>
 <div class="container">
-  <h2>전체 회원 리스트</h2>
+<c:choose>
+	<c:when test="${section == 2}">
+  	<h2>고객 리스트</h2>
+  </c:when>
+  <c:otherwise>
+  	<h2>사업자 리스트</h2>
+  </c:otherwise>
+</c:choose>  
   <div class="row mb-1">
     <div class="col-7">
 	    <div class="input-group">
 	      <input type="button" value="전체선택" onclick="allCheck()" class="btn btn-success btn-sm"/>
 	      <input type="button" value="전체취소" onclick="allReset()" class="btn btn-primary btn-sm"/>
 	      <input type="button" value="선택반전" onclick="reverseCheck()" class="btn btn-info btn-sm me-2"/>
-	      <select name="levelSelect" id="levelSelect" class="form-select form-select-sm">
-	        <option value="2">일반회원</option>
-	        <option value="1">사업자회원</option>
-	      </select>
-	      <input type="button" value="선택항목등급변경" onclick="levelSelectCheck()" class="btn btn-warning btn-sm" />
 	    </div>
     </div>
     <div class="col-2"></div>
-    <div class="col-3 text-end">
-      <select name="levelItem" id="levelItem" onchange="levelItemCheck()" class="form-select form-select-sm">
-        <option value="99"  ${level == 99  ? 'selected' : ''}>전체보기</option>
-        <option value="1"   ${level == 1   ? 'selected' : ''}>사업자회원</option>
-        <option value="2"   ${level == 2   ? 'selected' : ''}>일반회원</option>
-        <option value="999" ${level == 999 ? 'selected' : ''}>탈퇴신청회원</option>
-        <option value="0"   ${level == 0   ? 'selected' : ''}>관리자</option>
-      </select>
-    </div>
   </div>
   
   <form name="myform">
@@ -170,6 +163,9 @@
   			<th>최종방문일</th>
   			<th>오늘방문횟수</th>
   			<th>활동여부</th>
+  			<c:if test="${section == 1}">
+        	<th>사업자등록번호</th>
+      	</c:if>
   			<th>현재레벨</th>
   		</tr>
     <c:forEach var="vo" items="${vos}" varStatus="st">
@@ -189,14 +185,19 @@
           <td>${vo.todayCnt}</td>
           <td>
           	${vo.userDel == 'NO' ? '활동중' : '<font color=red>탈퇴신청</font>'}
-          	<c:if test="${vo.userDel == 'OK'}">(<font color="blue"><b>${vo.deleteDiff}</b></font>)</c:if>
+           	<c:if test="${vo.userDel == 'OK'}">(<font color="blue"><b>${vo.deleteDiff}</b></font>)</c:if>
           </td>
+          <c:if test="${section == 1}">
+          	<td>${vo.businessNo}</td>
+          </c:if>
           <td>
-            <select name="level" id="level" onchange="levelChange(this)">
+            <select name="level" id="level" ">
               <option value="1/${vo.idx}"   ${vo.level == 1 ? 'selected' : ''}>사업자회원</option>
               <option value="2/${vo.idx}"   ${vo.level == 2 ? 'selected' : ''}>일반회원</option>
               <option value="0/${vo.idx}"   ${vo.level == 0 ? 'selected' : ''}>관리자</option>
               <option value="999/${vo.idx}" ${vo.level == 999 ? 'selected' : ''}>탈퇴신청회원</option>
+              <option value="888/${vo.idx}" ${vo.level == 888 ? 'selected' : ''}>탈퇴신청회원</option>
+              
             </select>
           </td>
         </tr>

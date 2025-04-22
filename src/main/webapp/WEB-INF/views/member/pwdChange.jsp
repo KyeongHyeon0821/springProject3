@@ -25,7 +25,6 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<jsp:include page="/WEB-INF/views/include/slide2.jsp" />
 <p><br/></p>
 <div class="container" style="max-width: 500px;">
   <div class="card shadow-sm p-4">

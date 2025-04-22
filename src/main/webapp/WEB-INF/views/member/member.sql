@@ -1,21 +1,21 @@
 -- 프로젝트용 (김아름) -- 
 
 
-
+-- 고객 테이블 --
 create table member (
    idx         int not null auto_increment,
    mid         varchar(20) not null,
    pwd         varchar(100) not null,
    nickName   varchar(20) not null,
    name      varchar(10) not null,
-   tel         varchar(15) not null,
-   email      varchar(50) not null,
-   gender      char(2)      not null default '남자',
-   address      varchar(100),
-   businessNo  varchar(20),
+   gender      char(2) not null default '남자',
    birthday   datetime default now(),
-   level      int default 2,
+   tel         varchar(15) not null,
+   address      varchar(100),
+   email      varchar(50) not null,
    userDel      char(2) default 'NO',
+   level      int default 2,
+   businessNo  varchar(20),
    userInfor char(3) default '공개',								/* 회원 정보 공개여부(공개/비공개) */
 	 visitCnt	int default 0,											/* 총 방문수 */
 	 todayCnt	int default 0,											/* 오늘 방문한 횟수 */
@@ -43,7 +43,7 @@ insert into member values (default, 'bangza1234', '1234', '방자맨', '방자',
 insert into member values (default, 'hyangdan1234', '1234', '향단이', '향단','010-1234-1234','beorc8686@naver.com','여자','대전','1231231234',default,default,default,default,default,default,default,default);
 
 
-
+select * from member where level = 2 or 2=99 or 2=999 order by idx desc;
 
 
 /* 신고테이블(complaint) */
@@ -71,37 +71,108 @@ desc complaint;
 */
 
 
-
-/* 이 아래부터는 무시하셔도 됩니다. */
-
-create table board (
-  idx		int not null auto_increment,	/* 게시글의 고유번호 */
-  mid		varchar(20) not null,					/* 게시글 올린이의 아이디 */
-  nickName varchar(20) not null,			/* 게시글 올린이의 닉네임 */
-  title varchar(100) not null,				/* 글 제목 */
-  content text not null,							/* 글 내용 */
-  hostIp  varchar(40) not null,				/* 글 올린이 IP */
-  wDate		datetime default now(),			/* 글쓴 날짜 */
-  score		int default 5,							/* 서비스점수(1부터5까지,최대5점.기본 5점*/
-  complaint char(2) default 'NO',			/* 신고글 유무(신고당한글:OK, 정상글:NO, 감춘글:HI(hidden)) */
-  primary key (idx),
-  foreign key (mid) references member(mid)
+show tables;
+drop table room;
+drop table hotellike;
+drop table hotel;
+desc hotel;
+/* 호텔 테이블 */
+create table hotel(
+	idx int auto_increment,							/* 호텔 아이디 */
+	mid varchar(20) not null,						/* 호텔 등록자 아이디 */
+	name varchar(100) not null,				  /* 호텔 이름 */
+	address varchar(200) not null,			/* 호텔 주소 */
+	tel varchar(20),										/* 호텔 연락처 */
+	description text,										/* 호텔 소개글 */
+	thumbnail varchar(100) not null,		/* 호텔 썸네일 이미지 */
+	images text,												/* 호텔 이미지 */
+	regDate datetime default now(), 		/* 등록 날짜 */
+	status varchar(20) default '정상',		/* 호텔 상태 (정상/등록취소요청/비활성화/등록취소완료) */
+	x double,														/* 경도 */
+	y double,														/* 위도 */
+	primary key(idx),
+	foreign key(mid) references member(mid)
 );
-desc board;
+alter table hotel add column status varchar(20) default '정상';
+select * from hotel;
+insert into hotel values(default, 'admin', '롯데시티호텔 명동', '서울 중구 삼일대로 362', '02-6112-1000', '롯데시티호텔명동은 서울 시내 비즈니스와 쇼핑의 중심지인 명동과 서울의 오아시스인 청계천 사이에 위치하고 있으며, 27층 규모의 탁 트인 전망과 430의 객실과 멀티 스타일리시 뷔페 레스토랑, 미팅룸, 피트니스 등을 갖춘 프리미엄 비즈니스호텔입니다. 성공적인 비즈니스와 만족스런 여행을 위한 최고의 실용성과 차별화된 서비스, 합리적인 가격으로 비즈니스 고객과 레저여행객 모두에게 잊지 못할 추억을 선사합니다.', '롯데시티호텔명동.jpg',null, default,default,null,null);
+insert into hotel values(default, 'admin', '소테츠호텔즈 더 스프라지르 서울 명동', '서울 중구 남대문로5길 15', '02-772-0900', '서울 비즈니스 구역 중심에 위치한 ''소테츠 호텔즈 더 스프라지르 서울 명동''은 ''지하철 4호선 회현역 7번출구''와 ''지하철 1, 2호선 시청역 7번출구''에서 도보 7분 내에 위치하고 있어 서울의 주요 관광지와 명소에 편리하게 이동할 수 있으며, 공항 리무진 버스를 타고 70분 안에 인천국제공항에 도착할 수 있습니다.', '소테츠호텔.jpg', null, default,default,null,null);
 
 
-/* 댓글 달기 */
-create table boardReply (
-  idx			  int not null auto_increment,	/* 댓글 고유번호 */
-  boardIdx  int not null,						/* 원본글의 고유번호 - 외래키로 지정 */
-  mid			  varchar(20) not null,		/* 댓글 올린이 아이디 */
-  nickName  varchar(20) not null,		/* 댓글 올린이 닉네임 */
-  content   text not null,					/* 댓글 내용 */
-  hostIp		varchar(50) not null,		/* 댓글 올린 PC의 고유 IP */
-  wDate			datetime default now(),	/* 댓글 올린 날짜/시간 */
-  primary key(idx),
-  foreign key(boardIdx) references board(idx)
-  on update cascade
-  on delete cascade
+
+
+/* 호텔 객실 테이블 */
+create table room(
+	idx int auto_increment,						/* 객실 아이디 */
+	hotelIdx int not null,						/* 연결된 호텔 아이디 */
+	name varchar(50) not null,				/* 객실명 */
+	price int not null,								/* 객실 1박 요금 */
+	maxPeople int not null,						/* 최대 인원 수 */
+	petSizeLimit varchar(10),					/* 반려견 크기 제한 (소형/중형/대형) */
+	petCountLimit int default 1,			/* 최대 반려견 수 */
+	thumbnail varchar(100) not null,	/* 객실 썸네일 이미지 */
+	images text,											/* 객실 이미지 */
+	status varchar(20) default '정상', /* 객실 상태 (정상/비활성화/삭제) */
+	regDate datetime default now(),		/* 등록 날짜 */
+	primary key(idx),
+	foreign key(hotelIdx) references hotel(idx) on delete cascade
 );
-desc boardReply;
+
+
+/* 예약 테이블 */
+create table reservation (
+  idx           int auto_increment primary key,         /* 예약 번호	*/
+  mid      		  varchar(20) not null,                		/* 예약한 회원 아이디 */
+  roomIdx       int not null,                           /* 예약한 객실 번호 */
+  checkinDate  date not null,                           /* 체크인 날짜 */
+  checkoutDate date not null,                           /* 체크아웃 날짜 */
+  status        varchar(20) default '대기중',     		    /* 예약 상태 (대기중, 예약완료, 예약취소) */
+  regDate       datetime default now(), 						    /* 예약 등록일 */
+  foreign key (mid) references member(mid) on delete cascade,
+  foreign key (roomIdx) references room(idx) on delete cascade
+);
+
+
+/* 찜 테이블 */
+create table hotelLike (
+	idx int auto_increment primary key,				/* 찜 번호 */
+	mid varchar(20) not null,									/* 찜한 회원 아이디 */
+	hotelIdx int not null,										/* 찜한 호텔 아이디 */
+	likedDate datetime default now(),					/* 찜한 날짜 */
+	UNIQUE KEY (mid, hotelIdx),
+	foreign key (mid) references member(mid) on delete cascade,
+  foreign key (hotelIdx) references hotel(idx) on delete cascade
+);
+
+
+
+/* 1:1 문의 */
+create table inquiry (
+		idx int not null auto_increment,              /* 고유번호 */
+		mid varchar(20) not null,                      /* 아이디 */
+		title varchar(100) not null,                   /* 1:1문의 제목 */
+		part varchar(20) not null,                    /* 분류 (카테고리) */
+		wDate datetime not null default now(), /* 문의 작성 날짜*/
+		reservation varchar(50),                      /* 예약 번호 */
+		content text not null,                           /* 문의 내역 */
+		fSName varchar(200),                          /* 문의시에 올린 서버에 저장되는 이름*/
+		reply varchar(10) default '답변대기중',      /* 답변 여부(답변대기중/답변완료/답변보류) */
+		primary key (idx),
+		foreign key (mid) references member(mid) 
+);
+
+insert into inquiry values (default, 'admin', '문의합니다', '결제/환불문의', default, '', '결제가 안된거같습니다.', '', default);
+select count(*) from inquiry;
+select * from inquiry;
+
+desc inquiry;
+
+/* 1:1 문의 답변글 */
+create table inquiryReply(
+		reIdx int not null auto_increment,            /* 답변 고유번호*/
+		inquiryIdx int not null,                            /* 문의글 고유번호*/
+		reWDate datetime not null default now(), /* 답변 작성 날짜*/
+		reContent text not null,                          /* 답변 내용 */
+		primary key (reIdx),
+		foreign key (inquiryIdx) references inquiry (idx)
+);
