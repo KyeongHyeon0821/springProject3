@@ -105,8 +105,8 @@ public class HotelServiceImpl implements HotelService {
 			String thumbnailSaveName = realPath + "s_" + sFileName;
 			File thumbnailFile = new File(thumbnailSaveName);
 			
-			int width = 160;
-			int height = 120;
+			int width = 800;
+			int height = 600;
 			Thumbnailator.createThumbnail(realFileName, thumbnailFile, width, height);
 			
 		} catch (IOException e) {

@@ -1,6 +1,7 @@
-/* 호텔 객실 테이블 */
+/* 객실 테이블 */
 create table room(
 	idx int auto_increment,									/* 객실 아이디 */
+	mid varchar(20) not null,								/* 호텔 등록자 아이디 */
 	hotelIdx int not null,									/* 연결된 호텔 아이디 */
 	name varchar(50) not null,							/* 객실명 */
 	roomNumber varchar(10) not null,				/* 객실 번호 */
@@ -13,10 +14,10 @@ create table room(
 	status varchar(20) default '정상', 				/* 객실 상태 (정상/비활성화/삭제) */
 	regDate datetime default now(),					/* 등록 날짜 */
 	primary key(idx),
-	foreign key(hotelIdx) references hotel(idx) on delete cascade
+	foreign key(hotelIdx) references hotel(idx) on delete cascade,
+	foreign key(mid) references member(mid)
 );
-
-drop table room;
+select * from room;
 
 
 /* 객실 옵션 테이블 */
@@ -48,3 +49,4 @@ create table roomOptions (
   foreign key (optionIdx) references options(idx) on delete cascade
 );
 
+select * from options where idx in (select optionIdx from roomOptions where roomIdx = 1);

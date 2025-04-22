@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.OptionVo;
 import com.spring.springProject3.vo.RoomVo;
 
@@ -17,6 +18,12 @@ public interface RoomService {
 	int getMaxIdx();
 
 	int setRoomOptions(int roomIdx, int optionIdx);
+
+	List<RoomVo> getRoomList(int idx);
+
+	RoomVo getRoom(int roomIdx);
+
+	List<OptionVo> getRoomOptionList(int roomIdx);
 
 	
 }

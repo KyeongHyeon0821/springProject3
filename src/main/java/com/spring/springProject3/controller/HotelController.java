@@ -26,7 +26,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.springProject3.service.HotelService;
+import com.spring.springProject3.service.RoomService;
 import com.spring.springProject3.vo.HotelVo;
+import com.spring.springProject3.vo.RoomVo;
 
 @RequestMapping("/hotel")
 @Controller
@@ -34,6 +36,9 @@ public class HotelController {
 
 	@Autowired
 	HotelService hotelService;
+	
+	@Autowired
+	RoomService roomService;
 	
 	// 호텔 리스트
 	@RequestMapping("/hotelList")
@@ -53,15 +58,13 @@ public class HotelController {
 	
 	// 호텔 등록폼 보기
 	@RequestMapping(value =  "/hotelInput", method = RequestMethod.GET)
-	public String hotelInput2Get() {
+	public String hotelInputGet() {
 		return "hotel/hotelInput";
 	}
 	
-	// 호텔 등록 처리하기2
+	// 호텔 등록 처리하기
 	@RequestMapping(value =  "/hotelInput", method = RequestMethod.POST)
-	public String hotelInput2Post(@Validated HotelVo vo, BindingResult bindingResult, MultipartFile thumbnailFile) {
-		System.out.println("x : " + vo.getX());
-		System.out.println("y : " + vo.getY());
+	public String hotelInputPost(@Validated HotelVo vo, BindingResult bindingResult, MultipartFile thumbnailFile) {
 		// 백엔드 체크 에러 발생 시 처리
 		if(bindingResult.hasErrors()) {
 			System.out.println("에러 내용 : " + bindingResult);
@@ -126,8 +129,13 @@ public class HotelController {
 		
 		if(res != 0) hotelLike = "Ok";
 		else hotelLike = "No";
+		
+		// 객실 리스트 조회
+		List<RoomVo> roomVos = roomService.getRoomList(idx);
+		
 		model.addAttribute("vo", vo);
 		model.addAttribute("hotelLike", hotelLike);
+		model.addAttribute("roomVos", roomVos);
 		return "hotel/hotelDetail";
 	}
 	

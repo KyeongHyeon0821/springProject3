@@ -1,10 +1,10 @@
 package com.spring.springProject3.controller;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,6 +41,7 @@ public class RoomController {
 	}
 	
 	// 객실 등록 처리
+	@Transactional
 	@RequestMapping(value = ("/roomInput"), method = RequestMethod.POST)
 	public String roomInputPost(RoomVo vo, MultipartFile thumbnailFile, MultipartHttpServletRequest imageFiles,
 			@RequestParam(name="options", required = false) String[] options
@@ -59,5 +60,35 @@ public class RoomController {
 		else return "redirect:/message/roomInputNo?hotelIdx="+vo.getHotelIdx();
 	}
 	
+	
+	// 객실 상세 보기
+	@RequestMapping(value = ("/roomDetail"), method = RequestMethod.GET)
+	public String roomDetailGet(Model model, @RequestParam("roomIdx") int roomIdx) {
+		
+		RoomVo vo = roomService.getRoom(roomIdx);
+		List<OptionVo> roomOptionList = roomService.getRoomOptionList(roomIdx);
+				
+		model.addAttribute("vo", vo);
+		model.addAttribute("roomOptionList", roomOptionList);
+		return "room/roomDetail";
+	}
+	
+	// 객실 수정 폼 보기
+	@RequestMapping(value = ("/roomUpdate"), method = RequestMethod.GET)
+	public String roomUpdateGet(Model model, @RequestParam("roomIdx") int roomIdx) {
+		
+		RoomVo vo = roomService.getRoom(roomIdx);
+		List<OptionVo> optionList = roomService.getOptionList(); // 전체 옵션 리스트
+		List<OptionVo> roomOptionList = roomService.getRoomOptionList(roomIdx);  // 체크된 옵션 리스트
+		HotelVo hotelVo = hotelService.getHotel(vo.getHotelIdx());
+		
+		
+		model.addAttribute("vo", vo);
+		model.addAttribute("hotelVo", hotelVo);
+		model.addAttribute("optionList", optionList);
+		model.addAttribute("roomOptionList", roomOptionList);
+		
+		return "room/roomUpdate";
+	}
 	
 }

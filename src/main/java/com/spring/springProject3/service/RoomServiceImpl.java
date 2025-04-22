@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.springProject3.dao.RoomDao;
+import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.OptionVo;
 import com.spring.springProject3.vo.RoomVo;
 
@@ -103,8 +104,8 @@ public class RoomServiceImpl implements RoomService {
 			String thumbnailSaveName = realPath + "s_" + sFileName;
 			File thumbnailFile = new File(thumbnailSaveName);
 			
-			int width = 160;
-			int height = 120;
+			int width = 300;
+			int height = 300;
 			Thumbnailator.createThumbnail(realFileName, thumbnailFile, width, height);
 			
 		} catch (IOException e) {
@@ -128,6 +129,24 @@ public class RoomServiceImpl implements RoomService {
 	@Override
 	public int setRoomOptions(int roomIdx, int optionIdx) {
 		return roomDao.setRoomOptions(roomIdx, optionIdx);
+	}
+
+
+	@Override
+	public List<RoomVo> getRoomList(int idx) {
+		return roomDao.getRoomList(idx);
+	}
+
+
+	@Override
+	public RoomVo getRoom(int roomIdx) {
+		return roomDao.getRoom(roomIdx);
+	}
+
+
+	@Override
+	public List<OptionVo> getRoomOptionList(int roomIdx) {
+		return roomDao.getRoomOptionList(roomIdx);
 	}
 	
 	

@@ -15,6 +15,62 @@
 			height: auto !important;
 			margin : 5px 5px 0 0;
 		}
+		
+		.roomList {
+		  max-width: 1000px;
+		  margin: 40px auto;
+		  padding: 0 16px;
+		  display: flex;
+		  flex-direction: column;
+		  gap: 20px;
+		  font-family: sans-serif;
+		}
+		
+		.roomContainer {
+		  display: flex;
+		  background-color: #f7f7f9;
+		  border-radius: 10px;
+		  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+		  overflow: hidden;
+		}
+		
+		.roomThumbnailContainer {
+		  width: 160px;
+		  height: 120px;
+		  flex-shrink: 0;
+		}
+		
+		.roomThumbnailContainer img {
+		  width: 100%;
+		  height: 100%;
+		  object-fit: cover;
+		}
+		
+		.roomDetailContainer {
+		  padding: 16px;
+		  display: flex;
+		  flex-direction: column;
+		  justify-content: center;
+		  gap: 6px;
+		  flex: 1;
+		}
+		
+		.roomDetailContainer div:nth-child(1) a {
+		  font-size: 14px;
+		  color: #0077cc;
+		  text-decoration: none;
+		}
+		
+		.roomDetailContainer div:nth-child(2) {
+		  font-size: 16px;
+		  font-weight: bold;
+		  color: #333;
+		}
+		
+		.roomDetailContainer div:nth-child(3) {
+		  font-size: 15px;
+		  color: #444;
+		}
 	</style>
 	<script>
 		'use strict';
@@ -98,11 +154,25 @@
 		<a id="likeFn" href="javascript:hotelLikeOk()"><img id="likeImg" src="${ctp}/images/heartBlack.png" /></a>
 	</c:if>
 	
-	
-	<h5>🏨 ${vo.address}</h5>
 	<div><img src="${ctp}/hotelThumbnail/${vo.thumbnail}" title="${vo.name}" alt="대표이미지" width="400px"/></div>
 	
 	<div class="hotel-images">${vo.images}</div>
+	
+	<!-- 객실 리스트 -->
+	<div class="roomList">객실리스트
+		<c:forEach items="${roomVos}" var="roomVo" varStatus="st">
+			<div class="roomContainer">
+				<div class="roomThumbnailContainer">
+					<img src="${ctp}/roomThumbnail/s_${roomVo.thumbnail}" />
+				</div>
+				<div class="roomDetailContainer">
+					<div><a href="${ctp}/room/roomDetail?roomIdx=${roomVo.idx}">상세보기</a></div>
+					<div>${roomVo.name}</div>
+					<div>${roomVo.price}원</div>
+				</div>
+			</div>
+		</c:forEach>
+	</div>
 	
 	<p>연락처 : ${vo.tel}</p>
 	<div>호텔 소개</div>

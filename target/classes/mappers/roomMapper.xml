@@ -4,7 +4,7 @@
   
   <!-- 객실 등록 처리 -->
   <insert id="setRoomInput">
-  	insert into room values(default, #{vo.hotelIdx}, #{vo.name}, #{vo.price}, #{vo.maxPeople}, #{vo.petSizeLimit}, #{vo.petCountLimit}, #{vo.thumbnail}, #{vo.images}, default, default);
+  	insert into room values(default, #{vo.mid}, #{vo.hotelIdx}, #{vo.name}, #{vo.roomNumber}, #{vo.price}, #{vo.maxPeople}, #{vo.petSizeLimit}, #{vo.petCountLimit}, #{vo.thumbnail}, #{vo.images}, default, default);
   </insert>
   
   <!-- 객실의 옵션 등록 처리 -->
@@ -21,5 +21,22 @@
   <select id="getMaxIdx" resultType="int">
 		select max(idx) from room;  
   </select>
+  
+  <!-- 호텔별 객실 리스트 조회  -->
+  <select id="getRoomList">
+  	select * from room where hotelIdx = #{idx};
+  </select>
+  
+  <!-- 객실 상세 조회 -->
+  <select id="getRoom" resultType="com.spring.springProject3.vo.RoomVo">
+  	select * from room where idx=#{roomIdx};
+  </select>
+  
+  <!-- 객실별 옵션 리스트 조회 -->
+  <select id="getRoomOptionList" resultType="com.spring.springProject3.vo.OptionVo">
+  	select * from options where idx in (select optionIdx from roomOptions where roomIdx = ${roomIdx});
+  </select>
+  
+  
   
 </mapper>

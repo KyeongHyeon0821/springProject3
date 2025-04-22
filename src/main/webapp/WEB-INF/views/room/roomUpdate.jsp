@@ -5,7 +5,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>roomInput.jsp</title>
+	<title>roomUpdate.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
 	<script>
 		'use strict';
@@ -41,28 +41,33 @@
 				return false;
 			}
 			
-			if(thumbnailFile == "") {
-				alert("업로드할 썸네일 파일을 선택하세요");
-				$("#thumbnailFile").focus();
-				return false;
-			}
 			
-			// 썸네일 파일 용량 체크, 확장자 체크
-			let ext = thumbnailFile.substring(thumbnailFile.lastIndexOf(".")+1).toLowerCase();
+			
+			// 이미지 파일 체크용 변수 선언
 			let maxSize = 1024 * 1024 * 20; // 한번에 업로드할 파일의 최대용랑을 20mb로 한정
-			let fileSize = document.getElementById("thumbnailFile").files[0].size;
+			let ext = "";
+			let fileSize = 0;
 			
-			if(fileSize > maxSize) {
-				alert("업로드할 파일의 최대용량은 20mb 입니다.");
-				$("#thumbnailFile").focus();
-				return false;
+			// 썸네일 파일 변경시 파일 용량 체크, 확장자 체크
+			let file = document.getElementById("thumbnailFile").files[0];
+			
+			if(file) {
+				ext = thumbnailFile.substring(thumbnailFile.lastIndexOf(".")+1).toLowerCase();
+				fileSize = document.getElementById("thumbnailFile").files[0].size;
+				
+				if(fileSize > maxSize) {
+					alert("업로드할 파일의 최대용량은 20mb 입니다.");
+					$("#thumbnailFile").focus();
+					return false;
+				}
+				
+				if(ext !="jpg" && ext !="gif" && ext !="png" && ext !="jpeg" && ext !="webp") {
+					alert("업로드 가능 파일은 'jpg/gif/png/jpeg/webp' 입니다.");
+					$("#thumbnailFile").focus();
+					return false;
+				}
 			}
 			
-			if(ext !="jpg" && ext !="gif" && ext !="png" && ext !="jpeg" && ext !="webp") {
-				alert("업로드 가능 파일은 'jpg/gif/png/jpeg/webp' 입니다.");
-				$("#thumbnailFile").focus();
-				return false;
-			}
 			
 			// 썸네일 외 이미지 파일 확장자 체크, 파일 누적 크기 체크
 			let imageFiles = document.getElementById("imageFiles").value; // 이미지 이름
@@ -98,6 +103,7 @@
 	      }
 	      reader.readAsDataURL(e.files[0]);
 	    }
+	    $("#beforeThumbnailPreview").hide();
 	    $("#thumbnailPreview").show();
 	  }
 	</script>
@@ -105,39 +111,39 @@
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <div class="container">
-	<h3 class="mb-4">객실 등록</h3>
+	<h3 class="mb-4">객실 정보 수정</h3>
 	<form name="roomForm" method="post" onsubmit="return fCheck();" enctype="multipart/form-data">
-		<input type="hidden" name="hotelIdx" value="${hotelIdx}" />
-		<input type="hidden" name="mid" value="${sMid}" />
+		<input type="hidden" name="hotelIdx" value="${vo.hotelIdx}" />
+		<input type="hidden" name="mid" value="${vo.mid}" />
 		
 		<div class="mb-3">
 			<label for="hotelName" class="form-label">호텔명</label>
-			<input type="text" value="${vo.name}" name="hotelName" id="hotelName" class="form-control" readonly />
+			<input type="text" value="${hotelVo.name}" name="hotelName" id="hotelName" class="form-control" readonly />
 		</div>
 		
 		<div class="mb-3">
 			<label for="name" class="form-label">객실명</label>
-			<input type="text" name="name" id="name" class="form-control" required />
+			<input type="text" name="name" id="name" value="${vo.name}" class="form-control" required />
 		</div>
 		
 		<div class="mb-3">
 			<label for="roomNumber" class="form-label">객실 번호</label>
-			<input type="text" name="roomNumber" id="roomNumber" class="form-control" required />
+			<input type="text" name="roomNumber" id="roomNumber" value="${vo.roomNumber}" class="form-control" required />
 		</div>
 
 		<div class="mb-3">
 			<label for="price" class="form-label">1박 요금</label>
-			<input type="number" name="price" id="price" class="form-control" required />
+			<input type="number" name="price" id="price" value="${vo.price}" class="form-control" required />
 		</div>
 
 		<div class="mb-3">
 			<label for="maxPeople" class="form-label">최대 인원 수</label>
 			<select name="maxPeople" id="maxPeople" class="form-select" required>
-				<option value="1">1</option>
-				<option value="2" selected>2</option>
-  			<option value="3">3</option>
- 				<option value="4">4</option>
- 				<option value="5">5</option>
+				<option value="1" ${vo.maxPeople == 1 ? 'selected' : ''}>1</option>
+				<option value="2" ${vo.maxPeople == 2 ? 'selected' : ''}>2</option>
+  			<option value="3" ${vo.maxPeople == 3 ? 'selected' : ''}>3</option>
+ 				<option value="4" ${vo.maxPeople == 4 ? 'selected' : ''}>4</option>
+ 				<option value="5" ${vo.maxPeople == 5 ? 'selected' : ''}>5</option>
 			</select>
 		</div>
 
@@ -145,30 +151,31 @@
 			<label for="petSizeLimit" class="form-label" >반려견 크기 제한</label>
 			<select name="petSizeLimit" id="petSizeLimit" class="form-select" required>
 				<option value="">선택 안 함</option>
-				<option value="소형">소형견만 가능</option>
-  			<option value="중형">중형견까지 가능</option>
- 				<option value="대형">대형견까지 가능 (모두 가능)</option>
+				<option value="소형" ${vo.petSizeLimit == '소형' ? 'selected' : ''}>소형견만 가능</option>
+  			<option value="중형" ${vo.petSizeLimit == '중형' ? 'selected' : ''}>중형견까지 가능</option>
+ 				<option value="대형" ${vo.petSizeLimit == '대형' ? 'selected' : ''}>대형견까지 가능 (모두 가능)</option>
 			</select>
 		</div>
 
 		<div class="mb-3">
 			<label for="petCountLimit" class="form-label">최대 반려견 수</label>
 			<select name="petCountLimit" id="petCountLimit" class="form-select" required>
-				<option value="1">1</option>
-				<option value="2">2</option>
-  			<option value="3">3</option>
- 				<option value="4">4</option>
- 				<option value="5">5</option>
+				<option value="1" ${vo.petCountLimit == 1 ? 'selected' : ''}>1</option>
+				<option value="2" ${vo.petCountLimit == 2 ? 'selected' : ''}>2</option>
+  			<option value="3" ${vo.petCountLimit == 3 ? 'selected' : ''}>3</option>
+ 				<option value="4" ${vo.petCountLimit == 4 ? 'selected' : ''}>4</option>
+ 				<option value="5" ${vo.petCountLimit == 5 ? 'selected' : ''}>5</option>
 			</select>
 		</div>
 
-		<div class="mb-3">
+ 		<div class="mb-3">
 			<label for="thumbnail" class="form-label">썸네일 이미지</label>
-			<input type="file" name="thumbnailFile" id="thumbnailFile" onchange="thumbnailCheck(this)" class="form-control" accept=".jpg,.gif,.png,.jpeg,.webp" required />
+			<input type="file" name="thumbnailFile" id="thumbnailFile" onchange="thumbnailCheck(this)" class="form-control" accept=".jpg,.gif,.png,.jpeg,.webp"/>
 		</div>
 		
 		<div class="form-group">
       <label>썸네일 미리보기</label>
+      <img id="beforeThumbnailPreview" src="${ctp}/roomThumbnail/${vo.thumbnail}" width="150px" />
       <img id="thumbnailPreview" width="150px" style="display:none">
     </div>
 
@@ -179,8 +186,18 @@
 		
 		<div class="mb-3">
 		  <label class="form-label">객실 옵션</label><br/>
+		  
 		  <c:forEach var="option" items="${optionList}">
-		    <input type="checkbox" name="options" value="${option.idx}" id="option${option.idx}" />
+		    <c:set var="isChecked" value="false"/>
+		    
+		    <c:forEach var="roomOption" items="${roomOptionList}">
+		      <c:if test="${option.idx == roomOption.idx}">
+		        <c:set var="isChecked" value="true"/>
+		      </c:if>
+		    </c:forEach>
+		    
+		    <input type="checkbox" name="options" value="${option.idx}" id="option${option.idx}" 
+		           <c:if test="${isChecked}">checked</c:if> />
 		    <label for="option${option.idx}">${option.name}</label>&nbsp;&nbsp;
 		  </c:forEach>
 		</div>

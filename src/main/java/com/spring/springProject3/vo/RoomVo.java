@@ -9,6 +9,7 @@ import lombok.ToString;
 @ToString
 public class RoomVo {
 	private int idx;
+	private String mid;
 	private int hotelIdx;
 	private String name;
 	private String roomNumber;
