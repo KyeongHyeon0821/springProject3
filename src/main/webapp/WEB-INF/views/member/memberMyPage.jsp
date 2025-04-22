@@ -29,6 +29,7 @@
   .container {
 	max-width: 1200px;
 	margin: 0 auto;
+	overflow-x: visible;
   }
 
   .my-page-header {
@@ -133,6 +134,15 @@
 
   .dog-card ul li {
     margin-bottom: 6px;
+  }
+  
+  footer.w3-container {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin-left: calc(-50vw + 50%) !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box;
   }
 </style>
 </head>

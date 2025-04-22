@@ -1,24 +1,42 @@
 package com.spring.springProject3.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.springProject3.service.TouristSpotService;
 import com.spring.springProject3.vo.TouristSpotVo;
 
-@RestController
-@RequestMapping("/tourist")
+@Controller
 public class TouristSpotController {
 
     @Autowired
     TouristSpotService touristSpotService;
 
-    // 카카오맵에서 위도/경도 기준으로 주변 관광지 조회
-    @GetMapping("/nearby")
-    public TouristSpotVo getNearbySpots(@RequestParam("lat") String lat, @RequestParam("lng") String lng) {
-        return touristSpotService.getSpotsNearHotel(lat, lng);
+    // 특정 호텔 주변 관광지 목록 가져오기
+    @GetMapping("/hotelDetail")
+    public String hotelDetail(@RequestParam("idx") int hotelIdx, Model model) {
+        List<TouristSpotVo> touristList = touristSpotService.getSpotsByHotelIdx(hotelIdx);
+        model.addAttribute("touristList", touristList);
+        return "hotel/hotelDetail";
+    }
+    
+    // 관광지 등록 폼 이동
+    @GetMapping("/touristInput")
+    public String touristInputForm(@RequestParam("hotelIdx") int hotelIdx, Model model) {
+        model.addAttribute("hotelIdx", hotelIdx); // 호텔 정보 연동
+        return "tourist/touristSpotInput"; // JSP 위치: /WEB-INF/views/tourist/touristSpotInput.jsp
+    }
+
+    // 관광지 등록 처리
+    @PostMapping("/touristInput")
+    public String touristInputSubmit(TouristSpotVo vo) {
+        touristSpotService.insertTouristSpot(vo);
+        return "redirect:/hotel/hotelDetail?idx=" + vo.getHotelIdx(); // 등록 후 해당 호텔 상세로 이동
     }
 }

@@ -1,9 +1,14 @@
 package com.spring.springProject3.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import com.spring.springProject3.vo.TouristSpotVo;
 
 public interface TouristSpotDao {
 
-	TouristSpotVo getSpotsNearHotel(@Param("lat") String lat, @Param("lng") String lng);
+	List<TouristSpotVo> getSpotsByHotelIdx(int hotelIdx);
+
+	void insertTouristSpot(TouristSpotVo vo);
+
 }

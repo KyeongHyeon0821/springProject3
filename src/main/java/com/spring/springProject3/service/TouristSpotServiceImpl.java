@@ -1,5 +1,7 @@
 package com.spring.springProject3.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +14,13 @@ public class TouristSpotServiceImpl implements TouristSpotService {
     @Autowired
     TouristSpotDao touristSpotDao;
 
-	@Override
-	public TouristSpotVo getSpotsNearHotel(String lat, String lng) {
-		return touristSpotDao.getSpotsNearHotel(lat, lng);
-	}
-}
+    @Override
+    public List<TouristSpotVo> getSpotsByHotelIdx(int hotelIdx) {
+        return touristSpotDao.getSpotsByHotelIdx(hotelIdx);
+    }
+
+    @Override
+    public void insertTouristSpot(TouristSpotVo vo) {
+        touristSpotDao.insertTouristSpot(vo);
+    }
+} 
