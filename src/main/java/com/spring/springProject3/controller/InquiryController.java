@@ -76,7 +76,7 @@ public class InquiryController {
 	// 1:1문의 상세보기에서 삭제처리
 	@RequestMapping(value = "/inquiryDeleteCheck", method = RequestMethod.GET)
 	public String inquiryDeleteCheckGet(int idx) {
-		InquiryVo vo = inquiryService.getInquiryDetail(idx);
+		//InquiryVo vo = inquiryService.getInquiryDetail(idx);
 
 		//System.out.println("vo : " + vo);
 		

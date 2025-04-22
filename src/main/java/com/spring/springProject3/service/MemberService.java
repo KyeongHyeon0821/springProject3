@@ -34,6 +34,4 @@ public interface MemberService {
 
 	MemberVo getMemberIdxSearch(int idx);
 
-
-
 }
