@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.springProject3.dao.HotelDao">
+  
+  <!-- 호텔리스트 조회 -->
+  <select id="getHotelList" resultType="com.spring.springProject3.vo.HotelVo">
+		select * from hotel where status = '정상' order by idx desc;  	
+  </select>
+  
+  <!-- 찜한 호텔 리스트 idx 조회 -->
+  <select id="getLikedHotelListIdx" resultType="Integer">
+	  select hotelIdx from hotelLike where mid = #{mid};
+  </select>
+  
+  <!-- 호텔 조회 (idx)-->
+  <select id="getHotel" resultType="com.spring.springProject3.vo.HotelVo">
+  	select * from hotel where idx = #{idx};
+  </select>
+  
+  <!-- 호텔 찜 조회 -->
+  <select id="getHotelLike" resultType="int">
+  	select count(*) from hotelLike where hotelIdx=#{idx} and mid=#{mid};
+  </select>
+  
+  <!-- 호텔 등록 -->
+  <insert id="setHotelInput">
+  	insert into hotel values (default, #{vo.mid}, #{vo.name}, #{vo.address}, #{vo.tel}, #{vo.description}, #{vo.thumbnail}, #{vo.images}, default, default, #{vo.x}, #{vo.y});
+  </insert>
+  
+  <!-- 호텔 찜 등록 -->
+  <insert id="setHotelLikeOk">
+  	insert into hotelLIke values(default,#{mid},#{hotelIdx},default);
+  </insert>
+  
+  <!-- 호텔 상태 업데이트 -->
+  <update id="setHotelStatusUpdate">
+  	update hotel set status = #{status} where idx = #{idx};
+  </update>
+  
+  <!-- 호텔 정보 수정 -->
+  <update id="setHotelUpdate">
+  	update hotel set name=#{vo.name},address=#{vo.address},tel=#{vo.tel},description=#{vo.description},thumbnail=#{vo.thumbnail},images=#{vo.images},x=#{vo.x},y=#{vo.y} where idx = #{vo.idx};
+  </update>
+  
+  <!-- 호텔 찜 취소 -->
+  <delete id="setHotelLikeNo">
+  	delete from hotelLIke where mid=#{mid} and hotelIdx=#{hotelIdx};
+  </delete>
+  
+</mapper>

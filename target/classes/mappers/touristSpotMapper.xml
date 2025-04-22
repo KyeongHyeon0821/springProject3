@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.springProject3.dao.TouristSpotDao">
+
+  <!-- 위도/경도 기준으로 가장 가까운 관광지 1개 조회 (절댓값 방식) -->
+  <select id="getSpotsNearHotel" resultType="com.spring.springProject3.vo.TouristSpotVo">
+    select * from tourist_spot
+    order by abs(cast(lat as decimal(10,6)) - #{lat}) + abs(CAST(lng as decimal(10,6)) - #{lng}) limit 1
+  </select>
+
+</mapper>

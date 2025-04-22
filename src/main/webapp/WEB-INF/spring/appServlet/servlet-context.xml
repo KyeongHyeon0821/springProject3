@@ -20,8 +20,16 @@
 	<resources mapping="/js/**" location="/resources/js/" />
 	<resources mapping="/member/**" location="/resources/data/member/" />
 	<resources mapping="/ckeditor/**" location="/resources/ckeditor/" />
+	<resources mapping="/hotelThumbnail/**" location="/resources/data/hotelThumbnail/" />
+	<resources mapping="/hotelImages/**" location="/resources/data/hotelImages/" />
+	<resources mapping="/roomImages/**" location="/resources/data/roomImages/" />
+	<resources mapping="/roomThumbnail/**" location="/resources/data/roomThumbnail/" />
+	<resources mapping="/imagesTemp/**" location="/resources/data/imagesTemp/" />
+	<resources mapping="/ckeditor/**" location="/resources/ckeditor/" />
 	<resources mapping="/fileUpload/**" location="/resources/data/fileUpload/" />
 	<resources mapping="/pds/**" location="/resources/data/pds/" />
+	<resources mapping="/inquiry/**" location="/resources/data/inquiry/" />
+	<resources mapping="/qna/**" location="/resources/data/qna/" />
 
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
