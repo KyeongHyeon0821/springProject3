@@ -45,8 +45,9 @@
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="${ctp}/inquiry/inquiryList">1:1문의</a></li> 
             <li><a class="dropdown-item" href="${ctp}/admin/inquiry/adInquiryList">1:1문의(관리자답변)</a></li>
-            <li><a class="dropdown-item" href="#">FQA</a></li>
-            <li><a class="dropdown-item" href="#">Q&A</a></li>
+            <li><a class="dropdown-item" href="${ctp}/faq/faqList">FAQ</a></li>
+            <li><a class="dropdown-item" href="${ctp}/faq/adFaqList">FAQ(관리자)</a></li>
+            <li><a class="dropdown-item" href="${ctp}/qna/qnaList">Q&A</a></li>
           </ul>
         </li>
       </ul>

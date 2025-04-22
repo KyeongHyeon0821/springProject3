@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,37 +30,23 @@ public class QnaController {
 	
 	@Autowired
 	ProjectProvide projectProvide;
-
-	// qna로그인
-	@GetMapping("/qnaLogin")
-	public String qnaLoginGet(HttpSession session,
-			@RequestParam(name = "mid", defaultValue = "", required = false) String mid,
-			@RequestParam(name = "nickName", defaultValue = "", required = false) String nickName,
-			@RequestParam(name = "level", defaultValue = "0", required = false) String level
-	) {
-		session.setAttribute("sMid", mid);
-		session.setAttribute("sNickName", nickName);
-		session.setAttribute("sLevel", level);
-		
-		return "redirect:/qna/qnaList";
-	}
-	
 	
 	// qna 리스트 보기
 	@RequestMapping(value = "/qnaList", method = RequestMethod.GET)
 	public String qnaListGet(Model model, HttpSession session,
 			@RequestParam(name = "pag", defaultValue = "1", required = false) int pag,
-			@RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize
-//			@RequestParam(name = "mid", defaultValue = "", required = false) String mid,
-//			@RequestParam(name = "nickName", defaultValue = "", required = false) String nickName,
-//			@RequestParam(name = "level", defaultValue = "0", required = false) String level
+			@RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
+			@RequestParam(name = "qnaAnswer", defaultValue = "전체", required = false) String qnaAnswer
 		) {
 		String mid = (String) session.getAttribute("sMid");
-		PageVo pageVo = pagination.getTotRecCnt(pag, pageSize, "qna", mid, ""); // (페이지번호,한 페이지분량,section,part,검색어)
-		List<QnaVo> vos = qnaService.getQnaList(pageVo.getStartIndexNo(), pageSize, mid);
+		PageVo pageVo = pagination.getTotRecCnt(pag, pageSize, "qna", mid, qnaAnswer); // (페이지번호,한 페이지분량,section,part,검색어)
+		List<QnaVo> vos = null;
+		if(qnaAnswer.equals("전체")) vos = qnaService.getQnaList(pageVo.getStartIndexNo(), pageSize, mid);
+		else vos = qnaService.getQnaListQnaAnswer(pageVo.getStartIndexNo(), pageSize, mid, qnaAnswer);
 
 		model.addAttribute("pageVo", pageVo);
 		model.addAttribute("vos", vos);
+		model.addAttribute("qnaAnswer", qnaAnswer);
 
 		return "qna/qnaList";
 	}
@@ -90,7 +75,8 @@ public class QnaController {
      //System.out.println("vo : " + vo);
      // 앞에서 ckeditor의 그림작업이 끝나고 일반작업들을 수행시킨다.
       
-     int level = Integer.parseInt((String) session.getAttribute("sLevel"));
+//     int level = Integer.parseInt((String) session.getAttribute("sLevel"));
+     int level = (int) session.getAttribute("sLevel");
      
      // 먼저 idx 설정하기(기존글의 idx를 검색해서 '가장 큰값+1'로 저장한다. 단, 없을경우(null)는 mapper에서 'ifnull()함수 사용하여 0으로 가져와서 처리한다.)
      int newIdx = qnaService.getMaxIdx() + 1;
@@ -256,4 +242,23 @@ public class QnaController {
 		else
 			return "redirect:/message/qnaUpdateNo?idx=" + vo.getIdx();
 	}
+	
+	// qna 검색결과 보기
+	@RequestMapping(value = "/qnaSearch", method = RequestMethod.POST)
+	public String qnaSearchPost(Model model, HttpSession session,
+			@RequestParam(name = "pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
+			@RequestParam(name = "searchString", defaultValue = "", required = false) String searchString,
+			@RequestParam(name = "search", defaultValue = "", required = false) String search
+		) {
+		//String mid = (String) session.getAttribute("sMid");
+		PageVo pageVo = pagination.getTotRecCnt(pag, pageSize, "qnaSearch", search, searchString); // (페이지번호,한 페이지분량,section,part,검색어)
+		List<QnaVo> vos = qnaService.getQnaSearchList(pageVo.getStartIndexNo(), pageSize, search, searchString);
+
+		model.addAttribute("pageVo", pageVo);
+		model.addAttribute("vos", vos);
+
+		return "qna/qnaSearch";
+	}
+	
 }

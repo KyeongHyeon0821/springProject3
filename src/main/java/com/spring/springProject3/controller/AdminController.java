@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.springProject3.common.Pagination;
+import com.spring.springProject3.common.ProjectProvide;
 import com.spring.springProject3.service.AdminService;
 import com.spring.springProject3.service.HotelService;
 import com.spring.springProject3.service.MemberService;
+import com.spring.springProject3.vo.FaqVo;
 import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.InquiryVo;
 import com.spring.springProject3.vo.MemberVo;
@@ -38,6 +40,9 @@ public class AdminController {
 	
 	@Autowired
 	Pagination pagination;
+	
+	@Autowired
+	ProjectProvide projectProvide;
 	
 	@GetMapping("/adminMain")
 	public String admiMainGet() {
@@ -135,6 +140,8 @@ public class AdminController {
 		model.addAttribute("vos", vos);
 		return "hotel/hotelList";
 	}
+	
+
 	
 }
 

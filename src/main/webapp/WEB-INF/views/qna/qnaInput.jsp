@@ -81,7 +81,6 @@
             <input type="button" value="글올리기" onclick="fCheck()" class="btn btn-success me-2"/>
             <input type="reset" value="다시쓰기" class="btn btn-warning me-2"/>
             <input type="button" value="돌아가기" onclick="location.href='${ctp}/qna/qnaList';" class="btn btn-info"/>
-            <%-- <input type="button" value="돌아가기" onclick="location.href='${ctp}/qna/qnaList?mid=${sMid}&nickName=${sNickName}&level=${sLevel}';" class="btn btn-info"/> --%>
           </td>
         </tr>
       </table>

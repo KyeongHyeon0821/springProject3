@@ -81,7 +81,18 @@
       </td>
       <td>${vo.part}</td>
       <td>${vo.WDate.substring(0,16)}</td>
-      <td>${vo.reply}</td>
+      <%-- <td>${vo.reply}</td> --%>
+      <td>
+		    <c:if test="${vo.reply == '답변대기중'}">
+		    	<span class="badge bg-secondary">${vo.reply}</span>
+		    </c:if>
+		    <c:if test="${vo.reply == '답변완료'}">
+		    	<span class="badge bg-success">${vo.reply}</span>
+		    </c:if>
+		    <c:if test="${vo.reply == '답변보류'}">
+		    	<span class="badge bg-warning">${vo.reply}</span>
+		    </c:if>
+    </td>
     </tr>
   </c:forEach>
 

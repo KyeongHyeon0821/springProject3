@@ -117,12 +117,10 @@
 	    <li class="nav-item dropdown">
         <a class="nav-link dropbtn" href="#" role="button" data-bs-toggle="modal" data-bs-target="#myModal3" id="customButton3">고객센터</a>
         <div class="dropdown-content">
-			    <a class="dropdown-item" href="${ctp}/inquiry/inquiryList?mid=hkd1234">1:1문의</a><!-- 수정해야함 -->
+			    <a class="dropdown-item" href="${ctp}/inquiry/inquiryList">1:1문의</a>
           <a class="dropdown-item" href="${ctp}/admin/inquiry/adInquiryList">1:1문의(관리자답변)</a>
-          <a class="dropdown-item" href="#">FAQ</a>
-          <a class="dropdown-item" href="${ctp}/qna/qnaLogin?mid=admin&nickName=관리맨&level=0">Q&A(관리자)</a>
-          <a class="dropdown-item" href="${ctp}/qna/qnaLogin?mid=hkd1234&nickName=홍장군&level=1">Q&A(홍길동)</a>
-          <a class="dropdown-item" href="${ctp}/qna/qnaLogin?mid=kms1234&nickName=김장미&level=2">Q&A(김말숙)</a>
+          <a class="dropdown-item" href="${ctp}/faq/faqList">FAQ</a>
+          <a class="dropdown-item" href="${ctp}/qna/qnaList">Q&A</a>
 				</div>
       </li>
     </ul>

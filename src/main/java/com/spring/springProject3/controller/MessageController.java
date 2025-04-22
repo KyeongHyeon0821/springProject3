@@ -229,6 +229,14 @@ public class MessageController {
 			model.addAttribute("message", "QnA답변이 등록되었습니다.");
 			model.addAttribute("url", "qna/qnaList");
 		}
+		else if(msgFlag.equals("adFaqInputOk")) {
+			model.addAttribute("message", "FAQ가 등록되었습니다.");
+			model.addAttribute("url", "admin/adFaqList");
+		}
+		else if(msgFlag.equals("adFaqInputNo")) {
+			model.addAttribute("message", "FAQ 등록에 실패하였습니다.");
+			model.addAttribute("url", "admin/adFaqInput");
+		}
 
 		
 		

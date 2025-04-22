@@ -51,3 +51,6 @@ create table qnaAdmin(
 				 나중에 답변글을 삭제할시에 삭제된 원본글(질문글)도 같이 삭제처리한다.
 
 select *,(select qnaAnswer from qnaAdmin where qnaIdx=1) as qnaAnswer from qna q order by qnaIdx desc, qnaSw desc, ansLevel;
+
+select *,(select qnaAnswer from qnaAdmin where qnaIdx=q.idx) as qnaAnswer from qna q where (select qnaAnswer from qnaAdmin where qnaIdx=q.idx) = '답변대기' order by qnaIdx desc, qnaSw desc, ansLevel limit 0,20;
+

@@ -125,7 +125,7 @@
           <span class="badge bg-success">${vo.reply}</span>
         </c:when>
         <c:when test="${vo.reply == '답변보류'}">
-          <span class="badge bg-warning text-dark">${vo.reply}</span>
+          <span class="badge bg-warning">${vo.reply}</span>
         </c:when>
         <c:otherwise>
           <span class="badge bg-info">${vo.reply}</span>

@@ -146,8 +146,7 @@
           </td>
         </tr>
       </table>
-      <%-- <input type="hidden" name="mid" value="${sMid}"/> --%>
-      <input type="hidden" name="mid" value="hkd1234"/> <!-- 수정해야함 -->
+      <input type="hidden" name="mid" value="${sMid}"/>
     </form>
   </div>
 </div>

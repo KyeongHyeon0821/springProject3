@@ -90,7 +90,7 @@
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 
-<h3 class="text-center m-5">QnA 상세보기(${sMid}/${sLevel})</h3>
+<h3 class="text-center m-5">QnA 상세보기</h3>
 
 <div class="container d-flex justify-content-center">
   <div style="width: 80%;">

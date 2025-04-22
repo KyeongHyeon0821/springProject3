@@ -24,8 +24,8 @@
       color: orange;
     }
     
-	  th, td {
 	    text-align: center;
+	  th, td {
 	    border-top: none;
 	    border-left: none;
 	    border-right: none;
@@ -47,13 +47,22 @@
 	    margin: 30px 0;
 	  }
 	</style>
+	<script>
+		'use strict';
+		
+		function qnaAnswerCheck(){
+			let qnaAnswer = $('#qnaAnswer').val();
+			
+			if(qnaAnswer != '') location.href = 'qnaList?qnaAnswer='+qnaAnswer;
+		}
+	</script>
 
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 
 <div class="container">
-  <div class="qna-title text-center">QnA 리스트(${sMid}/${sLevel})</div>
+  <div class="qna-title text-center">QnA 리스트</div>
   
   <div class="d-flex justify-content-between align-items-center mb-2">
     <div>
@@ -65,7 +74,16 @@
       </select>
     </div>
     <div>
-      <button class="btn btn-secondary btn-sm" onclick="location.href='${ctp}/qna/qnaInput';">글올리기</button>
+      <c:if test="${sLevel == 0}">
+      	<select name="qnaAnswer" id="qnaAnswer" onchange="qnaAnswerCheck()" class="form-select mb-2">
+      	  <option value="전체" ${qnaAnswer == "전체" ? "selected" : ""}>전체보기</option>
+      	  <option ${qnaAnswer == "답변대기" ? "selected" : "" }>답변대기</option>
+      	  <option ${qnaAnswer == "답변완료" ? "selected" : "" }>답변완료</option>
+      	</select>
+      </c:if>
+      <c:if test="${sLevel != 0}">
+      	<button class="btn btn-secondary btn-sm" onclick="location.href='${ctp}/qna/qnaInput';">글올리기</button>
+      </c:if>
     </div>
   </div>
 
@@ -145,7 +163,7 @@
 	<!-- 검색기 시작 -->
 	<div class="text-center">
 	  <!-- <form name="searchForm" method="post" action="boardSearhList"> -->
-	  <form name="searchForm" method="get">
+	  <form name="searchForm" method="post" action="qnaSearch">
 	  	<b>검색 : </b>
 	  	<select name="search" id="search">
 	  	  <option value="title">제목</option>

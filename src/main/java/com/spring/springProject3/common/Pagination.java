@@ -38,18 +38,23 @@ public class Pagination {
 			totRecCnt = adminDao.getInquiryTotRecCnt(choice);
 		}
 		else if(section.equals("qna")) { 
-			totRecCnt = qnaDao.getQnaTotRecCnt(); 
+			if(searchString.equals("전체"))	totRecCnt = qnaDao.getQnaTotRecCnt(); 
+			else {
+				String qnaAnswer = searchString;
+				totRecCnt = qnaDao.getQnaTotRecCntQnaAnswer(qnaAnswer); 
+			}
 		}
-		else if(section.equals("qna")) { 
-			totRecCnt = qnaDao.getQnaTotRecCntSearch(part, searchString); 
+		else if(section.equals("qnaSearch")) {
+			search = part;
+			totRecCnt = qnaDao.getQnaTotRecCntSearch(search, searchString); 
 		}
 		 
 		
-		if(section.equals("qna") && !searchString.equals("")) {
+		if(section.equals("qnaSearch") && !searchString.equals("")) {
 			search = part;
 			if(totRecCnt != 0) pageSize = totRecCnt;
 			if(part.equals("title")) searchStr = "제목";
-			else if(part.equals("nickName")) searchStr = "닉네임";
+			else if(part.equals("nickName")) searchStr = "작성자";
 			else searchStr = "글내용";
 		}
 		

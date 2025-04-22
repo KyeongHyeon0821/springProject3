@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.springProject3.dao.FaqDao">
+
+  <select id="getFaqList" resultType="com.spring.springProject3.vo.FaqVo">
+  	select * from faq order by idx desc;
+  </select>
+
+
+
+
+
+
+
+	<insert id="setAdFaqInputOk">
+		insert into adFaqInput values (default,#{vo.title},#{vo.content},default)
+	</insert>
+</mapper>
