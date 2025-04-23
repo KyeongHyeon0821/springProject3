@@ -38,6 +38,8 @@ public class HotelVo {
 	
 	private String regDate;
 	
+	private String status;
+	
 	private String oThumbnail;
 	
 	private Double x;
