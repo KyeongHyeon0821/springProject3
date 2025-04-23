@@ -25,5 +25,17 @@ public interface RoomService {
 
 	List<OptionVo> getRoomOptionList(int roomIdx);
 
+	int setRoomUpdate(RoomVo vo);
+
+	int setDeleteRoomOptions(int idx);
+
+	int setUpdateImages(int idx, String images);
+
+	int setDeleteImages(int idx);
+
+	int setRoomThumbnailAndImageUpdate(RoomVo vo, MultipartFile thumbnailFile, MultipartHttpServletRequest imageFiles);
+
+	int setroomStatusUpdate(int idx, String status);
+
 	
 }

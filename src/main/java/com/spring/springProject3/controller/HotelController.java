@@ -156,10 +156,10 @@ public class HotelController {
 		else return "redirect:/message/hotelUpdateNo?hotelIdx="+vo.getIdx();
 	}
 	
-	// 호텔 등록취소요청 처리
+	// 호텔 서비스중지요청 처리
 	@RequestMapping(value =  "/hotelDeleteCheck", method = RequestMethod.GET)
 	public String hotelDeleteCheckGet(int idx) {
-		int res = hotelService.setHotelStatusUpdate(idx, "등록취소요청");
+		int res = hotelService.setHotelStatusUpdate(idx, "서비스중지요청");
 		
 		if(res !=0 ) return "redirect:/message/hotelDeleteCheckOk";
 		else return "redirect:/message/hotelDeleteCheckNo?hotelIdx="+idx;

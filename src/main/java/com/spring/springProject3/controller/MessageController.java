@@ -17,6 +17,7 @@ public class MessageController {
 	public String getMessage(Model model, @PathVariable String msgFlag,
 			HttpSession session, HttpServletRequest request,
 			@RequestParam(name="hotelIdx", defaultValue = "0", required = false) int hotelIdx,
+			@RequestParam(name="roomIdx", defaultValue = "0", required = false) int roomIdx,
 			@RequestParam(name="nickName", defaultValue="", required=false) String nickName,
 			@RequestParam(name="mid", defaultValue = "", required = false) String mid,
 			@RequestParam(name="idx", defaultValue = "0", required = false) int idx,
@@ -42,11 +43,11 @@ public class MessageController {
 			model.addAttribute("url", "hotel/hotelInput");
 		}
 		else if(msgFlag.equals("hotelDeleteCheckOk")) {
-			model.addAttribute("message", "호텔 등록 취소 신청이 접수되었습니다.");
+			model.addAttribute("message", "호텔 서비스 중지 요청이 접수되었습니다.");
 			model.addAttribute("url", "hotel/hotelList");
 		}
 		else if(msgFlag.equals("hotelDeleteCheckNo")) {
-			model.addAttribute("message", "호텔 등록 취소 신청 처리 중 문제가 발생했습니다. 다시 시도해주세요.");
+			model.addAttribute("message", "호텔 서비스 중지 요청 처리 중 문제가 발생했습니다. 다시 시도해주세요.");
 			model.addAttribute("url", "hotel/hotelDetail?idx="+hotelIdx);
 		}
 		else if(msgFlag.equals("hotelUpdateOk")) {
@@ -64,6 +65,30 @@ public class MessageController {
 		else if(msgFlag.equals("roomInputNo")) {
 			model.addAttribute("message", "객실 등록에 실패했습니다.\\n다시 시도해주세요.");
 			model.addAttribute("url", "hotel/roomInput?hotelIdx="+hotelIdx);
+		}
+		else if(msgFlag.equals("roomUpdateOk")) {
+			model.addAttribute("message", "객실 정보가 수정되었습니다.");
+			model.addAttribute("url", "room/roomDetail?roomIdx="+roomIdx);
+		}
+		else if(msgFlag.equals("roomUpdateNo")) {
+			model.addAttribute("message", "객실 정보가 수정 중 오류가 발생했습니다.\\n다시 시도해주세요.");
+			model.addAttribute("url", "room/roomUpdate?roomIdx="+roomIdx);
+		}
+		else if(msgFlag.equals("roomImageUpdateOk")) {
+			model.addAttribute("message", "객실 이미지가 수정되었습니다.");
+			model.addAttribute("url", "room/roomDetail?roomIdx="+roomIdx);
+		}
+		else if(msgFlag.equals("roomImageUpdateNo")) {
+			model.addAttribute("message", "객실 이미지 수정 중 오류가 발생했습니다.\\n다시 시도해주세요.");
+			model.addAttribute("url", "room/roomUpdate?roomIdx="+roomIdx);
+		}
+		else if(msgFlag.equals("roomDeleteCheckOk")) {
+			model.addAttribute("message", "객실 서비스 중지 요청이 접수되었습니다.");
+			model.addAttribute("url", "room/roomDetail?roomIdx="+roomIdx);
+		}
+		else if(msgFlag.equals("roomDeleteCheckNo")) {
+			model.addAttribute("message", "객실 서비스 중지 요청 처리 중 문제가 발생했습니다. 다시 시도해주세요.");
+			model.addAttribute("url", "room/roomDetail?roomIdx="+roomIdx);
 		}
 		
 		

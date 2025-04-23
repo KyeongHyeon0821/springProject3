@@ -199,7 +199,10 @@
   <h2>호텔 정보 수정</h2>
   <hr class="border-secondary">
 
-  <div class="map_wrap">
+	<div class="text-muted" style="margin-bottom:5px;">
+  	※ 검색 결과 또는 마커를 클릭하면 일부 데이터가 자동으로 입력됩니다.
+  </div>
+  <div class="map_wrap" style="margin-bottom:10px;">
     <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
     <div id="menu_wrap" class="bg_white">
       <div class="option">

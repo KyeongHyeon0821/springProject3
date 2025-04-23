@@ -11,13 +11,13 @@ create table room(
 	petCountLimit int not null default 1,		/* 최대 반려견 수 */
 	thumbnail varchar(100) not null,				/* 객실 썸네일 이미지 */
 	images text,														/* 객실 이미지 */
-	status varchar(20) default '정상', 				/* 객실 상태 (정상/비활성화/삭제) */
+	status varchar(20) default '정상', 				/* 객실 상태 (정상/예약중/서비스중지요청/서비스중지) */
 	regDate datetime default now(),					/* 등록 날짜 */
 	primary key(idx),
 	foreign key(hotelIdx) references hotel(idx) on delete cascade,
 	foreign key(mid) references member(mid)
 );
-select * from room;
+select images from room where idx =6;
 
 
 /* 객실 옵션 테이블 */
@@ -50,3 +50,6 @@ create table roomOptions (
 );
 
 select * from options where idx in (select optionIdx from roomOptions where roomIdx = 1);
+
+select * from roomOptions where roomIdx=4;
+

@@ -75,9 +75,9 @@
 	<script>
 		'use strict';
 		
-		// 호텔 등록취소 요청
+		// 호텔 서비스 중지 요청
 		function hotelDeleteCheck() {
-			let ans = confirm("해당 호텔 등록 취소를 요청하시겠습니까?");
+			let ans = confirm("해당 호텔 서비스 중지를 요청하시겠습니까?");
 			if(!ans) return false;
 			else location.href="hotelDeleteCheck?idx=${vo.idx}";
 		}
@@ -189,7 +189,9 @@
 		<c:if test="${vo.mid == sMid}">
 			<a href="${ctp}/room/roomInput?hotelIdx=${vo.idx}" class="btn btn-primary">객실 등록</a>
 			<a href="hotelUpdate?idx=${vo.idx}" class="btn btn-warning">호텔 정보 수정</a>
-			<a href="javascript:hotelDeleteCheck()" class="btn btn-danger">호텔 등록 취소 요청</a>
+			<c:if test="${vo.status != '서비스중지요청'}">
+				<a href="javascript:hotelDeleteCheck()" class="btn btn-danger">호텔 서비스 중지 요청</a>
+			</c:if>
 		</c:if>
 	
 	</div>

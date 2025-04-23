@@ -22,5 +22,5 @@ public class RoomVo {
 	private String status;
 	private String regDate;
 	
-	
+	private String oThumbnail;
 }

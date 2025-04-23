@@ -1,6 +1,9 @@
 package com.spring.springProject3.controller;
 
+import java.io.File;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -73,7 +77,7 @@ public class RoomController {
 		return "room/roomDetail";
 	}
 	
-	// 객실 수정 폼 보기
+	// 객실 정보 수정 폼 보기
 	@RequestMapping(value = ("/roomUpdate"), method = RequestMethod.GET)
 	public String roomUpdateGet(Model model, @RequestParam("roomIdx") int roomIdx) {
 		
@@ -90,5 +94,110 @@ public class RoomController {
 		
 		return "room/roomUpdate";
 	}
+	
+	// 객실 정보 수정 처리
+	@Transactional
+	@RequestMapping(value = ("/roomUpdate"), method = RequestMethod.POST)
+	public String roomUpdatePost(RoomVo vo, @RequestParam(name="options", required = false) String[] options) {
+		int res = roomService.setRoomUpdate(vo);
+		
+		// 기존 객실-옵션 데이터 삭제
+		res = roomService.setDeleteRoomOptions(vo.getIdx());
+		// 객실-옵션 데이터 저장(DB)
+		if(options != null) {
+			for(String optionIdxStr : options) {
+				System.out.println(vo.getIdx());
+				res = roomService.setRoomOptions(vo.getIdx(), Integer.parseInt(optionIdxStr));
+			}
+		}
+		
+		if(res !=0 ) return "redirect:/message/roomUpdateOk?roomIdx="+vo.getIdx();
+		else return "redirect:/message/roomUpdateNo?roomIdx="+vo.getIdx();
+	}
+	
+	
+	// 객실 이미지 수정 폼 보기
+	@RequestMapping(value = ("/roomImageUpdate"), method = RequestMethod.GET)
+	public String roomImageUpdateGet(Model model, @RequestParam("roomIdx") int roomIdx) {
+		RoomVo vo = roomService.getRoom(roomIdx);
+		model.addAttribute("vo", vo);
+		return "room/roomImageUpdate";
+	}
+	
+	// 객실 이미지 수정 처리  
+	@Transactional
+	@RequestMapping(value = ("/roomImageUpdate"), method = RequestMethod.POST)
+	public String roomImageUpdatePost(MultipartFile thumbnailFile, MultipartHttpServletRequest imageFiles,
+			RoomVo vo
+		) {
+		int res = roomService.setRoomThumbnailAndImageUpdate(vo, thumbnailFile, imageFiles);
+		
+		if(res !=0 ) return "redirect:/message/roomImageUpdateOk?roomIdx="+vo.getIdx();
+		else return "redirect:/message/roomImageUpdateNo?roomIdx="+vo.getIdx();
+	}
+	
+	// 객실 이미지 삭제 처리(1개)
+	@ResponseBody
+	@RequestMapping(value = ("/roomImageFileDelete"), method = RequestMethod.POST)
+	public String roomImageFileDeleteGet(HttpServletRequest request,
+			String imageFileName, String images, int idx
+		) {
+		String realPath = request.getSession().getServletContext().getRealPath("resources/data/roomImages/");
+		String res = "0";
+		File fName = new File(realPath + imageFileName);
+		
+		// 서버에서 이미지 삭제
+		if(fName.exists()) {
+			fName.delete();
+			res = "1";
+		}
+		
+		// DB 에서 해당 이미지 이름만 삭제
+		if(images.indexOf("/") == -1) {
+			images = null;
+		}
+		else if(images.indexOf(imageFileName+"/") == -1) {
+			images = images.replace("/" + imageFileName, "");
+		}
+		else{
+			images = images.replace(imageFileName+"/", "");
+		}
+		res = roomService.setUpdateImages(idx, images) + "";
+		
+		return res;
+	}
+	
+	// 객실 이미지 전체 삭제 처리
+	@ResponseBody
+	@RequestMapping(value = ("roomImageFilesDeleteAll"), method = RequestMethod.POST)
+	public String roomImageFilesDeleteAllPost(HttpServletRequest request, String images, int idx) {
+		String realPath = request.getSession().getServletContext().getRealPath("resources/data/roomImages/");
+		String res = "0";
+		
+		String[] imageFileNameArr = images.split("/");
+		
+		// 서버에서 이미지 삭제
+		for(String imageFileName : imageFileNameArr) {
+			File fName = new File(realPath + imageFileName);
+			if(fName.exists()) {
+				fName.delete();
+				res = "1";
+			}
+		}
+		// DB 에서 이미지 null값 처리
+		res = roomService.setDeleteImages(idx) + "";
+		
+		return res;
+	}
+	
+	// 객실 서비스중지요청 처리
+	@RequestMapping(value =  "/roomDeleteCheck", method = RequestMethod.GET)
+	public String roomDeleteCheckGet(int idx) {
+		int res = roomService.setroomStatusUpdate(idx, "서비스중지요청");
+		
+		if(res !=0 ) return "redirect:/message/roomDeleteCheckOk?roomIdx="+idx;
+		else return "redirect:/message/roomDeleteCheckNo?roomIdx="+idx;
+	}
+	
 	
 }

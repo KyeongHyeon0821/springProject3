@@ -8,6 +8,17 @@
 	<meta charset="UTF-8">
 	<title>roomDetail.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
+	<script>
+		'use strict';
+		
+		// 객실 서비스 중지 요청
+		function roomDeleteCheck() {
+			let ans = confirm("해당 객실 서비스 중지를 요청하시겠습니까?");
+			if(!ans) return false;
+			else location.href="roomDeleteCheck?idx=${vo.idx}";
+		}
+		
+	</script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
@@ -46,6 +57,10 @@
 	<c:if test="${vo.mid == sMid}">
 		<div>
 			<a href="roomUpdate?roomIdx=${vo.idx}" class="btn btn-info">객실 정보 수정</a>
+			<a href="roomImageUpdate?roomIdx=${vo.idx}" class="btn btn-secondary">객실 이미지 수정</a>
+			<c:if test="${vo.status != '서비스중지요청'}">
+				<a href="javascript:roomDeleteCheck()" class="btn btn-danger">객실 서비스 중지 요청</a>
+			</c:if>
 		</div>
 	</c:if>
 	

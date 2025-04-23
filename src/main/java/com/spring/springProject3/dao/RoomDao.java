@@ -24,4 +24,16 @@ public interface RoomDao {
 
 	List<OptionVo> getRoomOptionList(@Param("roomIdx") int roomIdx);
 
+	int setRoomUpdate(@Param("vo") RoomVo vo);
+
+	int setDeleteRoomOptions(@Param("idx") int idx);
+
+	int setUpdateImages(@Param("idx") int idx, @Param("images") String images);
+
+	int setDeleteImages(@Param("idx") int idx);
+
+	int setRoomThumbnailAndImageUpdate(@Param("vo") RoomVo vo);
+
+	int setroomStatusUpdate(@Param("idx") int idx, @Param("status") String status);
+
 }
