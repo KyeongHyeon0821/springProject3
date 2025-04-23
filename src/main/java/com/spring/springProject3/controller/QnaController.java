@@ -161,7 +161,6 @@ public class QnaController {
 		// 만약 '문의글' 삭제시, 답변글이 있다면 문의글은 qna테이블의 delCheck필드의 값을 'OK'로 update처리한다. 그리고
 		// 'qnaList.jsp'에서 'delCheck'필드가 'OK'인 자료는 '삭제되었습니다.'라는 문구로 출력시켜준다.
 		// 관리자가 질문글을 삭제처리할시는 qna테이블과 qnaAdmin테이블의 관련자료들을 모두 삭제한다.
-		System.out.println("vo(delete) : " + vo);
 		int qnaIdxCount = qnaService.getQnaIdxCheck(vo.getQnaIdx()); // 해당 게시글의 qnaIdx값과 같은 자료가 몇건이 있는지 구해온다.
 		if (qnaIdxCount == 1)
 			qnaService.setQnaDelete(idx); // qna테이블과 qnaAdmin테이블을 각각 삭제처리한다.(qnaAdmin테이블을 먼저 삭제처리해야 한다.)

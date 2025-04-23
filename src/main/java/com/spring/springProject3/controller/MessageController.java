@@ -231,11 +231,27 @@ public class MessageController {
 		}
 		else if(msgFlag.equals("adFaqInputOk")) {
 			model.addAttribute("message", "FAQ가 등록되었습니다.");
-			model.addAttribute("url", "admin/adFaqList");
+			model.addAttribute("url", "faq/adFaqList");
 		}
 		else if(msgFlag.equals("adFaqInputNo")) {
 			model.addAttribute("message", "FAQ 등록에 실패하였습니다.");
-			model.addAttribute("url", "admin/adFaqInput");
+			model.addAttribute("url", "faq/adFaqInput");
+		}
+		else if(msgFlag.equals("adFaqDeleteOk")) {
+			model.addAttribute("message", "FAQ가 삭제되었습니다.");
+			model.addAttribute("url", "faq/adFaqList");
+		}
+		else if(msgFlag.equals("adFaqDeleteNo")) {
+			model.addAttribute("message", "FAQ가 삭제가 실패되었습니다.");
+			model.addAttribute("url", "faq/adFaqDetail?idx="+idx);
+		}
+		else if(msgFlag.equals("adFaqUpdateOk")) {
+			model.addAttribute("message", "FAQ가 수정되었습니다.");
+			model.addAttribute("url", "faq/adFaqList");
+		}
+		else if(msgFlag.equals("adFaqUpdateNo")) {
+			model.addAttribute("message", "FAQ 수정이 실패되었습니다.");
+			model.addAttribute("url", "faq/adFaqDetail?idx="+idx);
 		}
 
 		
