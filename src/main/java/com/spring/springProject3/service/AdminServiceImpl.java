@@ -60,7 +60,18 @@ public class AdminServiceImpl implements AdminService {
 	public int setAdInquiryDetailHold(int idx) {
 		return adminDao.setAdInquiryDetailHold(idx);
 	}
-	
+
+	@Override
+	public String setHotelStatusSelectCheck(String idxSelectArray, String statusSelect) {
+		String[] idxSelectArrays = idxSelectArray.split("/");
+		
+		String str = "0";
+		for(String idx : idxSelectArrays) {
+			adminDao.setHotelStatusSelectCheck(Integer.parseInt(idx), statusSelect);
+			str = "1";
+		}
+		return str;
+	}
 	
 	
 }

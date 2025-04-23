@@ -28,5 +28,8 @@ public interface AdminDao {
 	int setAdInquiryDetailUpdate(@Param("reIdx") int reIdx, @Param("reContent") String reContent);
 
 	int setAdInquiryDetailHold(@Param("idx") int idx);
+
+	void setHotelStatusSelectCheck(@Param("idx") int idx,@Param("statusSelect") String statusSelect);
+
 	
 }

@@ -38,7 +38,7 @@ create table hotel(
 	thumbnail varchar(100) not null,		/* 호텔 썸네일 이미지 */
 	images text,												/* 호텔 이미지 */
 	regDate datetime default now(), 		/* 등록 날짜 */
-	status varchar(20) default '정상',		/* 호텔 상태 (정상/등록취소요청/비활성화/등록취소완료) */
+	status varchar(20) default '정상',		/* 호텔 상태 (정상/서비스중지요청/서비스중지) */
 	primary key(idx),
 	foreign key(mid) references member(mid)
 );

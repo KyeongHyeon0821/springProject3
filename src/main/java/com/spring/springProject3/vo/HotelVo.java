@@ -16,12 +16,12 @@ import lombok.ToString;
 public class HotelVo {
 	private int idx;
 	
+	@NotEmpty(message = "등록자 아이디가 공백 입니다.")
+	private String mid;
+
 	@NotEmpty(message = "호텔 이름이 공백입니다.")
 	@Size(max = 100, message = "호텔 이름은 100자 이내여야 합니다.")
 	private String name;
-	
-	@NotEmpty(message = "등록자 아이디가 공백 입니다.")
-	private String mid;
 	
 	@NotEmpty(message = "호텔 주소가 공백입니다.")
 	@Size(max = 200, message = "호텔 주소는 200자 이내여야 합니다.")
@@ -37,6 +37,16 @@ public class HotelVo {
 	private String images;
 	
 	private String regDate;
+	
+	private String status;
+	
+	private double x;
+	
+	private double y;
+	
+	
+	
+	
 	
 	private String oThumbnail;
 }

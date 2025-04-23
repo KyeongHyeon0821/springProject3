@@ -191,7 +191,7 @@
           	<td>${vo.businessNo}</td>
           </c:if>
           <td>
-            <select name="level" id="level" ">
+            <select name="level" id="level" >
               <option value="1/${vo.idx}"   ${vo.level == 1 ? 'selected' : ''}>사업자회원</option>
               <option value="2/${vo.idx}"   ${vo.level == 2 ? 'selected' : ''}>일반회원</option>
               <option value="0/${vo.idx}"   ${vo.level == 0 ? 'selected' : ''}>관리자</option>

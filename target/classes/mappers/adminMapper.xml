@@ -36,6 +36,9 @@
    
    
    
+  <update id="setHotelStatusSelectCheck">
+  	update hotel set status=#{statusSelect} where idx=#{idx}; 
+  </update>
    
   <update id="setInquiryReplyStatusOk">
   	update inquiry set reply='답변완료' where idx=#{idx};

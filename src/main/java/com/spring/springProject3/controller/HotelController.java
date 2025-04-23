@@ -38,6 +38,7 @@ public class HotelController {
 	// 호텔 리스트
 	@RequestMapping("/hotelList")
 	public String hotelListGet(Model model, HttpSession session) {
+		int level = (int) session.getAttribute("sLevel");
 		String mid = session.getAttribute("sMid") + "";
 		List<HotelVo> vos = hotelService.getHotelList();
 		
@@ -114,6 +115,7 @@ public class HotelController {
 	// 호텔 상세페이지 보기
 	@RequestMapping(value =  "/hotelDetail", method = RequestMethod.GET)
 	public String hotelDetailGet(Model model, int idx, HttpSession session) {
+		int level = (int) session.getAttribute("sLevel");
 		HotelVo vo = hotelService.getHotel(idx);
 		String mid = (String) session.getAttribute("sMid");
 		String hotelLike = "";
@@ -121,6 +123,8 @@ public class HotelController {
 		
 		if(res != 0) hotelLike = "Ok";
 		else hotelLike = "No";
+		
+		model.addAttribute("sLevel", level);
 		model.addAttribute("vo", vo);
 		model.addAttribute("hotelLike", hotelLike);
 		return "hotel/hotelDetail";
@@ -143,10 +147,10 @@ public class HotelController {
 		else return "redirect:/message/hotelUpdateNo?hotelIdx="+vo.getIdx();
 	}
 	
-	// 호텔 등록취소요청 처리
+	// 호텔 서비스중지요청 처리
 	@RequestMapping(value =  "/hotelDeleteCheck", method = RequestMethod.GET)
 	public String hotelDeleteCheckGet(int idx) {
-		int res = hotelService.setHotelStatusUpdate(idx, "등록취소요청");
+		int res = hotelService.setHotelStatusUpdate(idx, "서비스중지요청");
 		
 		if(res !=0 ) return "redirect:/message/hotelDeleteCheckOk";
 		else return "redirect:/message/hotelDeleteCheckNo?hotelIdx="+idx;

@@ -114,7 +114,12 @@
 	</div>
 	
 	<div class="mt-3">
-		<a href="${ctp}/hotel/hotelList" class="btn btn-secondary">돌아가기</a>
+		<c:if test="${level == 0}">
+			<a href="${ctp}/hotel/hotelList" class="btn btn-secondary">돌아가기</a>
+		</c:if>
+		<c:if test="${level != 0}">
+			<a href="${ctp}/admin/hotel/hotelList" class="btn btn-secondary">돌아가기</a>
+		</c:if>
 	
 		<c:if test="${vo.mid == sMid}">
 			<a href="${ctp}/room/roomInput?hotelIdx=${vo.idx}" class="btn btn-primary">객실 등록</a>

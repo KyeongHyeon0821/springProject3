@@ -69,9 +69,16 @@
 			});
 		}
 	</script>
+	<style>
+		.container {
+			margin-top: 50px;
+		}
+	</style>
 </head>
 <body>
+<c:if test="!${sLevel} == 0">
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
+</c:if>
 <div class="container">
 	<h2>호 텔 리 스 트</h2>
 	<hr class="border-secondary">
