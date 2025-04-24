@@ -134,7 +134,7 @@
       color: orange;
     }
     
-    h2 {
+    h4 {
 			color: green;
 		}
 		.room-detail {
@@ -147,6 +147,9 @@
 		}
 		.room-info {
 			font-size: 17px;
+		}
+		.modal-lg {
+			max-width: 800px;
 		}
 
   </style>
@@ -208,12 +211,21 @@
       </c:forEach>
     </table>
   </form>
+  <p><br/></p>
+  <div class="row mb-1">
+    <div class="col-7">
+	    <div class="input-group">
+	      <input type="button" value="돌아가기" onclick="javascript:history.back()" class="btn btn-warning"/>
+	    </div>
+    </div>
+    
+  </div>
 </div>
 
 
 <!-- 모달처리 -->    
 <div class="modal" id="myModal">
-  <div class="modal-dialog modal-dialog-scrollable">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">객실 상세정보</h4>
@@ -241,7 +253,7 @@
 					    <p></p>
 					</div>
 					<div>
-				  <!-- <a href="#" class="btn btn-success">목록으로</a>  --> 
+				  <!-- <a href="javascript:history.back()" class="btn btn-warning">목록으로</a>  -->	
 				 	</div>
 				</div>
       </div>

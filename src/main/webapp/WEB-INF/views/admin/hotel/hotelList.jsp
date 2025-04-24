@@ -188,7 +188,7 @@
             </select>
           </td>
           <td>
-          	<a href="${ctp}/admin/room/roomList" class="btn btn-dark">객실정보</a>
+          	<a href="${ctp}/admin/room/roomList?hotelIdx=${vo.idx}" class="btn btn-dark">객실정보</a>
           </td>
         </tr>
       </c:forEach>

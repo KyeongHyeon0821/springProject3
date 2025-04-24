@@ -185,3 +185,35 @@ create table inquiryReply(
 		primary key (reIdx),
 		foreign key (inquiryIdx) references inquiry (idx)
 );
+
+
+
+create table coupons (
+		CouponIdx (INT, Primary Key, Auto-increment)
+		couponCode (VARCHAR(50), Unique) : 쿠폰 코드
+		couponName (VARCHAR(50)) : 쿠폰 이름
+		discountType (ENUM('percentage', 'amount')) : 할인 유형 (정률, 정액)
+		discountValue (DECIMAL) : 할인 값 (예: 10%, 10000원)
+		--maxDiscountAmount (DECIMAL, NULLABLE) : 최대 할인 금액 (정률 할인 시)
+		issueStartDate (DATETIME) : 발급 시작일
+		--issueEndDate (DATETIME) : 발급 종료일
+		expiryDate (DATETIME) : 사용 만료일
+		--minOrder_amount (DECIMAL) : 최소 주문 금액 조건
+		--usageLimit (INT) : 총 사용 가능 횟수
+		--usageCount (INT, Default 0) : 사용 횟수
+		isActive (BOOLEAN, Default TRUE) : 활성화 여부
+		--targetType (ENUM('all', 'hotel', 'room_type')) : 쿠폰 적용 대상 (전체, 특정 호텔, 특정 객실 타입)
+		photo (varchar())
+);
+
+
+create table userCoupons (
+		idx (INT, Primary Key, Auto-increment)
+		mid (INT) : 사용자 ID (Users 테이블 참조)
+		couponCode (varchar) : 쿠폰 ID (Coupons 테이블 참조)
+		issue_date (DATETIME) : 쿠폰 발급일
+		is_used (BOOLEAN, Default FALSE) : 사용 여부
+		used_date (DATETIME, NULLABLE) : 사용일
+		order_id (INT, NULLABLE) : 사용된 주문 ID (Orders 테이블 참조)
+		qrcodeName  (varchar(100)))  : 쿠폰정보를 담은 qrcode
+);

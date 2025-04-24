@@ -76,8 +76,8 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public List<RoomVo> getAdminRoomList() {
-		return adminDao.getAdminRoomList() ;
+	public List<RoomVo> getAdminRoomList(int hotelIdx) {
+		return adminDao.getAdminRoomList(hotelIdx) ;
 	}
 
 	@Override

@@ -35,7 +35,7 @@ public interface AdminDao {
 
 	void setHotelStatusSelectCheck(@Param("idx") int idx,@Param("statusSelect") String statusSelect);
 
-	List<RoomVo> getAdminRoomList();
+	List<RoomVo> getAdminRoomList(@Param("hotelIdx") int hotelIdx);
 
 	void setRoomStatusSelectCheck(@Param("idx") int idx,@Param("statusSelect") String statusSelect);
 

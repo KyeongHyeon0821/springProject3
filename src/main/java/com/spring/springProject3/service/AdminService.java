@@ -32,7 +32,7 @@ public interface AdminService {
 
 	String setHotelStatusSelectCheck(String idxSelectArray, String statusSelect);
 
-	List<RoomVo> getAdminRoomList();
+	List<RoomVo> getAdminRoomList(int hotelIdx);
 
 	String setRoomStatusSelectCheck(String idxSelectArray, String statusSelect);
 

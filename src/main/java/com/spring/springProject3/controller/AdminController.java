@@ -111,11 +111,10 @@ public class AdminController {
 	
 	// 객실(room) 리스트 보기
 	@RequestMapping(value = "/room/roomList", method = RequestMethod.GET)
-	public String adminRoomListGet(Model model, HttpSession session
-			) {
+	public String adminRoomListGet(Model model, HttpSession session, @RequestParam int hotelIdx) {
 		String mid = session.getAttribute("sMid") + "";
-		List<RoomVo> vos = adminService.getAdminRoomList();
-
+		List<RoomVo> vos = adminService.getAdminRoomList(hotelIdx);
+		
 		model.addAttribute("vos", vos);
 		return "/admin/room/roomList";
 	}

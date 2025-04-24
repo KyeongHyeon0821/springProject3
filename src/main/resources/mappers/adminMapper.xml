@@ -22,7 +22,7 @@
   </select>
   
   <select id="getAdminRoomList" resultType="com.spring.springProject3.vo.RoomVo">
-  	select * from room;
+  	select * from room where hotelIdx=#{hotelIdx};
   </select>
   
   <select id="getRoomDetailSearch" resultType="com.spring.springProject3.vo.RoomVo">
