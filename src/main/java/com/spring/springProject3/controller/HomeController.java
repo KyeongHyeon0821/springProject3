@@ -64,4 +64,10 @@ public class HomeController {
 		fos.close();
 	}
 	
+	// 관리자와 실시간 1대1 채팅폼보기 - 새창에서 처리
+	@RequestMapping(value = "/webSocket/chatEndUserWin", method = RequestMethod.GET)
+	public String chatEndUserWinGet() {
+		return "webSocket/chatEndUserWin";
+	}
+	
 }

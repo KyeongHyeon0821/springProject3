@@ -5,7 +5,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>chatEndUser.jsp</title>
+  <title>chatEndUserWin.jsp</title>
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
   <script>
 	  let socket;
@@ -13,9 +13,12 @@
 	  function startChat() {
 		  $("#endChatBtn").show();
 		  $("#chatBackScreen").hide();
+		  $("#adminTitle").hide();
+		  
       const username = document.getElementById('username').value;
       if (username) {
-        socket = new WebSocket('ws://192.168.50.20:9090/JspringProject/webSocket/endPoint/' + username);
+        socket = new WebSocket('ws://192.168.50.65:9090/springProject3/webSocket/endPoint/' + username);
+        //socket = new WebSocket('ws://49.142.157.251:9090/springProject3/webSocket/endPoint/' + username);
 
         // 상대방 유저가 접속/종료 하거나, 메세지를 날릴때 처리되는 곳
         socket.onmessage = (event) => {
@@ -30,7 +33,7 @@
 	          let date = new Date();
 	          let strToday = date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes();
 	          let item = '<div class="d-flex flex-row mr-2"><span class="youWord p-2 m-1" style="font-size:11px">'+strToday+'<br/>';
-	          item += '<font color="brown"> 관리자 로 부터</font><br/><font size="3">' + event.data.split(":")[1] + '</font></span></div>';
+	          item += '<font color="brown" style="font-size:0.7em"> 관리자 로 부터</font><br/><span style="font-size:1em">' + event.data.split(":")[1] + '</span></span></div>';
 	          document.getElementById('messages').innerHTML += item;
 	          document.getElementById('message').value = '';
 	          document.getElementById('message').focus();
@@ -51,7 +54,8 @@
 	  
 	  // 채팅 종료
 	  function endChat() {
-      location.reload();
+		  //alert('상담을 종료합니다.');
+      window.close();
 		}
 	  
 	  // 메세지 보내는 사용자의 메세지 출력폼에서 '전송'버튼을 눌렀을때 처리(socket.send())
@@ -71,7 +75,7 @@
           let strToday = dt.getFullYear()+"-"+dt.getMonth()+"-"+dt.getDate()+" "+dt.getHours()+":"+dt.getMinutes();
           let item = '<div class="d-flex flex-row-reverse mr-2"><span class="myWord p-2 m-1" style="font-size:11px">'+strToday+'<br/>';
           target = '관리자';
-          item += '<font color="brown">' + target + ' 에게</font><br/><font size="3">' + message + '</font></span></div>';
+          item += '<font color="brown" style="font-size:0.7em">' + target + ' 에게</font><br/><span style="1em">' + message + '</span></span></div>';
           document.getElementById('messages').innerHTML += item;
           document.getElementById('message').value = '';
           document.getElementById('message').focus();
@@ -85,7 +89,7 @@
 	  $(function(){
 		  $('#message').keyup(function(e) {
 			  e.preventDefault();
-        let target = "관리자";
+			  let target = "관리자";
         const message = document.getElementById('message').value;
 		  	if (e.keyCode == 13) {
 		  		if(!e.shiftKey) {
@@ -93,18 +97,24 @@
 				  		let dt = new Date();
 		          let strToday = dt.getFullYear()+"-"+dt.getMonth()+"-"+dt.getDate()+" "+dt.getHours()+":"+dt.getMinutes();
 		          let item = '<div class="d-flex flex-row-reverse mr-2"><span class="myWord p-2 m-1" style="font-size:11px">'+strToday+'<br/>';
-		          item += '<font color="brown">' + target + ' 에게</font><br/><font size="3">' + message + '</font></span></div>';
+		          item += '<font color="brown" style="font-size:0.7em">' + target + ' 에게</font><br/><span style="font-size:1em">' + message + '</span></span></div>';
 		          item = item.replaceAll("\n","<br/>");
 		          document.getElementById('messages').innerHTML += item;
 		          document.getElementById('message').value = '';
 		          document.getElementById('message').focus();
 				  		$('#currentMessage').scrollTop($('#currentMessage').prop('scrollHeight'));
+		          target = 'admin';
 				  		socket.send(target + ":" + message.replaceAll("\n","<br/>"));
 			  		}
 		  		}
 		  	}
 		  });
 	  });
+	  
+	  // 종료(x)버튼클릭시 수행처리내용
+	  $(window).bind("beforeunload", function (e){
+		  return "창을 닫으실래요?";
+		 });
 	  
 	  // 새로고침 차단하기
 	  function doNotReload(event){
@@ -122,7 +132,7 @@
     
     #currentMessage {
       width: 100%;
-      height: 420px;
+      height: 220px;
       float: left;
       border: 1px solid #ccc;
       padding-left: 10px;
@@ -142,20 +152,21 @@
   </style>
 </head>
 <body oncontextmenu="return false">
-<jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<p><br/></p>
 <div class="container">
-  <h2>관리자와 실시간 1:1 상담</h2>
-  <hr class="border-secondary">
-  <label for="username">접속중인 사용자 : <span id="currentId"></span></label>
-  <input type="text" id="username" value="${sMid}" readonly style="border:0px;text-align:center;color:red;" />
-  <button onclick="startChat()" class="btn btn-success btn-sm">상담시작</button>
-  <button onclick="endChat()" id="endChatBtn" class="btn btn-warning btn-sm ms-3" style="display:none;">상담종료</button>
-  <hr class="border-secondary">
-  <div id="chatBackScreen">
-    <img src="${ctp}/images/map.jpg" width="400px"/>
+  <div id="adminTitle">
+	  <h4 class="text-center">관리자와 실시간 1:1 상담</h4>
+	  <hr class="border-secondary">
   </div>
-  <div id="chat" style="display:none;">
+  <div>접속중인 사용자 : <span id="currentId"></span></div>
+  <div>
+	  <input type="text" id="username" value="${sMid}" readonly style="border:0px;text-align:center;color:red;font-weight:bolder" />
+	  <button onclick="startChat()" class="btn btn-success form-control">상담시작</button>
+	  <button onclick="endChat()" id="endChatBtn" class="btn btn-warning form-control" style="display:none;">상담종료</button>
+  </div>
+  <div id="chatBackScreen" class="text-center mt-3">
+    <img src="${ctp}/images/logo.png" width="180px"/>
+  </div>
+  <div id="chat" class="mt-1" style="display:none;">
     <form name="myform" id="form">
 	    <div id="currentMessage">
 	    	<h5>메세지 출력창</h5>
@@ -165,10 +176,9 @@
 	      <textarea name="message" id="message" placeholder="메세지를 입력하세요." class="form-control"></textarea>
 	      <button class="input-group-append btn btn-success">메세지전송</button>
       </div>
-      <div class="text-center">(관리자에게 메세지를 보내려면 메세지 입력후 '전송'버튼을 누르세요)</div>
+      <div class="text-center" style="font-size:0.7em">(메세지 입력후 '전송'버튼을 누르세요)</div>
     </form>
   </div>
 </div>
-<p id="footer"><br/></p>
 </body>
 </html>

@@ -42,8 +42,9 @@ public class FaqController {
 			@RequestParam(name="searchString", defaultValue = "", required = false) String searchString	
 		) {
 		PageVo pageVo = pagination.getTotRecCnt(pag,pageSize,"adFaqList",category,searchString);
-		System.out.println("pageVo : " + pageVo);
+		
 		List<FaqVo> vos = faqService.getFaqList(pageVo.getStartIndexNo(),pageVo.getPageSize(), category, searchString);
+		
 		model.addAttribute("pageVo", pageVo);
 		model.addAttribute("vos", vos);
 		
@@ -82,34 +83,18 @@ public class FaqController {
 		
 		return "admin/faq/adFaqDetail";
 	}
+	
 	// FAQ 내용보기
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/adFaqDetail", method = RequestMethod.POST)
 	public String adFaqDetailPost(Model model, HttpSession session, int idx,
 			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
 			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize,
 			@RequestParam(name="category", defaultValue = "전체", required = false) String category		
 			) {
-		// 조회수 증가 중복x
-		List<String> faqNum = (List<String>) session.getAttribute("sDuplicate");
-		if(faqNum == null) faqNum = new ArrayList<String>();
-		String imsiNum = "faq" + idx;
-		if(!faqNum.contains(imsiNum)) {
-			faqService.setFaqReadNumPlus(idx);
-			faqNum.add(imsiNum);
-		}
-		session.setAttribute("sDuplicate", imsiNum);
-		
-		FaqVo vo = faqService.getFaqDetail(idx);
-		
-		model.addAttribute("vo", vo);
-		model.addAttribute("pag", pag);
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("category", category);
-		
 		// 이전글/다음글 가져오기
 		FaqVo preVo = faqService.getPreNextSearch(idx, "pre");
 		FaqVo nextVo = faqService.getPreNextSearch(idx, "next");
+		
 		model.addAttribute("preVo", preVo);
 		model.addAttribute("nextVo", nextVo);
 		
@@ -184,6 +169,71 @@ public class FaqController {
 		if(res != 0) return "redirect:/message/adFaqUpdateOk";
 		else return "redirect:/message/adFaqUpdateNo?idx="+vo.getIdx();
 	}
+	
+	
+	
+	//관리자
+// ---------------------------------------------------------------------------------------------------------------------------- //
+	//사용자
+	
+	
+	
+	
+	// FAQ 사용자 폼 보기
+	@RequestMapping(value = "/faqList", method = RequestMethod.GET)
+	public String faqListGet(Model model,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize,
+			@RequestParam(name="category", defaultValue = "전체", required = false) String category,
+			@RequestParam(name="searchString", defaultValue = "", required = false) String searchString	
+		) {
+		PageVo pageVo = pagination.getTotRecCnt(pag, pageSize, "faqList", category, searchString);
+		
+		List<FaqVo> vos = faqService.getFaqList(pageVo.getStartIndexNo(), pageVo.getPageSize(), category, searchString);
+		
+		model.addAttribute("pageVo", pageVo);
+		model.addAttribute("vos", vos);
+		
+		return "faq/faqList";
+	}
+	
+
+	
+	// FAQ 사용자 내용보기
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/faqDetail", method = RequestMethod.GET)
+	public String faqDetailGet(Model model, HttpSession session, int idx,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize,
+			@RequestParam(name="category", defaultValue = "전체", required = false) String category	
+		) {
+		
+		// 조회수 증가 중복불가처리
+		List<String> faqNum = (List<String>) session.getAttribute("sDuplicate");
+		if(faqNum == null) faqNum = new ArrayList<String>();
+		String imsiNum = "faq" + idx;
+		if(!faqNum.contains(imsiNum)) {
+			faqService.setFaqReadNumPlus(idx);
+			faqNum.add(imsiNum);
+		}
+		session.setAttribute("sDuplicate", faqNum);
+		
+		FaqVo vo = faqService.getFaqDetail(idx);
+		
+		model.addAttribute("vo", vo);
+		model.addAttribute("pag", pag);
+		model.addAttribute("pageSize", pageSize);
+		model.addAttribute("category", category);
+		
+		// 이전글/다음글 가져오기
+		FaqVo preVo = faqService.getPreNextSearch(idx, "pre");
+		FaqVo nextVo = faqService.getPreNextSearch(idx, "next");
+		model.addAttribute("preVo", preVo);
+		model.addAttribute("nextVo", nextVo);
+		
+		return "faq/faqDetail";
+	}
+
 
 
 }

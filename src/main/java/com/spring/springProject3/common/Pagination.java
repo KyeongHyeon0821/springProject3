@@ -57,6 +57,10 @@ public class Pagination {
 			category = part;
 			totRecCnt = faqDao.getFaqTotRecCntSearch(category, searchString); 
 		}
+		else if(section.equals("faqList")) {
+			category = part;
+			totRecCnt = faqDao.getFaqTotRecCntSearch(category, searchString); 
+		}
 		 
 		
 		if(section.equals("qnaSearch") && !searchString.equals("")) {

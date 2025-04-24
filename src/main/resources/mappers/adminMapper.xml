@@ -8,8 +8,8 @@
   </select>
 
   <select id="getInquiryList" resultType="com.spring.springProject3.vo.InquiryVo">
-    <if test='choice == "전체"'> select * from inquiry order by idx desc; </if>
-    <if test='choice != "전체"'> select * from inquiry where reply=#{choice} order by idx desc; </if>
+    <if test='choice == "전체"'> select * from inquiry order by idx desc limit #{startIndexNo},#{pageSize}; </if>
+    <if test='choice != "전체"'> select * from inquiry where reply=#{choice} order by idx desc limit #{startIndexNo},#{pageSize}; </if>
   </select>
   
   <select id="getInquiryDetail" resultType="com.spring.springProject3.vo.InquiryVo">

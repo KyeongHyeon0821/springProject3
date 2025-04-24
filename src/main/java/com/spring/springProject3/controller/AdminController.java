@@ -141,7 +141,11 @@ public class AdminController {
 		return "hotel/hotelList";
 	}
 	
-
+	// 관리자 실시간 1:1 채팅창 폼 보여주기
+	@GetMapping("/liveChat/adminChat")
+	public String adminChatGet() {
+		return "admin/liveChat/adminChat";
+	}
 	
 }
 

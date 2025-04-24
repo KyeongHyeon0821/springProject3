@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
@@ -10,115 +10,171 @@
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
   <script>
     'use strict';
-    
     function answerChoice() {
-    	let choice = $("#choice").val();
-    	
-    	if(choice != '') location.href = 'adInquiryList?choice='+choice;
+      let choice = $("#choice").val();
+      if(choice != '') location.href = 'adInquiryList?choice='+choice;
     }
   </script>
   <style>
-    table {
-      width: 80%;
-      margin: 0 auto;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 10px;
-      border-bottom: 1px solid #ddd;
-      text-align: center;
-    }
-    th {
-      background-color: #f5f5f5;
-    }
-    h3 {
-      text-align: center;
-    }
-    a {
-      color: #333;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
+    body {
+      background-color: #f9fefb;
+      font-family: 'Arial', sans-serif;
+      font-size: 1.1rem;
+      margin: 0;
+      padding: 0;
     }
 
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .my-page-header {
+      text-align: center;
+      font-weight: bold;
+      font-size: 2rem;
+      margin-bottom: 30px;
+      color: #2e7d32;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 10px;
+    }
+
+    th {
+      background-color: #e0f5e9;
+      padding: 12px;
+      text-align: center;
+      color: #444;
+      border-top: 1px solid #d0e0d5;
+      border-bottom: 1px solid #d0e0d5;
+    }
+
+    td {
+      background-color: #fff;
+      padding: 14px 12px;
+      text-align: center;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    td a {
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    td a:hover {
+      color: #4caf50;
+      text-decoration: none;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border-radius: 10px;
+      color: white;
+    }
+
+    .badge.bg-success {
+      background-color: #388e3c;
+    }
+
+    .badge.bg-warning {
+      background-color: #f9a825;
+    }
+
+    .badge.bg-secondary {
+      background-color: #9e9e9e;
+    }
+
+    .pagination .page-link {
+      color: #2e7d32;
+      border-color: #2e7d32;
+    }
+
+    .pagination .active .page-link {
+      background-color: #2e7d32;
+      border-color: #2e7d32;
+    }
   </style>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<h3 class="text-center m-5">1:1 문의 리스트 관리</h3>
+<h3 class="my-page-header mt-2">1:1 문의 리스트 관리</h3>
 
-<div class="text-end" style="width: 80%; margin: 0 auto;">
-  <div class="row">
-    <div class="col-2">
-		<select name="choice" id="choice" onChange="answerChoice()" class="form-select mb-2">
-		  <option value="전체" ${choice == "전체" ? "selected" : ""}>전체문의글</option>
-		  <option ${choice == "답변대기중" ? "selected" : ""}>답변대기중</option>
-		  <option ${choice == "답변완료" ? "selected" : ""}>답변완료</option>
-		  <option ${choice == "답변보류" ? "selected" : ""}>답변보류</option>
-		</select>
-		</div>
-		<div class="col-10"></div>
-	</div>
+<div class="container">
+  <div class="text-end mb-3">
+    <div class="row">
+      <div class="col-2">
+        <select name="choice" id="choice" onChange="answerChoice()" class="form-select">
+          <option value="전체" ${choice == "전체" ? "selected" : ""}>전체문의글</option>
+          <option ${choice == "답변대기중" ? "selected" : ""}>답변대기중</option>
+          <option ${choice == "답변완료" ? "selected" : ""}>답변완료</option>
+          <option ${choice == "답변보류" ? "selected" : ""}>답변보류</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-box">
+    <table>
+      <thead>
+        <tr>
+          <th class="text-center">제목</th>
+          <th class="text-center">분류</th>
+          <th class="text-center">작성일</th>
+          <th class="text-center">상태</th>
+        </tr>
+      </thead>
+      <tbody>
+        <c:forEach var="vo" items="${vos}">
+          <tr>
+            <td><a href="${ctp}/admin/inquiry/adInquiryDetail?idx=${vo.idx}">${vo.title}</a></td>
+            <td>${vo.part}</td>
+            <td>${vo.WDate.substring(0,16)}</td>
+            <td>
+              <c:if test="${vo.reply == '답변대기중'}">
+                <span class="badge bg-secondary">${vo.reply}</span>
+              </c:if>
+              <c:if test="${vo.reply == '답변완료'}">
+                <span class="badge bg-success">${vo.reply}</span>
+              </c:if>
+              <c:if test="${vo.reply == '답변보류'}">
+                <span class="badge bg-warning">${vo.reply}</span>
+              </c:if>
+            </td>
+          </tr>
+        </c:forEach>
+
+        <c:if test="${empty vos}">
+          <tr>
+            <td colspan="4" class="text-center">등록된 문의가 없습니다.</td>
+          </tr>
+        </c:if>
+      </tbody>
+    </table>
+
+    <div class="text-center mt-4">
+      <ul class="pagination justify-content-center">
+        <c:if test="${pageVo.pag > 1}"><li class="page-item"><a class="page-link" href="adInquiryList?pag=1&pageSize=${pageSize}">첫페이지</a></li></c:if>
+        <c:if test="${pageVo.curBlock > 0}"><li class="page-item"><a class="page-link" href="adInquiryList?pag=${(curBlock-1)*blockSize+1}&pageSize=${pageVo.pageSize}">이전블록</a></li></c:if>
+        <c:forEach var="i" begin="${(pageVo.curBlock*pageVo.blockSize)+1}" end="${(pageVo.curBlock*pageVo.blockSize)+pageVo.blockSize}" varStatus="st">
+          <c:if test="${i <= pageVo.totPage && i == pageVo.pag}"><li class="page-item active"><a class="page-link" href="adInquiryList?pag=${i}&pageSize=${pageVo.pageSize}">${i}</a></li></c:if>
+          <c:if test="${i <= pageVo.totPage && i != pageVo.pag}"><li class="page-item"><a class="page-link" href="adInquiryList?pag=${i}&pageSize=${pageVo.pageSize}">${i}</a></li></c:if>
+        </c:forEach>
+        <c:if test="${pageVo.curBlock < pageVo.lastBlock}"><li class="page-item"><a class="page-link" href="adInquiryList?pag=${(pageVo.curBlock+1)*pageVo.blockSize+1}&pageSize=${pageVo.pageSize}">다음블록</a></li></c:if>
+        <c:if test="${pageVo.pag < pageVo.totPage}"><li class="page-item"><a class="page-link" href="adInquiryList?pag=${pageVo.totPage}&pageSize=${pageVo.pageSize}">마지막페이지</a></li></c:if>
+      </ul>
+    </div>
+  </div>
 </div>
-
-
-
-<table>
-  <tr>
-   	<th>제목</th>
-   	<th>분류</th>
-   	<th>작성일</th>
-   	<th>상태</th>
-  </tr>
-
-  <c:forEach var="vo" items="${vos}">
-    <tr>
-      <td>
-        <a href="${ctp}/admin/inquiry/adInquiryDetail?idx=${vo.idx}">
-          ${vo.title}
-        </a>
-      </td>
-      <td>${vo.part}</td>
-      <td>${vo.WDate.substring(0,16)}</td>
-      <%-- <td>${vo.reply}</td> --%>
-      <td>
-		    <c:if test="${vo.reply == '답변대기중'}">
-		    	<span class="badge bg-secondary">${vo.reply}</span>
-		    </c:if>
-		    <c:if test="${vo.reply == '답변완료'}">
-		    	<span class="badge bg-success">${vo.reply}</span>
-		    </c:if>
-		    <c:if test="${vo.reply == '답변보류'}">
-		    	<span class="badge bg-warning">${vo.reply}</span>
-		    </c:if>
-    </td>
-    </tr>
-  </c:forEach>
-
-  <c:if test="${empty vos}">
-    <tr>
-      <td colspan="5">등록된 문의가 없습니다.</td>
-    </tr>
-  </c:if>
-
-</table>
-<br/>
-
-<!-- 블록페이지 시작 -->
-<div class="text-center">
-  <ul class="pagination justify-content-center">
-    <c:if test="${pageVo.pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="inquiryList?pag=1&pageSize=${pageSize}">첫페이지</a></li></c:if>
-  	<c:if test="${pageVo.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="inquiryList?pag=${(curBlock-1)*blockSize+1}&pageSize=${pageVo.pageSize}">이전블록</a></li></c:if>
-  	<c:forEach var="i" begin="${(pageVo.curBlock*pageVo.blockSize)+1}" end="${(pageVo.curBlock*pageVo.blockSize)+pageVo.blockSize}" varStatus="st">
-	    <c:if test="${i <= pageVo.totPage && i == pageVo.pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="inquiryList?pag=${i}&pageSize=${pageVo.pageSize}">${i}</a></li></c:if>
-	    <c:if test="${i <= pageVo.totPage && i != pageVo.pag}"><li class="page-item"><a class="page-link text-secondary" href="inquiryList?pag=${i}&pageSize=${pageVo.pageSize}">${i}</a></li></c:if>
-  	</c:forEach>
-  	<c:if test="${pageVo.curBlock < pageVo.lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="inquiryList?pag=${(pageVo.curBlock+1)*pageVo.blockSize+1}&pageSize=${pageVo.pageSize}">다음블록</a></li></c:if>
-  	<c:if test="${pageVo.pag < pageVo.totPage}"><li class="page-item"><a class="page-link text-secondary" href="inquiryList?pag=${pageVo.totPage}&pageSize=${pageVo.pageSize}">마지막페이지</a></li></c:if>
-  </ul>
-</div>
-<!-- 블록페이지 끝 -->
-
 </body>
 </html>

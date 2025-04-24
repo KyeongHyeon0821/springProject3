@@ -18,7 +18,8 @@
 		  $("#chatStatusMessage").show();
       const username = document.getElementById('username').value;
       if (username) {
-        socket = new WebSocket('ws://192.168.50.20:9090/JspringProject/webSocket/endPoint/' + username);
+        socket = new WebSocket('ws://192.168.50.65:9090/springProject3/webSocket/endPoint/' + username);
+       // socket = new WebSocket('ws://49.142.157.251:9090/springProject3/webSocket/endPoint/' + username);
 
         socket.onmessage = (event) => {
         	if (event.data.startsWith("USER_LIST:")) {

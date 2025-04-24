@@ -74,6 +74,15 @@
 		  background-color: #eee;
 		}
 	</style>
+	
+	<script>
+		'use strict';
+		
+	  // 실시간 채팅창 열기
+	  function chatEndUserCheck() {
+		  window.open("${ctp}/webSocket/chatEndUserWin","chatWin","width=300px,height=380px");
+	  }
+	</script>
 
 <body>
 <nav>
@@ -110,6 +119,8 @@
 			    <a href="${ctp}/faq/faqList">FQA</a>
 			    <a href="${ctp}/faq/adFaqList">FQA(관리자)</a><!-- 수정해야함 -->
 			    <a href="${ctp}/qna/qnaList">Q&A</a>
+			    <a href="javascript:chatEndUserCheck()">실시간채팅(사용자)</a>
+			    <a href="${ctp}/admin/liveChat/adminChat" target="_blank">실시간상담(관)</a>
 				</div>
       </li>
     </ul>

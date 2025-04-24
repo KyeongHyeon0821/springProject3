@@ -35,9 +35,6 @@
         <th class="bg-light" style="height:300px">내용</th>
         <td colspan="3">${vo.content}</td>
       </tr>
-      <tr>
-
-      </tr>
     </table>
 
     <div class="text-center mt-4">
