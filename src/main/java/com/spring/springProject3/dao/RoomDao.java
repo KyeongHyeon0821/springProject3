@@ -36,4 +36,7 @@ public interface RoomDao {
 
 	int setroomStatusUpdate(@Param("idx") int idx, @Param("status") String status);
 
+	List<RoomVo> getAvailableRoomList(@Param("idx") int idx, @Param("checkinDate") String checkinDate, @Param("checkoutDate") String checkoutDate, 
+			@Param("guestCount") int guestCount, @Param("petCount") int petCount);
+
 }

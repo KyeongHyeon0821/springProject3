@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -121,21 +123,41 @@ public class HotelController {
 	
 	// 호텔 상세페이지 보기
 	@RequestMapping(value =  "/hotelDetail", method = RequestMethod.GET)
-	public String hotelDetailGet(Model model, int idx, HttpSession session) {
+	public String hotelDetailGet(Model model, int idx, HttpSession session,
+			 @RequestParam(name="checkinDate", defaultValue = "", required = false) String checkinDate,
+       @RequestParam(name="checkoutDate", defaultValue = "", required = false) String checkoutDate,
+       @RequestParam(name="guestCount", defaultValue = "0", required = false) int guestCount,
+       @RequestParam(name="petCount", defaultValue = "0", required = false) int petCount
+		) {
+		
+		// 기본 체크인&체크아웃 날짜, 인원수, 반려견수 설정
+		if (checkinDate.equals("") || checkoutDate.equals("") || guestCount == 0 || petCount == 0) {
+      LocalDate today = LocalDate.now();
+      LocalDate tomorrow = today.plusDays(1);
+
+      checkinDate = today.toString();      // ex) "2025-04-24"
+      checkoutDate = tomorrow.toString();  // ex) "2025-04-25"
+      guestCount = 1;
+      petCount = 1;
+		}
+		
 		HotelVo vo = hotelService.getHotel(idx);
 		String mid = (String) session.getAttribute("sMid");
-		String hotelLike = "";
-		int res = hotelService.getHotelLike(mid, idx);
 		
-		if(res != 0) hotelLike = "Ok";
-		else hotelLike = "No";
+		// 사용자 찜 여부 체크
+		int res = hotelService.getHotelLike(mid, idx);
+		String hotelLike = (res != 0) ? "Ok" : "No";
 		
 		// 객실 리스트 조회
-		List<RoomVo> roomVos = roomService.getRoomList(idx);
+		List<RoomVo> roomVos = roomService.getAvailableRoomList(idx, checkinDate, checkoutDate, guestCount, petCount);
 		
 		model.addAttribute("vo", vo);
 		model.addAttribute("hotelLike", hotelLike);
 		model.addAttribute("roomVos", roomVos);
+		model.addAttribute("checkinDate", checkinDate);
+    model.addAttribute("checkoutDate", checkoutDate);
+    model.addAttribute("guestCount", guestCount);
+    model.addAttribute("petCount", petCount);
 		return "hotel/hotelDetail";
 	}
 	

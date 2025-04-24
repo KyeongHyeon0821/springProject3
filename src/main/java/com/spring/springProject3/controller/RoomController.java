@@ -1,6 +1,9 @@
 package com.spring.springProject3.controller;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -67,13 +70,38 @@ public class RoomController {
 	
 	// 객실 상세 보기
 	@RequestMapping(value = ("/roomDetail"), method = RequestMethod.GET)
-	public String roomDetailGet(Model model, @RequestParam("roomIdx") int roomIdx) {
+	public String roomDetailGet(Model model, @RequestParam("roomIdx") int roomIdx,
+			@RequestParam(name="checkinDate", defaultValue="") String checkinDate,
+	    @RequestParam(name="checkoutDate", defaultValue="") String checkoutDate,
+	    @RequestParam(name="guestCount", defaultValue="1") int guestCount,
+	    @RequestParam(name="petCount", defaultValue="1") int petCount
+		) {
 		
+		if (checkinDate.equals("") || checkoutDate.equals("")) {
+      LocalDate today = LocalDate.now();
+      LocalDate tomorrow = today.plusDays(1);
+      checkinDate = today.toString();
+      checkoutDate = tomorrow.toString();
+		}
+		// 날짜 차이 계산
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    LocalDate checkin = LocalDate.parse(checkinDate, formatter);
+    LocalDate checkout = LocalDate.parse(checkoutDate, formatter);
+    long nights = ChronoUnit.DAYS.between(checkin, checkout);
+    if (nights <= 0) {
+        nights = 1; // 최소 1박 보장
+    }
+    
 		RoomVo vo = roomService.getRoom(roomIdx);
 		List<OptionVo> roomOptionList = roomService.getRoomOptionList(roomIdx);
 				
 		model.addAttribute("vo", vo);
 		model.addAttribute("roomOptionList", roomOptionList);
+		model.addAttribute("checkinDate", checkinDate);
+    model.addAttribute("checkoutDate", checkoutDate);
+    model.addAttribute("guestCount", guestCount);
+    model.addAttribute("petCount", petCount);
+    model.addAttribute("nights", nights);
 		return "room/roomDetail";
 	}
 	

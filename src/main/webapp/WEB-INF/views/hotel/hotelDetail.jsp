@@ -161,6 +161,59 @@
 		.red-btn {
 		  background-color: #dc3545;
 		}
+		
+		.reservation-search {
+		  background-color: #f2f4f7;
+		  border-radius: 10px;
+		  padding: 24px 20px;
+		  margin: 30px 0;
+		  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+		}
+		
+		.reservation-search form {
+		  display: flex;
+		  flex-wrap: wrap;
+		  align-items: flex-end;
+		  gap: 16px;
+		}
+		
+		.reservation-search label {
+		  display: flex;
+		  flex-direction: column;
+		  font-size: 14px;
+		  color: #333;
+		  flex: 1 1 200px;
+		}
+		
+		.reservation-search label.small-input {
+		  flex: 0 0 100px;
+		}
+		
+		.reservation-search input {
+		  padding: 8px 10px;
+		  border: 1px solid #ccc;
+		  border-radius: 6px;
+		  font-size: 14px;
+		  margin-top: 4px;
+		  width: 100%;
+		}
+		
+		.reservation-search button {
+		  padding: 10px 18px;
+		  background-color: #28a745;
+		  color: white;
+		  border: none;
+		  border-radius: 8px;
+		  font-size: 15px;
+		  cursor: pointer;
+		  transition: background-color 0.3s ease;
+		  flex-shrink: 0;
+		  height: 40px;
+		}
+		
+		.reservation-search button:hover {
+		  background-color: #218838;
+		}
 	</style>
 
 	<script>
@@ -232,6 +285,41 @@
 				error : function() { alert("다시 시도해주세요."); }
 			});
 		}
+		
+		// 체크인 체크아웃 날짜 처리
+		window.addEventListener('DOMContentLoaded', function () {
+		  const checkinInput = document.getElementById('checkinDate');
+		  const checkoutInput = document.getElementById('checkoutDate');
+		
+		  // 오늘 날짜로 체크인 최소 설정
+		  const today = new Date().toISOString().split('T')[0];
+		  checkinInput.min = today;
+		
+		  // 체크인 값이 이미 있는 경우 초기 처리
+		  if (checkinInput.value) {
+		    checkoutInput.disabled = false;
+		    checkoutInput.min = checkinInput.value;
+		
+		    // 체크아웃 날짜가 체크인보다 빠른 경우 초기화
+		    if (checkoutInput.value && checkoutInput.value < checkinInput.value) {
+		      checkoutInput.value = '';
+		    }
+		  } else {
+		    checkoutInput.disabled = true;
+		  }
+
+		  // 체크인 날짜가 변경되면
+		  checkinInput.addEventListener('change', function () {
+		    if (checkinInput.value) {
+		      checkoutInput.disabled = false;
+		      checkoutInput.min = checkinInput.value;
+		      checkoutInput.value = '';
+		    } else {
+		      checkoutInput.disabled = true;
+		      checkoutInput.value = '';
+		    }
+		  });
+		});
 	</script>
 </head>
 <body>
@@ -258,26 +346,56 @@
   <div class="hotel-images">
     ${vo.images}
   </div>
+  
+  <div class="reservation-search" style="margin: 30px 0;">
+	  <form method="get" action="hotelDetail?idx=${vo.idx}">
+		  <input type="hidden" name="idx" value="${vo.idx}" />
+		  
+		  <label>체크인
+		    <input type="date" id="checkinDate" name="checkinDate" value="${checkinDate}" required />
+		  </label>
+		  
+		  <label>체크아웃
+		    <input type="date" id="checkoutDate" name="checkoutDate" value="${checkoutDate}" required />
+		  </label>
+		  
+		  <label class="small-input">인원
+		    <input type="number" name="guestCount" min="1" max="5" value="${guestCount}" required />
+		  </label>
+		  
+		  <label class="small-input">반려견
+		    <input type="number" name="petCount" min="0" max="5" value="${petCount}" required />
+		  </label>
+		
+		  <button type="submit">예약 가능 객실 검색</button>
+		</form>
+	</div>
 
-  <div class="roomList">
+  
+	
+	<div class="roomList">
+	  <!-- 예약 가능 객실 리스트 (검색 결과) -->
     <h3>예약 가능 객실</h3>
     <c:forEach items="${roomVos}" var="roomVo">
       <div class="roomContainer">
         <div class="roomThumbnailContainer">
-          <img src="${ctp}/roomThumbnail/s_${roomVo.thumbnail}" />
+          <img src="${ctp}/roomThumbnail/s_${roomVo.thumbnail}" alt="Room Thumbnail"/>
         </div>
         <div class="roomDetailContainer">
-          <div><a href="${ctp}/room/roomDetail?roomIdx=${roomVo.idx}">상세보기</a></div>
+          <div>
+          	<a href="${ctp}/room/roomDetail?roomIdx=${roomVo.idx}&checkinDate=${checkinDate}&checkoutDate=${checkoutDate}&guestCount=${guestCount}&petCount=${petCount}">
+          		상세보기
+          	</a>
+					</div>
           <div>${roomVo.name}</div>
           <div>${roomVo.price}원</div>
         </div>
       </div>
     </c:forEach>
-  </div>
 
   <div class="hotel-info">
-    <p>📞 연락처 : ${vo.tel}</p>
-    <p>📍 위치 : ${vo.address}</p>
+    <p>📞 ${vo.tel}</p>
+    <p>📍 ${vo.address}</p>
   </div>
 
   <div id="mapContainer" style="cursor:pointer;">

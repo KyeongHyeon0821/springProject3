@@ -37,5 +37,8 @@ public interface RoomService {
 
 	int setroomStatusUpdate(int idx, String status);
 
+	List<RoomVo> getAvailableRoomList(int idx, String checkinDate, String checkoutDate, int guestCount, int petCount);
+
+
 	
 }

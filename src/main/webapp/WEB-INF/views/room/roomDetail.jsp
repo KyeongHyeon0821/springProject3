@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
@@ -74,11 +75,11 @@
 		.room-info ul {
 		  list-style: none;
 		  padding: 0;
-		  margin: 0 0 20px 0;
+		  margin: 0 0 30px 0;
 		}
 		
 		.room-info li {
-		  padding: 6px 0;
+		  padding: 0px;
 		  font-size: 1rem;
 		}
 		
@@ -100,7 +101,6 @@
 		  font-size: 0.9rem;
 		}
 		
-		.room-actions,
 		.room-owner-actions {
 		  display: flex;
 		  flex-wrap: wrap;
@@ -110,7 +110,6 @@
 		
 		/* 공통 버튼 스타일 */
 		input[type="button"],
-		a.btn-back,
 		a.btn-secondary,
 		a.btn-tertiary,
 		a.btn-danger {
@@ -123,32 +122,6 @@
 		  text-decoration: none;
 		  display: inline-block;
 		  font-family: 'Noto Sans KR', sans-serif;
-		}
-		
-		/* ← 이전으로 버튼 */
-		a.btn-back {
-		  background-color: transparent;
-		  color: #555;
-		  font-size: 1.4rem;
-		  padding: 4px 10px;
-		  border: 1px solid #ddd;
-		  border-radius: 50%;
-		  line-height: 1;
-		  text-align: center;
-		}
-		
-		a.btn-back:hover {
-		  background-color: #f5f5f5;
-		}
-		
-		/* 예약하기 */
-		input.btn-primary {
-		  background-color: #009688;
-		  color: #fff;
-		}
-		
-		input.btn-primary:hover {
-		  background-color: #00796b;
 		}
 		
 		/* 객실 정보 수정 */
@@ -180,6 +153,77 @@
 		a.btn-danger:hover {
 		  background-color: #c62828;
 		}
+		
+		/* 기존 컨테이너에 아래 여백 추가 */
+		.room-detail-container {
+		  padding-bottom: 160px;
+		}
+		
+		/* 고정 바 전체 영역 (화면 하단에 고정, 가운데 정렬용) */
+		.room-reserve-bar-wrapper {
+		  position: fixed;
+		  bottom: 0;
+		  left: 0;
+		  width: 100%;
+		  background: transparent;
+		  display: flex;
+		  justify-content: center;
+		  z-index: 1000;
+		}
+		
+		/* 고정 바 본체 (컨테이너 너비에 맞춤) */
+		.room-reserve-bar {
+		  width: 800px;
+		  max-width: 90%;
+		  background-color: #ffffff;
+		  border-top: 1px solid #ddd;
+		  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+		  display: flex;
+		  justify-content: space-between;
+		  align-items: center;
+		  padding: 10px 24px;
+		  font-family: 'Noto Sans KR', sans-serif;
+		  gap: 20px;
+		}
+		
+		/* 왼쪽 예약 정보 */
+		.reserve-left {
+		  font-size: 0.95rem;
+		  color: #444;
+		}
+		
+		.reserve-dates {
+		  font-weight: 600;
+		  font-size: 0.9rem;
+		  margin-bottom: 6px;
+		}
+		
+		.reserve-summary {
+		  font-size: 1.5rem;
+		  color: #333;
+		}
+		
+		/* 예약 버튼 */
+		.reserve-form {
+		  flex-shrink: 0;
+		}
+		
+		.btn-reserve {
+		  background-color: #009688;
+		  color: white;
+		  padding: 12px 32px;
+		  font-size: 1rem;
+		  border: none;
+		  border-radius: 10px;
+		  cursor: pointer;
+		  transition: background-color 0.2s ease;
+		  width: 300px; /* 버튼 길이 조절 가능 */
+		}
+		
+		.btn-reserve:hover {
+		  background-color: #00796b;
+		}
+		
 	</style>
 </head>
 <body>
@@ -205,9 +249,9 @@
 
   <div class="room-info">
     <ul>
-      <li>👥 최대 인원: ${vo.maxPeople}명</li>
-      <li>🐶 반려견 크기 제한: ${vo.petSizeLimit}</li>
-      <li>🐾 반려견 최대: ${vo.petCountLimit}마리</li>
+      <li>👥 최대 ${vo.maxPeople}인</li>
+      <li>🐶 ${vo.petSizeLimit}견까지 동반 가능</li>
+      <li>🐾 반려견 최대 ${vo.petCountLimit}마리</li>
     </ul>
   </div>
 
@@ -220,12 +264,6 @@
     </div>
   </div>
 
-  
-  <div class="room-actions">
-	  <a href="${ctp}/hotel/hotelDetail?idx=${vo.hotelIdx}" class="btn-back">〈</a>
-	  <input type="button" value="예약하기" onclick="" class="btn-primary" />
-	</div>
-	
 	<c:if test="${vo.mid == sMid}">
 	  <div class="room-owner-actions">
 	    <a href="roomUpdate?roomIdx=${vo.idx}" class="btn-secondary">객실 정보 수정</a>
@@ -235,6 +273,27 @@
 	    </c:if>
 	  </div>
 	</c:if>
+	
+	<!-- 예약 고정 바 (컨테이너 내부에 위치) -->
+	<div class="room-reserve-bar-wrapper">
+	  <div class="room-reserve-bar">
+	    <div class="reserve-left">
+	      <div class="reserve-dates">${fn:substring(checkinDate,5,10)}~${fn:substring(checkoutDate,5,10)}</div>
+	      <div class="reserve-summary">
+	        <strong><fmt:formatNumber value="${vo.price * nights}" type="number" pattern="#,##0" />원</strong>
+	      </div>
+	    </div>
+	    <form action="${ctp}/reservation/reservationForm" method="get" class="reserve-form">
+	      <input type="hidden" name="roomIdx" value="${vo.idx}" />
+	      <input type="hidden" name="checkinDate" value="${checkinDate}" />
+	      <input type="hidden" name="checkoutDate" value="${checkoutDate}" />
+	      <input type="hidden" name="guestCount" value="${guestCount}" />
+	      <input type="hidden" name="petCount" value="${petCount}" />
+	      <input type="hidden" name="nights" value="${nights}" />
+	      <input type="submit" value="예약하기" class="btn-reserve" />
+	    </form>
+	  </div>
+	</div>
 	
 </div>
 </body>

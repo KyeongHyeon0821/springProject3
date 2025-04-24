@@ -251,6 +251,12 @@ public class RoomServiceImpl implements RoomService {
 		return roomDao.setroomStatusUpdate(idx, status);
 	}
 
+
+	@Override
+	public List<RoomVo> getAvailableRoomList(int idx, String checkinDate, String checkoutDate, int guestCount, int petCount) {
+		return roomDao.getAvailableRoomList(idx, checkinDate, checkoutDate, guestCount,	petCount);
+	}
+
 	
 	
 }
