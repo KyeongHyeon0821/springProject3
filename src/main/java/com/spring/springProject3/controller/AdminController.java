@@ -1,38 +1,29 @@
 package com.spring.springProject3.controller;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.springProject3.common.Pagination;
 import com.spring.springProject3.service.AdminService;
 import com.spring.springProject3.service.HotelService;
 import com.spring.springProject3.service.MemberService;
+import com.spring.springProject3.service.RoomService;
 import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.InquiryVo;
 import com.spring.springProject3.vo.MemberVo;
 import com.spring.springProject3.vo.PageVo;
+import com.spring.springProject3.vo.RoomVo;
 
 @Controller
 @RequestMapping("/admin")
@@ -43,6 +34,9 @@ public class AdminController {
 	
 	@Autowired
 	HotelService hotelService;
+	
+	@Autowired
+	RoomService roomService;
 	
 	@Autowired
 	MemberService memberService;
@@ -96,7 +90,7 @@ public class AdminController {
 	public String adminHotelListGet(Model model, HttpSession session
 			) {
 		String mid = session.getAttribute("sMid") + "";
-		List<HotelVo> vos = hotelService.getAdminHotelList();
+		List<HotelVo> vos = adminService.getAdminHotelList();
 		
 		if(!mid.equals("")) {
 			List<Integer> likedHotelListIdx = hotelService.getLikedHotelListIdx(mid);
@@ -107,17 +101,41 @@ public class AdminController {
 		return "/admin/hotel/hotelList";
 	}
 	
-	
-	
-	
-	
 	// 선택한 호텔 전체적으로 상태 변경하기
 	@ResponseBody
 	@RequestMapping(value = "/hotel/hotelStatusSelectCheck", method = RequestMethod.POST)
 	public String hotelStatusSelectCheckPost(String idxSelectArray, String statusSelect) {
 		System.out.println("idxSelectArray:" + idxSelectArray + ", statusSelect: " + statusSelect);
 		return adminService.setHotelStatusSelectCheck(idxSelectArray, statusSelect);
+	}
+	
+	// 객실(room) 리스트 보기
+	@RequestMapping(value = "/room/roomList", method = RequestMethod.GET)
+	public String adminRoomListGet(Model model, HttpSession session
+			) {
+		String mid = session.getAttribute("sMid") + "";
+		List<RoomVo> vos = adminService.getAdminRoomList();
+
+		model.addAttribute("vos", vos);
+		return "/admin/room/roomList";
+	}
+	
+	// 객실(room) 상세화면 보기
+	@ResponseBody
+	@RequestMapping(value = "/room/roomDetail/{idx}", method = RequestMethod.GET)
+	public RoomVo roomDetailGet(@PathVariable int idx) {
+		RoomVo vo = adminService.getRoomDetailSearch(idx);
 		
+		return vo;
+	}
+
+	
+	// 선택한 객실 전체적으로 상태 변경하기
+	@ResponseBody
+	@RequestMapping(value = "/room/roomStatusSelectCheck", method = RequestMethod.POST)
+	public String roomStatusSelectCheckPost(String idxSelectArray, String statusSelect) {
+		System.out.println("idxSelectArray:" + idxSelectArray + ", statusSelect: " + statusSelect);
+		return adminService.setRoomStatusSelectCheck(idxSelectArray, statusSelect);
 	}
 	
 	

@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.spring.springProject3.dao.AdminDao;
 import com.spring.springProject3.vo.ComplaintVo;
+import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.InquiryVo;
+import com.spring.springProject3.vo.RoomVo;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -71,6 +73,33 @@ public class AdminServiceImpl implements AdminService {
 			str = "1";
 		}
 		return str;
+	}
+
+	@Override
+	public List<RoomVo> getAdminRoomList() {
+		return adminDao.getAdminRoomList() ;
+	}
+
+	@Override
+	public String setRoomStatusSelectCheck(String idxSelectArray, String statusSelect) {
+		String[] idxSelectArrays = idxSelectArray.split("/");
+		
+		String str = "0";
+		for(String idx : idxSelectArrays) {
+			adminDao.setRoomStatusSelectCheck(Integer.parseInt(idx),  statusSelect);
+			str = "1";
+		}
+		return str;
+	}
+
+	@Override
+	public List<HotelVo> getAdminHotelList() {
+		return adminDao.getAdminHotelList();
+	}
+
+	@Override
+	public RoomVo getRoomDetailSearch(int idx) {
+		return adminDao.getRoomDetailSearch(idx);
 	}
 	
 	

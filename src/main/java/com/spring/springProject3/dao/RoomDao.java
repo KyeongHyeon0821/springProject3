@@ -17,4 +17,5 @@ public interface RoomDao {
 
 	int setRoomOptions(@Param("roomIdx") int roomIdx, @Param("optionIdx") int optionIdx);
 
+
 }

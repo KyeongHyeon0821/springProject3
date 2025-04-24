@@ -17,6 +17,18 @@
   	select *,(select reIdx from inquiryReply where inquiryIdx=a.idx) as reIdx,(select reContent from inquiryReply where inquiryIdx=a.idx) as reContent from inquiry a where idx = #{idx};
   </select>
   
+  <select id="getAdminHotelList" resultType="com.spring.springProject3.vo.HotelVo">
+		select * from hotel order by idx desc;  	
+  </select>
+  
+  <select id="getAdminRoomList" resultType="com.spring.springProject3.vo.RoomVo">
+  	select * from room;
+  </select>
+  
+  <select id="getRoomDetailSearch" resultType="com.spring.springProject3.vo.RoomVo">
+  	select * from room where idx=#{idx};
+  </select>
+  
 
 
 
@@ -38,6 +50,10 @@
    
   <update id="setHotelStatusSelectCheck">
   	update hotel set status=#{statusSelect} where idx=#{idx}; 
+  </update>
+
+  <update id="setRoomStatusSelectCheck">
+  	update room set status=#{statusSelect} where idx=#{idx}; 
   </update>
    
   <update id="setInquiryReplyStatusOk">

@@ -26,6 +26,5 @@ public interface HotelService {
 
 	List<Integer> getLikedHotelListIdx(String mid);
 
-	List<HotelVo> getAdminHotelList();
 
 }

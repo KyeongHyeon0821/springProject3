@@ -188,7 +188,7 @@
             </select>
           </td>
           <td>
-          	<input type="button" value="객실정보" class="btn btn-dark" onclick="#"/>
+          	<a href="${ctp}/admin/room/roomList" class="btn btn-dark">객실정보</a>
           </td>
         </tr>
       </c:forEach>
@@ -196,9 +196,8 @@
   </form>
   
 <!-- 페이징처리 -->  
-  
-  
 </div>
+
 
 </body>
 </html>

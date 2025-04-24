@@ -5,7 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.spring.springProject3.vo.ComplaintVo;
+import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.InquiryVo;
+import com.spring.springProject3.vo.RoomVo;
 
 public interface AdminDao {
 
@@ -29,7 +31,16 @@ public interface AdminDao {
 
 	int setAdInquiryDetailHold(@Param("idx") int idx);
 
+	List<HotelVo> getAdminHotelList();
+
 	void setHotelStatusSelectCheck(@Param("idx") int idx,@Param("statusSelect") String statusSelect);
+
+	List<RoomVo> getAdminRoomList();
+
+	void setRoomStatusSelectCheck(@Param("idx") int idx,@Param("statusSelect") String statusSelect);
+
+	RoomVo getRoomDetailSearch(@Param("idx") int idx);
+
 
 	
 }

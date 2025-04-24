@@ -129,7 +129,9 @@ public class RoomServiceImpl implements RoomService {
 	public int setRoomOptions(int roomIdx, int optionIdx) {
 		return roomDao.setRoomOptions(roomIdx, optionIdx);
 	}
-	
-	
+
+
+
+
 	
 }
