@@ -6,4 +6,6 @@ public interface ReservationService {
 
 	int setReservationInput(ReservationVo vo);
 
+	void setReservationStatusUpdate();
+
 }

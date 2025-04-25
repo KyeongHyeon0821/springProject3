@@ -4,9 +4,12 @@
   
   <!-- 예악 정보 저장 처리(결제 전) -->
   <insert id="setReservationInput">
-  	insert into reservation values(default, #{vo.mid}, #{vo.name}, #{vo.tel}, #{vo.roomIdx}, #{vo.checkinDate}, #{vo.checkoutDate}, #{vo.guestCount}, #{vo.petCount}, #{vo.totalPrice}, #{vo.status}, default);
+  	insert into reservation values(default, #{vo.mid}, #{vo.name}, #{vo.tel}, #{vo.roomIdx}, #{vo.checkinDate}, #{vo.checkoutDate}, #{vo.guestCount}, #{vo.petCount}, #{vo.totalPrice}, #{vo.status},#{vo.memo}, default);
   </insert>
 
-  
+	<!-- 예약 상태 업데이트 (체크아웃 날짜가 오늘과 같거나 이전이면 이용완료 처리 -->
+  <update id="setReservationStatusUpdate">
+  	update reservation set status = '이용완료' where <![CDATA[checkoutDate <= CURRENT_DATE]]>;
+  </update>
   
 </mapper>

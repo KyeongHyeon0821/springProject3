@@ -31,7 +31,8 @@
   <select id="getAvailableRoomList" resultType="com.spring.springProject3.vo.RoomVo">
   	select * from room 
   		where hotelidx = #{idx} and <![CDATA[maxpeople >= #{guestCount}]]> and <![CDATA[petcountlimit >= #{petCount}]]> and status = '정상' 
-  			and idx not in (select roomidx from reservation where status != '예약취소' and (<![CDATA[checkindate < #{checkinDate}]]> and <![CDATA[checkoutdate > #{checkoutDate}]]>));
+  			and idx not in (select roomidx from reservation where status != '예약취소' and (<![CDATA[checkinDate < #{checkoutDate}]]> and <![CDATA[checkoutDate > #{checkinDate}]]>))
+  		order by name desc;
   </select>
   
   

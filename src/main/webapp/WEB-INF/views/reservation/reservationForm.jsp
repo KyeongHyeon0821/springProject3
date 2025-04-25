@@ -64,7 +64,7 @@
 			color: #222;
 		}
 		.checkbox-area {
-			margin-top: 20px;
+			margin: 20px 0px;
 			font-size: 0.95rem;
 		}
 		.btn-reserve {
@@ -91,6 +91,11 @@
 		}
 		.btn-active:hover {
 			background-color: #3f6fd1;
+		}
+		textarea.form-control {
+			resize: none; 
+			overflow-y: auto;
+			min-height: 100px; 
 		}
 	</style>
 	<script>
@@ -174,6 +179,12 @@
 		<!-- 예약자 정보 박스 -->
 		<div class="info-box">
 			<div class="section-title">예약자 정보</div>
+			<div class="checkbox-area">
+				<label>
+					<input type="checkbox" id="autoFillCheck" />
+					내 정보 불러오기
+				</label>
+			</div>
 			<div class="form-group">
 				<label for="name">예약자 이름</label>
 				<input type="text" name="name" id="name" class="form-control" required placeholder="예 : 홍길동 또는 John">
@@ -182,11 +193,10 @@
 				<label for="tel">예약자 연락처</label>
 				<input type="text" name="tel" id="tel" class="form-control" required placeholder="예 : 010-1234-5678">
 			</div>
-			<div class="checkbox-area">
-				<label>
-					<input type="checkbox" id="autoFillCheck" />
-					내 정보 불러오기
-				</label>
+			
+			<div class="form-group">
+				<label for="memo">예약 메모 (선택)</label>
+				<textarea name="memo" id="memo" class="form-control" rows="4" placeholder="요청사항이나 전달할 메시지를 입력해주세요."></textarea>
 			</div>
 		</div>
 
@@ -198,7 +208,7 @@
 			<div class="info-line">🛏️ 총 숙박: ${nights}박</div>
 			<div class="info-line">👥 인원: ${guestCount}명</div>
 			<div class="info-line">🐶 반려견: ${petCount}마리</div>
-			<div class="info-line">🏠 객실: ${roomVo.name}</div>
+			<div class="info-line">🏠 객실: ${roomVo.name} ${roomVo.roomNumber}</div>
 		</div>
 
 		<!-- 결제 금액 박스 -->

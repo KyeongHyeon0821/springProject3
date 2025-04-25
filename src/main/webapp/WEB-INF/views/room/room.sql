@@ -11,7 +11,7 @@ create table room(
 	petCountLimit int not null default 1,		/* 최대 반려견 수 */
 	thumbnail varchar(100) not null,				/* 객실 썸네일 이미지 */
 	images text,														/* 객실 이미지 */
-	status varchar(20) default '정상', 				/* 객실 상태 (정상/예약중/서비스중지요청/서비스중지) */
+	status varchar(20) default '정상', 				/* 객실 상태 (정상/서비스중지요청/서비스중지) */
 	regDate datetime default now(),					/* 등록 날짜 */
 	primary key(idx),
 	foreign key(hotelIdx) references hotel(idx) on delete cascade,
@@ -53,3 +53,12 @@ select * from options where idx in (select optionIdx from roomOptions where room
 
 select * from roomOptions where roomIdx=4;
 
+SELECT * FROM room 
+WHERE hotelIdx = 29 AND maxPeople >= 1 AND petCountLimit >= 1
+  AND status = '정상'
+  AND idx NOT IN (SELECT roomIdx
+									FROM reservation
+									WHERE status != '예약취소'
+  									AND (checkinDate < '2025-04-26' AND checkoutDate > '2025-04-25'));
+  	
+select * from reservation where status  != '예약취소';

@@ -10,8 +10,9 @@ create table reservation (
   guestCount    int not null,                           /* 인원 수 */
   petCount      int not null,                           /* 반려견 수 */
   totalPrice    int not null,                           /* 총 결제 금액 */
-  status        varchar(20) default '대기중',     		    /* 예약 상태 (대기중, 예약완료, 예약취소, 이용완료) */
+  status        varchar(20) not null default '대기중',    /* 예약 상태 (대기중, 예약완료, 예약취소, 이용완료) */
   regDate       datetime default now(), 						    /* 예약 등록일 */
+  memo					varchar(300),														/* 예약자 메모 */
   foreign key (mid) references member(mid) on delete cascade,
   foreign key (roomIdx) references room(idx) on delete cascade
 );
@@ -19,10 +20,10 @@ select * from reservation;
 insert into reservation values(default, 'admin', 1, '2025-04-24', '2025-04-25', '예약완료', default);
 
 SELECT * FROM room 
-WHERE hotelIdx = 29 AND maxPeople >= 2 AND petCountLimit >= 2
+WHERE hotelIdx = 29 AND maxPeople >= 1 AND petCountLimit >= 1
   AND status = '정상'
   AND idx NOT IN (SELECT roomIdx
 									FROM reservation
 									WHERE status != '예약취소'
-  									AND (checkinDate < '2025-04-25' AND checkoutDate > '2025-04-24'));
-  	
+  									AND (checkinDate < '2025-04-26' AND checkoutDate > '2025-04-25'))
+  									order by name desc;

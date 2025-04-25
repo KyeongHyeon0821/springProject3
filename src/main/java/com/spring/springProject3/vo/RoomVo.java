@@ -23,4 +23,5 @@ public class RoomVo {
 	private String regDate;
 	
 	private String oThumbnail;
+	private int availableCount;
 }

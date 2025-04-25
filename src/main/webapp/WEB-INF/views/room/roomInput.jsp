@@ -235,7 +235,7 @@
     </div>
 
     <div class="form-group">
-      <label for="name">객실명</label>
+      <label for="name">객실 타입</label>
       <input type="text" name="name" id="name" class="form-control" required />
     </div>
 

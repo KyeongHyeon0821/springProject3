@@ -372,26 +372,38 @@
 	</div>
 
   
-	
 	<div class="roomList">
-	  <!-- 예약 가능 객실 리스트 (검색 결과) -->
-    <h3>예약 가능 객실</h3>
-    <c:forEach items="${roomVos}" var="roomVo">
-      <div class="roomContainer">
-        <div class="roomThumbnailContainer">
-          <img src="${ctp}/roomThumbnail/s_${roomVo.thumbnail}" alt="Room Thumbnail"/>
-        </div>
-        <div class="roomDetailContainer">
-          <div>
-          	<a href="${ctp}/room/roomDetail?roomIdx=${roomVo.idx}&checkinDate=${checkinDate}&checkoutDate=${checkoutDate}&guestCount=${guestCount}&petCount=${petCount}">
-          		상세보기
-          	</a>
-					</div>
-          <div>${roomVo.name}</div>
-          <div>${roomVo.price}원</div>
-        </div>
-      </div>
-    </c:forEach>
+  <!-- 예약 가능 객실 리스트 (검색 결과) -->
+  <h3>예약 가능 객실</h3>
+  <!-- 이전 객실 타입 저장 변수 -->
+  <c:set var="previousRoomType" value="" />
+  
+	  <c:forEach items="${roomVos}" var="roomVo">
+	    <!-- 객실 타입이 변경될 때마다 새로운 섹션 시작 -->
+	    <c:if test="${roomVo.name != previousRoomType}">
+	      <h4>${roomVo.name}</h4> <!-- 객실 타입 제목 출력 -->
+	      <c:set var="previousRoomType" value="${roomVo.name}" />
+	    </c:if>
+	    
+	    <div class="roomContainer">
+	      <div class="roomThumbnailContainer">
+	        <img src="${ctp}/roomThumbnail/s_${roomVo.thumbnail}" alt="Room Thumbnail"/>
+	      </div>
+	      <div class="roomDetailContainer">
+	        <div>
+	          <a href="${ctp}/room/roomDetail?roomIdx=${roomVo.idx}&checkinDate=${checkinDate}&checkoutDate=${checkoutDate}&guestCount=${guestCount}&petCount=${petCount}">
+	            상세보기
+	          </a>
+	        </div>
+	        <div>${roomVo.roomNumber}</div> <!-- 호실 번호 -->
+	        <div>${roomVo.price}원</div>
+	      </div>
+	    </div>
+	  </c:forEach>
+	</div>
+    
+    
+    
 
   <div class="hotel-info">
     <p>📞 ${vo.tel}</p>

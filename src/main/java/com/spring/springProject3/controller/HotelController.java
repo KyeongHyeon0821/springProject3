@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.springProject3.service.HotelService;
+import com.spring.springProject3.service.ReservationService;
 import com.spring.springProject3.service.RoomService;
 import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.RoomVo;
@@ -41,6 +42,9 @@ public class HotelController {
 	
 	@Autowired
 	RoomService roomService;
+	
+	@Autowired
+	ReservationService reservationService;
 	
 	// 호텔 리스트
 	@RequestMapping("/hotelList")
@@ -148,9 +152,11 @@ public class HotelController {
 		int res = hotelService.getHotelLike(mid, idx);
 		String hotelLike = (res != 0) ? "Ok" : "No";
 		
+		// 예약 상태 업데이트 (체크아웃 날짜가 오늘 날짜랑 같거나 이전이면 이용완료 처리(오늘 날짜 부터 새 예약을 받을 수 있도록))
+		reservationService.setReservationStatusUpdate();
+		
 		// 객실 리스트 조회
 		List<RoomVo> roomVos = roomService.getAvailableRoomList(idx, checkinDate, checkoutDate, guestCount, petCount);
-		
 		model.addAttribute("vo", vo);
 		model.addAttribute("hotelLike", hotelLike);
 		model.addAttribute("roomVos", roomVos);

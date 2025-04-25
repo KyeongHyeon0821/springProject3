@@ -16,4 +16,9 @@ public class ReservationServiceImpl implements ReservationService {
 	public int setReservationInput(ReservationVo vo) {
 		return reservationDao.setReservationInput(vo);
 	}
+
+	@Override
+	public void setReservationStatusUpdate() {
+		reservationDao.setReservationStatusUpdate();
+	}
 }

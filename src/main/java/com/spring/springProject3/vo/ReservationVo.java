@@ -19,5 +19,6 @@ public class ReservationVo {
 	private int petCount;
 	private int totalPrice;
 	private String status;
+	private String memo;
 	private String regDate;
 }
