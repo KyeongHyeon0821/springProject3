@@ -5,18 +5,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>hotelDetail.jsp</title>
-	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f5f016ee8ec4b87750154cd5e9d07dfb&libraries=services"></script>
-	<style>
-		.hotel-images img{
-			width:200px !important;
-			height: auto !important;
-			margin : 5px 5px 0 0;
-		}
-	</style>
-	<script>
+<meta charset="UTF-8">
+<title>hotelDetail.jsp</title>
+<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f5f016ee8ec4b87750154cd5e9d07dfb&libraries=services"></script>
+<style>
+	.hotel-images img{
+		width:200px !important;
+		height: auto !important;
+		margin : 5px 5px 0 0;
+	}
+	.map_wrap {
+   		position: relative;
+    }
+	#category {
+	    position: absolute;
+	    top: 10px;
+	    left: 0px;
+	    margin-left: -7px;
+	    z-index: 10;
+	  }
+	
+	#category li {
+	  display: inline-block;
+	  background-color: #2e7d32;
+	  color: white;
+	  font-weight: bold;
+	  padding: 8px 14px;
+	  border-radius: 6px;
+	  cursor: pointer;
+	  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+	  transition: background-color 0.2s ease;
+	}
+	
+	#category li:hover {
+	  background-color: #1b5e20;
+	}
+</style>
+<script>
 		'use strict';
 		
 		// 호텔 등록취소 요청
@@ -85,12 +111,13 @@
 				error : function() { alert("다시 시도해주세요."); }
 			});
 		}
-	</script>
+</script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <div class="container">
 	<h2>${vo.name}</h2>
+  
 	<c:if test="${hotelLike == 'Ok'}">
 		<a id="likeFn" href="javascript:hotelLikeNo()"><img id="likeImg" src="${ctp}/images/heartRed.png" /></a>
 	</c:if>
@@ -109,8 +136,11 @@
 	<div>${vo.description}</div>
 	<p>위치 : ${vo.address}</p>
 	
-	<div id="mapContainer" style="cursor:pointer;">
+	<div id="mapContainer" style="position:relative; cursor:pointer;">
 		<div id="map" style="width:100%;height:350px;"></div>
+		  <ul id="category">
+		    <li id="TOUR" data-order="99"><span class="category_bg tour"></span>관광지</li>
+		  </ul>
 	</div>
 	
 	<div class="mt-3">
@@ -143,13 +173,8 @@
 		// 지도를 생성합니다    
 		var map = new kakao.maps.Map(mapContainer, mapOption);
 		
-		
-		map.setDraggable(false); // 지도 드래그 막기
-		map.setZoomable(false); // 지도 확대,축소 막기
-		// 더블 클릭 확대 막기
-		kakao.maps.event.addListener(map, 'dblclick', function(event) {
-		    event.preventDefault(); // 더블 클릭으로 인한 확대 막기
-		});
+		map.setDraggable(false);
+		map.setZoomable(true);
 		
 		// 주소-좌표 변환 객체를 생성합니다
 		var geocoder = new kakao.maps.services.Geocoder();
@@ -176,12 +201,36 @@
 		
 		        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
 		        map.setCenter(coords);
+		        
+		        // 관광지 마커 표시
+		        <c:forEach var="spot" items="${touristList}">
+		          var spotLatLng = new kakao.maps.LatLng(${spot.lat}, ${spot.lng});
+		          var pawMarkerImage = new kakao.maps.MarkerImage(
+		            "${ctp}/images/paw_marker.png", 
+		            new kakao.maps.Size(40, 40)
+		          );
+
+		          var spotMarker = new kakao.maps.Marker({
+		            position: spotLatLng,
+		            title: '${spot.name}',
+		            image: pawMarkerImage
+		          });
+
+		          var spotInfo = new kakao.maps.InfoWindow({
+		            content: '<div style="padding:5px; font-size:13px; font-weight:bold;">${spot.name}</div>'
+		          });
+
+		          kakao.maps.event.addListener(spotMarker, 'click', function() {
+		            spotInfo.open(map, spotMarker);
+		          });
+		          
+		          touristMarkers.push(spotMarker);
+		        </c:forEach>
 		    } 
 		});    
 	
-	 	// 지도 클릭 시 전체 화면을 열기 위한 스크립트
-    // 기존 지도 클릭 시 모달로 지도를 띄우기
-    document.getElementById('map').addEventListener('click', function() {
+        // 기존 지도 클릭 시 모달로 지도를 띄우기
+        document.getElementById('map').addEventListener('click', function() {
         // 모달 지도 표시
         document.getElementById('modalMapContainer').style.display = 'block';
 
@@ -211,13 +260,87 @@
                 modalMap.setCenter(coords);
             }
         });
+        
+        // 클릭 vs 드래그 판별 로직
+        let isDragging = false;
+        let dragStart = null;
+
+        const mapElement = document.getElementById('map');
+
+        mapElement.addEventListener('mousedown', function (e) {
+          isDragging = false;
+          dragStart = { x: e.clientX, y: e.clientY };
+        });
+
+        mapElement.addEventListener('mouseup', function (e) {
+          const dx = Math.abs(e.clientX - dragStart.x);
+          const dy = Math.abs(e.clientY - dragStart.y);
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          // 드래그로 판정할 정도로 움직이지 않았으면 클릭으로 처리
+          if (distance < 5) {
+            openHotelModalMap();
+          }
+        });
+
+        // 모달 열기 함수로 분리
+        function openHotelModalMap() {
+          document.getElementById('modalMapContainer').style.display = 'block';
+
+          var mapContainer = document.getElementById('modalMap');
+          var modalMap = new kakao.maps.Map(mapContainer, {
+            center: new kakao.maps.LatLng(33.450701, 126.570667),
+            level: 3
+          });
+
+          var geocoder = new kakao.maps.services.Geocoder();
+          geocoder.addressSearch('${vo.address}', function (result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+              var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+              var marker = new kakao.maps.Marker({
+                map: modalMap,
+                position: coords
+              });
+
+              var infowindow = new kakao.maps.InfoWindow({
+                content: '<div style="width:150px;text-align:center;padding:6px 0;">${vo.name}</div>'
+              });
+              infowindow.open(modalMap, marker);
+
+              modalMap.setCenter(coords);
+              
+              // 관광지 마커
+              <c:forEach var="spot" items="${touristList}">
+                var modalSpotLatLng = new kakao.maps.LatLng(${spot.lat}, ${spot.lng});
+                var pawMarkerImage = new kakao.maps.MarkerImage(
+                  "${ctp}/images/paw_marker.png",
+                  new kakao.maps.Size(40, 40)
+                );
+
+                var modalSpotMarker = new kakao.maps.Marker({
+                  map: modalMap,
+                  position: modalSpotLatLng,
+                  title: '${spot.name}',
+                  image: pawMarkerImage
+                });
+
+                var modalSpotInfo = new kakao.maps.InfoWindow({
+                  content: '<div style="padding:5px; font-size:13px; font-weight:bold;">${spot.name}</div>'
+                });
+
+                kakao.maps.event.addListener(modalSpotMarker, 'click', function() {
+                  modalSpotInfo.open(modalMap, modalSpotMarker);
+                });
+              </c:forEach>
+            }
+          });
+        }
     });
 
     // 모달 지도 닫기
     function closeModalMap() {
         document.getElementById('modalMapContainer').style.display = 'none';
     }
-    
     
     // 지도 위에 마우스 올렸을 때 커서 변경
     document.addEventListener("DOMContentLoaded", function () {
@@ -230,7 +353,53 @@
   	    }
   	  }, 500); // 지도가 렌더링될 시간 기다려줌
   	});
-	</script>
+    
+    // 관광지 마커를 따로 관리할 배열
+    var touristMarkers = [];
+    let tourVisible = false;
+
+    // 관광지 버튼 클릭 이벤트 설정
+    document.addEventListener("DOMContentLoaded", function () {
+	  const tourBtn = document.getElementById('TOUR');
+	  if (tourBtn) {
+	    tourBtn.addEventListener('click', function () {
+	      if (!tourVisible) {
+	        <c:forEach var="spot" items="${touristList}">
+	          var coords = new kakao.maps.LatLng(parseFloat("${spot.lat}"), parseFloat("${spot.lng}"));
+	          var markerImage = new kakao.maps.MarkerImage(
+	            '${ctp}/images/paw_marker.png',
+	            new kakao.maps.Size(40, 40)
+	          );
+	
+	          var marker = new kakao.maps.Marker({
+	            map: map,
+	            position: coords,
+	            title: '${spot.name}',
+	            image: markerImage
+	          });
+	
+	          var info = new kakao.maps.InfoWindow({
+	            content: '<div style="padding:5px; font-size:13px; font-weight:bold;">${spot.name}</div>'
+	          });
+	
+	          kakao.maps.event.addListener(marker, 'click', function() {
+	            info.open(map, marker);
+	          });
+	
+	          touristMarkers.push(marker);
+	        </c:forEach>
+	        tourVisible = true;
+	      } else {
+	        touristMarkers.forEach(function(marker) {
+	          marker.setMap(null);
+	        });
+	        touristMarkers = [];
+	        tourVisible = false;
+	      }
+	    });
+	  }
+	});
+</script>
 <p><br/></p>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>

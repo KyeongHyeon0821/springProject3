@@ -23,14 +23,6 @@ public class TouristSpotController {
     @Autowired
     HotelService hotelService;
 
-    // 특정 호텔 주변 관광지 목록 가져오기
-    @GetMapping("/hotelDetail")
-    public String hotelDetail(@RequestParam("idx") int hotelIdx, Model model) {
-        List<TouristSpotVo> touristList = touristSpotService.getSpotsByHotelIdx(hotelIdx);
-        model.addAttribute("touristList", touristList);
-        return "hotel/hotelDetail";
-    }
-    
     // 관광지 등록 폼 이동
     @GetMapping("/touristSpotInput")
     public String touristInputForm(@RequestParam("hotelIdx") int hotelIdx, Model model) {
