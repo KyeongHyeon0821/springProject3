@@ -65,7 +65,20 @@ public class MessageController {
 			model.addAttribute("message", "객실 등록에 실패했습니다.\\n다시 시도해주세요.");
 			model.addAttribute("url", "hotel/roomInput?hotelIdx="+hotelIdx);
 		}
-		
+		else if(msgFlag.equals("touristInputOk")) {
+	    model.addAttribute("message", "관광지가 등록되었습니다.");
+	    model.addAttribute("url", "hotel/hotelDetail?idx=" + hotelIdx);
+	  }
+		else if(msgFlag.equals("touristInputNo")) {
+	    model.addAttribute("message", "관광지 등록에 실패하였습니다. 다시 시도해주세요.");
+	    model.addAttribute("url", "touristSpot/touristSpotInput?hotelIdx=" + hotelIdx);
+	  }
+		else if(msgFlag.equals("touristInputDuplicate")) {
+	    model.addAttribute("message", "이미 등록된 관광지입니다.");
+	    model.addAttribute("url", "/touristSpotInput?hotelIdx=" + hotelIdx);
+   	}
+
+
 		
 		
 		

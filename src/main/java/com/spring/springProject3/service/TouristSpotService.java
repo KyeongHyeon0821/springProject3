@@ -10,4 +10,6 @@ public interface TouristSpotService {
 
 	void insertTouristSpot(TouristSpotVo vo);
 	
+	boolean checkSpot(int hotelIdx, String name);
+	
 }

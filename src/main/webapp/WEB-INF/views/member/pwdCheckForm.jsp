@@ -26,16 +26,15 @@
     }
   </script>
 </head>
-<body>
+<body style="min-height: 100vh; display: flex; flex-direction: column;">
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <p><br/></p>
-<div class="container" style="max-width: 500px;">
+<div class="container flex-fill" style="max-width: 500px; margin-top: 80px; margin-bottom: 40px;">
   <div class="card shadow-sm p-4">
     <h3 class="text-center mb-3">비밀번호 확인</h3>
     <c:if test="${pwdFlag == 'p'}">
       <div class="text-center text-danger mb-3">(현재 비밀번호를 입력하세요)</div>
     </c:if>
-
     <form method="post" onsubmit="return checkDeleteForm();">
       <div class="mb-3">
         <label for="pwd" class="form-label fw-bold">비밀번호</label>

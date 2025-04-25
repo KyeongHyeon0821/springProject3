@@ -118,12 +118,11 @@
 	
 		<c:if test="${vo.mid == sMid}">
 			<a href="${ctp}/room/roomInput?hotelIdx=${vo.idx}" class="btn btn-primary">객실 등록</a>
+			<a href="${ctp}/touristSpotInput?hotelIdx=${vo.idx}" class="btn btn-success">주변 관광지 등록</a>
 			<a href="hotelUpdate?idx=${vo.idx}" class="btn btn-warning">호텔 정보 수정</a>
 			<a href="javascript:hotelDeleteCheck()" class="btn btn-danger">호텔 등록 취소 요청</a>
 		</c:if>
-	
 	</div>
-
 </div>
 
 <!-- 모달 형태로 지도 띄우기 -->
@@ -232,5 +231,7 @@
   	  }, 500); // 지도가 렌더링될 시간 기다려줌
   	});
 	</script>
+<p><br/></p>
+<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>
 </html>

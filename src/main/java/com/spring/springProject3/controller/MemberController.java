@@ -263,13 +263,13 @@ public class MemberController {
 
         if (title.contains("임시 비밀번호")) {
             subject = "[withPET] 임시 비밀번호";
-            mainTitle = "🐾 withPET 임시 비밀번호 안내";
+            mainTitle = "withPET 임시 비밀번호 안내";
             description = "회원님의 요청으로 아래와 같이 임시 비밀번호를 발급해드렸습니다.";
             subMessage = "보안을 위해 <strong>로그인 후 반드시 비밀번호를 변경</strong>해 주세요.";
             prefix = "임시 비밀번호 : ";
         } else if (title.contains("인증키")) {
             subject = "[withPET] 이메일 인증키";
-            mainTitle = "🐾 withPET 이메일 인증 안내";
+            mainTitle = "withPET 이메일 인증 안내";
             description = "회원가입을 위해 이메일 인증이 필요합니다.";
             subMessage = "아래 인증키를 입력해 주세요.";
             prefix = "인증키 : ";
@@ -320,6 +320,10 @@ public class MemberController {
         if (mid == null) {
             return "redirect:/message/loginRequired";
         }
+        
+        // 예약 자동 처리 추가 (임시 주석처리)
+        // reservationService.setReservationAutoCancel();      // 결제 안 한 예약 자동 취소
+        // reservationService.setReservationUpdateToDone();  // 체크아웃 지난 예약 '이용완료' 처리
         
         MemberVo mVo = memberService.getMemberIdCheck(mid);
         

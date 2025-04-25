@@ -23,7 +23,7 @@
 	let regNickName = /^[가-힣a-zA-Z0-9_]{2,}$/;
 	let regName = /^[가-힣a-zA-Z]+$/;
 	let regEmail = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
-	let regTel = /\d{2,3}-\d{3,4}-\d{4}$/g;
+	let regTel = /^(01[016789]|02|0[3-6][1-5])-\d{3,4}-\d{4}$/;
 	let regBizNo = /^\d{10}$/;
 	
 	function toggleBizForm(isBiz) {
@@ -144,7 +144,7 @@
 	        alert("인증번호가 발송되었습니다. 메일을 확인해주세요.");
 	        let str = '<div class="input-group">';
 	        str += '<input type="text" name="checkKey" id="checkKey" class="form-control"/>';
-	        str += '<button type="button" onclick="emailCeritificationOk()" class="btn btn-primary btn-sm rounded">인증번호확인</button>';
+	        str += '<button type="button" onclick="emailCeritificationOk()" class="btn btn-info btn-sm rounded">인증번호확인</button>';
 	        str += '</div>';
 	        $("#demo").html(str);
 	      } else {
@@ -275,6 +275,11 @@
 	    alert("이메일 형식이 올바르지 않습니다.");
 	    myform.email1.focus();
 	    return;
+	  }
+	  if (!regTel.test(tel)) {
+		alert("전화번호 형식이 올바르지 않습니다. 예: 010-1234-5678 또는 02-123-4567");
+		myform.tel2.focus();
+		return;
 	  }
 	  if (level === "1") {
 	    let businessNo = myform.businessNo.value.trim();
@@ -444,7 +449,7 @@
               <option>hotmail.com</option>
               <option>nate.com</option>
             </select>
-            <button type="button" onclick="emailCertification()" id="certificationBtn" class="btn btn-info btn-sm ms-2 rounded">인증번호받기</button>
+            <button type="button" onclick="emailCertification()" id="certificationBtn" class="btn btn-success btn-sm ms-2 rounded">인증번호받기</button>
             <div id="spinner" class="ms-2" style="display: none;">
     			<div class="spinner-border text-success spinner-border-sm" role="status">
       				<span class="visually-hidden">Loading...</span>
@@ -515,7 +520,7 @@
 		  <td>
 		    <div class="input-group mb-2">
 		      <input type="text" name="postcode" id="sample6_postcode" placeholder="우편번호" class="form-control">
-		      <button type="button" onclick="sample6_execDaumPostcode()" class="btn btn-info btn-sm ms-2 rounded">우편번호 찾기</button>
+		      <button type="button" onclick="sample6_execDaumPostcode()" class="btn btn-success btn-sm ms-2 rounded">우편번호 찾기</button>
 		    </div>
 		    <input type="text" name="roadAddress" id="sample6_address" placeholder="주소" class="form-control mb-2">
 		    <div class="input-group mb-1">

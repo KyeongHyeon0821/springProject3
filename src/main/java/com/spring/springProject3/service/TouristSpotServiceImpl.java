@@ -23,4 +23,10 @@ public class TouristSpotServiceImpl implements TouristSpotService {
     public void insertTouristSpot(TouristSpotVo vo) {
         touristSpotDao.insertTouristSpot(vo);
     }
+    
+    @Override
+    public boolean checkSpot(int hotelIdx, String name) {
+        return touristSpotDao.checkSpot(hotelIdx, name) > 0;
+    }
+
 } 

@@ -24,9 +24,10 @@
     background-color: #f9fefb;
     font-family: 'Arial', sans-serif;
     font-size: 1.1rem;
+    width: 100%;
   }
 
-  .container {
+  .my-container {
 	max-width: 1200px;
 	margin: 0 auto;
 	overflow-x: visible;
@@ -136,20 +137,22 @@
     margin-bottom: 6px;
   }
   
-  footer.w3-container {
-    width: 100vw !important;
-    max-width: 100vw !important;
-    margin-left: calc(-50vw + 50%) !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    box-sizing: border-box;
+  footer {
+	position: relative;
+	left: 50%;
+	right: 50%;
+	margin-left: -50vw;
+	margin-right: -50vw;
+	width: 100vw;
+	max-width: 100vw;
   }
+  
 </style>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <p><br/></p>
-<div class="container">
+<div class="my-container">
 <h3 class="text-center mb-4">
 <img src="${ctp}/images/logo.png" width="150px"/><br/>
   <div class="my-page-header">마이페이지</div>

@@ -7,6 +7,12 @@
     select * from tourist_spot where hotelIdx = #{hotelIdx}
   </select>
   
+  <!-- 관광지 중복 체크 -->
+  <select id="checkSpot" resultType="int">
+    select count(*) from tourist_spot where hotelIdx = #{hotelIdx} and name = #{name}
+  </select>
+  
+  
   <!-- 주변 관광지 등록 -->
   <insert id="insertTouristSpot" parameterType="TouristSpotVo">
     insert into tourist_spot (hotelIdx, name, lat, lng, address, description)
