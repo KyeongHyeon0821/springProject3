@@ -18,12 +18,22 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	@Override
-	public void setReservationStatusUpdate() {
-		reservationDao.setReservationStatusUpdate();
+	public void setReservationUpdateToDone() {
+		reservationDao.setReservationUpdateToDone();
 	}
 
 	@Override
-	public void setReservationCancel() {
-		reservationDao.setReservationCancel();
+	public void setReservationAutoCancel() {
+		reservationDao.setReservationAutoCancel();
+	}
+
+	@Override
+	public int setReservationPaymentOk(String reservationNo) {
+		return reservationDao.setReservationPaymentOk(reservationNo);
+	}
+
+	@Override
+	public ReservationVo getReservation(String reservationNo) {
+		return reservationDao.getReservation(reservationNo);
 	}
 }

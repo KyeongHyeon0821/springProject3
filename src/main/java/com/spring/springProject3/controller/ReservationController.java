@@ -1,5 +1,9 @@
 package com.spring.springProject3.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,20 +69,48 @@ public class ReservationController {
 	
 	// 예약 처리
 	@RequestMapping(value = "/reservationForm", method = RequestMethod.POST)
-	public String reservationFormPost(HttpSession session, ReservationVo vo) {
+	public String reservationFormPost(HttpSession session, Model model, ReservationVo vo) {
 		String mid = session.getAttribute("sMid") + "";
-		if(mid == null || mid.equals("")) return "redirect:/message/loginRequired";
+		if(mid == null || mid.equals("")) return "redirect:/message/loginRequired"; // 로그인 체크
+		
+		Date today = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHss");
+		
 		
 		vo.setMid(mid);
 		vo.setStatus("대기중");
+		vo.setReservationNo(sdf.format(today) + UUID.randomUUID().toString().substring(0,2) + vo.getRoomIdx()); // 예약번호만들기
 		
-		int res = reservationService.setReservationInput(vo);
+		int res = reservationService.setReservationInput(vo); // 예약 테이블 입력 처리
 		
-		if(res != 0) {
+		if(res != 0) { // 예약 대기 처리 되었으면 실행
+			RoomVo roomVo = roomService.getRoom(vo.getRoomIdx());
+			HotelVo hotelVo = hotelService.getHotel(roomVo.getHotelIdx());
+			
+			model.addAttribute("hotelVo", hotelVo);
+			model.addAttribute("vo", vo);
 			session.setAttribute("reservationVo", vo);
 			return "reservation/payment";
 		}
 		else return "redirect:/message/reservationNo";
 	}
 	
+	
+	// 결제 완료 후 결제 정보/예약정보 보기
+	@RequestMapping(value = ("/paymentOk"), method = RequestMethod.GET)
+	public String paymentOkGet(HttpSession session, Model model) {
+		ReservationVo reservationVo = (ReservationVo) session.getAttribute("reservationVo");
+		
+		// 예약완료 처리
+		reservationService.setReservationPaymentOk(reservationVo.getReservationNo());
+		// 예약 정보, 사용자 정보 넘기기
+		RoomVo roomVo = roomService.getRoom(reservationVo.getRoomIdx()); 
+		HotelVo hotelVo = hotelService.getHotel(roomVo.getHotelIdx()); 
+		reservationVo = reservationService.getReservation(reservationVo.getReservationNo());
+		model.addAttribute("reservationVo", reservationVo);
+		model.addAttribute("roomVo", roomVo);
+		model.addAttribute("hotelVo", hotelVo);
+		
+		return "reservation/paymentOk";
+	}
 }

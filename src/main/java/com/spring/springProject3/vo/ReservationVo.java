@@ -9,9 +9,11 @@ import lombok.ToString;
 @ToString
 public class ReservationVo {
 	private int idx;
+	private String reservationNo;
 	private String mid;
 	private String name;
 	private String tel;
+	private String email;
 	private int roomIdx;
 	private String checkinDate;
 	private String checkoutDate;

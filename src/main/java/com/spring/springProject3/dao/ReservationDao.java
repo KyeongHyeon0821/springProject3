@@ -8,8 +8,12 @@ public interface ReservationDao {
 
 	int setReservationInput(@Param("vo") ReservationVo vo);
 
-	void setReservationStatusUpdate();
+	void setReservationUpdateToDone();
 
-	void setReservationCancel();
+	void setReservationAutoCancel();
+
+	int setReservationPaymentOk(@Param("reservationNo") String reservationNo);
+
+	ReservationVo getReservation(@Param("reservationNo") String reservationNo);
 
 }

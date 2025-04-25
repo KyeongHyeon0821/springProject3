@@ -1,9 +1,11 @@
 /* 예약 테이블 */
 create table reservation (
-  idx           int auto_increment primary key,         /* 예약 번호	*/
+  idx           int auto_increment primary key,         /* 예약 아이디	*/
+  reservationNo varchar(20) not null,										/* 예약 번호 */
   mid      		  varchar(20) not null,                		/* 예약한 회원 아이디 */
   name					varchar(10) not null,										/* 예약자 이름 */
   tel						varchar(15) not null,										/* 예약자 연락처 */
+  email					varchar(50) not null,										/* 예약자 이메일 */
   roomIdx       int not null,                           /* 예약한 객실 번호 */
   checkinDate  date not null,                           /* 체크인 날짜 */
   checkoutDate date not null,                           /* 체크아웃 날짜 */
@@ -11,14 +13,12 @@ create table reservation (
   petCount      int not null,                           /* 반려견 수 */
   totalPrice    int not null,                           /* 총 결제 금액 */
   status        varchar(20) not null default '대기중',    /* 예약 상태 (대기중, 예약완료, 예약취소, 이용완료) */
-  regDate       datetime default now(), 						    /* 예약 등록일 */
   memo					varchar(300),														/* 예약자 메모 */
+  regDate       datetime default now(), 						    /* 예약 등록일 */
   foreign key (mid) references member(mid) on delete cascade,
   foreign key (roomIdx) references room(idx) on delete cascade
 );
 select * from reservation;
-insert into reservation values(default, 'admin', 1, '2025-04-24', '2025-04-25', '예약완료', default);
-
 SELECT * FROM room 
 WHERE hotelIdx = 29 AND maxPeople >= 1 AND petCountLimit >= 1
   AND status = '정상'

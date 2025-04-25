@@ -153,10 +153,10 @@ public class HotelController {
 		String hotelLike = (res != 0) ? "Ok" : "No";
 		
 		// 결제 안 한 예약 자동 취소 ('대기중' -> '예약취소' 예약 당일 안 했을 경우)
-		reservationService.setReservationCancel();
+		reservationService.setReservationAutoCancel();
 		
 		// 예약 상태 업데이트 ('예약완료'->'이용완료' 체크아웃 날짜가 오늘 날짜랑 같거나 이전이면 이용완료 처리(오늘 날짜 부터 새 예약을 받을 수 있도록))
-		reservationService.setReservationStatusUpdate();
+		reservationService.setReservationUpdateToDone();
 		
 		// 객실 리스트 조회
 		List<RoomVo> roomVos = roomService.getAvailableRoomList(idx, checkinDate, checkoutDate, guestCount, petCount);

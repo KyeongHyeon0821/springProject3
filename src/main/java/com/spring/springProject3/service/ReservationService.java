@@ -6,8 +6,12 @@ public interface ReservationService {
 
 	int setReservationInput(ReservationVo vo);
 
-	void setReservationStatusUpdate();
+	void setReservationUpdateToDone();
 
-	void setReservationCancel();
+	void setReservationAutoCancel();
+
+	int setReservationPaymentOk(String reservationNo);
+
+	ReservationVo getReservation(String reservationNo);
 
 }

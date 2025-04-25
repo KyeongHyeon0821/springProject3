@@ -106,6 +106,7 @@
 			const autoFillCheck = document.getElementById('autoFillCheck');
 			const name = document.getElementById('name');
 			const tel = document.getElementById('tel');
+			const email = document.getElementById('email');
 
 			agreeCheck.addEventListener('change', function () {
 				if (this.checked) {
@@ -124,9 +125,11 @@
 				if (this.checked) {
 					name.value = '${memberVo.name}';
 					tel.value = '${memberVo.tel}';
+					email.value = '${memberVo.email}';
 				} else {
 					name.value = "";
 					tel.value = "";
+					email.value = "";
 				}
 			});
 
@@ -198,6 +201,10 @@
 			<div class="form-group">
 				<label for="tel">예약자 연락처</label>
 				<input type="text" name="tel" id="tel" class="form-control" required placeholder="예 : 010-1234-5678">
+			</div>
+			<div class="form-group">
+				<label for="email">예약자 이메일</label>
+				<input type="email" name="email" id="email" class="form-control" required placeholder="abcdefg1234@naver.com">
 			</div>
 			
 			<div class="form-group">
