@@ -131,6 +131,8 @@
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 
 <div class="container">
+<h3 class="text-center mb-0">
+<img src="${ctp}/images/logo.png" width="150px"/></h3>
   <div class="my-page-header mt-2">1:1 문의 수정하기</div>
 
   <div class="section-box">
@@ -138,7 +140,9 @@
       <table>
         <tr>
           <th>제목</th>
-          <td><input type="text" name="title" value="${vo.title}" required class="form-control" /></td>
+          <td style="border-top: 1px solid #e5e5e5;">
+        	  <input type="text" name="title" value="${vo.title}" required class="form-control" />
+          </td>
         </tr>
         <tr>
           <th>예약번호</th>
@@ -184,7 +188,7 @@
           <td colspan="2" class="text-center">
             <input type="submit" value="수정하기" class="btn btn-outline-success me-2" />
             <input type="reset" value="다시입력" class="btn btn-outline-warning me-2" />
-            <input type="button" value="돌아가기" onclick="location.href='${ctp}/inquiry/inquiryList';" class="btn btn-outline-info" />
+            <input type="button" value="돌아가기" onclick="location.href='${ctp}/inquiry/inquiryList';" class="btn btn-outline-secondary" />
           </td>
         </tr>
       </table>

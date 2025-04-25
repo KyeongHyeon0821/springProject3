@@ -139,7 +139,10 @@
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 
 <div class="container">
-  <div class="my-page-header mt-2">1:1 문의 리스트</div>
+  <div class="col m-3 text-center">
+    <img src="${ctp}/images/logo.png" width="100px"/>
+	  <span class="my-page-header">1:1 문의 리스트</span>
+	</div>
 
   <div class="section-box">
 		<div class="top-button">

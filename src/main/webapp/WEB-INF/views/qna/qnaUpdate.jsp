@@ -9,6 +9,71 @@
   <title>QnA 수정하기</title>
   <script src="${ctp}/ckeditor/ckeditor.js"></script>
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
+  <style>
+    body {
+      background-color: #f9fefb;
+      font-family: 'Arial', sans-serif;
+      font-size: 1.1rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .my-page-header {
+      text-align: center;
+      font-weight: bold;
+      font-size: 2rem;
+      margin-bottom: 30px;
+      color: #2e7d32;
+    }
+
+    .section-box {
+      background: #fff;
+      border-radius: 12px;
+      padding: 60px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid #e0e0e0;
+      margin-top: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    table th {
+      background-color: #e0f5e9 !important;
+      color: #444 !important;
+      padding: 14px 20px;
+      text-align: left;
+      border-top: 1px solid #d0e0d5;
+      border-bottom: 1px solid #d0e0d5;
+      width: 150px;
+    }
+
+    table td {
+      background-color: #fff;
+      padding: 14px 20px;
+      vertical-align: middle;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    table tr:last-child td {
+      border-bottom: none !important;
+    }
+
+    .btn {
+      font-size: 1rem;
+    }
+  </style>
   <script>
   	'use strict';
   	
@@ -35,27 +100,28 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
+<h3 class="text-center mb-0">
+<img src="${ctp}/images/logo.png" width="150px"/></h3>
+<h3 class="my-page-header mt-0">QnA 수정하기</h3>
 
-<h3 class="text-center m-5">QnA 수정하기</h3>
-
-<div class="container d-flex justify-content-center">
-  <div style="width: 80%;">
+<div class="container">
+  <div class="section-box">
     <form name="myform" method="post">
-      <table class="table table-bordered">
+      <table class="table">
         <tr>
-          <th class="bg-light">작성자</th>
-          <td><input type="text" name="nickName" value="${vo.nickName}" readonly class="form-control"/></td>
+          <th>작성자</th>
+          <td style="border-top: 1px solid #e5e5e5;"><input type="text" name="nickName" value="${vo.nickName}" readonly class="form-control"/></td>
         </tr>
         <tr>
-          <th class="bg-light">제목</th>
+          <th>제목</th>
           <td><input type="text" name="title" value="${vo.title}" required class="form-control"/></td>
         </tr>
         <tr>
-          <th class="bg-light">이메일</th>
+          <th>이메일</th>
           <td><input type="text" name="email" value="dnjsrkdus0403@naver.com" required class="form-control"/></td>
         </tr>
         <tr>
-          <th class="bg-light">내용</th>
+          <th>내용</th>
           <td><textarea name="content" id="CKEDITOR" rows="6" placeholder="내용을 입력하세요." required class="form-control">${vo.content}</textarea>
            <script>
 	           var privacy_editor = CKEDITOR.replace("content",{
@@ -67,7 +133,7 @@
           </td>
         </tr>
         <tr>
-          <th class="bg-light">비밀글</th>
+          <th>비밀글</th>
           <td>
             <div class="form-check">
               <input class="form-check-input" type="checkbox" name="openSw" id="openSwCheck" ${vo.openSw == 'NO' ? 'checked' : ''}>
@@ -78,9 +144,9 @@
         </tr>
         <tr>
           <td colspan="2" class="text-center">
-            <input type="button" value="수정하기" onclick="fCheck()" class="btn btn-success me-2"/>
-            <input type="reset" value="다시쓰기" class="btn btn-warning me-2"/>
-            <input type="button" value="돌아가기" onclick="location.href='${ctp}/qna/qnaList';" class="btn btn-info"/>
+            <input type="button" value="수정하기" onclick="fCheck()" class="btn btn-outline-success me-2"/>
+            <input type="reset" value="다시쓰기" class="btn btn-outline-warning me-2"/>
+            <input type="button" value="돌아가기" onclick="location.href='${ctp}/qna/qnaList';" class="btn btn-outline-secondary"/>
           </td>
         </tr>
       </table>

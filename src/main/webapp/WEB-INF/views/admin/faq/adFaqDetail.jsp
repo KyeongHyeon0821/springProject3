@@ -7,55 +7,129 @@
   <meta charset="UTF-8">
   <title>FAQ 관리자 상세보기</title>
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
+  <style>
+    body {
+      background-color: #f9fefb;
+      font-family: 'Arial', sans-serif;
+      font-size: 1.1rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .my-page-header {
+      text-align: center;
+      font-weight: bold;
+      font-size: 2rem;
+      margin-bottom: 30px;
+      color: #2e7d32;
+    }
+
+    .section-box {
+      background: #fff;
+      border-radius: 12px;
+      padding: 60px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid #e0e0e0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 10px;
+    }
+
+    table th {
+      background-color: #e0f5e9 !important;
+      color: #444 !important;
+      padding: 12px;
+      text-align: left;
+      border-top: 1px solid #d0e0d5;
+      border-bottom: 1px solid #d0e0d5;
+      width: 150px;
+    }
+
+    table td {
+      background-color: #fff;
+      padding: 14px 12px;
+      vertical-align: middle;
+      border-top: 1px solid #e5e5e5;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    table tr:last-child td {
+      border-bottom: 1px solid #e5e5e5 !important;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: font-weight 0.2s;
+    }
+
+    a:hover {
+      font-weight: 600;
+    }
+
+    .btn {
+      font-size: 1rem;
+    }
+  </style>
   <script>
-  	'use strict';
-  	
-  	function deleteCheck(idx) {
-  		let ans = confirm("현재 게시글을 삭제하시겠습니까?");
-  		if(ans) location.href = "adFaqDelete?idx=${vo.idx}";
-  	}
+    'use strict';
+
+    function deleteCheck(idx) {
+      let ans = confirm("현재 게시글을 삭제하시겠습니까?");
+      if (ans) location.href = "adFaqDelete?idx=${vo.idx}";
+    }
   </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
+<h3 class="text-center mb-0">
+<img src="${ctp}/images/logo.png" width="150px"/></h3>
+<h3 class="my-page-header mt-0">FAQ 관리자 상세보기</h3>
 
-<h3 class="text-center m-5">FAQ 관리자 상세보기</h3>
-
-<div class="container d-flex justify-content-center">
-  <div style="width: 90%;">
-  	<div><b>분류 : ${vo.category}</b></div>
-    <table class="table table-bordered">
+<div class="container">
+  <div class="section-box">
+    <table class="table">
+      <colgroup>
+        <col style="width: 10%;">
+        <col style="width: 50%;">
+        <col style="width: 10%;">
+        <col style="width: 15%;">
+        <col style="width: 10%;">
+        <col style="width: 5%;">
+      </colgroup>
       <tr>
-        <th class="bg-light" style="width:10%;">제목</th>
+        <th>제목</th>
         <td>${vo.title}</td>
-        <th class="bg-light" style="width:10%;">조회수</th>
+        <th>분류</th>
+        <td>${vo.category}</td>
+        <th>조회수</th>
         <td>${vo.readNum}</td>
       </tr>
       <tr>
-        <th class="bg-light" style="height:300px">내용</th>
-        <td colspan="3">${vo.content}</td>
+        <th>내용</th>
+        <td colspan="5">
+          <div style="min-height:200px; padding-top: 10px;">${vo.content}</div>
+        </td>
       </tr>
     </table>
 
     <div class="text-center mt-4">
-      <a href="${ctp}/faq/adFaqList" class="btn btn-info me-2">목록으로</a>
-      <input type="button" value="수정하기" onclick="location.href='${ctp}/faq/adFaqUpdate?idx=${vo.idx}';" class="btn btn-warning me-2"/>
-      <input type="button" value="삭제하기" onclick="deleteCheck(${vo.idx})" class="btn btn-danger"/>
+      <input type="button" value="수정하기" onclick="location.href='${ctp}/faq/adFaqUpdate?idx=${vo.idx}';" class="btn btn-outline-warning"/>
+      <input type="button" value="삭제하기" onclick="deleteCheck(${vo.idx})" class="btn btn-outline-danger"/>
+      <a href="${ctp}/faq/adFaqList" class="btn btn-outline-secondary me-2">목록으로</a>
     </div>
   </div>
 </div>
-	  <hr/>
-	  <!-- 이전글/다음글 -->
-	  <div class="row">
-	  	<div class="col">
-	  	  <c:if test="${!empty nextVo.title}">
-	  			👉 <a href="adFaqDetail?idx=${nextVo.idx}">다음글 : ${nextVo.title}</a><br/>
-	  		</c:if>
-	  	  <c:if test="${!empty preVo.title}">
-	  			👈 <a href="adFaqDetail?idx=${preVo.idx}">이전글 : ${preVo.title}</a><br/>
-	  		</c:if>
-	  	</div>
-	  </div>
+
 <p><br/></p>
 </body>
 </html>

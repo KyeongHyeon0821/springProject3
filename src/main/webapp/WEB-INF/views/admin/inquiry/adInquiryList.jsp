@@ -12,7 +12,7 @@
     'use strict';
     function answerChoice() {
       let choice = $("#choice").val();
-      if(choice != '') location.href = 'adInquiryList?choice='+choice;
+      if(choice != '') location.href = 'adInquiryList?choice=' + encodeURIComponent(choice);
     }
   </script>
   <style>
@@ -34,19 +34,28 @@
       text-align: center;
       font-weight: bold;
       font-size: 2rem;
-      margin-bottom: 30px;
+      margin-bottom: 50px;
       color: #2e7d32;
+    }
+
+    .section-box {
+      background: #fff;
+      border-radius: 12px;
+      padding: 60px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid #e0e0e0;
+      margin: 40px auto;
     }
 
     table {
       width: 100%;
       border-collapse: separate;
-      border-spacing: 0 10px;
+      border-spacing: 0 15px;
     }
 
     th {
       background-color: #e0f5e9;
-      padding: 12px;
+      padding: 14px 20px;
       text-align: center;
       color: #444;
       border-top: 1px solid #d0e0d5;
@@ -55,7 +64,7 @@
 
     td {
       background-color: #fff;
-      padding: 14px 12px;
+      padding: 14px 20px;
       text-align: center;
       border-bottom: 1px solid #e5e5e5;
     }
@@ -67,10 +76,13 @@
     td a {
       text-decoration: none;
       font-weight: 500;
+      color: inherit;
+      transition: font-weight 0.2s;
     }
 
     td a:hover {
       color: #4caf50;
+      font-weight: 600;
       text-decoration: none;
     }
 
@@ -108,23 +120,25 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<h3 class="my-page-header mt-2">1:1 문의 리스트 관리</h3>
+<h3 class="text-center mb-0">
+<img src="${ctp}/images/logo.png" width="150px"/></h3>
+<h3 class="my-page-header mt-0">1:1 문의 리스트 관리</h3>
 
 <div class="container">
-  <div class="text-end mb-3">
-    <div class="row">
-      <div class="col-2">
-        <select name="choice" id="choice" onChange="answerChoice()" class="form-select">
-          <option value="전체" ${choice == "전체" ? "selected" : ""}>전체문의글</option>
-          <option ${choice == "답변대기중" ? "selected" : ""}>답변대기중</option>
-          <option ${choice == "답변완료" ? "selected" : ""}>답변완료</option>
-          <option ${choice == "답변보류" ? "selected" : ""}>답변보류</option>
-        </select>
+  <div class="section-box">
+    <div class="text-end mb-4">
+      <div class="row justify-content-start">
+        <div class="col-3">
+          <select name="choice" id="choice" onChange="answerChoice()" class="form-select">
+            <option value="전체" ${choice == "전체" ? "selected" : ""}>전체문의글</option>
+            <option value="답변대기중" ${choice == "답변대기중" ? "selected" : ""}>답변대기중</option>
+            <option value="답변완료" ${choice == "답변완료" ? "selected" : ""}>답변완료</option>
+            <option value="답변보류" ${choice == "답변보류" ? "selected" : ""}>답변보류</option>
+          </select>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="section-box">
     <table>
       <thead>
         <tr>
@@ -164,14 +178,14 @@
 
     <div class="text-center mt-4">
       <ul class="pagination justify-content-center">
-        <c:if test="${pageVo.pag > 1}"><li class="page-item"><a class="page-link" href="adInquiryList?pag=1&pageSize=${pageSize}">첫페이지</a></li></c:if>
-        <c:if test="${pageVo.curBlock > 0}"><li class="page-item"><a class="page-link" href="adInquiryList?pag=${(curBlock-1)*blockSize+1}&pageSize=${pageVo.pageSize}">이전블록</a></li></c:if>
+        <c:if test="${pageVo.pag > 1}"><li class="page-item"><a class="page-link" href="adInquiryList?pag=1&pageSize=${pageSize}&choice=${choice}">첫페이지</a></li></c:if>
+        <c:if test="${pageVo.curBlock > 0}"><li class="page-item"><a class="page-link" href="adInquiryList?pag=${(curBlock-1)*blockSize+1}&pageSize=${pageVo.pageSize}&choice=${choice}">이전블록</a></li></c:if>
         <c:forEach var="i" begin="${(pageVo.curBlock*pageVo.blockSize)+1}" end="${(pageVo.curBlock*pageVo.blockSize)+pageVo.blockSize}" varStatus="st">
-          <c:if test="${i <= pageVo.totPage && i == pageVo.pag}"><li class="page-item active"><a class="page-link" href="adInquiryList?pag=${i}&pageSize=${pageVo.pageSize}">${i}</a></li></c:if>
-          <c:if test="${i <= pageVo.totPage && i != pageVo.pag}"><li class="page-item"><a class="page-link" href="adInquiryList?pag=${i}&pageSize=${pageVo.pageSize}">${i}</a></li></c:if>
+          <c:if test="${i <= pageVo.totPage && i == pageVo.pag}"><li class="page-item active"><a class="page-link" href="adInquiryList?pag=${i}&pageSize=${pageVo.pageSize}&choice=${choice}">${i}</a></li></c:if>
+          <c:if test="${i <= pageVo.totPage && i != pageVo.pag}"><li class="page-item"><a class="page-link" href="adInquiryList?pag=${i}&pageSize=${pageVo.pageSize}&choice=${choice}">${i}</a></li></c:if>
         </c:forEach>
-        <c:if test="${pageVo.curBlock < pageVo.lastBlock}"><li class="page-item"><a class="page-link" href="adInquiryList?pag=${(pageVo.curBlock+1)*pageVo.blockSize+1}&pageSize=${pageVo.pageSize}">다음블록</a></li></c:if>
-        <c:if test="${pageVo.pag < pageVo.totPage}"><li class="page-item"><a class="page-link" href="adInquiryList?pag=${pageVo.totPage}&pageSize=${pageVo.pageSize}">마지막페이지</a></li></c:if>
+        <c:if test="${pageVo.curBlock < pageVo.lastBlock}"><li class="page-item"><a class="page-link" href="adInquiryList?pag=${(pageVo.curBlock+1)*blockSize+1}&pageSize=${pageVo.pageSize}&choice=${choice}">다음블록</a></li></c:if>
+        <c:if test="${pageVo.pag < pageVo.totPage}"><li class="page-item"><a class="page-link" href="adInquiryList?pag=${pageVo.totPage}&pageSize=${pageVo.pageSize}&choice=${choice}">마지막페이지</a></li></c:if>
       </ul>
     </div>
   </div>

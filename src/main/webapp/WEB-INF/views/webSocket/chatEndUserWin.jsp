@@ -157,9 +157,10 @@
 	  <h4 class="text-center">관리자와 실시간 1:1 상담</h4>
 	  <hr class="border-secondary">
   </div>
-  <div>접속중인 사용자 : <span id="currentId"></span></div>
-  <div>
-	  <input type="text" id="username" value="${sMid}" readonly style="border:0px;text-align:center;color:red;font-weight:bolder" />
+  <div>접속중인 사용자 : 
+	  <input type="text" id="username" value="${sMid}" readonly style="border:0px;text-align:center;color:red;font-weight:bolder;width:100px" />
+	</div>
+	<div>
 	  <button onclick="startChat()" class="btn btn-success form-control">상담시작</button>
 	  <button onclick="endChat()" id="endChatBtn" class="btn btn-warning form-control" style="display:none;">상담종료</button>
   </div>

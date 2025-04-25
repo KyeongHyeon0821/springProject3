@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
@@ -33,8 +34,9 @@
     .section-box {
       background: #fff;
       border-radius: 12px;
-      padding: 30px;
+      padding: 60px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid #e0e0e0;
     }
 
     table {
@@ -56,15 +58,16 @@
       background-color: #fff;
       padding: 14px 12px;
       vertical-align: middle;
+      border-top: 1px solid #e5e5e5;
       border-bottom: 1px solid #e5e5e5;
+    }
+
+    table tr:last-child td {
+      border-bottom: 1px solid #e5e5e5 !important;
     }
 
     .btn {
       font-size: 1rem;
-    }
-
-    .rounded {
-      border-radius: 12px !important;
     }
 
     .img-thumbnail {
@@ -75,9 +78,6 @@
     .text-start {
       text-align: left !important;
     }
-    
-    
-    
   </style>
   <script>
     'use strict';
@@ -99,32 +99,34 @@
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 
 <div class="container">
-  <div class="my-page-header mt-2">1:1 문의 상세보기</div>
+<h3 class="text-center mb-0">
+<img src="${ctp}/images/logo.png" width="150px"/></h3>
+  <div class="my-page-header mt-0">1:1 문의 상세보기</div>
 
   <div class="section-box">
     <table class="table text-center">
       <tr>
         <th style="width:15%;">작성자</th>
-        <td style="width:35%;">${vo.mid}</td>
+        <td style="width:35%; border-top: 1px solid #e5e5e5;">${vo.mid}</td>
         <th style="width:15%;">작성일시</th>
-        <td style="width:35%;"><c:out value="${vo.WDate.substring(0,16)}" /></td>
+        <td style="width:35%; border-top: 1px solid #e5e5e5;"><c:out value="${vo.WDate.substring(0,16)}" /></td>
       </tr>
       <tr>
         <th>제목</th>
-        <td>${vo.title}</td>
+        <td style="border-top: 1px solid #e5e5e5;">${vo.title}</td>
         <th>분류</th>
-        <td>${vo.part}</td>
+        <td style="border-top: 1px solid #e5e5e5;">${vo.part}</td>
       </tr>
       <tr>
         <th>예약번호</th>
-        <td>
+        <td style="border-top: 1px solid #e5e5e5;">
           <c:choose>
             <c:when test="${empty vo.reservation}">-</c:when>
             <c:otherwise>${vo.reservation}</c:otherwise>
           </c:choose>
         </td>
         <th>답변 상태</th>
-        <td>
+        <td style="border-top: 1px solid #e5e5e5;">
           <c:choose>
             <c:when test="${vo.reply == '답변대기중'}">
               <span class="badge bg-secondary">${vo.reply}</span>
@@ -141,24 +143,22 @@
           </c:choose>
         </td>
       </tr>
-			<tr>
-			  <th>문의내용</th>
-			  <td colspan="3" class="text-start" style="padding: 20px;">
-			    <div style="white-space: pre-line; min-width: 800px; max-width: 1000px; display: block;">
-			      ${vo.content}
-			    </div>
-			  </td>
-			</tr>
+      <tr>
+        <th>문의내용</th>
+        <td colspan="3" class="text-start" style="padding: 20px; border-top: 1px solid #e5e5e5;">
+          <div style="white-space: pre-line; min-width: 800px; max-width: 1000px; display: block;">
+            ${vo.content}
+          </div>
+        </td>
+      </tr>
       <tr>
         <th>첨부파일</th>
-        <td colspan="3">
+        <td colspan="3" style="border-top: 1px solid #e5e5e5;">
           <c:if test="${not empty vo.FSName}">
             <img src="${ctp}/inquiry/${vo.FSName}" width="200px" class="img-thumbnail"
                  style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" />
           </c:if>
-          <c:if test="${empty vo.FSName}">
-            없음
-          </c:if>
+          <c:if test="${empty vo.FSName}">없음</c:if>
         </td>
       </tr>
     </table>

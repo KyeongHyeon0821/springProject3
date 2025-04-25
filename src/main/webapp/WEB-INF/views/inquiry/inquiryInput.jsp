@@ -147,14 +147,18 @@
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 
 <div class="container">
-  <div class="my-page-header mt-2">1:1 문의 작성하기</div>
+<h3 class="text-center mb-0">
+<img src="${ctp}/images/logo.png" width="150px"/></h3>
+  <div class="my-page-header mt-0">1:1 문의 작성하기</div>
 
   <div class="section-box">
     <form name="myform" method="post" enctype="multipart/form-data">
       <table class="table">
         <tr>
           <th>제목</th>
-          <td><input type="text" name="title" id="title" class="form-control" placeholder="제목을 입력하세요." required autofocus/></td>
+          <td style="border-top: 1px solid #e5e5e5;">
+          	<input type="text" name="title" id="title" class="form-control" placeholder="제목을 입력하세요." required autofocus/>
+          </td>
         </tr>
         <tr>
           <th>예약번호</th>
@@ -189,9 +193,9 @@
         </tr>
         <tr>
           <td colspan="2" class="text-center">
-            <input type="button" value="글올리기" onclick="fCheck()" class="btn btn-outline-success me-2"/>
+            <input type="button" value="작성하기" onclick="fCheck()" class="btn btn-outline-success me-2"/>
             <input type="reset" value="다시입력" class="btn btn-outline-warning me-2"/>
-            <input type="button" value="돌아가기" onclick="location.href='${ctp}/inquiry/inquiryList';" class="btn btn-outline-info"/>
+            <input type="button" value="돌아가기" onclick="location.href='${ctp}/inquiry/inquiryList';" class="btn btn-outline-secondary"/>
           </td>
         </tr>
       </table>

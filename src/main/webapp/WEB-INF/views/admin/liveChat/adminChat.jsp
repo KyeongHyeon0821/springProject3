@@ -134,10 +134,32 @@
 		document.addEventListener("keydown", doNotReload);
   </script>
   <style>
+    body {
+      background-color: #f9fefb;
+      font-family: 'Arial', sans-serif;
+      font-size: 1.1rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .section-box {
+      background: #fff;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid #e0e0e0;
+    }
+
     li {
       list-style: none;
     }
-    
+
     #currentUser {
       width: 30%;
       height: 430px;
@@ -167,39 +189,46 @@
   </style>
 </head>
 <body oncontextmenu="return false">
-<div class="bg-dark" style="height:15px"></div>
+<jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <p><br/></p>
 <div class="container">
-	<h2>관리자와 실시간 1:1 상담</h2>
-	<div>(관리자 채팅창을 열어두면 일반상담자가 이용할수 있습니다.)</div>
-  <hr class="border-secondary">
-  <div id="startChatUser"><font color='red'><input type="text" id="username" value="${sMid}" readonly style="border:0px; width:50px;color:red" /></font>님 접속중입니다. '상담시작'버튼을 눌러서 상담을 시작하세요</div>
-  
-  <button onclick="startChat()" class="btn btn-success btn-sm">상담시작</button>
-  <span id="endChatUser" style="display:none;">
-	  <span id="chatUser"><font color='red'><input type="text" id="username" value="${sMid}" readonly style="border:0px; width:50px;color:red" /></font>님 상담중입니다.</span>
-	  <button onclick="endChat()" id="endChatBtn" class="ml-3 btn btn-warning btn-sm">채팅종료</button>
-  </span>
-  <button type="button" onclick="window.close()" id="endChatBtn" class="btn btn-danger btn-sm">창닫기</button>
-  <div id="chatStatusMessage" style="display:none">(현재 접속중인 회원을 선택후 상담을 시작해 주세요.)</div>
-  <hr class="border-secondary">
-  <div id="chat" style="display:none;">
-    <form name="myform" id="form">
-	  	<div id="currentUser">
-		    <h5 class="text-center">현재 접속중인 회원(<span id="userCount"></span>)</h5>
-		    <select name="users" id="users" size="18" class="form-control" onchange="userChange()"></select>
-	    </div>
-	    <div id="currentMessage">
-	    	<h5>메세지 출력창</h5>
-	    	<div id="messages"></div>
-	    </div>
-      <div class="messageBox input-group">
-	      <input type="text" name="targetUser" id="targetUser" autocomplete="off" placeholder="접속회원을 선택하세요" readonly  class="input-group-prepend mr-1"/>
-	      <textarea name="message" id="message" placeholder="메세지를 입력하세요." autocomplete="off" class="form-control"></textarea>	
-	      <button class="input-group-append btn btn-success">메세지전송</button>
-      </div>
-    </form>
+  <div class="section-box">
+    <h2>관리자와 실시간 1:1 상담</h2>
+    <div>(관리자 채팅창을 열어두면 사용자가 이용할수 있습니다.)</div>
+    <hr class="border-secondary">
+    <div id="startChatUser">
+      <font color='red'><input type="text" id="username" value="${sMid}" readonly style="border:0px; width:50px;color:red" /></font>님 접속중입니다. '상담시작'버튼을 누르면 채팅창이 열립니다.
+    </div>
+
+    <button onclick="startChat()" class="btn btn-outline-success btn-sm">상담시작</button>
+    <span id="endChatUser" style="display:none;">
+      <span id="chatUser">
+        <font color='red'><input type="text" id="username" value="${sMid}" readonly style="border:0px; width:50px;color:red" /></font>님 상담중입니다.
+      </span>
+      <button onclick="endChat()" id="endChatBtn" class="ms-3 btn btn-outline-warning btn-sm">채팅종료</button>
+    </span>
+    <button type="button" onclick="window.close()" id="endChatBtn" class="btn btn-outline-danger btn-sm">창닫기</button>
+    <div id="chatStatusMessage" style="display:none">(현재 접속중인 회원을 선택 후 채팅을 전송해 주세요.)</div>
+    <hr class="border-secondary">
+    <div id="chat" style="display:none;">
+      <form name="myform" id="form">
+        <div id="currentUser">
+          <h5 class="text-center">현재 접속중인 회원(<span id="userCount"></span>)</h5>
+          <select name="users" id="users" size="18" class="form-control" onchange="userChange()"></select>
+        </div>
+        <div id="currentMessage">
+          <h5>메세지 출력창</h5>
+          <div id="messages"></div>
+        </div>
+        <div class="messageBox input-group">
+          <input type="text" name="targetUser" id="targetUser" autocomplete="off" placeholder="접속회원을 선택하세요" readonly class="input-group-prepend me-1" />
+          <textarea name="message" id="message" placeholder="메세지를 입력하세요." autocomplete="off" class="form-control"></textarea>
+          <button class="input-group-append btn btn-success">메세지전송</button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
+<p><br/></p>
 </body>
 </html>
