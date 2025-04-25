@@ -32,19 +32,19 @@
        	</th>
        	<th></th>
       </tr>
-      <c:forEach var="roomVo" items="${roomVos}" varstatus="st">
+      <c:forEach var="ReservationListVo" items="${rsVos}">
 	      <tr class="room-detail">
 					<td class="room-items">
-				    <img class="room-photo" src="${ctp}/images/lake.jpg" alt="객실 사진" style="width:200px;max-height:200px"/>
+				    <img class="room-photo" src="${ctp}/hotelThumbnail/${ReservationListVo.thumbnail}" alt="객실 사진" style="width:200px;max-height:180px"/>
 					  <a href="#" class="btn btn-info ms-3" data-bs-toggle="modal" data-bs-target="myModal">리뷰작성</a>
 					</td>
 			    <td class="room-items">
-				    <div class="room-info"><span class="room-label">호텔 이름:</span></div>
-				    <div class="room-info"><span class="room-label">객실 명칭: ${roomVo.name}</span></div>
-				    <div class="room-info"><span class="room-label">가격: ${roomVo.price}</span>₩</div>
-				    <div class="room-info"><span class="room-label">최대숙박인원: ${roomVo.maxPeople}</span></div>
-				    <div class="room-info"><span class="room-label">반려견크기제한: ${roomVo.petSizeLimit}</span></div>
-				    <div class="room-info"><span class="room-label">최대마리수: ${roomVo.petCountLimit}</span></div>
+				    <div class="room-info"><span class="room-label">호텔 이름:${ReservationListVo.hotelName}</span></div>
+				    <div class="room-info"><span class="room-label">객실 명칭: ${ReservationListVo.roomName}</span></div>
+				    <div class="room-info"><span class="room-label">가격: ${ReservationListVo.price}</span>₩</div>
+				    <div class="room-info"><span class="room-label">최대숙박인원: ${ReservationListVo.maxPeople}</span></div>
+				    <div class="room-info"><span class="room-label">반려견크기제한: ${ReservationListVo.petSizeLimit}</span></div>
+				    <div class="room-info"><span class="room-label">최대마리수: ${ReservationListVo.petCountLimit}</span></div>
 			    </td>
 	      </tr>
       </c:forEach>

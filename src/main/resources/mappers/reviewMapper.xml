@@ -2,5 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.springProject3.dao.ReviewDao">
   
-  
+
+<select id="getRoomUsedList" resultType="com.spring.springProject3.vo.ReservationListVo">
+	select r.name as roomName, r.roomNumber, r.price, r.maxPeople, r.petSizeLimit, r.petCountLimit, r.thumbnail, 
+				 h.name as hotelName,
+				 rs.checkinDate,
+				 rs.checkoutDate,
+				 rs.guestCount,
+				 rs.petCount,
+				 rs.totalPrice from reservation rs
+				 join room r on rs.roomIdx = r.idx
+				 join hotel h on r.hotelIdx = h.idx
+				 where rs.mid = #{mid} and rs.status ='이용완료' order by rs.checkinDate desc;
+</select>
+
+
+
+
 </mapper>

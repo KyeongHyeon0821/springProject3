@@ -1,0 +1,21 @@
+
+package com.spring.springProject3.vo;
+
+import lombok.Data;
+
+@Data
+public class ReservationListVo  {
+	private String roomName;
+	private int roomNumber;
+	private String price;
+	private String maxPeople;
+	private String petSizeLimit;
+	private String petCountLimit;
+	private String thumbnail;
+	private String hotelName;
+	private String checkinDate;
+	private String checkoutDate;
+	private int guestCount;
+	private int petCount;
+	private int totalPrice;
+}

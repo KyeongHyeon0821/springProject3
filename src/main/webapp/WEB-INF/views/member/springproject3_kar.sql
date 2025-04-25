@@ -223,7 +223,7 @@ create table reservation (
 );
 
 drop table reservation;
-
+insert into reservation values (default, 'admin', '관리자','010-9366-7008', '3',);
 
 
 
