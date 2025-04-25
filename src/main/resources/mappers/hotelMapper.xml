@@ -24,7 +24,7 @@
   
   <!-- 호텔 등록 -->
   <insert id="setHotelInput">
-  	insert into hotel values (default, #{vo.mid}, #{vo.name}, #{vo.address}, #{vo.tel}, #{vo.description}, #{vo.thumbnail}, #{vo.images}, default, default);
+  	insert into hotel values (default, #{vo.mid}, #{vo.name}, #{vo.address}, #{vo.tel}, #{vo.description}, #{vo.thumbnail}, #{vo.images}, default, default, #{vo.x}, #{vo.y});
   </insert>
   
   <!-- 호텔 찜 등록 -->
@@ -39,7 +39,7 @@
   
   <!-- 호텔 정보 수정 -->
   <update id="setHotelUpdate">
-  	update hotel set name=#{vo.name},address=#{vo.address},tel=#{vo.tel},description=#{vo.description},thumbnail=#{vo.thumbnail},images=#{vo.images} where idx = #{vo.idx};
+  	update hotel set name=#{vo.name},address=#{vo.address},tel=#{vo.tel},description=#{vo.description},thumbnail=#{vo.thumbnail},images=#{vo.images},x=#{vo.x},y=#{vo.y} where idx = #{vo.idx};
   </update>
   
   <!-- 호텔 찜 취소 -->

@@ -97,8 +97,14 @@ public class MessageController {
 		    model.addAttribute("message", "로그인이 필요합니다.");
 		    model.addAttribute("url", "member/memberLogin");
 		}
-
-
+		
+		
+		
+		
+		else if(msgFlag.equals("memberReviewNo")) {
+			model.addAttribute("message", "현재 숙박경험하신 이력이 없습니다.");
+			model.addAttribute("url", "member/memberMyPage");
+		}
 
 		return "include/message";
     }

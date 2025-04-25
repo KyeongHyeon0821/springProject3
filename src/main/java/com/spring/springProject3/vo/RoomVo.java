@@ -1,3 +1,4 @@
+
 package com.spring.springProject3.vo;
 
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.ToString;
 @ToString
 public class RoomVo {
 	private int idx;
+	private String mid;
 	private int hotelIdx;
 	private String name;
 	private String roomNumber;
@@ -21,5 +23,6 @@ public class RoomVo {
 	private String status;
 	private String regDate;
 	
-	
+	private String oThumbnail;
+	private int availableCount;
 }

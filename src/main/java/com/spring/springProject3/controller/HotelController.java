@@ -5,10 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,14 +18,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.springProject3.service.HotelService;
+import com.spring.springProject3.service.ReservationService;
+import com.spring.springProject3.service.RoomService;
 import com.spring.springProject3.vo.HotelVo;
+import com.spring.springProject3.vo.RoomVo;
 
 @RequestMapping("/hotel")
 @Controller
@@ -35,10 +37,15 @@ public class HotelController {
 	@Autowired
 	HotelService hotelService;
 	
+	@Autowired
+	RoomService roomService;
+	
+	@Autowired
+	ReservationService reservationService;
+	
 	// 호텔 리스트
 	@RequestMapping("/hotelList")
 	public String hotelListGet(Model model, HttpSession session) {
-		int level = (int) session.getAttribute("sLevel");
 		String mid = session.getAttribute("sMid") + "";
 		List<HotelVo> vos = hotelService.getHotelList();
 		
@@ -50,6 +57,7 @@ public class HotelController {
 		model.addAttribute("vos", vos);
 		return "hotel/hotelList";
 	}
+	
 	
 	// 호텔 등록폼 보기
 	@RequestMapping(value =  "/hotelInput", method = RequestMethod.GET)
@@ -65,16 +73,18 @@ public class HotelController {
 			System.out.println("에러 내용 : " + bindingResult);
 			return "redirect:/message/hotelInputError";
 		}
-	  // 썸네일 파일 null 또는 비었을 때 처리
-	  if(thumbnailFile == null || thumbnailFile.isEmpty()) {
-	    System.out.println("썸네일 파일이 비어있습니다.");
-	    return "redirect:/message/hotelInputError";
-	  }
-	  
-	  int res = hotelService.setHotelInput(vo, thumbnailFile);
+		// 썸네일 파일 null 또는 비었을 때 처리
+		if(thumbnailFile == null || thumbnailFile.isEmpty()) {
+			System.out.println("썸네일 파일이 비어있습니다.");
+			return "redirect:/message/hotelInputError";
+		}
+		
+		int res = hotelService.setHotelInput(vo, thumbnailFile);
 		if(res !=0 ) return "redirect:/message/hotelInputOk";
 		else return "redirect:/message/hotelInputNo";
 	}
+	
+
 	
 	// 호텔 등록 - ckeditor에서의 그림 파일 업로드시 수행처리되는 메소드 
 	@RequestMapping(value =  "/hotelImageUpload")
@@ -114,19 +124,46 @@ public class HotelController {
 	
 	// 호텔 상세페이지 보기
 	@RequestMapping(value =  "/hotelDetail", method = RequestMethod.GET)
-	public String hotelDetailGet(Model model, int idx, HttpSession session) {
-		int level = (int) session.getAttribute("sLevel");
+	public String hotelDetailGet(Model model, int idx, HttpSession session,
+			 @RequestParam(name="checkinDate", defaultValue = "", required = false) String checkinDate,
+       @RequestParam(name="checkoutDate", defaultValue = "", required = false) String checkoutDate,
+       @RequestParam(name="guestCount", defaultValue = "0", required = false) int guestCount,
+       @RequestParam(name="petCount", defaultValue = "0", required = false) int petCount
+		) {
+		
+		// 기본 체크인&체크아웃 날짜, 인원수, 반려견수 설정
+		if (checkinDate.equals("") || checkoutDate.equals("") || guestCount == 0 || petCount == 0) {
+      LocalDate today = LocalDate.now();
+      LocalDate tomorrow = today.plusDays(1);
+
+      checkinDate = today.toString();      // ex) "2025-04-24"
+      checkoutDate = tomorrow.toString();  // ex) "2025-04-25"
+      guestCount = 1;
+      petCount = 1;
+		}
+		
 		HotelVo vo = hotelService.getHotel(idx);
 		String mid = (String) session.getAttribute("sMid");
-		String hotelLike = "";
+		
+		// 사용자 찜 여부 체크
 		int res = hotelService.getHotelLike(mid, idx);
+		String hotelLike = (res != 0) ? "Ok" : "No";
 		
-		if(res != 0) hotelLike = "Ok";
-		else hotelLike = "No";
+		// 결제 안 한 예약 자동 취소 ('대기중' -> '예약취소' 예약 당일 안 했을 경우)
+		reservationService.setReservationAutoCancel();
 		
-		model.addAttribute("sLevel", level);
+		// 예약 상태 업데이트 ('예약완료'->'이용완료' 체크아웃 날짜가 오늘 날짜랑 같거나 이전이면 이용완료 처리(오늘 날짜 부터 새 예약을 받을 수 있도록))
+		reservationService.setReservationUpdateToDone();
+		
+		// 객실 리스트 조회
+		List<RoomVo> roomVos = roomService.getAvailableRoomList(idx, checkinDate, checkoutDate, guestCount, petCount);
 		model.addAttribute("vo", vo);
 		model.addAttribute("hotelLike", hotelLike);
+		model.addAttribute("roomVos", roomVos);
+		model.addAttribute("checkinDate", checkinDate);
+    model.addAttribute("checkoutDate", checkoutDate);
+    model.addAttribute("guestCount", guestCount);
+    model.addAttribute("petCount", petCount);
 		return "hotel/hotelDetail";
 	}
 	

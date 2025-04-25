@@ -13,15 +13,24 @@
 	<annotation-driven />
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
-	<resources mapping="/resources/**" location="/resources/" />
-	<resources mapping="/images/**" location="/resources/images/" />
-	<resources mapping="/data/**" location="/resources/data/" />
-	<resources mapping="/css/**" location="/resources/css/" />
-	<resources mapping="/js/**" location="/resources/js/" />
-	<resources mapping="/member/**" location="/resources/data/member/" />
-	<resources mapping="/ckeditor/**" location="/resources/ckeditor/"></resources>
-	<resources mapping="/fileUpload/**" location="/resources/data/fileUpload/"></resources>
-	
+  <resources mapping="/resources/**" location="/resources/" />
+  <resources mapping="/images/**" location="/resources/images/" />
+  <resources mapping="/data/**" location="/resources/data/" />
+  <resources mapping="/css/**" location="/resources/css/" />
+  <resources mapping="/js/**" location="/resources/js/" />
+  <resources mapping="/member/**" location="/resources/data/member/" />
+  <resources mapping="/ckeditor/**" location="/resources/ckeditor/" />
+  <resources mapping="/hotelThumbnail/**" location="/resources/data/hotelThumbnail/" />
+  <resources mapping="/hotelImages/**" location="/resources/data/hotelImages/" />
+  <resources mapping="/roomImages/**" location="/resources/data/roomImages/" />
+  <resources mapping="/roomThumbnail/**" location="/resources/data/roomThumbnail/" />
+  <resources mapping="/imagesTemp/**" location="/resources/data/imagesTemp/" />
+  <resources mapping="/ckeditor/**" location="/resources/ckeditor/" />
+  <resources mapping="/fileUpload/**" location="/resources/data/fileUpload/" />
+  <resources mapping="/pds/**" location="/resources/data/pds/" />
+  <resources mapping="/inquiry/**" location="/resources/data/inquiry/" />
+  <resources mapping="/qna/**" location="/resources/data/qna/" />
+
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

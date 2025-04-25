@@ -18,6 +18,7 @@ import com.spring.springProject3.common.Pagination;
 import com.spring.springProject3.service.AdminService;
 import com.spring.springProject3.service.HotelService;
 import com.spring.springProject3.service.MemberService;
+import com.spring.springProject3.service.ReservationService;
 import com.spring.springProject3.service.RoomService;
 import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.InquiryVo;
@@ -42,6 +43,9 @@ public class AdminController {
 	MemberService memberService;
 	
 	@Autowired
+	ReservationService reservationService;
+	
+	@Autowired
 	Pagination pagination;
 	
 	@GetMapping("/adminMain")
@@ -60,6 +64,10 @@ public class AdminController {
 	// 관리자 메인화면(대시보드)폼 보기
 	@GetMapping("/dashBoard/dashBoard")
 	public String adminMainFormGet() {
+		// 결제 안 한 예약 자동 취소 ('대기중' -> '예약취소' 예약 당일 안 했을 경우)
+		reservationService.setReservationAutoCancel();
+		// 예약상태 업데이트(체크아웃 날짜가 오늘 날짜랑 같거나 이전이면 이용완료 처리(오늘 날짜부터 새 예약을 받을 수 있도록)
+		reservationService.setReservationUpdateToDone();
 		return "/admin/dashBoard/dashBoard";
 	}
 	

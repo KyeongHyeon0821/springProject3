@@ -1,3 +1,4 @@
+
 package com.spring.springProject3.service;
 
 import java.io.File;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.springProject3.dao.RoomDao;
+import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.OptionVo;
 import com.spring.springProject3.vo.RoomVo;
 
@@ -103,8 +105,8 @@ public class RoomServiceImpl implements RoomService {
 			String thumbnailSaveName = realPath + "s_" + sFileName;
 			File thumbnailFile = new File(thumbnailSaveName);
 			
-			int width = 160;
-			int height = 120;
+			int width = 300;
+			int height = 300;
 			Thumbnailator.createThumbnail(realFileName, thumbnailFile, width, height);
 			
 		} catch (IOException e) {
@@ -131,7 +133,131 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 
+	@Override
+	public List<RoomVo> getRoomList(int idx) {
+		return roomDao.getRoomList(idx);
+	}
 
 
+	@Override
+	public RoomVo getRoom(int roomIdx) {
+		return roomDao.getRoom(roomIdx);
+	}
+
+
+	@Override
+	public List<OptionVo> getRoomOptionList(int roomIdx) {
+		return roomDao.getRoomOptionList(roomIdx);
+	}
+
+
+	@Override
+	public int setRoomUpdate(RoomVo vo) {
+		return roomDao.setRoomUpdate(vo);
+	}
+
+
+	@Override
+	public int setDeleteRoomOptions(int idx) {
+		return roomDao.setDeleteRoomOptions(idx);
+	}
+
+
+	@Override
+	public int setUpdateImages(int idx, String images) {
+		return roomDao.setUpdateImages(idx, images);
+	}
+
+
+	@Override
+	public int setDeleteImages(int idx) {
+		return roomDao.setDeleteImages(idx);
+	}
+
+
+	// 객실 이미지 수정 처리(1.썸네일 변경시 기존 썸네일 파일 삭제 후 저장 처리, 2.새로 업로드 된 이미지 파일 저장처리, 3.DB 저장(기존 이미지 파일이름+새 이미지 파일이름)
+	@Override
+	public int setRoomThumbnailAndImageUpdate(RoomVo vo, MultipartFile thumbnailFile,
+			MultipartHttpServletRequest imageFiles
+		) {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/");
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+		// 1.썸네일 변경시 기존 썸네일 파일 삭제 후 저장 처리
+		// 썸네일 파일 null 또는 비었을 때 기존 썸네일 이름으로 저장
+	  if(thumbnailFile == null || thumbnailFile.isEmpty()) {
+	  	vo.setThumbnail(vo.getOThumbnail());
+	  }
+	  else { // 썸네일 이미지 변경 했을 경우
+	  	// 기존 썸네일 이미지 삭제 처리
+	  	String thubmnailFilePath = realPath + "roomThumbnail/" + vo.getOThumbnail();
+	  	fileDelete(thubmnailFilePath);
+	  	thubmnailFilePath = realPath + "roomThumbnail/" + "s_"+ vo.getOThumbnail();
+	  	fileDelete(thubmnailFilePath);
+	  	// 새 썸네일 파일 이름 중복처리 후 서버에 저장처리
+			
+			String oFileName = thumbnailFile.getOriginalFilename(); // 업로드한 파일명 가져오기
+			String sFileName = vo.getHotelIdx() + "_" + sdf.format(date) + "_" + oFileName; // 호텔 아이디 + "_" + 날짜 + "_" + oFileName;
+			String urlPath = "roomThumbnail";
+			try {
+				writeFile(thumbnailFile, sFileName, urlPath); // 파일을 서버로 저장처리하는 메소드 호출
+			} catch (Exception e) {
+				e.printStackTrace();
+				return 0;
+			}	
+			vo.setThumbnail(sFileName);
+			
+			// 썸네일용 이미지 파일 만들기 (s_mid_날짜_oFileName)
+			setThumbnailCreate(thumbnailFile, urlPath, sFileName);
+	  }
+	  
+	  // 2.새로 업로드 된 이미지 파일 저장처리
+	  List<MultipartFile> fileList = imageFiles.getFiles("imageFiles");
+		if(fileList != null && !fileList.isEmpty()) {
+			try {
+				String sFileNames = "";
+				String urlPath = "roomImages";
+				for(MultipartFile file : fileList) {
+					if(!file.isEmpty()) {
+						String oFileName = file.getOriginalFilename();
+						String sFileName = vo.getHotelIdx() + "_" + sdf.format(date) + "_" + oFileName; // 호텔 아이디 + "_" + 날짜 + "_" + oFileName;
+						writeFile(file, sFileName, urlPath);
+						sFileNames += sFileName + "/";
+					}
+				}
+				if(!sFileNames.equals("")) sFileNames = sFileNames.substring(0, sFileNames.length()-1);
+				
+				if(vo.getImages()!=null && !vo.getImages().equals("")) vo.setImages(vo.getImages() + "/" + sFileNames);
+				else vo.setImages(sFileNames);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	  
+		// 3.DB 저장(기존 이미지 파일이름+새 이미지 파일이름)
+		return roomDao.setRoomThumbnailAndImageUpdate(vo);
+	}
+
+
+	//파일 삭제 처리
+	private void fileDelete(String origFilePath) {
+		File delFile = new File(origFilePath);
+		if(delFile.exists()) delFile.delete();
+	}
+
+
+	@Override
+	public int setroomStatusUpdate(int idx, String status) {
+		return roomDao.setroomStatusUpdate(idx, status);
+	}
+
+
+	@Override
+	public List<RoomVo> getAvailableRoomList(int idx, String checkinDate, String checkoutDate, int guestCount, int petCount) {
+		return roomDao.getAvailableRoomList(idx, checkinDate, checkoutDate, guestCount,	petCount);
+	}
+
+	
 	
 }

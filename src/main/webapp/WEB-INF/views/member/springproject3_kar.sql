@@ -46,6 +46,20 @@ insert into member values (default, 'hyangdan1234', '1234', '향단이', '향단
 select * from member where level = 2 or 2=99 or 2=999 order by idx desc;
 
 
+
+-- option 테이블 --
+
+create table options (
+	idx int not null auto_increment,
+	name varchar(50) not null,
+	primary key (idx)
+);
+
+
+
+
+
+
 /* 신고테이블(complaint) */
 create table complaint(
   idx  int not null auto_increment,			/* 신고테이블 고유번호 */
@@ -104,42 +118,113 @@ insert into hotel values(default, 'admin', '더블트리 바이', '성남시 분
 
 
 
-/* 호텔 객실 테이블 */
-create table room(
-	idx int auto_increment,						/* 객실 아이디 */
-	hotelIdx int not null,						/* 연결된 호텔 아이디 */
-	name varchar(50) not null,				/* 객실명 */
-	price int not null,								/* 객실 1박 요금 */
-	maxPeople int not null,						/* 최대 인원 수 */
-	petSizeLimit varchar(10),					/* 반려견 크기 제한 (소형/중형/대형) */
-	petCountLimit int default 1,			/* 최대 반려견 수 */
-	thumbnail varchar(100) not null,	/* 객실 썸네일 이미지 */
-	images text,											/* 객실 이미지 */
-	status varchar(20) default '정상', /* 객실 상태 (정상/비활성화/삭제) */
-	regDate datetime default now(),		/* 등록 날짜 */
-	primary key(idx),
-	foreign key(hotelIdx) references hotel(idx) on delete cascade
-);
 
-desc room
+
+
+drop table room;
+drop table reservation;
 select * from room 
 insert into room values (default, 1, '스튜디오,킹사이즈 침대 1개', '10', '2', '소형', '1', '1-1.jpg', null,'정상',default);
 insert into room values (default, 1, '디럭스,킹사이즈 침대 1개', '10', '3', '중형', default, '1-2.jpg', null,'정상',default);
 insert into room values (default, 1, '스위트,킹사이즈 침대 1개', '10', '3', '대형', default, '1-3.jpg', null,'정상',default);
 
 
+/* 객실 테이블 */
+create table room(
+	idx int auto_increment,									/* 객실 아이디 */
+	mid varchar(20) not null,								/* 호텔 등록자 아이디 */
+	hotelIdx int not null,									/* 연결된 호텔 아이디 */
+	name varchar(50) not null,							/* 객실명 */
+	roomNumber varchar(10) not null,				/* 객실 번호 */
+	price int not null,											/* 객실 1박 요금 */
+	maxPeople int not null,									/* 최대 인원 수 */
+	petSizeLimit varchar(10) not null,			/* 반려견 크기 제한 (소형/중형/대형) */
+	petCountLimit int not null default 1,		/* 최대 반려견 수 */
+	thumbnail varchar(100) not null,				/* 객실 썸네일 이미지 */
+	images text,														/* 객실 이미지 */
+	status varchar(20) default '정상', 				/* 객실 상태 (정상/서비스중지요청/서비스중지) */
+	regDate datetime default now(),					/* 등록 날짜 */
+	primary key(idx),
+	foreign key(hotelIdx) references hotel(idx) on delete cascade,
+	foreign key(mid) references member(mid)
+);
+select images from room where idx =6;
+
+
+/* 객실 옵션 테이블 */
+create table options (
+  idx int auto_increment,         /* 옵션 아이디 */
+  name varchar(50) not null,      /* 옵션 이름 */
+  primary key (idx)
+);
+drop table options;
+
+insert into options(name) values('TV');
+insert into options(name) values('욕조');
+insert into options(name) values('에어컨');
+insert into options(name) values('냉장고');
+insert into options(name) values('드라이기');
+insert into options(name) values('전자레인지');
+insert into options(name) values('전기포트');
+insert into options(name) values('와이파이');
+insert into options(name) values('반려견 침대');
+insert into options(name) values('반려견 배변패드');
+insert into options(name) values('반려견 샴푸');
+
+
+/* 객실-옵션 연결 테이블 */
+create table roomOptions (
+  roomIdx int not null,											/* 객실 아이디 */
+  optionIdx int not null,										/* 옵션 아이디 */
+  primary key (roomIdx, optionIdx),
+  foreign key (roomIdx) references room(idx) on delete cascade,
+  foreign key (optionIdx) references options(idx) on delete cascade
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* 예약 테이블 */
 create table reservation (
   idx           int auto_increment primary key,         /* 예약 번호	*/
   mid      		  varchar(20) not null,                		/* 예약한 회원 아이디 */
+  name					varchar(10) not null,										/* 예약자 이름 */
+  tel						varchar(15) not null,										/* 예약자 연락처 */
   roomIdx       int not null,                           /* 예약한 객실 번호 */
   checkinDate  date not null,                           /* 체크인 날짜 */
   checkoutDate date not null,                           /* 체크아웃 날짜 */
-  status        varchar(20) default '대기중',     		    /* 예약 상태 (대기중, 예약완료, 예약취소) */
+  guestCount    int not null,                           /* 인원 수 */
+  petCount      int not null,                           /* 반려견 수 */
+  totalPrice    int not null,                           /* 총 결제 금액 */
+  status        varchar(20) not null default '대기중',    /* 예약 상태 (대기중, 예약완료, 예약취소, 이용완료) */
   regDate       datetime default now(), 						    /* 예약 등록일 */
+  memo					varchar(300),														/* 예약자 메모 */
   foreign key (mid) references member(mid) on delete cascade,
   foreign key (roomIdx) references room(idx) on delete cascade
 );
+
+drop table reservation;
+
+
 
 
 /* 찜 테이블 */
@@ -216,4 +301,50 @@ create table userCoupons (
 		used_date (DATETIME, NULLABLE) : 사용일
 		order_id (INT, NULLABLE) : 사용된 주문 ID (Orders 테이블 참조)
 		qrcodeName  (varchar(100)))  : 쿠폰정보를 담은 qrcode
+);
+
+
+/* 리뷰 달기 */
+create table Review (
+  idx			  int not null auto_increment,	/* 댓글 고유번호 */
+  hotelIdx  int not null,						/* 원본글 호텔의 고유번호 - 외래키로 지정 */
+  roomIdx		int not null, 					/* 원본글 호텔-객실의 고유번호*/
+  reviewTotCnt int not null,
+  reviewCnt	int not null default 0,
+  mid			  varchar(20) not null,		/* 댓글 올린이 아이디 */
+  nickName  varchar(20) not null,		/* 댓글 올린이 닉네임 */
+  roomName	varchar(50) not null,		/* room테이블의 name 참조. 객실명*/
+  purpose		varchar(20) not null,		/* 숙박인원의 단위/목적(예:친구와여행/가족) */
+  content   text not null,					/* 댓글 내용 */
+  hostIp		varchar(50) not null,		/* 댓글 올린 PC의 고유 IP */
+  reviewDate	datetime default now(),	/* 댓글 올린 날짜/시간 */
+  primary key(idx),
+  foreign key(hotelIdx) references hotel(idx),
+  foreign key(roomIdx) references room(idx)
+  on update cascade
+  on delete cascade
+);
+desc Review;
+
+drop table Review;
+
+
+
+/* 예약 테이블 */
+create table reservation (
+  idx           int auto_increment primary key,         /* 예약 번호	*/
+  mid      		  varchar(20) not null,                		/* 예약한 회원 아이디 */
+  name					varchar(10) not null,										/* 예약자 이름 */
+  tel						varchar(15) not null,										/* 예약자 연락처 */
+  roomIdx       int not null,                           /* 예약한 객실 번호 */
+  checkinDate  date not null,                           /* 체크인 날짜 */
+  checkoutDate date not null,                           /* 체크아웃 날짜 */
+  guestCount    int not null,                           /* 인원 수 */
+  petCount      int not null,                           /* 반려견 수 */
+  totalPrice    int not null,                           /* 총 결제 금액 */
+  status        varchar(20) not null default '대기중',    /* 예약 상태 (대기중, 예약완료, 예약취소, 이용완료) */
+  regDate       datetime default now(), 						    /* 예약 등록일 */
+  memo					varchar(300),														/* 예약자 메모 */
+  foreign key (mid) references member(mid) on delete cascade,
+  foreign key (roomIdx) references room(idx) on delete cascade
 );

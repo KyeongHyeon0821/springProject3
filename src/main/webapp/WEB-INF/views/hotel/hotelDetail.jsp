@@ -10,18 +10,218 @@
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f5f016ee8ec4b87750154cd5e9d07dfb&libraries=services"></script>
 	<style>
-		.hotel-images img{
-			width:200px !important;
-			height: auto !important;
-			margin : 5px 5px 0 0;
+		.hotel-container {
+		  max-width: 1000px;
+		  margin: 0 auto;
+		  padding: 20px;
+		  font-family: sans-serif;
+		}
+		
+		.hotel-header {
+		  text-align: center;
+		  margin-bottom: 20px;
+		}
+		
+		.hotel-title {
+		  font-size: 28px;
+		  display: inline-flex;
+		  align-items: center;
+		  gap: 8px;
+		}
+		
+		.heart-icon img {
+		  width: 28px;
+		  vertical-align: middle;
+		}
+		
+		.hotel-thumbnail {
+		  text-align: center;
+		  margin-bottom: 16px;
+		}
+		
+		.hotel-thumbnail img {
+		  width: 100%;
+		  max-width: 700px;
+		  border-radius: 12px;
+		}
+		
+		.hotel-images img {
+		  width: 200px !important;
+		  height: auto !important;
+		  margin: 5px 5px 0 0;
+		  border-radius: 8px;
+		}
+		
+		.roomList {
+		  margin: 40px 0;
+		}
+		
+		.roomList h3 {
+		  margin-bottom: 16px;
+		  font-size: 22px;
+		  color: #444;
+		}
+		
+		.roomContainer {
+		  display: flex;
+		  background-color: #f7f7f9;
+		  border-radius: 10px;
+		  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+		  margin-bottom: 16px;
+		  overflow: hidden;
+		}
+		
+		.roomThumbnailContainer {
+		  width: 160px;
+		  height: 120px;
+		  flex-shrink: 0;
+		}
+		
+		.roomThumbnailContainer img {
+		  width: 100%;
+		  height: 100%;
+		  object-fit: cover;
+		}
+		
+		.roomDetailContainer {
+		  padding: 16px;
+		  display: flex;
+		  flex-direction: column;
+		  justify-content: center;
+		  gap: 6px;
+		  flex: 1;
+		}
+		
+		.roomDetailContainer div:nth-child(1) a {
+		  font-size: 14px;
+		  color: #0077cc;
+		  text-decoration: none;
+		}
+		
+		.roomDetailContainer div:nth-child(2) {
+		  font-size: 16px;
+		  font-weight: bold;
+		  color: #333;
+		}
+		
+		.roomDetailContainer div:nth-child(3) {
+		  font-size: 15px;
+		  color: #444;
+		}
+		
+		.hotel-info {
+		  margin-top: 20px;
+		  font-size: 16px;
+		  color: #333;
+		}
+		
+		.hotel-description {
+		  margin-top: 24px;
+		  padding: 16px;
+		  background: #f9f9f9;
+		  border-radius: 10px;
+		}
+		
+		.hotel-description h4 {
+		  margin-bottom: 8px;
+		  font-size: 18px;
+		  color: #444;
+		}
+		
+		.button-group {
+		  margin-top: 30px;
+		  display: flex;
+		  flex-wrap: wrap;
+		  gap: 10px;
+		}
+		
+		.custom-btn {
+		  padding: 10px 18px;
+		  font-size: 15px;
+		  border: none;
+		  border-radius: 8px;
+		  text-decoration: none;
+		  color: white;
+		  transition: background-color 0.3s ease;
+		}
+		
+		.back-btn {
+		  background-color: #6c757d;
+		}
+		
+		.blue-btn {
+		  background-color: #007bff;
+		}
+		
+		.yellow-btn {
+		  background-color: #ffc107;
+		  color: black;
+		}
+		
+		.red-btn {
+		  background-color: #dc3545;
+		}
+		
+		.reservation-search {
+		  background-color: #f2f4f7;
+		  border-radius: 10px;
+		  padding: 24px 20px;
+		  margin: 30px 0;
+		  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+		}
+		
+		.reservation-search form {
+		  display: flex;
+		  flex-wrap: wrap;
+		  align-items: flex-end;
+		  gap: 16px;
+		}
+		
+		.reservation-search label {
+		  display: flex;
+		  flex-direction: column;
+		  font-size: 14px;
+		  color: #333;
+		  flex: 1 1 200px;
+		}
+		
+		.reservation-search label.small-input {
+		  flex: 0 0 100px;
+		}
+		
+		.reservation-search input {
+		  padding: 8px 10px;
+		  border: 1px solid #ccc;
+		  border-radius: 6px;
+		  font-size: 14px;
+		  margin-top: 4px;
+		  width: 100%;
+		}
+		
+		.reservation-search button {
+		  padding: 10px 18px;
+		  background-color: #28a745;
+		  color: white;
+		  border: none;
+		  border-radius: 8px;
+		  font-size: 15px;
+		  cursor: pointer;
+		  transition: background-color 0.3s ease;
+		  flex-shrink: 0;
+		  height: 40px;
+		}
+		
+		.reservation-search button:hover {
+		  background-color: #218838;
 		}
 	</style>
+
 	<script>
 		'use strict';
 		
-		// 호텔 등록취소 요청
+		// 호텔 서비스 중지 요청
 		function hotelDeleteCheck() {
-			let ans = confirm("해당 호텔 등록 취소를 요청하시겠습니까?");
+			let ans = confirm("해당 호텔 서비스 중지를 요청하시겠습니까?");
 			if(!ans) return false;
 			else location.href="hotelDeleteCheck?idx=${vo.idx}";
 		}
@@ -85,52 +285,152 @@
 				error : function() { alert("다시 시도해주세요."); }
 			});
 		}
+		
+		// 체크인 체크아웃 날짜 처리
+		window.addEventListener('DOMContentLoaded', function () {
+		  const checkinInput = document.getElementById('checkinDate');
+		  const checkoutInput = document.getElementById('checkoutDate');
+		
+		  // 오늘 날짜로 체크인 최소 설정
+		  const today = new Date().toISOString().split('T')[0];
+		  checkinInput.min = today;
+		
+		  // 체크인 값이 이미 있는 경우 초기 처리
+		  if (checkinInput.value) {
+		    checkoutInput.disabled = false;
+		    checkoutInput.min = checkinInput.value;
+		
+		    // 체크아웃 날짜가 체크인보다 빠른 경우 초기화
+		    if (checkoutInput.value && checkoutInput.value < checkinInput.value) {
+		      checkoutInput.value = '';
+		    }
+		  } else {
+		    checkoutInput.disabled = true;
+		  }
+
+		  // 체크인 날짜가 변경되면
+		  checkinInput.addEventListener('change', function () {
+		    if (checkinInput.value) {
+		      checkoutInput.disabled = false;
+		      checkoutInput.min = checkinInput.value;
+		      checkoutInput.value = '';
+		    } else {
+		      checkoutInput.disabled = true;
+		      checkoutInput.value = '';
+		    }
+		  });
+		});
 	</script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<div class="container">
-	<h2>${vo.name}</h2>
-	<c:if test="${hotelLike == 'Ok'}">
-		<a id="likeFn" href="javascript:hotelLikeNo()"><img id="likeImg" src="${ctp}/images/heartRed.png" /></a>
-	</c:if>
-	<c:if test="${hotelLike == 'No'}">
-		<a id="likeFn" href="javascript:hotelLikeOk()"><img id="likeImg" src="${ctp}/images/heartBlack.png" /></a>
-	</c:if>
-	
-	
-	<h5>🏨 ${vo.address}</h5>
-	<div><img src="${ctp}/hotelThumbnail/${vo.thumbnail}" title="${vo.name}" alt="대표이미지" width="400px"/></div>
-	
-	<div class="hotel-images">${vo.images}</div>
-	
-	<p>연락처 : ${vo.tel}</p>
-	<div>호텔 소개</div>
-	<div>${vo.description}</div>
-	<p>위치 : ${vo.address}</p>
-	
-	<div id="mapContainer" style="cursor:pointer;">
-		<div id="map" style="width:100%;height:350px;"></div>
-	</div>
-	
-	<div class="mt-3">
-		<c:if test="${level == 0}">
-			<a href="${ctp}/hotel/hotelList" class="btn btn-secondary">돌아가기</a>
-		</c:if>
-		<c:if test="${level != 0}">
-			<a href="${ctp}/admin/hotel/hotelList" class="btn btn-secondary">돌아가기</a>
-		</c:if>
-	
-		<c:if test="${vo.mid == sMid}">
-			<a href="${ctp}/room/roomInput?hotelIdx=${vo.idx}" class="btn btn-primary">객실 등록</a>
-			<a href="hotelUpdate?idx=${vo.idx}" class="btn btn-warning">호텔 정보 수정</a>
-			<a href="javascript:hotelDeleteCheck()" class="btn btn-danger">호텔 등록 취소 요청</a>
-		</c:if>
-	
+<div class="hotel-container">
+  <div class="hotel-header">
+    <h2 class="hotel-title">
+      ${vo.name} 
+      <span class="heart-icon">
+        <c:if test="${hotelLike == 'Ok'}">
+          <a id="likeFn" href="javascript:hotelLikeNo()"><img id="likeImg" src="${ctp}/images/heartRed.png" /></a>
+        </c:if>
+        <c:if test="${hotelLike == 'No'}">
+          <a id="likeFn" href="javascript:hotelLikeOk()"><img id="likeImg" src="${ctp}/images/heartBlack.png" /></a>
+        </c:if>
+      </span>
+    </h2>
+  </div>
+
+  <div class="hotel-thumbnail">
+    <img src="${ctp}/hotelThumbnail/${vo.thumbnail}" title="${vo.name}" alt="대표이미지" />
+  </div>
+
+  <div class="hotel-images">
+    ${vo.images}
+  </div>
+  
+  <div class="reservation-search" style="margin: 30px 0;">
+	  <form method="get" action="hotelDetail?idx=${vo.idx}">
+		  <input type="hidden" name="idx" value="${vo.idx}" />
+		  
+		  <label>체크인
+		    <input type="date" id="checkinDate" name="checkinDate" value="${checkinDate}" required />
+		  </label>
+		  
+		  <label>체크아웃
+		    <input type="date" id="checkoutDate" name="checkoutDate" value="${checkoutDate}" required />
+		  </label>
+		  
+		  <label class="small-input">인원
+		    <input type="number" name="guestCount" min="1" max="5" value="${guestCount}" required />
+		  </label>
+		  
+		  <label class="small-input">반려견
+		    <input type="number" name="petCount" min="0" max="5" value="${petCount}" required />
+		  </label>
+		
+		  <button type="submit">예약 가능 객실 검색</button>
+		</form>
 	</div>
 
+  
+	<div class="roomList">
+  <!-- 예약 가능 객실 리스트 (검색 결과) -->
+  <h3>예약 가능 객실</h3>
+  <!-- 이전 객실 타입 저장 변수 -->
+  <c:set var="previousRoomType" value="" />
+  
+	  <c:forEach items="${roomVos}" var="roomVo">
+	    <!-- 객실 타입이 변경될 때마다 새로운 섹션 시작 -->
+	    <c:if test="${roomVo.name != previousRoomType}">
+	      <h4>${roomVo.name}</h4> <!-- 객실 타입 제목 출력 -->
+	      <c:set var="previousRoomType" value="${roomVo.name}" />
+	    </c:if>
+	    
+	    <div class="roomContainer">
+	      <div class="roomThumbnailContainer">
+	        <img src="${ctp}/roomThumbnail/s_${roomVo.thumbnail}" alt="Room Thumbnail"/>
+	      </div>
+	      <div class="roomDetailContainer">
+	        <div>
+	          <a href="${ctp}/room/roomDetail?roomIdx=${roomVo.idx}&checkinDate=${checkinDate}&checkoutDate=${checkoutDate}&guestCount=${guestCount}&petCount=${petCount}">
+	            상세보기
+	          </a>
+	        </div>
+	        <div>${roomVo.roomNumber}</div> <!-- 호실 번호 -->
+	        <div>${roomVo.price}원</div>
+	      </div>
+	    </div>
+	  </c:forEach>
+	</div>
+    
+    
+    
+
+  <div class="hotel-info">
+    <p>📞 ${vo.tel}</p>
+    <p>📍 ${vo.address}</p>
+  </div>
+
+  <div id="mapContainer" style="cursor:pointer;">
+    <div id="map" style="width:100%;height:350px;"></div>
+  </div>
+
+  <div class="hotel-description">
+    <h4>🏨 호텔 소개</h4>
+    <p>${vo.description}</p>
+  </div>
+
+  <div class="button-group">
+    <a href="${ctp}/hotel/hotelList" class="custom-btn back-btn">← 목록으로</a>
+
+    <c:if test="${vo.mid == sMid}">
+      <a href="${ctp}/room/roomInput?hotelIdx=${vo.idx}" class="custom-btn blue-btn">객실 등록</a>
+      <a href="hotelUpdate?idx=${vo.idx}" class="custom-btn yellow-btn">호텔 정보 수정</a>
+      <c:if test="${vo.status != '서비스중지요청'}">
+        <a href="javascript:hotelDeleteCheck()" class="custom-btn red-btn">서비스 중지 요청</a>
+      </c:if>
+    </c:if>
+  </div>
 </div>
-
 <!-- 모달 형태로 지도 띄우기 -->
 <div id="modalMapContainer" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(128, 128, 128, 0.9); z-index: 9999;">
     <!-- 지도 모달 박스 -->
