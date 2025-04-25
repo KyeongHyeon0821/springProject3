@@ -10,4 +10,6 @@ public interface ReservationDao {
 
 	void setReservationStatusUpdate();
 
+	void setReservationCancel();
+
 }

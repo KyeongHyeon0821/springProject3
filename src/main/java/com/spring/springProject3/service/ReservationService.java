@@ -8,4 +8,6 @@ public interface ReservationService {
 
 	void setReservationStatusUpdate();
 
+	void setReservationCancel();
+
 }

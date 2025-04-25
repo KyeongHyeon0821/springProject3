@@ -21,4 +21,9 @@ public class ReservationServiceImpl implements ReservationService {
 	public void setReservationStatusUpdate() {
 		reservationDao.setReservationStatusUpdate();
 	}
+
+	@Override
+	public void setReservationCancel() {
+		reservationDao.setReservationCancel();
+	}
 }

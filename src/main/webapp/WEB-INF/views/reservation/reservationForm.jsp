@@ -136,6 +136,7 @@
 		function fCheck() {
 			let name = document.getElementById('name').value.trim();
 			let tel = document.getElementById('tel').value.trim();
+			let memo = document.getElementById('memo').value.trim();
 			let regTel = /^\d{2,3}-\d{3,4}-\d{4}$/;
 			let regName = /^[가-힣a-zA-Z]+$/;
 
@@ -165,6 +166,11 @@
 			    document.getElementById('tel').focus();
 			    return false;
 			  }
+			if (memo.length > 300) {
+	      alert("예약 메모는 300자 이내로 입력해주세요.");
+	      document.getElementById('memo').focus();
+	      return false;
+	    }
 			return true;
 		}
 	</script>
