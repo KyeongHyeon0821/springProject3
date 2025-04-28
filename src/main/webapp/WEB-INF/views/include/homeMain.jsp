@@ -82,9 +82,11 @@
 }
 
 .hero-heading {
-  font-size: 2.5rem;
+  font-size: 2.0rem;
   font-weight: bold;
-  margin-bottom: 60px;
+  max-width: 1200px;
+  text-align: start;
+  margin: 0 auto 60px;
 }
 
 .hotel-search-container {
@@ -203,7 +205,7 @@
 </nav>
 
 <section class="hero-section">
-  <h2 class="hero-heading">다음엔 어디로 떠나세요?</h2>
+  <h2 class="hero-heading">위드펫, 반려견 동반 여행을 위한 최적의 선택!</h2>
 
   <div class="hotel-search-container">
     <form method="get" action="${ctp}/hotel/hotelList" onsubmit="return hotelSearch()" class="hotel-search-form">
@@ -452,18 +454,6 @@
   </div>
 </section>
 
-<section class="newsletter">
-  <div class="newsletter-container">
-    <div>
-      <h2>로그인</h2>
-      <p>회원가입시 국내 애견동반 호텔의 모든 서비스를 10% 싼 가격으로 체험할 수 있습니다.</p>
-    </div>
-    <form class="newsletter-form">
-      <input type="email" placeholder="Your email address">
-      <button type="submit">로그인하여<br/>숙소찾기</button>
-    </form>
-  </div>
-</section>
 <footer>
   <div class="container">
     <div class="footer-grid">

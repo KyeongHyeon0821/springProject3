@@ -102,14 +102,6 @@
       background-color: #eee;
     }
 
-    .search-result div {
-      margin-right: 10px;
-      font-size: 14px;
-      font-weight: bold;
-    }
-    .search-result img {
-   		 margin-top: -2px; 
-		}
 	</style>
 
 <body>
@@ -117,14 +109,6 @@
   <div class="nav-container">
     <div class="nav-left">
         <a href="${ctp}/" class="logo"><img src="${ctp}/images/logo.png" width="80px"/>withPet</a>
-        
-        <div class="search-result">
-            <div class="search-item"><span><img src="${ctp}/images/search.png" width="19px" class="me-2"/>청주</span></div>
-            <div class="search-item"><span>05.01 -</span></div>
-            <div class="search-item"><span>05.05</span></div>
-            <div class="search-item">인원<span> 2</span></div>
-            <div class="search-item">반려견<span> 1</span></div>
-        </div>
     </div>
     
     <ul class="nav-links">

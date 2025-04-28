@@ -9,9 +9,13 @@
 		
 		$(document).ready(function() {
 			
-			$('#search-result').click(function() {
-				$("#hotel-search-container").show();
-			});
+			 $('#search-result').click(function() {
+          if ($("#hotel-search-container").css("display") === "none") {
+              $("#hotel-search-container").show();  
+          } else {
+              $("#hotel-search-container").hide();  
+          }
+      });
 			
 		});
 	</script>
