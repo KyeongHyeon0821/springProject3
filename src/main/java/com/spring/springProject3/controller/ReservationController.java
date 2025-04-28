@@ -54,24 +54,23 @@ public class ReservationController {
 		
 		// 유효성 체크
     if (roomIdx == null || roomIdx <= 0) {
-        return "redirect:/message/invalidValue?searchString="+searchString; 
+        return "redirect:/message/invalidValue"; 
     }
     if (checkinDate == null || checkinDate.trim().isEmpty()) {
-        return "redirect:/message/invalidValue?searchString="+searchString;  
+        return "redirect:/message/invalidValue";  
     }
     if (checkoutDate == null || checkoutDate.trim().isEmpty()) {
-        return "redirect:/message/invalidValue?searchString="+searchString; 
+        return "redirect:/message/invalidValue"; 
     }
     if (guestCount == null || guestCount <= 0) {
-        return "redirect:/message/invalidValue?searchString="+searchString;  
+        return "redirect:/message/invalidValue";  
     }
     if (petCount == null || petCount < 0) {
-        return "redirect:/message/invalidValue?searchString="+searchString; 
+        return "redirect:/message/invalidValue"; 
     }
     if (nights == null || nights <= 0) {
-        return "redirect:/message/invalidValue?searchString="+searchString;
+        return "redirect:/message/invalidValue";
     }
-		
 		
 		RoomVo roomVo = roomService.getRoom(roomIdx);
 		HotelVo hotelVo = hotelService.getHotel(roomVo.getHotelIdx());

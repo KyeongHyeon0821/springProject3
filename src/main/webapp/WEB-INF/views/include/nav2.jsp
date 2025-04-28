@@ -1,8 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
 <link rel="stylesheet" type="text/css" href="${ctp}/css/linkMain.css"/>
+	<script>
+		'use strict';
+		
+		$(document).ready(function() {
+			
+			$('#search-result').click(function() {
+				$("#hotel-search-container").show();
+			});
+			
+		});
+	</script>
 
 	<style>
     ul, li {
@@ -118,12 +130,13 @@
     <div class="nav-left">
         <a href="${ctp}/" class="logo"><img src="${ctp}/images/logo.png" width="80px"/>withPet</a>
         
-        <div class="search-result">
-            <div class="search-item"><span><img src="${ctp}/images/search.png" width="19px" class="me-2"/>청주</span></div>
-            <div class="search-item"><span>05.01 -</span></div>
-            <div class="search-item"><span>05.05</span></div>
-            <div class="search-item">인원<span> 2</span></div>
-            <div class="search-item">반려견<span> 1</span></div>
+        <div class="search-result" id="search-result">
+            <div class="search-item"><span><img src="${ctp}/images/search.png" width="19px" class="me-2"/>${searchString}</span></div>
+            <div class="search-item me-0"><span>${fn:replace(fn:substring(checkinDate, 5, 10), '-', '.')}</span></div>
+            <div class="search-item ms-1 me-1"><span>-</span></div>
+            <div class="search-item ms-0"><span>${fn:replace(fn:substring(checkoutDate, 5, 10), '-', '.')}</span></div>
+            <div class="search-item">인원<span> ${guestCount}</span></div>
+            <div class="search-item">반려견<span> ${petCount}</span></div>
         </div>
     </div>
     

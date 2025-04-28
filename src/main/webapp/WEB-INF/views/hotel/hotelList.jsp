@@ -280,8 +280,8 @@
 	</style>
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<div class="hotel-search-container">
+<jsp:include page="/WEB-INF/views/include/nav2.jsp" />
+<div class="hotel-search-container" id="hotel-search-container" style="display:none">
   <form method="get" action="${ctp}/hotel/hotelList" onsubmit="return hotelSearch()" class="hotel-search-form">
     <div class="search-field large">
       <label>지역 또는 숙소명</label>
@@ -358,5 +358,7 @@
 <div class="text-center">
 	<button id="loadMoreBtn" class="btn btn-primary" onclick="moreHotels()">더보기</button>
 </div>
+<div id="overlay" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+     background: rgba(0, 0, 0, 0.4); z-index: 999;"></div>
 </body>
 </html>

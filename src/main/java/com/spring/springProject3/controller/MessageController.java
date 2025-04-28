@@ -92,7 +92,7 @@ public class MessageController {
 		}
 		else if(msgFlag.equals("invalidValue")) {
 			model.addAttribute("message", "선택하신 숙소의 정보를 불러오는 데 실패했습니다.\\n다시 시도해주세요.");
-			model.addAttribute("url", "room/hotelList?searchString="+searchString);
+			model.addAttribute("url", "hotel/hotelList");
 		}
 		
 		

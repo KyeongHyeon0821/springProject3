@@ -19,13 +19,13 @@
 		}
 		
 		.nav-container {
-		  display: grid;
-		  grid-template-columns: auto 1fr auto;
-		  align-items: center;
-		  padding: 20px;
-		  max-width: 1400px;
-		  margin: 0 auto;
-		}
+      display: flex; /* flex로 설정 */
+      justify-content: space-between; /* 항목 간 간격을 고르게 배치 */
+      align-items: center; /* 세로로 중앙 정렬 */
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 		
 
 		/* Style The Dropdown Button */
@@ -75,7 +75,7 @@
 		}
 		
 .hero-section {
-  background: url("https://cdn.pixabay.com/photo/2023/09/25/10/46/krka-8274679_960_720.jpg") no-repeat center center/cover;
+  background: url("${ctp}/images/background.png") no-repeat center center/cover;
   padding: 80px 20px;
   text-align: center;
   color: #fff;
@@ -162,9 +162,9 @@
   <div class="nav-container">
     <a href="${ctp}/" class="logo" style="display:flex; line-height: 80px;"><img src="${ctp}/images/logo.png" width="80px"/>withPet</a>
     <ul class="nav-links">
-    	<li>
-      	<a href="${ctp}/hotel/hotelInput">숙박시설 등록</a>
-      </li>
+    	<c:if test="${sLevel == 0 || sLevel == 1}">
+    		<li><a href="${ctp}/hotel/hotelInput">숙박시설 등록</a></li>
+    	</c:if>
     	<li>
       	<a href="${ctp}/hotel/hotelList">전체 숙소 보기</a>
       </li>

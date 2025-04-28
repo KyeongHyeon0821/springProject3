@@ -18,8 +18,8 @@
  	<!-- 조건 검색 호텔리스트 조회 -->
  	<select id="getSearchHotelList" resultType="com.spring.springProject3.vo.HotelVo">
  		select h.idx, h.name, h.thumbnail, h.address, h.tel, min(r.price) as minprice	from hotel h left outer join room r on h.idx = r.hotelidx
-			where h.name like concat('%', #{searchString}, '%') 
-			   or h.address like concat('%', #{searchString}, '%')
+			where (h.name like concat('%', #{searchString}, '%') 
+			   or h.address like concat('%', #{searchString}, '%'))
 			   and h.status = '정상'
 			   and exists (
 			       select 1 
