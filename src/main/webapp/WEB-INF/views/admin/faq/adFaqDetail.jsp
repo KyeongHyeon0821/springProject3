@@ -84,49 +84,53 @@
     'use strict';
 
     function deleteCheck(idx) {
-      let ans = confirm("현재 게시글을 삭제하시겠습니까?");
-      if (ans) location.href = "adFaqDelete?idx=${vo.idx}";
-    }
+        let ans = confirm("현재 게시글을 삭제하시겠습니까?");
+        if (ans) location.href = "adFaqDetailDelete?idx=${vo.idx}";
+      }
   </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<h3 class="text-center mb-0">
-<img src="${ctp}/images/logo.png" width="150px"/></h3>
-<h3 class="my-page-header mt-0">FAQ 관리자 상세보기</h3>
+  <div class="col m-3 text-center">
+    <img src="${ctp}/images/logo.png" width="100px"/>
+	  <span class="my-page-header">FAQ 관리자 상세보기</span>
+	</div>
 
 <div class="container">
   <div class="section-box">
-    <table class="table">
-      <colgroup>
-        <col style="width: 10%;">
-        <col style="width: 50%;">
-        <col style="width: 10%;">
-        <col style="width: 15%;">
-        <col style="width: 10%;">
-        <col style="width: 5%;">
-      </colgroup>
-      <tr>
-        <th>제목</th>
-        <td>${vo.title}</td>
-        <th>분류</th>
-        <td>${vo.category}</td>
-        <th>조회수</th>
-        <td>${vo.readNum}</td>
-      </tr>
-      <tr>
-        <th>내용</th>
-        <td colspan="5">
-          <div style="min-height:200px; padding-top: 10px;">${vo.content}</div>
-        </td>
-      </tr>
-    </table>
-
-    <div class="text-center mt-4">
-      <input type="button" value="수정하기" onclick="location.href='${ctp}/faq/adFaqUpdate?idx=${vo.idx}';" class="btn btn-outline-warning"/>
-      <input type="button" value="삭제하기" onclick="deleteCheck(${vo.idx})" class="btn btn-outline-danger"/>
-      <a href="${ctp}/faq/adFaqList" class="btn btn-outline-secondary me-2">목록으로</a>
-    </div>
+  	<form name="myform" method="post">
+	    <table class="table">
+	      <colgroup>
+	        <col style="width: 10%;">
+	        <col style="width: 50%;">
+	        <col style="width: 10%;">
+	        <col style="width: 15%;">
+	        <col style="width: 10%;">
+	        <col style="width: 5%;">
+	      </colgroup>
+	      <tr>
+	        <th>제목</th>
+	        <td>${vo.title}</td>
+	        <th>분류</th>
+	        <td>${vo.category}</td>
+	        <th>조회수</th>
+	        <td>${vo.readNum}</td>
+	      </tr>
+	      <tr>
+	        <th>내용</th>
+	        <td colspan="5">
+	          <div style="min-height:200px; height:300px;">${vo.content}</div>
+	        </td>
+	      </tr>
+	    </table>
+	
+	    <div class="text-center mt-4">
+	      <input type="button" value="수정하기" onclick="location.href='${ctp}/faq/adFaqUpdate?idx=${vo.idx}';" class="btn btn-outline-warning"/>
+	      <input type="button" value="삭제하기" onclick="deleteCheck(${vo.idx})" class="btn btn-outline-danger"/>
+	      <a href="${ctp}/faq/adFaqList" class="btn btn-outline-secondary me-2">목록으로</a>
+	    </div>
+	    <input type="hidden" name="idxSelect" value="${vo.idx}"/>
+	   </form>
   </div>
 </div>
 

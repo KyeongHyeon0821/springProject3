@@ -149,12 +149,17 @@
     .youWord {
       background-color: skyblue;
     }
+    .form-text {
+      font-size: 0.9rem;
+      color: #888;
+    }
   </style>
 </head>
 <body oncontextmenu="return false">
 <div class="container">
   <div id="adminTitle">
-	  <h4 class="text-center">관리자와 실시간 1:1 상담</h4>
+	  <h4 class="text-center">채팅상담</h4>
+	  <h1 class="form-text text-center m-0">관리자 접속시에만 채팅이 가능합니다.</h1>
 	  <hr class="border-secondary">
   </div>
   <div>접속중인 사용자 : 

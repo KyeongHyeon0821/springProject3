@@ -80,7 +80,6 @@
 		}
     
   </style>
-
   <script>
     'use strict';
 
@@ -147,9 +146,10 @@
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 
 <div class="container">
-<h3 class="text-center mb-0">
-<img src="${ctp}/images/logo.png" width="150px"/></h3>
-  <div class="my-page-header mt-0">1:1 문의 작성하기</div>
+  <div class="col m-3 text-center">
+    <img src="${ctp}/images/logo.png" width="100px"/>
+	  <span class="my-page-header">1:1 문의 작성하기</span>
+	</div>
 
   <div class="section-box">
     <form name="myform" method="post" enctype="multipart/form-data">
@@ -194,7 +194,7 @@
         <tr>
           <td colspan="2" class="text-center">
             <input type="button" value="작성하기" onclick="fCheck()" class="btn btn-outline-success me-2"/>
-            <input type="reset" value="다시입력" class="btn btn-outline-warning me-2"/>
+            <input type="button" value="다시입력" onclick="location.reload()" class="btn btn-outline-warning me-2"/>
             <input type="button" value="돌아가기" onclick="location.href='${ctp}/inquiry/inquiryList';" class="btn btn-outline-secondary"/>
           </td>
         </tr>

@@ -127,10 +127,41 @@ public class FaqController {
 			// 사진작업완료 후 DB에 저장된 실제 정보 레코드를 삭제처리한다.
 			res = faqService.setFaqDelete(idxArray[i]);
 		}
+
+		return res + "";
+	}
+	
+	// FAQ 개별내용 삭제 처리
+	@RequestMapping(value = "/adFaqDetailDelete", method = RequestMethod.GET)
+	public String adFaqDetailDeleteGet(String idx) {
+		int[] idxArray = new int[20];
+		if(idx.indexOf("/") == -1) {
+			idxArray[0] = Integer.parseInt(idx);
+		}
+		else {
+			String[] idxStrArray = idx.split("/");
+			for(int i=0; i<idxStrArray.length; i++) {
+				idxArray[i] = Integer.parseInt(idxStrArray[i]);
+			}
+		}
+		
+		int res = 0;
+		for(int i=0; i<idxArray.length; i++) {
+			if(idxArray[i] == 0) break;
+			// 게시글에 사진이 있다면 실제 파일을 faq폴더에서 삭제시킨다.
+			FaqVo vo = faqService.getFaqDetail(idxArray[i]);
+			if(vo.getContent().indexOf("src=\"/") != -1) {
+				projectProvide.imgDelete(vo.getContent(), "faq");
+			}
+			// 사진작업완료 후 DB에 저장된 실제 정보 레코드를 삭제처리한다.
+			res = faqService.setFaqDelete(idxArray[i]);
+		}
 		
 		if(res != 0) return "redirect:/message/adFaqDeleteOk";
 		else return "redirect:/message/adFaqDeleteNo";
 	}
+	
+
 	
 	// FAQ 수정 폼 보기
 	@RequestMapping(value = "/adFaqUpdate", method = RequestMethod.GET)

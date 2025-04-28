@@ -120,9 +120,10 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<h3 class="text-center mb-0">
-<img src="${ctp}/images/logo.png" width="150px"/></h3>
-<h3 class="my-page-header mt-0">1:1 문의 리스트 관리</h3>
+<div class="col m-3 text-center">
+  <img src="${ctp}/images/logo.png" width="100px"/>
+  <span class="my-page-header">1:1 문의 리스트</span>
+</div>
 
 <div class="container">
   <div class="section-box">

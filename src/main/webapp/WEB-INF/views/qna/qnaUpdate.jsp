@@ -100,10 +100,10 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<h3 class="text-center mb-0">
-<img src="${ctp}/images/logo.png" width="150px"/></h3>
-<h3 class="my-page-header mt-0">QnA 수정하기</h3>
-
+<div class="col m-3 text-center">
+  <img src="${ctp}/images/logo.png" width="100px"/>
+  <span class="my-page-header">QnA 수정하기</span>
+</div>
 <div class="container">
   <div class="section-box">
     <form name="myform" method="post">
@@ -118,7 +118,7 @@
         </tr>
         <tr>
           <th>이메일</th>
-          <td><input type="text" name="email" value="dnjsrkdus0403@naver.com" required class="form-control"/></td>
+          <td><input type="text" name="email" value="${vo.email}" required class="form-control"/></td>
         </tr>
         <tr>
           <th>내용</th>
@@ -145,7 +145,7 @@
         <tr>
           <td colspan="2" class="text-center">
             <input type="button" value="수정하기" onclick="fCheck()" class="btn btn-outline-success me-2"/>
-            <input type="reset" value="다시쓰기" class="btn btn-outline-warning me-2"/>
+            <input type="button" value="다시쓰기" onclick="location.reload()" class="btn btn-outline-warning me-2"/>
             <input type="button" value="돌아가기" onclick="location.href='${ctp}/qna/qnaList';" class="btn btn-outline-secondary"/>
           </td>
         </tr>

@@ -70,8 +70,6 @@
     .btn {
       font-size: 1rem;
     }
-		
-		
   </style>
   <script>
     'use strict';
@@ -89,7 +87,7 @@
 
     function answerCheck() {
       let tempStr = '<div class="mt-5">';
-      tempStr += '<h4 class="text-center mb-4">답 변 글 달 기</h4>';
+      tempStr += '<h4 class="text-center mb-4" style="color: #2e7d32;">답 변 글 달 기</h4>';
       tempStr += '<div class="container">';
       tempStr += '<table class="table">';
       tempStr += '<tr>';
@@ -102,7 +100,7 @@
       tempStr += '</tr>';
       tempStr += '<tr>';
       tempStr += '  <th>이메일</th>';
-      tempStr += '  <td><input type="text" name="email" value="${vo.email}" class="form-control" required/></td>';
+      tempStr += '  <td><input type="text" name="email" value="${memberVo.email}" class="form-control" required/></td>';
       tempStr += '</tr>';
       tempStr += '<tr>';
       tempStr += '  <th>글내용</th>';
@@ -110,7 +108,7 @@
       tempStr += '</tr>';
       tempStr += '<tr>';
       tempStr += '  <td colspan="2" class="text-center">';
-      tempStr += '    <input type="button" value="답글등록" onclick="fCheck()" class="btn btn-outline-success me-2"/>';
+      tempStr += '    <input type="button" value="답변등록" onclick="fCheck()" class="btn btn-outline-success me-2"/>';
       tempStr += '    <input type="button" value="취소" onclick="location.reload();" class="btn btn-outline-danger"/>';
       tempStr += '  </td>';
       tempStr += '</tr>';
@@ -145,9 +143,10 @@
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <div class="container">
-<h3 class="text-center mb-0">
-<img src="${ctp}/images/logo.png" width="150px"/></h3>
-  <h3 class="my-page-header mt-0">QnA 상세보기</h3>
+  <div class="col m-3 text-center">
+    <img src="${ctp}/images/logo.png" width="100px"/>
+	  <span class="my-page-header">QnA 상세보기</span>
+	</div>
   <div class="section-box">
     <table class="table">
       <tr>
@@ -166,7 +165,9 @@
       </tr>
       <tr>
         <th>문의내용</th>
-        <td colspan="3" style="white-space:pre-line; height:150px;">${vo.content}</td>
+        <td colspan="3">
+        	<div style="min-height:200px; height:300px;">${vo.content}</div>
+        </td>
       </tr>
       <tr>
         <th>공개여부</th>

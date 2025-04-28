@@ -7,6 +7,7 @@
 <head>
   <meta charset="UTF-8">
   <title>QnA 리스트</title>
+  <script src="https://kit.fontawesome.com/df66332deb.js" crossorigin="anonymous"></script>
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
   <style>
     body {
@@ -121,9 +122,10 @@
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 
 <div class="container">
-<h3 class="text-center mb-0">
-<img src="${ctp}/images/logo.png" width="150px"/></h3>
-  <div class="my-page-header mt-0">QnA 리스트</div>
+  <div class="col m-3 text-center">
+    <img src="${ctp}/images/logo.png" width="100px"/>
+	  <span class="my-page-header">QnA 리스트</span>
+	</div>
   <div class="section-box">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <div>
@@ -159,30 +161,42 @@
         </tr>
       </thead>
       <tbody>
+        <c:set var="tempIdx" value="${vos[0].qnaIdx}"/>
+        <c:set var="tempMid" value="${vos[0].mid}"/>
         <c:set var="curScrStartNo" value="${pageVo.curScrStartNo}" />
         <c:forEach var="vo" items="${vos}">
+          <c:if test="${tempIdx != vo.qnaIdx}">
+            <c:set var="tempIdx" value="${vo.qnaIdx}"/>
+            <c:set var="tempMid" value="${vo.mid}"/>
+          </c:if>
           <tr>
             <td style="border-bottom: 1px solid #e5e5e5;">${vo.idx}</td>
             <td style="border-bottom: 1px solid #e5e5e5;">
               <c:if test="${vo.qnaSw != 'a' && vo.qnaAnswer == '답변완료'}">
-                <span class="badge badge-success">답변완료</span>
+                <span class="badge badge-success">답변완료:${vo.mid}:</span>
               </c:if>
               <c:if test="${vo.qnaSw != 'a' && vo.qnaAnswer != '답변완료'}">
                 <span class="badge badge-warning">답변대기</span>
               </c:if>
             </td>
             <td class="text-start" style="border-bottom: 1px solid #e5e5e5;">
-              <c:if test="${vo.qnaSw == 'a'}">
-                <span>ㄴ</span>
-              </c:if>
-              <c:choose>
-                <c:when test="${vo.delCheck == 'OK'}">
-                  <span style="color:#ccc">삭제된 자료입니다.</span>
-                </c:when>
-                <c:otherwise>
-                  <a href="${ctp}/qna/qnaDetail?idx=${vo.idx}" class="text-dark" >${vo.title}</a>
-                </c:otherwise>
-              </c:choose>
+              <c:if test="${vo.qnaSw == 'a'}"><span>ㄴ</span></c:if>
+              <c:if test="${vo.delCheck != 'OK'}">
+		          <c:if test="${vo.openSw != 'OK'}"><i class="fa-solid fa-lock"></i>
+			          <c:if test="${sMid == vo.mid || sLevel == 0 || (tempMid == sMid && tempIdx == vo.qnaIdx)}">
+			          	<a href="${ctp}/qna/qnaDetail?idx=${vo.idx}" class="text-dark">${vo.title}</a>
+			          </c:if>
+			          <c:if test="${sMid != vo.mid && sLevel != 0 && (tempMid != sMid || tempIdx != vo.qnaIdx)}">
+			          	${vo.title}
+			          </c:if>
+		          </c:if>
+		          <c:if test="${vo.openSw == 'OK'}">
+	          		<a href="${ctp}/qna/qnaDetail?idx=${vo.idx}" class="text-dark">${vo.title}</a>
+		          </c:if>
+	          </c:if>
+	          <c:if test="${vo.delCheck == 'OK'}">
+	            <font color="#ddd">삭제된 자료입니다.</font>
+	          </c:if>
             </td>
             <td style="border-bottom: 1px solid #e5e5e5;">${vo.nickName}</td>
             <td style="border-bottom: 1px solid #e5e5e5;">${vo.WDate.substring(0,10)}</td>

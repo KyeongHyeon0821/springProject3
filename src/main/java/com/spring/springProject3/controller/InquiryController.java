@@ -107,7 +107,7 @@ public class InquiryController {
 	// 그림파일만 삭제처리
 	@ResponseBody
 	@PostMapping("/imageDelete")
-	public String imageDeleteGet(int idx, String fSName) {
+	public String imageDeletePost(int idx, String fSName) {
 		return inquiryService.setInquiryImageDelete(idx, fSName) + "";
 	}
 

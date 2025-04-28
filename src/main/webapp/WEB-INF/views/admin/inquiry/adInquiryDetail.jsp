@@ -90,13 +90,92 @@
     .badge.bg-secondary { background-color: #9e9e9e; }
     .badge.bg-info { background-color: #64b5f6; }
   </style>
+  
+	<script>
+	'use strict';
+	
+	function inquiryReplyInput() {
+	  let idx = ${vo.idx};
+	  let reContent = document.getElementById("reContent").value;
+	  if(reContent == "") {
+	    alert("답변을 입력하세요.");
+	    document.replyForm.reContent.focus();
+	    return false;
+	  }
+	  let query = {
+	    idx : idx,
+	    reContent : reContent
+	  }
+	  $.ajax({
+	    url : "${ctp}/admin/inquiry/adInquiryDetail",
+	    type : "post",
+	    data : query,
+	    success:function(res) {
+	      if(res != "0") {
+	        alert("답변이 등록되었습니다.");
+	        location.reload();
+	      }
+	      else alert("답변 등록 실패");
+	    },
+	    error:function() { alert("전송오류"); }
+	  });
+	}
+	
+	function inquiryReplyUpdateReady() {
+	  document.getElementById("btnReplyUpdate").style.display = "none";
+	  document.getElementById("btnReplyUpdateOk").style.display = "inline-block";
+	  document.getElementById("reContent").readOnly = false;
+	}
+	
+	function inquiryReplyUpdateOk() {
+	  let reContent = document.getElementById("reContent").value;
+	  if(reContent.trim() == "") {
+	    alert("수정할 답변을 입력하세요.");
+	    return false;
+	  }
+	  let query = {
+	    reIdx : ${vo.reIdx},
+	    reContent : reContent
+	  }
+	  $.ajax({
+	    url : "${ctp}/admin/inquiry/adInquiryDetailUpdate",
+	    type : "post",
+	    data : query,
+	    success:function(res) {
+	      if(res != "0"){
+	        alert("답변이 수정되었습니다.");
+	        location.reload();
+	      }
+	      else alert("답변 수정 실패");
+	    },
+	    error : function() { alert("전송오류"); }
+	  });
+	}
+	
+	function inquiryHoldCheck() {
+	  $.ajax({
+	    url : "${ctp}/admin/inquiry/adInquiryDetailHold",
+	    type : "post",
+	    data : {idx : ${vo.idx}},
+	    success:function(res) {
+	      if(res != "0"){
+	        alert("답변이 보류되었습니다.");
+	        location.reload();
+	      }
+	      else alert("답변 보류 실패");
+	    },
+	    error : function() { alert("전송오류"); }
+	  });
+	}
+	</script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <div class="container">
-<h3 class="text-center mb-0">
-<img src="${ctp}/images/logo.png" width="150px"/></h3>
-  <div class="my-page-header mt-0">1:1 문의 상세보기 관리</div>
+  <div class="col m-3 text-center">
+    <img src="${ctp}/images/logo.png" width="100px"/>
+	  <span class="my-page-header">1:1 문의 리스트</span>
+	</div>
 
   <div class="section-box">
     <table class="table">
@@ -140,8 +219,8 @@
       </tr>
       <tr>
         <th>문의내용</th>
-        <td colspan="3" class="text-start" style="padding: 20px;">
-          <div style="white-space: pre-line; min-width: 800px; max-width: 1000px; display: block;">
+        <td colspan="5">
+          <div class="text-start" style="min-height:200px; height:300px;">
             ${vo.content}
           </div>
         </td>
@@ -175,7 +254,7 @@
             <input type="button" value="답변등록" id="btnReplyInput" onclick="inquiryReplyInput()" class="btn btn-outline-primary mb-2">
           </c:if>
           <c:if test="${!empty vo.reContent}">
-            <input type="button" value="답변수정" id="btnReplyUpdate" onclick="inquiryReplyUpdateReady()" class="btn btn-outline-warning">
+            <input type="button" value="답변수정" id="btnReplyUpdate" onclick="inquiryReplyUpdateReady()" class="btn btn-outline-danger">
           </c:if>
           <input type="button" value="수정완료" id="btnReplyUpdateOk" onclick="inquiryReplyUpdateOk()" class="btn btn-outline-info" style="display:none">
         </div>

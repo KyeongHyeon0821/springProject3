@@ -8,7 +8,6 @@
   <meta charset="UTF-8">
   <title>QnA 검색결과</title>
   <script src="https://kit.fontawesome.com/df66332deb.js" crossorigin="anonymous"></script>
-  <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
 	<style>
 	  body {
 	    background-color: #f9fefb;
@@ -24,20 +23,21 @@
 	    padding: 40px 20px;
 	  }
 	
+	  .my-page-header {
+	    text-align: center;
+	    font-weight: bold;
+	    font-size: 2rem;
+	    margin-bottom: 30px;
+	    color: #2e7d32;
+	  }
+	
 	  .section-box {
 	    background: #fff;
 	    border-radius: 12px;
 	    padding: 60px;
 	    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 	    border: 1px solid #e0e0e0;
-	  }
-	
-	  .qna-title {
-	    text-align: center;
-	    font-weight: bold;
-	    font-size: 2rem;
-	    margin-bottom: 30px;
-	    color: #2e7d32;
+	    margin-top: 30px;
 	  }
 	
 	  table {
@@ -46,23 +46,46 @@
 	    border-spacing: 0 10px;
 	  }
 	
-	  th {
-	    padding: 14px 12px;
-	    text-align: center;
-	    color: #444;
-	    border-top: 1px solid #d0e0d5;
-	    border-bottom: 1px solid #d0e0d5;
-	  }
-	
 	  thead th {
 	    background-color: #e0f5e9 !important;
+	    color: #444 !important;
+	    padding: 14px 12px;
+	    text-align: center;
+	    font-weight: 600;
 	  }
 	
-	  td {
+	  tbody td {
 	    background-color: #fff;
 	    padding: 14px 12px;
 	    text-align: center;
 	    border-bottom: 1px solid #e5e5e5;
+	  }
+	
+	  td a {
+	    text-decoration: none;
+	    font-weight: 500;
+	  }
+	
+	  td a:hover {
+	    color: #4caf50;
+	    text-decoration: none;
+	  }
+	
+	  .badge {
+	    display: inline-block;
+	    padding: 4px 10px;
+	    font-size: 0.9rem;
+	    font-weight: 500;
+	    border-radius: 10px;
+	    color: white;
+	  }
+	
+	  .badge-success {
+	    background-color: #388e3c !important;
+	  }
+	
+	  .badge-warning {
+	    background-color: #f9a825 !important;
 	  }
 	
 	  .pagination .page-link {
@@ -75,21 +98,10 @@
 	    border-color: #2e7d32;
 	  }
 	
-	  .badge {
-	    display: inline-block;
-	    padding: 4px 10px;
-	    font-size: 0.9rem;
-	    font-weight: 500;
-	    border-radius: 10px;
-	    color: white;
-	  }
-	
-	  .bg-success {
-	    background-color: #388e3c !important;
-	  }
-	
-	  .bg-warning {
-	    background-color: #f9a825 !important;
+	  .no-data {
+	    text-align: center;
+	    padding: 30px 0;
+	    color: #888;
 	  }
 	</style>
   <script>
@@ -104,9 +116,10 @@
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 
 <div class="container">
-<h3 class="text-center mb-0">
-<img src="${ctp}/images/logo.png" width="150px"/></h3>
-  <div class="qna-title">QnA 검색결과</div>
+  <div class="col m-3 text-center">
+    <img src="${ctp}/images/logo.png" width="100px"/>
+	  <span class="my-page-header">QnA 검색결과</span>
+	</div>
 
   <div class="section-box mt-4">
   <div class="text-center">(${pageVo.searchStr}(으)로 ${pageVo.searchString}을(를) 검색한 결과 ${fn:length(vos)}건이 검색되었습니다.)</div>
@@ -120,11 +133,20 @@
         </select>
       </div>
       <div>
-        <button class="btn btn-outline-success btn-sm" onclick="location.href='${ctp}/qna/qnaInput';">글올리기</button>
+        <c:if test="${sLevel == 0}">
+          <select name="qnaAnswer" id="qnaAnswer" onchange="qnaAnswerCheck()" class="form-select">
+            <option value="전체" ${qnaAnswer == "전체" ? "selected" : ""}>전체보기</option>
+            <option ${qnaAnswer == "답변대기" ? "selected" : ""}>답변대기</option>
+            <option ${qnaAnswer == "답변완료" ? "selected" : ""}>답변완료</option>
+          </select>
+        </c:if>
+        <c:if test="${sLevel != 0}">
+          <button class="btn btn-outline-success" onclick="location.href='${ctp}/qna/qnaInput';">작성하기</button>
+        </c:if>
       </div>
     </div>
 
-    <table class="table">
+    <table>
       <thead>
         <tr>
           <th class="text-center">번호</th>
@@ -135,43 +157,43 @@
         </tr>
       </thead>
       <tbody>
-        <c:if test="${empty vos}">
-          <tr>
-            <td colspan="5" class="text-center">등록된 글이 없습니다.</td>
-          </tr>
-        </c:if>
+        <c:set var="curScrStartNo" value="${pageVo.curScrStartNo}" />
         <c:forEach var="vo" items="${vos}">
           <tr>
-            <td>${vo.idx}</td>
-            <td>
-              <c:if test="${vo.qnaAnswer == '답변대기'}">
-                <span class="badge bg-warning">${vo.qnaAnswer}</span>
+            <td style="border-bottom: 1px solid #e5e5e5;">${vo.idx}</td>
+            <td style="border-bottom: 1px solid #e5e5e5;">
+              <c:if test="${vo.qnaSw != 'a' && vo.qnaAnswer == '답변완료'}">
+                <span class="badge badge-success">답변완료</span>
               </c:if>
-              <c:if test="${vo.qnaAnswer == '답변완료'}">
-                <span class="badge bg-success">${vo.qnaAnswer}</span>
-              </c:if>
-            </td>
-            <td class="text-start">
-              <c:if test="${vo.qnaSw == 'a'}">ㄴ</c:if>
-              <c:if test="${vo.delCheck != 'OK'}">
-                <c:if test="${vo.openSw != 'OK'}"><i class="fa-solid fa-lock"></i>
-                  <c:if test="${sMid == vo.mid || sLevel == 0}">
-                    <a href="${ctp}/qna/qnaDetail?idx=${vo.idx}" class="text-dark">${vo.title}</a>
-                  </c:if>
-                  <c:if test="${sMid != vo.mid && sLevel != 0}">${vo.title}</c:if>
-                </c:if>
-                <c:if test="${vo.openSw == 'OK'}">
-                  <a href="${ctp}/qna/qnaDetail?idx=${vo.idx}" class="text-dark">${vo.title}</a>
-                </c:if>
-              </c:if>
-              <c:if test="${vo.delCheck == 'OK'}">
-                <font color="#ddd">삭제된 자료입니다.</font>
+              <c:if test="${vo.qnaSw != 'a' && vo.qnaAnswer != '답변완료'}">
+                <span class="badge badge-warning">답변대기</span>
               </c:if>
             </td>
-            <td>${vo.nickName}</td>
-            <td>${vo.WDate.substring(0, 10)}</td>
+            <td class="text-start" style="border-bottom: 1px solid #e5e5e5;">
+              <c:if test="${vo.qnaSw == 'a'}">
+                <span>ㄴ</span>
+              </c:if>
+              <c:choose>
+                <c:when test="${vo.delCheck == 'OK'}">
+                  <span style="color:#ccc">삭제된 자료입니다.</span>
+                </c:when>
+                <c:otherwise>
+              	  <c:if test="${vo.openSw != 'OK'}"><i class="fa-solid fa-lock"></i></c:if>
+                  <a href="${ctp}/qna/qnaDetail?idx=${vo.idx}" class="text-dark" >${vo.title}</a>
+                </c:otherwise>
+              </c:choose>
+            </td>
+            <td style="border-bottom: 1px solid #e5e5e5;">${vo.nickName}</td>
+            <td style="border-bottom: 1px solid #e5e5e5;">${vo.WDate.substring(0,10)}</td>
           </tr>
+          <c:set var="curScrStartNo" value="${curScrStartNo - 1}"/>
         </c:forEach>
+
+        <c:if test="${empty vos}">
+          <tr>
+            <td colspan="5" class="no-data">등록된 글이 없습니다.</td>
+          </tr>
+        </c:if>
       </tbody>
     </table>
 

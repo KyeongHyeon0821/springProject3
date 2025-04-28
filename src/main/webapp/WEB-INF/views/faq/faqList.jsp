@@ -123,9 +123,10 @@
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 
 <div class="container">
-<h3 class="text-center mb-0">
-<img src="${ctp}/images/logo.png" width="150px"/></h3>
-  <div class="my-page-header mt-0">FAQ 리스트</div>
+  <div class="col m-3 text-center">
+    <img src="${ctp}/images/logo.png" width="100px"/>
+	  <span class="my-page-header">FAQ 리스트</span>
+	</div>
 
   <div class="section-box">
     <div class="row m-0 mb-4">

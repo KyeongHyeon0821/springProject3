@@ -106,16 +106,17 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<h3 class="text-center mb-0">
-<img src="${ctp}/images/logo.png" width="150px"/></h3>
-<h3 class="my-page-header mt-0 mb-3">FAQ 작성하기</h3>
+<div class="col m-3 text-center">
+  <img src="${ctp}/images/logo.png" width="100px"/>
+  <span class="my-page-header">FAQ 작성하기</span>
+</div>
 
 <div class="container section-box">
   <form name="myform" method="post">
     <table class="table">
       <tr>
         <th>분류</th>
-        <td>
+        <td style="border-top: 1px solid #e5e5e5;">
           <select name="category" id="category" class="form-select">
             <option selected value="">선택해주세요.</option>
             <option>예약</option>
@@ -144,7 +145,7 @@
       <tr>
         <td colspan="2" class="text-center">
           <input type="button" value="등록하기" onclick="fCheck()" class="btn btn-outline-success me-2"/>
-          <input type="reset" value="다시쓰기" class="btn btn-outline-warning me-2"/>
+          <input type="button" value="다시쓰기" onclick="location.reload()" class="btn btn-outline-warning me-2"/>
           <input type="button" value="돌아가기" onclick="location.href='${ctp}/faq/adFaqList';" class="btn btn-outline-secondary"/>
         </td>
       </tr>

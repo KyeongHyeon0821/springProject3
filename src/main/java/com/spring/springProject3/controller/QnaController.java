@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.springProject3.common.Pagination;
 import com.spring.springProject3.common.ProjectProvide;
+import com.spring.springProject3.service.MemberService;
 import com.spring.springProject3.service.QnaService;
+import com.spring.springProject3.vo.MemberVo;
 import com.spring.springProject3.vo.PageVo;
 import com.spring.springProject3.vo.QnaVo;
 
@@ -30,6 +32,9 @@ public class QnaController {
 	
 	@Autowired
 	ProjectProvide projectProvide;
+	
+	@Autowired
+	MemberService memberService;
 	
 	// qna 리스트 보기
 	@RequestMapping(value = "/qnaList", method = RequestMethod.GET)
@@ -53,9 +58,13 @@ public class QnaController {
 
 	// qna 입력 폼 보기
 	@RequestMapping(value = "/qnaInput", method = RequestMethod.GET)
-	public String qnaInputGet(Model model,
+	public String qnaInputGet(Model model, HttpSession session,
 			@RequestParam(name = "qnaSw", defaultValue = "q", required = false) String qnaSw) {
+		String mid = (String) session.getAttribute("sMid");
+		MemberVo vo = memberService.getMemberIdCheck(mid);
+		
 		model.addAttribute("qnaSw", qnaSw);
+		model.addAttribute("vo", vo);
 		return "qna/qnaInput";
 	}
 
@@ -113,7 +122,7 @@ public class QnaController {
 
 	// qna 게시글 상세보기 폼 보기
 	@RequestMapping(value = "/qnaDetail", method = RequestMethod.GET)
-	public String qnaDetailGet(int idx, Model model,
+	public String qnaDetailGet(int idx, Model model, HttpSession session,
 			@RequestParam(name = "pag", defaultValue = "1", required = false) int pag,
 			@RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
 			@RequestParam(name = "mid", defaultValue = "", required = false) String mid,
@@ -121,8 +130,11 @@ public class QnaController {
 			@RequestParam(name = "level", defaultValue = "0", required = false) String level,
 			@RequestParam(name = "qnaSw", defaultValue = "q", required = false) String qnaSw) {
 		QnaVo vo = qnaService.getQnaDetail(idx);
-
 		model.addAttribute("vo", vo);
+		
+		String imsiMid = (String) session.getAttribute("sMid");
+		MemberVo memberVo = memberService.getMemberIdCheck(imsiMid);
+		model.addAttribute("memberVo", memberVo);
 
 		return "qna/qnaDetail";
 	}

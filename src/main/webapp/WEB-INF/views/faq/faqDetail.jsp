@@ -92,10 +92,10 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<h3 class="text-center mb-0">
-<img src="${ctp}/images/logo.png" width="150px"/></h3>
-<h3 class="my-page-header mt-2">FAQ 상세보기</h3>
-
+<div class="col m-3 text-center">
+  <img src="${ctp}/images/logo.png" width="100px"/>
+  <span class="my-page-header">FAQ 상세보기</span>
+</div>
 <div class="container">
   <div class="section-box">
     <table class="table">
@@ -118,7 +118,7 @@
       <tr>
         <th>내용</th>
         <td colspan="5">
-          <div style="min-height:200px;">${vo.content}</div>
+          <div style="min-height:200px; height:300px;">${vo.content}</div>
         </td>
       </tr>
     </table>

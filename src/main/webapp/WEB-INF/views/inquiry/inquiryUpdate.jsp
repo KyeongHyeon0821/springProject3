@@ -131,9 +131,10 @@
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 
 <div class="container">
-<h3 class="text-center mb-0">
-<img src="${ctp}/images/logo.png" width="150px"/></h3>
-  <div class="my-page-header mt-2">1:1 문의 수정하기</div>
+  <div class="col m-3 text-center">
+    <img src="${ctp}/images/logo.png" width="100px"/>
+	  <span class="my-page-header">1:1 문의 수정하기</span>
+	</div>
 
   <div class="section-box">
     <form name="myform" method="post" enctype="multipart/form-data">
@@ -182,12 +183,13 @@
             </c:if>
             <input type="file" id="fSName" name="mFile" onchange="imgCheck(this)" class="form-control mt-3 mb-2" />
             <div class="form-text">새 파일을 등록하면 기존 파일이 대체됩니다.</div>
+            <div class="imgs_wrap form-text text-muted"><img id="photoDemo" width="100px"/></div>
           </td>
         </tr>
         <tr>
           <td colspan="2" class="text-center">
             <input type="submit" value="수정하기" class="btn btn-outline-success me-2" />
-            <input type="reset" value="다시입력" class="btn btn-outline-warning me-2" />
+            <input type="button" value="다시입력" onclick="location.reload()" class="btn btn-outline-warning me-2" />
             <input type="button" value="돌아가기" onclick="location.href='${ctp}/inquiry/inquiryList';" class="btn btn-outline-secondary" />
           </td>
         </tr>

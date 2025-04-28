@@ -99,9 +99,10 @@
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 
 <div class="container">
-<h3 class="text-center mb-0">
-<img src="${ctp}/images/logo.png" width="150px"/></h3>
-  <div class="my-page-header mt-0">1:1 문의 상세보기</div>
+  <div class="col m-3 text-center">
+    <img src="${ctp}/images/logo.png" width="100px"/>
+	  <span class="my-page-header">1:1 문의 상세보기</span>
+	</div>
 
   <div class="section-box">
     <table class="table text-center">
@@ -145,8 +146,8 @@
       </tr>
       <tr>
         <th>문의내용</th>
-        <td colspan="3" class="text-start" style="padding: 20px; border-top: 1px solid #e5e5e5;">
-          <div style="white-space: pre-line; min-width: 800px; max-width: 1000px; display: block;">
+        <td colspan="5" class="text-start" style="border-top: 1px solid #e5e5e5;">
+          <div style="min-height:200px; height:300px;">
             ${vo.content}
           </div>
         </td>
