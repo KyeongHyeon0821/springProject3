@@ -139,6 +139,9 @@
 	  <h5 id="touristName"></h5>
 	  <p id="touristAddress" style="color:gray;"></p>
 	  <p id="touristDescription" style="margin-top:10px;"></p>
+	  <c:if test="${hotelVo.mid == sMid}">
+        <p id="touristNotice" style="font-size:12px; color:#dc3545; margin-top:10px; text-align:right;">(수정/삭제는 관리자에게 문의하세요)</p>
+      </c:if>
 	</div>
 
   <div class="mt-3">
@@ -279,12 +282,12 @@
 	            	tempName = '${vo.spotName}';
 	            	tempAddress = '${vo.spotAddress}';
 	            }
-	           </c:forEach>
+	          </c:forEach>
 
-	           const content = '<div style="padding:10px; font-size:13px; line-height:1.6; word-break:break-word; width:200px;">'
-	               + '<div style="font-weight:bold; color:#2e7d32; margin-bottom:5px;">'+tempName+'</div>'
-	               + '<div style="font-size:12px; color:gray;">주소: '+tempAddress+'</div>'
-	               + '</div>';
+	          const content = '<div style="padding:10px; font-size:13px; line-height:1.6; word-break:break-word; width:200px;">'
+	            + '<div style="font-weight:bold; color:#2e7d32; margin-bottom:5px;">'+tempName+'</div>'
+	            + '<div style="font-size:12px; color:gray;">주소: '+tempAddress+'</div>'
+	            + '</div>';
 	          const infoWindow = new kakao.maps.InfoWindow({ content: content });
 	          
 	          kakao.maps.event.addListener(marker, 'click', function() {
@@ -294,11 +297,12 @@
 	            infoWindow.open(targetMap, marker); // 새 창 열기
 	            openInfoWindow = infoWindow; // 현재 열린 창 기록
 	            
-	            // ✨ 관광지 정보 텍스트 영역에 내용 채우기
+	            // 관광지 정보 텍스트 영역에 내용 채우기
 	            document.getElementById('touristInfo').style.display = 'block';
 	            document.getElementById('touristName').innerText = spot.name;
 	            document.getElementById('touristAddress').innerText = spot.address;
 	            document.getElementById('touristDescription').innerText = spot.description;
+	            
 	          });
 	          
 	          markerList.push({ marker: marker, infoWindow: infoWindow });

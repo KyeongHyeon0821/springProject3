@@ -111,7 +111,7 @@ public class MessageController {
 		    }
 		    
 		    model.addAttribute("message", msg);
-		    model.addAttribute("url", "member/memberMyPage");
+		    model.addAttribute("url", "/");
 		}
 		else if(msgFlag.equals("memberLoginNo")) {
 			model.addAttribute("message", "아이디 또는 비밀번호가 잘못 되었습니다.\\n아이디와 비밀번호를 정확히 입력해 주세요.");
@@ -119,7 +119,7 @@ public class MessageController {
 		}
 		else if(msgFlag.equals("memberLogoutOk")) {
 			model.addAttribute("message", "로그아웃 되었습니다.");
-			model.addAttribute("url", "member/memberLogin");
+			model.addAttribute("url", "/");
 		}
 		else if(msgFlag.equals("pwdCheckNo")) {
 			model.addAttribute("message", "비밀번호가 틀립니다. 다시 확인해 주세요.");
