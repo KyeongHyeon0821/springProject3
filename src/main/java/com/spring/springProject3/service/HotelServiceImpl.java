@@ -151,10 +151,22 @@ public class HotelServiceImpl implements HotelService {
 		fos.close();
 	}
 
-	// 호텔 상세보기
+	// 호텔 전체보기
 	@Override
 	public HotelVo getHotel(int idx) {
 		return hotelDao.getHotel(idx);
+	}
+	
+	// 호텔 상세보기
+	@Override
+	public HotelVo getHotelSearchOne(int idx) {
+		return hotelDao.getHotelSearchOne(idx);
+	}
+	
+	// 관광지 정보 리스트
+	@Override
+	public List<HotelVo> getHotelSearch(int idx) {
+		return hotelDao.getHotelSearch(idx);
 	}
 
 	// 호텔 상태 업데이트

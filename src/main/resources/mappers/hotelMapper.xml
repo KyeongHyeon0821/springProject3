@@ -14,7 +14,17 @@
   
   <!-- 호텔 조회 (idx)-->
   <select id="getHotel" resultType="com.spring.springProject3.vo.HotelVo">
-  	select * from hotel where idx = #{idx};
+  	select * from hotel where idx = #{idx} and status = '정상';
+  </select>
+  
+  <!-- 호텔 조회 (idx)-->
+  <select id="getHotelSearchOne" resultType="com.spring.springProject3.vo.HotelVo">
+  	select h.*, t.idx as spotIdx, t.hotelIdx as spotHotelIdx, t.name as spotName, t.lat as spotLat, t.lng as spotLng, t.address as spotAddress, t.description as spotDescription from hotel h, tourist_spot t where h.status = '정상' and h.idx = #{idx} order by h.idx desc limit 1;
+  </select>
+  
+  <!-- 호텔 관광지 조회 (idx)-->
+  <select id="getHotelSearch" resultType="com.spring.springProject3.vo.HotelVo">
+  	select h.*, t.idx as spotIdx, t.hotelIdx as spotHotelIdx, t.name as spotName, t.lat as spotLat, t.lng as spotLng, t.address as spotAddress, t.description as spotDescription from hotel h, tourist_spot t where h.status = '정상' and h.idx = #{idx} order by h.idx desc;
   </select>
   
   <!-- 호텔 찜 조회 -->

@@ -17,10 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -124,15 +122,17 @@ public class HotelController {
 	// 호텔 상세페이지 보기
 	@RequestMapping(value = "/hotelDetail", method = RequestMethod.GET)
 	public String hotelDetailGet(Model model, int idx, HttpSession session) {
-	    HotelVo vo = hotelService.getHotel(idx);
+	    HotelVo hotelVo = hotelService.getHotelSearchOne(idx);
+	    List<HotelVo> vos = hotelService.getHotelSearch(idx);
 	    String mid = (String) session.getAttribute("sMid");
 	    String hotelLike = "";
 	    int res = hotelService.getHotelLike(mid, idx);
 
 	    if (res != 0) hotelLike = "Ok";
 	    else hotelLike = "No";
-
-	    model.addAttribute("vo", vo);
+	    System.out.println("vos(hotel) : " + vos);
+	    model.addAttribute("hotelVo", hotelVo);
+	    model.addAttribute("vos", vos);
 	    model.addAttribute("hotelLike", hotelLike);
 
 	    // 관광지 목록 추가

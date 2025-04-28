@@ -44,5 +44,12 @@ public class HotelVo {
 	
 	private Double y;
 	
+  private int spotIdx;
+  private int spotHotelIdx;
+  private String spotName;
+  private String spotLat;         
+  private String spotLng;         
+  private String spotAddress;     
+  private String spotDescription; 
 	
 }

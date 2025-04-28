@@ -13,4 +13,11 @@ public class TouristSpotVo {
     private String lng;         
     private String address;     
     private String description; 
+    
+//    private int hotelOriIdx;         
+//    private String hotelName;         
+//    private String hotelDescription;         
+//    private String hotelAdress;         
+//    private String hotelTel;         
+    
 }

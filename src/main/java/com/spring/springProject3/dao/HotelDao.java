@@ -13,6 +13,10 @@ public interface HotelDao {
 	int setHotelInput(@Param("vo") HotelVo vo);
 
 	HotelVo getHotel(@Param("idx") int idx);
+	
+	HotelVo getHotelSearchOne(@Param("idx") int idx);
+	
+	List<HotelVo> getHotelSearch(@Param("idx") int idx);
 
 	int setHotelStatusUpdate(@Param("idx") int idx, @Param("status") String status);
 

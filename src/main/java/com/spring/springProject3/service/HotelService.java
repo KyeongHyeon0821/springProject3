@@ -13,6 +13,10 @@ public interface HotelService {
 	int setHotelInput(HotelVo vo, MultipartFile thumbnailFile);
 
 	HotelVo getHotel(int idx);
+	
+	HotelVo getHotelSearchOne(int idx);
+	
+	List<HotelVo> getHotelSearch(int idx);
 
 	int setHotelStatusUpdate(int idx, String status);
 
