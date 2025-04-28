@@ -78,3 +78,54 @@ insert into hotelLike values(default, 'admin', 29, default);
 select * from hotellike;
 
 select idx from hotelLike where mid = 'admin';
+
+select * from hotel where status = '정상' order by idx desc;  
+
+select min(price) from room where hotelIdx = 29;
+
+select hotel.*, min(room.price) as minPrice from hotel left outer join room on hotel.idx = room.hotelIdx
+where hotel.status = '정상' group by hotel.idx order by hotel.idx desc;
+
+
+SELECT * FROM hotel
+  WHERE name LIKE CONCAT('%', '호텔', '%')
+  AND EXISTS (
+    SELECT 1 
+    FROM room r
+    WHERE r.hotelidx = hotel.idx 
+      AND r.maxpeople >= 1
+      AND r.petcountlimit >= 1
+      AND r.status = '정상'
+      AND NOT EXISTS (
+        SELECT 1 
+        FROM reservation res
+        WHERE res.roomidx = r.idx
+          AND res.status IN ('대기중', '예약완료') 
+          AND (res.checkinDate < '2025-04-30' AND res.checkoutDate > '2025-04-29')
+      )
+  );
+  
+  
+select h.idx, h.name, h.thumbnail, h.address, h.tel, min(r.price) as minprice
+from hotel h
+left outer join room r on h.idx = r.hotelidx
+where h.name like concat('%', '명동', '%') 
+   or h.address like concat('%', '앙성', '%')
+   and h.status = '정상'
+   and exists (
+       select 1 
+       from room r
+       where r.hotelidx = h.idx 
+         and r.maxpeople >= 1
+         and r.petcountlimit >= 1
+         and r.status = '정상'
+         and not exists (
+             select 1 
+             from reservation res
+             where res.roomidx = r.idx
+               and res.status in ('대기중', '예약완료')
+               and (res.checkindate < '2025-04-30' and res.checkoutdate > '2025-04-29')
+         )
+   )
+group by h.idx
+order by h.idx desc;

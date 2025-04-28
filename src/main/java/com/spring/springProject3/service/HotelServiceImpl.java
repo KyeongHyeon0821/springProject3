@@ -291,4 +291,15 @@ public class HotelServiceImpl implements HotelService {
 	public List<Integer> getLikedHotelListIdx(String mid) {
 		return hotelDao.getLikedHotelListIdx(mid);
 	}
+
+	@Override
+	public List<HotelVo> getMoreHotels(int lastIdx, int count) {
+		return hotelDao.getMoreHotels(lastIdx, count);
+	}
+
+	@Override
+	public List<HotelVo> getSearchHotelList(String searchString, String checkinDate, String checkoutDate, int guestCount, int petCount) {
+		return hotelDao.getSearchHotelList(searchString, checkinDate, checkoutDate, guestCount, petCount);
+	}
+
 }

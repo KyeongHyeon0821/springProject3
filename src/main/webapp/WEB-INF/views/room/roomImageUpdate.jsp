@@ -140,8 +140,9 @@
 	  background-color: #f9fefb;
 		}
 		
-		.container {
-		  max-width: 800px;
+		.form-container {
+		  max-width: 1000px; /* 크기를 더 크게 설정 */
+ 			width: 100%; /* 전체 너비에 맞게 설정 */
 		  margin: 50px auto;
 		  padding: 30px;
 		  background-color: #fff;
@@ -257,7 +258,7 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<div class="container">
+<div class="form-container">
   <h2 class="page-title">객실 이미지 수정</h2>
   <form name="roomForm" method="post" onsubmit="return fCheck();" enctype="multipart/form-data">
     <input type="hidden" name="idx" value="${vo.idx}" />

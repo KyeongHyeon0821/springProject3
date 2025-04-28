@@ -26,4 +26,9 @@ public interface HotelService {
 
 	List<Integer> getLikedHotelListIdx(String mid);
 
+	List<HotelVo> getMoreHotels(int lastIdx, int count);
+
+	List<HotelVo> getSearchHotelList(String searchString, String checkinDate, String checkoutDate, int guestCount, int petCount);
+
+
 }

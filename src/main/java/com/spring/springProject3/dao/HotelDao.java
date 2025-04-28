@@ -26,4 +26,9 @@ public interface HotelDao {
 
 	List<Integer> getLikedHotelListIdx(@Param("mid") String mid);
 
+	List<HotelVo> getMoreHotels(@Param("lastIdx") int lastIdx, @Param("count") int count);
+
+	List<HotelVo> getSearchHotelList(@Param("searchString") String searchString, @Param("checkinDate") String checkinDate, @Param("checkoutDate") String checkoutDate, @Param("guestCount") int guestCount, @Param("petCount") int petCount);
+
+
 }

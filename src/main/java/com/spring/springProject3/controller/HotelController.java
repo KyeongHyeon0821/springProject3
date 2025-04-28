@@ -48,9 +48,27 @@ public class HotelController {
 	
 	// 호텔 리스트
 	@RequestMapping("/hotelList")
-	public String hotelListGet(Model model, HttpSession session) {
+	public String hotelListGet(Model model, HttpSession session,
+			@RequestParam(name="checkinDate", defaultValue = "", required = false) String checkinDate,
+      @RequestParam(name="checkoutDate", defaultValue = "", required = false) String checkoutDate,
+      @RequestParam(name="guestCount", defaultValue = "1", required = false) int guestCount,
+      @RequestParam(name="petCount", defaultValue = "1", required = false) int petCount,
+      @RequestParam(name="searchString", defaultValue = "", required = false) String searchString
+		) {
+		if(checkinDate.equals("") || checkoutDate.equals("")) {
+			LocalDate today = LocalDate.now();
+	    LocalDate tomorrow = today.plusDays(1);
+
+	    checkinDate = today.toString();      // ex) "2025-04-24"
+	    checkoutDate = tomorrow.toString();  // ex) "2025-04-25"
+		}
+		
 		String mid = session.getAttribute("sMid") + "";
-		List<HotelVo> vos = hotelService.getHotelList();
+		
+		List<HotelVo> vos = null;
+		if(!searchString.equals("")) vos = hotelService.getSearchHotelList(searchString, checkinDate, checkoutDate, guestCount, petCount);
+		else vos = hotelService.getHotelList();
+			
 		
 		if(!mid.equals("")) {
 			List<Integer> likedHotelListIdx = hotelService.getLikedHotelListIdx(mid);
@@ -58,6 +76,11 @@ public class HotelController {
 		}
 		
 		model.addAttribute("vos", vos);
+	  model.addAttribute("checkinDate", checkinDate);
+    model.addAttribute("checkoutDate", checkoutDate);
+    model.addAttribute("guestCount", guestCount);
+    model.addAttribute("petCount", petCount);
+    model.addAttribute("searchString", searchString);
 		return "hotel/hotelList";
 	}
 	
@@ -131,7 +154,8 @@ public class HotelController {
 			 @RequestParam(name="checkinDate", defaultValue = "", required = false) String checkinDate,
        @RequestParam(name="checkoutDate", defaultValue = "", required = false) String checkoutDate,
        @RequestParam(name="guestCount", defaultValue = "0", required = false) int guestCount,
-       @RequestParam(name="petCount", defaultValue = "0", required = false) int petCount
+       @RequestParam(name="petCount", defaultValue = "0", required = false) int petCount,
+       @RequestParam(name="searchString", defaultValue = "", required = false) String searchString
 		) {
 		
 		// 기본 체크인&체크아웃 날짜, 인원수, 반려견수 설정
@@ -167,6 +191,7 @@ public class HotelController {
     model.addAttribute("checkoutDate", checkoutDate);
     model.addAttribute("guestCount", guestCount);
     model.addAttribute("petCount", petCount);
+    model.addAttribute("searchString", searchString);
 		return "hotel/hotelDetail";
 	}
 	
@@ -208,6 +233,17 @@ public class HotelController {
 	@RequestMapping(value = ("/hotelLikeNo"), method = RequestMethod.POST)
 	public String hotelLikeNoPost(String mid, int hotelIdx) {
 		return hotelService.setHotelLikeNo(mid, hotelIdx) + "";
+	}
+	
+	// 호텔 더보기 처리
+	@ResponseBody
+	@RequestMapping(value = ("/hotelMore"), method = RequestMethod.POST)
+	public List<HotelVo> hotelMorePost(int lastIdx, int count) {
+		System.out.println("lastIdx : " + lastIdx + ", count : " + count);
+		List<HotelVo> vos = hotelService.getMoreHotels(lastIdx, count);
+		System.out.println("vos : " + vos);
+		
+		return vos; 
 	}
 	
 }

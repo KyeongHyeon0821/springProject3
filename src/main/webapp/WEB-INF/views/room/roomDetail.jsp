@@ -285,6 +285,7 @@
 	    </div>
 	    <form action="${ctp}/reservation/reservationForm" method="get" class="reserve-form">
 	      <input type="hidden" name="roomIdx" value="${vo.idx}" />
+	      <input type="hidden" name="searchString" value="${searchString}" />
 	      <input type="hidden" name="checkinDate" value="${checkinDate}" />
 	      <input type="hidden" name="checkoutDate" value="${checkoutDate}" />
 	      <input type="hidden" name="guestCount" value="${guestCount}" />

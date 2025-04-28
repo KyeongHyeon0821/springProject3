@@ -83,6 +83,9 @@
     	<li class="nav-item">
       	<a class="nav-link" href="${ctp}/hotel/hotelInput">숙박시설 등록</a>
       </li>
+      <li>
+      	<a href="${ctp}/hotel/hotelList">전체 숙소 보기</a>
+      </li>
       <c:if test="${empty sessionScope.sLogin}">
 	      <li class="nav-item">
 	      	<a class="nav-link" href="${ctp}/member/memberLogin">로그인</a>

@@ -42,14 +42,36 @@ public class ReservationController {
 	@RequestMapping(value = "/reservationForm", method = RequestMethod.GET)
 	public String reservationFormGet(Model model,
 			HttpSession session,
-			@RequestParam("roomIdx") int roomIdx,
-			@RequestParam("checkinDate") String checkinDate,
-			@RequestParam("checkoutDate") String checkoutDate,
-			@RequestParam("guestCount") int guestCount,
-			@RequestParam("petCount") int petCount,
-			@RequestParam("nights") int nights
+      @RequestParam(value = "roomIdx", required = true) Integer roomIdx,
+      @RequestParam(value = "checkinDate", required = true) String checkinDate,
+      @RequestParam(value = "checkoutDate", required = true) String checkoutDate,
+      @RequestParam(value = "guestCount", required = true) Integer guestCount,
+      @RequestParam(value = "petCount", required = true) Integer petCount,
+      @RequestParam(value = "nights", required = true) Integer nights,
+      @RequestParam(value = "searchString", defaultValue = "", required = false) String searchString
 		) {
 		if(session.getAttribute("sMid")==null) return "redirect:/message/loginRequired";
+		
+		// 유효성 체크
+    if (roomIdx == null || roomIdx <= 0) {
+        return "redirect:/message/invalidValue?searchString="+searchString; 
+    }
+    if (checkinDate == null || checkinDate.trim().isEmpty()) {
+        return "redirect:/message/invalidValue?searchString="+searchString;  
+    }
+    if (checkoutDate == null || checkoutDate.trim().isEmpty()) {
+        return "redirect:/message/invalidValue?searchString="+searchString; 
+    }
+    if (guestCount == null || guestCount <= 0) {
+        return "redirect:/message/invalidValue?searchString="+searchString;  
+    }
+    if (petCount == null || petCount < 0) {
+        return "redirect:/message/invalidValue?searchString="+searchString; 
+    }
+    if (nights == null || nights <= 0) {
+        return "redirect:/message/invalidValue?searchString="+searchString;
+    }
+		
 		
 		RoomVo roomVo = roomService.getRoom(roomIdx);
 		HotelVo hotelVo = hotelService.getHotel(roomVo.getHotelIdx());
@@ -64,6 +86,7 @@ public class ReservationController {
 		model.addAttribute("guestCount", guestCount);
 		model.addAttribute("petCount", petCount);
 		model.addAttribute("nights", nights);
+		model.addAttribute("searchString", searchString);
 		return "reservation/reservationForm";
 	}
 	

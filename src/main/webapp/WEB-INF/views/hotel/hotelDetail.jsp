@@ -391,7 +391,7 @@
 	      </div>
 	      <div class="roomDetailContainer">
 	        <div>
-	          <a href="${ctp}/room/roomDetail?roomIdx=${roomVo.idx}&checkinDate=${checkinDate}&checkoutDate=${checkoutDate}&guestCount=${guestCount}&petCount=${petCount}">
+	          <a href="${ctp}/room/roomDetail?roomIdx=${roomVo.idx}&searchString=${searchString}&checkinDate=${checkinDate}&checkoutDate=${checkoutDate}&guestCount=${guestCount}&petCount=${petCount}">
 	            상세보기
 	          </a>
 	        </div>
@@ -401,9 +401,6 @@
 	    </div>
 	  </c:forEach>
 	</div>
-    
-    
-    
 
   <div class="hotel-info">
     <p>📞 ${vo.tel}</p>
@@ -420,7 +417,7 @@
   </div>
 
   <div class="button-group">
-    <a href="${ctp}/hotel/hotelList" class="custom-btn back-btn">← 목록으로</a>
+    <a href="${ctp}/hotel/hotelList?searchString?${searchString}&checkinDate=${checkinDate}&checkoutDate=${checkoutDate}&guestCount=${guestCount}&petCount=${petCount}" class="custom-btn back-btn">← 목록으로</a>
 
     <c:if test="${vo.mid == sMid}">
       <a href="${ctp}/room/roomInput?hotelIdx=${vo.idx}" class="custom-btn blue-btn">객실 등록</a>

@@ -87,8 +87,12 @@ public class MessageController {
 			model.addAttribute("url", "room/roomDetail?roomIdx="+roomIdx);
 		}
 		else if(msgFlag.equals("roomDeleteCheckNo")) {
-			model.addAttribute("message", "객실 서비스 중지 요청 처리 중 문제가 발생했습니다. 다시 시도해주세요.");
+			model.addAttribute("message", "객실 서비스 중지 요청 처리 중 문제가 발생했습니다.\\n다시 시도해주세요.");
 			model.addAttribute("url", "room/roomDetail?roomIdx="+roomIdx);
+		}
+		else if(msgFlag.equals("invalidValue")) {
+			model.addAttribute("message", "선택하신 숙소의 정보를 불러오는 데 실패했습니다.\\n다시 시도해주세요.");
+			model.addAttribute("url", "room/hotelList?searchString="+searchString);
 		}
 		
 		

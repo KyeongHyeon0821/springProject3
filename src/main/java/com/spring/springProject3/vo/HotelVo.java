@@ -46,5 +46,7 @@ public class HotelVo {
 	
 	private Double y;
 	
+	private int minPrice;
+	
 	
 }

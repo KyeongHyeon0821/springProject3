@@ -74,7 +74,8 @@ public class RoomController {
 			@RequestParam(name="checkinDate", defaultValue="") String checkinDate,
 	    @RequestParam(name="checkoutDate", defaultValue="") String checkoutDate,
 	    @RequestParam(name="guestCount", defaultValue="1") int guestCount,
-	    @RequestParam(name="petCount", defaultValue="1") int petCount
+	    @RequestParam(name="petCount", defaultValue="1") int petCount,
+	    @RequestParam(name="searchString", defaultValue="") String searchString
 		) {
 		
 		if (checkinDate.equals("") || checkoutDate.equals("")) {
@@ -102,6 +103,7 @@ public class RoomController {
     model.addAttribute("guestCount", guestCount);
     model.addAttribute("petCount", petCount);
     model.addAttribute("nights", nights);
+    model.addAttribute("searchString", searchString);
 		return "room/roomDetail";
 	}
 	

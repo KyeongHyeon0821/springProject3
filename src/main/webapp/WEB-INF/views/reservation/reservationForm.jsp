@@ -239,9 +239,9 @@
 		<!-- 예약자 정보 박스 -->
 		<div class="info-box">
 			<div class="section-title">예약자 정보</div>
-			<div class="checkbox-area">
-				<label>
-					<input type="checkbox" id="autoFillCheck" />
+			<div class="checkbox-area form-check mb-3">
+				<label class="form-check-label">
+					<input type="checkbox" id="autoFillCheck" class="form-check-input"/>
 					내 정보 불러오기
 				</label>
 			</div>
