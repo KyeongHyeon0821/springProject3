@@ -105,6 +105,14 @@ public class MessageController {
 			model.addAttribute("message", "현재 숙박경험하신 이력이 없습니다.");
 			model.addAttribute("url", "member/memberMyPage");
 		}
+		else if(msgFlag.equals("reviewInputOk")) {
+			model.addAttribute("message", "리뷰가 저장되었습니다.");
+			model.addAttribute("url", "member/memberMyPage");
+		}
+		else if(msgFlag.equals("reviewInputNo")) {
+			model.addAttribute("message", "리뷰 저장 실패");
+			model.addAttribute("url", "review/memberReviewInput");
+		}
 
 		return "include/message";
     }

@@ -9,6 +9,7 @@
 	<meta charset="UTF-8">
 	<title>roomDetail.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
+	<link rel="stylesheet" type="text/css" href="${ctp}/css/linkOrange.css"/>
 	<script>
 		'use strict';
 		
@@ -17,6 +18,23 @@
 			let ans = confirm("해당 객실 서비스 중지를 요청하시겠습니까?");
 			if(!ans) return false;
 			else location.href="roomDeleteCheck?idx=${vo.idx}";
+		}
+		
+		//리뷰 리스트 보여주기
+		function modalCheck(idx,hotelIdx,roomIdx,reviewTotCnt,reviewCnt,mid,nickName,roomName,purpose,star,content,hostIp,reviewDate) {
+			$("#idx").val(idx);
+			$("#hotelIdx").val(hotelIdx);
+			$("#roomIdx").val(roomIdx);
+			$("#reviewTotCnt").val(reviewTotCnt);
+			$("reviewCnt").val(reviewCnt);
+			$("#mid").val(mid);
+			$("#nickName").val(nickName);
+			$("#roomName").val(roomName);
+			$("#purpose").val(purpose);
+			$("#star").val(star);
+			$("#content").val(content);
+			$("#hostIp").val(hostIp);
+			$("#reviewDate").val(reviewDate);
 		}
 		
 	</script>
@@ -106,6 +124,7 @@
 		  flex-wrap: wrap;
 		  gap: 10px;
 		  margin-top: 30px;
+		  align-items: center;
 		}
 		
 		/* 공통 버튼 스타일 */
@@ -271,6 +290,10 @@
 	    <c:if test="${vo.status != '서비스중지요청'}">
 	      <a href="javascript:roomDeleteCheck()" class="btn-danger">객실 서비스 중지 요청</a>
 	    </c:if>
+	    <a href="#" class="btn-warning" data-bs-toggle="modal" data-bs-target="#myModal" onclick="modalCheck('${ReviewVo.idx}','${ReviewVo.hotelIdx}','${ReviewVo.roomIdx}','${ReviewVo.reviewTotCnt}','${ReviewVo.reviewCnt}','${ReviewVo.mid}','${ReviewVo.nickName}','${ReviewVo.roomName}','${ReviewVo.purpose}','${ReviewVo.star}','${ReviewVo.content}','${ReviewVo.hostIp}','${ReviewVo.reviewDate}')">리뷰 확인하기</a>
+	    <c:forEach var="ReivewVo" items="rVos">
+	    	<input type="hidden" value="${ReviewVo.idx}" >
+	    </c:forEach>
 	  </div>
 	</c:if>
 	
@@ -294,6 +317,41 @@
 	    </form>
 	  </div>
 	</div>
+	
+	<!-- 모달창으로 리뷰 띄우기 -->
+	
+	<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h1 class="modal-title fs-5" id="exampleModalLabel">리뷰 리스트</h1>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <c:forEach var="ReviewVo" items="${rVos}" varStatus="st">
+		      <div class="modal-body" style="">
+		      	<span>${ReviewVo.idx}</span>
+		      	<span>${ReviewVo.hotelIdx}</span>
+		      	<span>${ReviewVo.roomIdx}</span>
+		      	<span>${ReviewVo.reviewTotCnt}</span>
+		      	<span>${ReviewVo.reviewCnt}</span>
+		      	<span>${ReviewVo.mid}</span>
+		      	<span>${ReviewVo.nickName}</span>
+		      	<span>${ReviewVo.roomName}</span>
+		      	<span>${ReviewVo.purpose}</span>
+		      	<span>${ReviewVo.star}</span>
+		      	<span>${ReviewVo.content}</span>
+		      	<span>${ReviewVo.hostIp}</span>
+		      	<span>${ReviewVo.reviewDate}</span>
+		      </div>
+	      </c:forEach>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
 	
 </div>
 </body>

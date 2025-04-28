@@ -5,13 +5,16 @@ import lombok.Data;
 
 @Data
 public class ReservationListVo  {
+	private String roomIdx;
+	private String hotelIdx;
 	private String roomName;
 	private int roomNumber;
 	private String price;
 	private String maxPeople;
 	private String petSizeLimit;
 	private String petCountLimit;
-	private String thumbnail;
+	private String hotelThumbnail;
+	private String roomThumbnail;
 	private String hotelName;
 	private String checkinDate;
 	private String checkoutDate;

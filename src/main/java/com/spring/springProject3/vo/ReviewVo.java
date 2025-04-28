@@ -14,8 +14,8 @@ public class ReviewVo {
 	private String nickName;
 	private String roomName;
 	private String purpose;
+	private String star;
 	private String content;
 	private String hostIp;
 	private String reviewDate;
-	
 }
