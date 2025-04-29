@@ -102,14 +102,21 @@
 			    <a class="nav-link" href="${ctp}/member/memberMyPage">마이페이지</a>
 			  </li>
 			</c:if>
+		<li class="nav-item dropdown">
+          <a class="nav-link dropbtn" href="#" role="button" data-bs-toggle="modal" data-bs-target="#myModal3" id="customButton3">커뮤니티</a>
+          <div class="dropdown-content">
+            <a href="${ctp}/board/list">자유게시판</a>
+            <a href="${ctp}/photogallery/photogalleryList">포토갤러리</a>
+          </div>
+        </li>  
 	    <li class="nav-item dropdown">
-        <a class="nav-link dropbtn" href="#" role="button" data-bs-toggle="modal" data-bs-target="#myModal3" id="customButton3">고객센터</a>
-        <div class="dropdown-content">
-			    <a href="#">1:1문의</a>
-			    <a href="#">FQA</a>
-			    <a href="#">Q&A</a>
-				</div>
-      </li>
+          <a class="nav-link dropbtn" href="#" role="button" data-bs-toggle="modal" data-bs-target="#myModal3" id="customButton3">고객센터</a>
+          <div class="dropdown-content">
+			<a href="#">1:1문의</a>
+			<a href="#">FQA</a>
+			<a href="#">Q&A</a>
+		  </div>
+        </li>
     </ul>
    </div>
 </nav>

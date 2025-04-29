@@ -232,7 +232,7 @@
 	    return;
 	  }
 	  if (!regPwd.test(pwd)) {
-		alert("비밀번호는 4~16자의 영문, 숫자, 특수문자를 사용해주세요.");
+		alert("비밀번호는 4~16자의 영문, 숫자, 특수문자(!@#$%^&*)만 사용 가능합니다.");
 		myform.pwd.focus();
 		return;
 	  }
@@ -242,7 +242,7 @@
 	    return;
 	  }
 	  if (!regNickName.test(nickName)) {
-		alert("닉네임은 2자 이상 입력해주세요.");
+		alert("닉네임은 2자 이상의 영문, 숫자, 특수문자(_,-)만 사용 가능합니다.");
 		myform.nickName.focus();
 		return;
 	  }

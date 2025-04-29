@@ -135,19 +135,27 @@
   </div>
   
   <!-- 관광지 정보 출력 -->
-	<div id="touristInfo" style="margin-top:20px; padding:15px; background:#f9f9f9; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1); display:none;">
-	  <h5 id="touristName"></h5>
-	  <p id="touristAddress" style="color:gray;"></p>
-	  <p id="touristDescription" style="margin-top:10px;"></p>
+  <div id="touristInfo" style="margin-top:30px; padding:20px; background:#ffffff; border:1px solid #ddd; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.08); display:none;">
+	  <div style="display:flex; align-items:center; margin-bottom:15px;">
+	    <img src="${ctp}/images/paw_marker.png" alt="관광지" style="width:35px; height:35px; margin-right:8px;">
+	    <h4 id="touristName" style="margin:0; color:#2e7d32; font-weight:bold;"></h4>
+	  </div>
+	  <div style="font-size:14px; color:#555; margin-bottom:10px; padding-left:30px;">
+	    <i class="bi bi-geo-alt-fill" style="color:#dc3545; margin-right:5px;"></i><span id="touristAddress"></span>
+	  </div>
+	  <div style="font-size:15px; color:#333; line-height:1.6; margin-top:20px; padding-left:30px; padding-right:30px; word-break:keep-all;">
+	    <p id="touristDescription" style="margin:0;"></p>
+	  </div>
 	  <c:if test="${hotelVo.mid == sMid}">
-        <p id="touristNotice" style="font-size:12px; color:#dc3545; margin-top:10px; text-align:right;">(수정/삭제는 관리자에게 문의하세요)</p>
-      </c:if>
-	</div>
-
+	    <div style="text-align:right; margin-top:15px;">
+	      <small style="color:#dc3545;">(수정/삭제는 관리자에게 문의하세요)</small>
+	    </div>
+	  </c:if>
+   </div>
   <div class="mt-3">
     <a href="${ctp}/hotel/hotelList" class="btn btn-secondary">돌아가기</a>
 
-    <c:if test="${hotelVo.mid == sMid}">
+    <c:if test="${hotelVo.mid == sMid || sLevel == 0}">
       <a href="${ctp}/room/roomInput?hotelIdx=${hotelVo.idx}" class="btn btn-primary">객실 등록</a>
       <a href="${ctp}/touristSpotInput?hotelIdx=${hotelVo.idx}" class="btn btn-success">주변 관광지 등록</a>
       <a href="hotelUpdate?idx=${hotelVo.idx}" class="btn btn-warning">호텔 정보 수정</a>
