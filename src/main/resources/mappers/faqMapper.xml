@@ -62,4 +62,10 @@
 	<delete id="setFaqDelete">
 		delete from faq where idx = #{idx};
 	</delete>
+	
+	<delete id="adFaqDetailDelete">
+		delete from faq where idx = #{idx};
+	</delete>
+	
+	
 </mapper>

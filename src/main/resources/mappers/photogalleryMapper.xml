@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.springProject3.dao.PhotogalleryDao">
+
+	<select id="getPhotogalleryList" resultType="com.spring.springProject3.vo.PhotogalleryVo">
+		select * from photogallery <if test='part != "전체"'> where part=#{part} </if> order by idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	
+	<select id="getPhotogalleryDetail" resultType="com.spring.springProject3.vo.PhotogalleryVo">
+		select * from photogallery where idx=#{idx};
+	</select>
+	
+	<select id="getPhotogalleryTotRecCntSearch" resultType="int">
+		select count(*) from photogallery where part=#{part};
+	</select>
+	
+	
+	
+	<insert id="setPhotogalleryInputOk">
+		insert into photogallery values (default,#{vo.mid},#{vo.nickName},#{vo.title},#{vo.content},#{vo.part},#{vo.good},default,default,#{vo.thumbnail});
+	</insert>
+	
+	<update id="setPhotogalleryGoodCheck">
+		update photogallery set good = good + 1 where idx = ${idx};
+	</update>
+
+  
+  
+  <delete id="setPhotogalleryDelete">
+  	delete from photogallery where idx = #{idx};
+  </delete>
+</mapper>

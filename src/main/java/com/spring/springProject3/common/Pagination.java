@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.spring.springProject3.dao.AdminDao;
 import com.spring.springProject3.dao.FaqDao;
 import com.spring.springProject3.dao.InquiryDao;
+import com.spring.springProject3.dao.PhotogalleryDao;
 import com.spring.springProject3.dao.QnaDao;
 import com.spring.springProject3.vo.PageVo;
 
@@ -23,6 +24,9 @@ public class Pagination {
 	
 	@Autowired
 	FaqDao faqDao;
+	
+	@Autowired
+	PhotogalleryDao photogalleryDao;
 
 	public PageVo getTotRecCnt(int pag, int pageSize, String section, String part, String searchString) {
 		PageVo vo = new PageVo();
@@ -60,6 +64,9 @@ public class Pagination {
 		else if(section.equals("faqList")) {
 			category = part;
 			totRecCnt = faqDao.getFaqTotRecCntSearch(category, searchString); 
+		}
+		else if(section.equals("photogallery")) {
+			totRecCnt = photogalleryDao.getPhotogalleryTotRecCntSearch(part); 
 		}
 		 
 		

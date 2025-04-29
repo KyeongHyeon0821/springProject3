@@ -6,7 +6,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>QnA 리스트</title>
+  <title>포토갤러리</title>
   <script src="https://kit.fontawesome.com/df66332deb.js" crossorigin="anonymous"></script>
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
   <style>
@@ -106,16 +106,9 @@
   </style>
   <script>
     'use strict';
-
-    function pageSizeCheck() {
-      let pageSize = document.getElementById("pageSize").value;
-      location.href = "qnaList?pag=1&pageSize=" + pageSize;
-    }
-
-    function qnaAnswerCheck() {
-      let qnaAnswer = document.getElementById("qnaAnswer").value;
-      if (qnaAnswer !== '') location.href = 'qnaList?qnaAnswer=' + qnaAnswer;
-    }
+    
+    
+    
   </script>
 </head>
 <body>
@@ -124,7 +117,7 @@
 <div class="container">
   <div class="col m-3 text-center">
     <img src="${ctp}/images/logo.png" width="100px"/>
-	  <span class="my-page-header">QnA 리스트</span>
+	  <span class="my-page-header">포토갤러리</span>
 	</div>
   <div class="section-box">
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -135,17 +128,11 @@
           <option ${pageVo.pageSize==15 ? 'selected' : ''}>15</option>
           <option ${pageVo.pageSize==20 ? 'selected' : ''}>20</option>
         </select>
+        <button class="btn btn-outline-success" onclick="location.href='${ctp}/photogallery/photogalleryInput';">작성하기</button>
       </div>
       <div>
-        <c:if test="${sLevel == 0}">
-          <select name="qnaAnswer" id="qnaAnswer" onchange="qnaAnswerCheck()" class="form-select">
-            <option value="전체" ${qnaAnswer == "전체" ? "selected" : ""}>전체보기</option>
-            <option ${qnaAnswer == "답변대기" ? "selected" : ""}>답변대기</option>
-            <option ${qnaAnswer == "답변완료" ? "selected" : ""}>답변완료</option>
-          </select>
-        </c:if>
         <c:if test="${sLevel != 0}">
-          <button class="btn btn-outline-success" onclick="location.href='${ctp}/qna/qnaInput';">작성하기</button>
+          <button class="btn btn-outline-success" onclick="location.href='${ctp}/photogallery/photogalleryInput';">작성하기</button>
         </c:if>
       </div>
     </div>
@@ -154,56 +141,20 @@
       <thead>
         <tr>
           <th class="text-center">번호</th>
-          <th class="text-center">답변상태</th>
+          <th class="text-center">장소</th>
           <th class="text-center">제목</th>
-          <th class="text-center">작성자</th>
           <th class="text-center">작성날짜</th>
         </tr>
       </thead>
       <tbody>
-        <c:set var="tempIdx" value="${vos[0].qnaIdx}"/>
-        <c:set var="tempMid" value="${vos[0].mid}"/>
-        <c:set var="curScrStartNo" value="${pageVo.curScrStartNo}" />
         <c:forEach var="vo" items="${vos}">
-          <c:if test="${tempIdx != vo.qnaIdx}">
-            <c:set var="tempIdx" value="${vo.qnaIdx}"/>
-            <c:set var="tempMid" value="${vo.mid}"/>
-          </c:if>
           <tr>
-            <td style="border-bottom: 1px solid #e5e5e5;">${vo.idx}</td>
-            <td style="border-bottom: 1px solid #e5e5e5;">
-              <c:if test="${vo.qnaSw != 'a' && vo.qnaAnswer == '답변완료'}">
-                <span class="badge badge-success">답변완료</span>
-              </c:if>
-              <c:if test="${vo.qnaSw != 'a' && vo.qnaAnswer != '답변완료'}">
-                <span class="badge badge-warning">답변대기</span>
-              </c:if>
-            </td>
-            <td class="text-start" style="border-bottom: 1px solid #e5e5e5;">
-              <c:if test="${vo.qnaSw == 'a'}"><span>ㄴ</span></c:if>
-              <c:if test="${vo.delCheck != 'OK'}">
-		          <c:if test="${vo.openSw != 'OK'}"><i class="fa-solid fa-lock"></i>
-			          <c:if test="${sMid == vo.mid || sLevel == 0 || (tempMid == sMid && tempIdx == vo.qnaIdx)}">
-			          	<a href="${ctp}/qna/qnaDetail?idx=${vo.idx}" class="text-dark">${vo.title}</a>
-			          </c:if>
-			          <c:if test="${sMid != vo.mid && sLevel != 0 && (tempMid != sMid || tempIdx != vo.qnaIdx)}">
-			          	${vo.title}
-			          </c:if>
-		          </c:if>
-		          <c:if test="${vo.openSw == 'OK'}">
-	          		<a href="${ctp}/qna/qnaDetail?idx=${vo.idx}" class="text-dark">${vo.title}</a>
-		          </c:if>
-	          </c:if>
-	          <c:if test="${vo.delCheck == 'OK'}">
-	            <font color="#ddd">삭제된 자료입니다.</font>
-	          </c:if>
-            </td>
-            <td style="border-bottom: 1px solid #e5e5e5;">${vo.nickName}</td>
-            <td style="border-bottom: 1px solid #e5e5e5;">${vo.WDate.substring(0,10)}</td>
+          	<td>${vo.idx}</td>
+            <td>${vo.part}</td>
+            <td><a href="${ctp}/photogallery/photogalleryDetail?idx=${vo.idx}">${vo.title}</a></td>
+            <td>${vo.WDate.substring(0,16)}</td>
           </tr>
-          <c:set var="curScrStartNo" value="${curScrStartNo - 1}"/>
         </c:forEach>
-
         <c:if test="${empty vos}">
           <tr>
             <td colspan="5" class="no-data">등록된 글이 없습니다.</td>
@@ -226,22 +177,6 @@
   </ul>
 </div>
 <!-- 블록페이지 끝 -->
-
-    <!-- 검색기 -->
-    <div class="text-center mt-4">
-      <form name="searchForm" method="post" action="qnaSearch">
-        <b>검색 : </b>
-        <select name="search" id="search">
-          <option value="title">제목</option>
-          <option value="nickName">작성자</option>
-          <option value="content">글내용</option>
-        </select>
-        <input type="text" name="searchString" id="searchString" required />
-        <input type="submit" value="검색" class="btn btn-outline-secondary btn-sm" />
-        <input type="hidden" name="pag" value="${pageVo.pag}" />
-        <input type="hidden" name="pageSize" value="${pageVo.pageSize}" />
-      </form>
-    </div>
 
   </div>
 </div>

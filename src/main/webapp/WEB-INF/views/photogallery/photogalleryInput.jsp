@@ -5,11 +5,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>QnA 글쓰기</title>
-  <script src="${ctp}/ckeditor/ckeditor.js"></script>
-  <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
-  <style>
+	<meta charset="UTF-8">
+	<title>photogalleryInput.jsp</title>
+	  <script src="${ctp}/ckeditor/ckeditor.js"></script>
+	  <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
+	  <style>
     body {
       background-color: #f9fefb;
       font-family: 'Arial', sans-serif;
@@ -75,14 +75,20 @@
       font-size: 1rem;
     }
   </style>
+  
   <script>
   'use strict';
   function fCheck() {
+	  let part = myform.part.value;
     let title = myform.title.value;
     if (privacyRegit(privacy_editor)) return false;
     else if (title == "") {
       alert("제목을 입력해주세요.");
       myform.title.focus();
+      return false;
+    }
+    else if (part == "") {
+      alert("장소를 선택해주세요.");
       return false;
     }
     else myform.submit();
@@ -101,11 +107,12 @@
 <div class="container">
   <div class="col m-3 text-center">
     <img src="${ctp}/images/logo.png" width="100px"/>
-	  <span class="my-page-header">QnA 작성하기</span>
+	  <span class="my-page-header">포토갤러리 작성하기</span>
 	</div>
 	
 	<div class="section-box">
 	  <form name="myform" method="post">
+	    <div class="form-text">※업로드시 마지막 사진이 썸네일로 지정됩니다.※</div>
 	    <table class="table">
 	      <tr>
 	        <th>작성자</th>
@@ -115,10 +122,20 @@
 	        <th>제목</th>
 	        <td><input type="text" name="title" placeholder="제목을 입력하세요." required class="form-control"/></td>
 	      </tr>
-	      <tr>
-	        <th>이메일</th>
-	        <td><input type="text" name="email" value="${vo.email}" required class="form-control"/></td>
-	      </tr>
+        <tr>
+          <th>장소</th>
+          <td>
+            <select name="part" id="part" class="form-select">
+              <option selected value="">선택해주세요.</option>
+              <option>양양복골온천</option> <!-- 애견동반 온천 여행 -->
+              <option>태안 코리아플라워파크</option> <!-- 애견동반 꽃구경 -->
+              <option>허브아일랜드</option> <!-- 애견동반 이색 테마파크 -->
+              <option>오산반려동물테마파크</option> <!-- 애견동반 실내 테마파크  -->
+              <option>평창 육백마지기</option> <!-- 산책길?   -->
+              <option>남해 독일마을</option> <!-- 반려동물과 둘러볼수있고 동반카페,식당이 있음   -->
+            </select>
+          </td>
+        </tr>
 	      <tr>
 	        <th>내용</th>
 	        <td>
@@ -133,26 +150,14 @@
 	        </td>
 	      </tr>
 	      <tr>
-	        <th>비밀글</th>
-	        <td>
-	          <div class="form-check">
-	            <input class="form-check-input" type="checkbox" name="openSw" id="openSwCheck">
-	            <label class="form-check-label" for="openSwCheck">비밀글</label>
-	          </div>
-	          <div class="form-text">선택 시, 비밀글로 등록됩니다.</div>
-	        </td>
-	      </tr>
-	      <tr>
-	        <td colspan="2" class="text-center">
+	        <td colspan="2" class="text-center mt-2">
 	          <input type="button" value="작성하기" onclick="fCheck()" class="btn btn-outline-success me-2"/>
 	          <input type="button" value="다시쓰기" onclick="location.reload()" class="btn btn-outline-warning me-2"/>
-	          <input type="button" value="돌아가기" onclick="location.href='${ctp}/qna/qnaList';" class="btn btn-outline-secondary"/>
+	          <input type="button" value="돌아가기" onclick="location.href='${ctp}/photogallery/photogalleryList';" class="btn btn-outline-secondary"/>
 	        </td>
 	      </tr>
 	    </table>
-	    <input type="hidden" name="qnaSw" value="${qnaSw}"/>
 	    <input type="hidden" name="mid" value="${sMid}"/>
-	    <input type="hidden" name="ansLevel" value="${sLevel}"/>
 	  </form>
 	</div>
 </div>

@@ -147,7 +147,7 @@
       <tr>
         <th>문의내용</th>
         <td colspan="5" class="text-start" style="border-top: 1px solid #e5e5e5;">
-          <div style="min-height:200px; height:300px;">
+          <div style="min-height:300px; height:auto;">
             ${vo.content}
           </div>
         </td>
@@ -200,6 +200,7 @@
     </div>
   </div>
 </div>
-
+<p><br/></p>
+<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>
 </html>

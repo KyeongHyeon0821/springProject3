@@ -92,9 +92,9 @@ public class ProjectProvide {
 		}
 	}
 
-	public static void imagesDelete(String content, String string) {
+	public static void imagesDelete(String content, String pathUrl) {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/"+string+"/");
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/"+pathUrl+"/");
 		
 		File file = new File(realPath + content);
 		if(file.exists()) file.delete();
@@ -183,6 +183,7 @@ public class ProjectProvide {
 	public void imgDelete(String content, String filePath) {
 		//      0         1         2         3         4         4
 		//      01234567890123456789012345678901234567890123456789012345678
+		// <img src="/JspringProject/data/photogallery/250321140356_2503.jpg" style="height:854px; width:1280px" />
 		// <img src="/JspringProject/data/faq/250321140356_2503.jpg" style="height:854px; width:1280px" />
 		// <img src="/JspringProject/data/ckeditor/250321140356_2503.jpg" style="height:854px; width:1280px" />
 		
@@ -191,13 +192,14 @@ public class ProjectProvide {
 		
 		int position = 0;
 		if(filePath.equals("faq")) position = 30;
+		if(filePath.equals("photogallery")) position = 39;
 		String nextImg = content.substring(content.indexOf("src=\"/") + position);
 		boolean sw = true;
 		
 		while(sw) {
 			String imgFile = nextImg.substring(0, nextImg.indexOf("\""));
 			
-			String origFilePath = realPath + "faq/" + imgFile;
+			String origFilePath = realPath + filePath + "/" + imgFile;
 			
 			fileDelete(origFilePath);
 			

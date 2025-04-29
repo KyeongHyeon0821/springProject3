@@ -220,7 +220,7 @@
       <tr>
         <th>문의내용</th>
         <td colspan="5">
-          <div class="text-start" style="min-height:200px; height:300px;">
+          <div class="text-start" style="min-height:300px; height:auto;">
             ${vo.content}
           </div>
         </td>

@@ -72,7 +72,6 @@ public class QnaController {
   @Transactional
   @RequestMapping(value = "/qnaInput", method = RequestMethod.POST)
   public String qnaListPost(QnaVo vo, HttpSession session) {
-  	System.out.println("vo : " + vo);
       // content에 이미지가 저장되어 있다면, 저장된 이미지만 골라서 /resources/data/qna/폴더에 저장시켜준다.
      if(vo.getContent().indexOf("src=\"/") != -1) {
         projectProvide.imgCheck(vo.getContent(), "ckeditor", "qna");   // 이미지를 ckeditor폴더에서 qna폴더로 복사하기
@@ -147,7 +146,6 @@ public class QnaController {
 			@RequestParam(name = "nickName", defaultValue = "", required = false) String nickName,
 			@RequestParam(name = "level", defaultValue = "0", required = false) String level) {
 		
-		//System.out.println("vo : "+ vo);
 		model.addAttribute("vo", vo);
 		
 		return "qna/qnaDetail";

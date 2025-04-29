@@ -1,0 +1,116 @@
+package com.spring.springProject3.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.spring.springProject3.common.Pagination;
+import com.spring.springProject3.common.ProjectProvide;
+import com.spring.springProject3.service.PhotogalleryService;
+import com.spring.springProject3.vo.PageVo;
+import com.spring.springProject3.vo.PhotogalleryVo;
+
+@Controller
+@RequestMapping("/photogallery")
+public class PhotogalleryController {
+	
+	@Autowired
+	PhotogalleryService photogalleryService;
+	
+	@Autowired
+	Pagination pagination;
+	
+	@Autowired
+	ProjectProvide projectProvide;
+
+	// 포토갤러리 리스트보기
+	@RequestMapping(value = "/photogalleryList", method = RequestMethod.GET)
+	public String photogalleryListGet(Model model, HttpSession session,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize,
+			@RequestParam(name="part", defaultValue = "전체", required = false) String part
+		) {
+		PageVo pageVo = pagination.getTotRecCnt(pag, pageSize, "photogallery", part, "");
+		List<PhotogalleryVo> vos = photogalleryService.getPhotogalleryList(pageVo.getStartIndexNo(),pageSize,part);
+		model.addAttribute("pageVo", pageVo);
+		model.addAttribute("vos", vos);
+		
+		return "photogallery/photogalleryList";
+	}
+	
+	// 포토갤러리 게시글 입력 폼보기
+	@RequestMapping(value = "/photogalleryInput", method = RequestMethod.GET)
+	public String photogalleryInputGet() {
+		return "photogallery/photogalleryInput";
+	}
+	
+	// 포토갤러리 업로드 처리
+	@RequestMapping(value = "/photogalleryInput", method = RequestMethod.POST)
+	public String photogalleryInputPost(PhotogalleryVo vo) {
+		if(vo.getContent().indexOf("src=\"/") != -1) photogalleryService.imgCheck(vo.getContent());
+		else return "redirect:/message/photogalleryNoImage";
+		
+		vo.setContent(vo.getContent().replace("/data/ckeditor/", "/data/photogallery/"));
+		
+		String str1 = vo.getContent().substring(vo.getContent().indexOf("src=\"")+39);
+		String str2 = str1.substring(0,str1.indexOf("\""));
+		//vo.setThumbnail(vo.getContent().substring(vo.getContent().indexOf("src=\"")+48,vo.getContent().indexOf("\","+vo.getContent().indexOf("src=\"")+39+"")));
+		vo.setThumbnail(str2);
+		//System.out.println("vo : " + vo);
+		int res = photogalleryService.setPhotogalleryInputOk(vo);
+		
+		if(res != 0) return "redirect:/message/photogalleryInputOK";
+		else return "redirect:/message/photogalleryInputNo";
+	}
+	
+	// 포토갤러리 내용보기
+	@RequestMapping(value = "/photogalleryDetail", method = RequestMethod.GET)
+	public String photogalleryDetailGet(int idx, Model model) {
+		PhotogalleryVo vo = photogalleryService.getPhotogalleryDetail(idx);
+		
+		model.addAttribute("vo", vo);
+		
+		return "photogallery/photogalleryDetail";
+	}
+	
+	@SuppressWarnings("unchecked")
+	@ResponseBody
+	@RequestMapping(value = "/photogalleryGoodCheck", method = RequestMethod.POST)
+	public String photogalleryGoodCheckPost(HttpSession session, int idx) {
+		String res = "0";
+		
+		// 중복방지
+		List<String> goodNum = (List<String>) session.getAttribute("sDuplicate");
+		if(goodNum == null) goodNum = new ArrayList<String>();
+		String imsiNum = "photogalleryGood" + idx;
+		if(!goodNum.contains(imsiNum)) {
+			photogalleryService.setPhotogalleryGoodCheck(idx);
+			goodNum.add(imsiNum);
+			res = "1";
+		}
+		session.setAttribute("sDuplicate", goodNum);
+		return res;
+	}
+	
+	// 포토갤러리 삭제 처리
+	@RequestMapping(value = "/photogalleryDelete", method = RequestMethod.GET)
+	public String photogalleryDeleteGet(int idx) {
+		PhotogalleryVo vo = photogalleryService.getPhotogalleryDetail(idx);
+		projectProvide.imgDelete(vo.getContent(),"photogallery");
+		
+		int res = photogalleryService.setPhotogalleryDelete(idx);
+		
+		if(res != 0) return "redirect:/message/photogalleryDeleteOk";
+		else return "redirect:/message/photogalleryDeleteNo";
+	}
+
+}

@@ -176,19 +176,20 @@
         </c:if>
       </tbody>
     </table>
-
-    <div class="text-center mt-4">
-      <ul class="pagination justify-content-center">
-        <c:if test="${pageVo.pag > 1}"><li class="page-item"><a class="page-link" href="adInquiryList?pag=1&pageSize=${pageSize}&choice=${choice}">첫페이지</a></li></c:if>
-        <c:if test="${pageVo.curBlock > 0}"><li class="page-item"><a class="page-link" href="adInquiryList?pag=${(curBlock-1)*blockSize+1}&pageSize=${pageVo.pageSize}&choice=${choice}">이전블록</a></li></c:if>
-        <c:forEach var="i" begin="${(pageVo.curBlock*pageVo.blockSize)+1}" end="${(pageVo.curBlock*pageVo.blockSize)+pageVo.blockSize}" varStatus="st">
-          <c:if test="${i <= pageVo.totPage && i == pageVo.pag}"><li class="page-item active"><a class="page-link" href="adInquiryList?pag=${i}&pageSize=${pageVo.pageSize}&choice=${choice}">${i}</a></li></c:if>
-          <c:if test="${i <= pageVo.totPage && i != pageVo.pag}"><li class="page-item"><a class="page-link" href="adInquiryList?pag=${i}&pageSize=${pageVo.pageSize}&choice=${choice}">${i}</a></li></c:if>
-        </c:forEach>
-        <c:if test="${pageVo.curBlock < pageVo.lastBlock}"><li class="page-item"><a class="page-link" href="adInquiryList?pag=${(pageVo.curBlock+1)*blockSize+1}&pageSize=${pageVo.pageSize}&choice=${choice}">다음블록</a></li></c:if>
-        <c:if test="${pageVo.pag < pageVo.totPage}"><li class="page-item"><a class="page-link" href="adInquiryList?pag=${pageVo.totPage}&pageSize=${pageVo.pageSize}&choice=${choice}">마지막페이지</a></li></c:if>
-      </ul>
-    </div>
+<!-- 블록페이지 시작 -->
+<div class="text-center mt-4">
+  <ul class="pagination justify-content-center">
+    <c:if test="${pageVo.pag > 1}"><li class="page-item"><a class="page-link" href="adInquiryList?part=${pageVo.part}&pag=1&pageSize=${pageSize}">첫페이지</a></li></c:if>
+  	<c:if test="${pageVo.curBlock > 0}"><li class="page-item"><a class="page-link" href="adInquiryList?part=${pageVo.part}&pag=${(curBlock-1)*blockSize+1}&pageSize=${pageVo.pageSize}">이전블록</a></li></c:if>
+  	<c:forEach var="i" begin="${(pageVo.curBlock*pageVo.blockSize)+1}" end="${(pageVo.curBlock*pageVo.blockSize)+pageVo.blockSize}" varStatus="st">
+	    <c:if test="${i <= pageVo.totPage && i == pageVo.pag}"><li class="page-item active"><a class="page-link" href="adInquiryList?part=${pageVo.part}&pag=${i}&pageSize=${pageVo.pageSize}">${i}</a></li></c:if>
+	    <c:if test="${i <= pageVo.totPage && i != pageVo.pag}"><li class="page-item"><a class="page-link" href="adInquiryList?part=${pageVo.part}&pag=${i}&pageSize=${pageVo.pageSize}">${i}</a></li></c:if>
+  	</c:forEach>
+  	<c:if test="${pageVo.curBlock < pageVo.lastBlock}"><li class="page-item"><a class="page-link" href="adInquiryList?part=${pageVo.part}&pag=${(pageVo.curBlock+1)*pageVo.blockSize+1}&pageSize=${pageVo.pageSize}">다음블록</a></li></c:if>
+  	<c:if test="${pageVo.pag < pageVo.totPage}"><li class="page-item"><a class="page-link" href="adInquiryList?part=${pageVo.part}&pag=${pageVo.totPage}&pageSize=${pageVo.pageSize}">마지막페이지</a></li></c:if>
+  </ul>
+</div>
+<!-- 블록페이지 끝 -->
   </div>
 </div>
 </body>

@@ -119,7 +119,7 @@
 	      <tr>
 	        <th>내용</th>
 	        <td colspan="5">
-	          <div style="min-height:200px; height:300px;">${vo.content}</div>
+	          <div style="min-height:300px; height:auto;">${vo.content}</div>
 	        </td>
 	      </tr>
 	    </table>
