@@ -43,7 +43,7 @@ public class ReviewController {
 		String mid = session.getAttribute("sMid") + "";
 		//String nickName = session.getAttribute("sNickName") + "";
 		 
-		// 리뷰를 달 준비가 된 객실의 정보도 함께 가져오도록 한다.
+		// 리뷰를 달 준비가 된 객실의 정보도 함께 가져오도록 한다.3
 		List<ReservationListVo> rsVos = reviewService.getRoomUsedList(mid);
 		model.addAttribute("rsVos", rsVos);
 		// sMid select * from reservation where mid = #{sMid} and status = '이용완료';
