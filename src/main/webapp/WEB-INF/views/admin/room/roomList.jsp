@@ -17,38 +17,6 @@
   		location.href = "hotelList?status=" + status;
   	
   	}
-/*    	// 호텔 상태 변경처리
-  	function statusChange(e) {
-//  		alert(" value : " + myform.level.value);
-//  		alert(" value : " + e.value);
-//  		console.log("e",e);
-			let ans = confirm("선택한 호텔의 상태를 변경하시겠습니까?");
-			if(!ans) {
-				location.reload();
-				return false;
-			}
-			
-			let items = e.value.split("/");
-			let query = {
-					level :items[0],
-					idx : items[1]
-			}
-			
-			$.ajax({
-				url : "${ctp}/admin/hotelStatusChange",
-				type : "post",
-				data : query,
-				success:function(res) {
-					if(res != "0") {
-						alert("상태 수정 완료!");
-						location.reload();
-					}
-					else alert("상태 수정 실패");
-				},
-				error:function() { alert("전송오류!"); }
-			});
-  	} */ 
-		
     // 클릭시 모달을 통해서 객실 상세정보 보여주기
     function roomDetail(idx, hotelIdx, name, price, maxPeople, petSizeLimit, petCountLimit, thumbnail, status, regDate) {
     	$("#myModal .modal-body .idx").html(idx);
@@ -166,8 +134,9 @@
 	      <input type="button" value="선택반전" onclick="reverseCheck()" class="btn btn-info btn-sm me-2"/>
 	      <select name="statusSelect" id="statusSelect" class="form-select form-select-sm">  
 	        <option>정상</option>
-	        <option>예약</option>
-	        <option>투숙</option>
+	        <option>예약중</option>
+	        <option>서비스중지요청</option>
+	        <option>서비스중지</option>
 	      </select>
 	      <input type="button" value="선택항목등급변경" onclick="roomStatusSelectCheck()" class="btn btn-warning btn-sm" />
 	    </div>
@@ -203,8 +172,9 @@
           <td>
             <select name="status" id="status">
               <option value="1/${vo.idx}"   ${vo.status == '정상' ? 'selected' : ''}>정상</option>
-              <option value="2/${vo.idx}"   ${vo.status == '예약' ? 'selected' : ''}>예약</option>
-              <option value="3/${vo.idx}"   ${vo.status == '투숙' ? 'selected' : ''}>투숙</option>
+              <option value="2/${vo.idx}"   ${vo.status == '예약중' ? 'selected' : ''}>예약중</option>
+              <option value="3/${vo.idx}"   ${vo.status == '서비스중지요청' ? 'selected' : ''}>서비스중지요청</option>
+              <option value="4/${vo.idx}"   ${vo.status == '서비스중지' ? 'selected' : ''}>서비스중지</option>
             </select>
           </td>
         </tr>

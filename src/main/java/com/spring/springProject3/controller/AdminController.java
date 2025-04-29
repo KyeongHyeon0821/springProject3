@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,11 +20,14 @@ import com.spring.springProject3.service.AdminService;
 import com.spring.springProject3.service.HotelService;
 import com.spring.springProject3.service.MemberService;
 import com.spring.springProject3.service.ReservationService;
+import com.spring.springProject3.service.ReviewService;
 import com.spring.springProject3.service.RoomService;
 import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.InquiryVo;
 import com.spring.springProject3.vo.MemberVo;
 import com.spring.springProject3.vo.PageVo;
+import com.spring.springProject3.vo.ReservationListVo;
+import com.spring.springProject3.vo.ReviewVo;
 import com.spring.springProject3.vo.RoomVo;
 
 @Controller
@@ -44,6 +48,9 @@ public class AdminController {
 	
 	@Autowired
 	ReservationService reservationService;
+	
+	@Autowired
+	ReviewService reviewService;
 	
 	@Autowired
 	Pagination pagination;
@@ -209,6 +216,26 @@ public class AdminController {
 		return "hotel/hotelList";
 	}
 	
+	// 리뷰 리스트 불러오기
+	@GetMapping("/review/reviewList")
+	public String memberReviewFormGet(Model model, HttpSession session) {
+		String mid = session.getAttribute("sMid") + "";
+		 
+		// 리뷰가 달린 객실과 리뷰들의 정보를 가져올 수 있도록 한다.
+		List<ReservationListVo> rsVos = reviewService.getRoomUsedAllList(mid);
+		List<ReviewVo> rVos = reviewService.getRoomReviewAllList();
+		model.addAttribute("rsVos", rsVos);
+		model.addAttribute("rVos", rVos);
+		// sMid select * from reservation where mid = #{sMid} and status = '이용완료';
+		
+		return "admin/review/reviewList";
+	}
 	
-	
+	// 리뷰 삭제하기
+	@ResponseBody
+	@PostMapping("/reviewDelete")
+	public String reviewDeletePost(String reviewStr) {
+		
+		return adminService.setReviewDelete(reviewStr);
+	}
 }

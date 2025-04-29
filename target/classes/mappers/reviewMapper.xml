@@ -1,44 +1,63 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.springProject3.dao.ReviewDao">
-  
 
-<select id="getRoomUsedList" resultType="com.spring.springProject3.vo.ReservationListVo">
-	select r.name as roomName, r.roomNumber, r.price, r.maxPeople, r.petSizeLimit, r.petCountLimit, r.thumbnail as roomThumbnail, r.idx as roomIdx,
-				 h.name as hotelName, h.thumbnail as hotelThumbnail, h.idx as hotelIdx,
-				 rs.checkinDate,
-				 rs.checkoutDate,
-				 rs.guestCount,
-				 rs.petCount,
-				 rs.totalPrice from reservation rs
-				 join room r on rs.roomIdx = r.idx
-				 join hotel h on r.hotelIdx = h.idx
-				 where rs.mid = #{mid} and rs.status ='이용완료' order by rs.checkinDate desc;
-</select>
-
-<select id="getRoomIdxCheck" resultType="com.spring.springProject3.vo.ReservationListVo">
-	select r.name as roomName, r.idx as roomIdx,
-			 	 h.idx as hotelIdx
-			   from reservation rs
-			   join room r on rs.roomIdx = r.idx
-			   join hotel h on r.hotelIdx = h.idx
-			   where rs.mid = #{mid} and rs.status ='이용완료' r.idx = #{roomIdx}; 
-</select>
-
-<select id="getRoomReviewList" resultType="com.spring.springProject3.vo.ReviewVo">
-	select * from review where roomIdx = #{roomIdx};
-</select>
-
-
-
-
-
-
-
-
-<insert id="setReviewInputOk">
-	insert into review values (default, #{vo.hotelIdx}, #{vo.roomIdx},default,default, #{mid},#{nickName}, #{vo.roomName},#{vo.purpose},#{vo.star},#{vo.content},#{vo.hostIp}, default);
-</insert>
+	<select id="getRoomUsedList" resultType="com.spring.springProject3.vo.ReservationListVo">
+		select r.name as roomName, r.roomNumber, r.price, r.maxPeople, r.petSizeLimit, r.petCountLimit, r.thumbnail as roomThumbnail, r.idx as roomIdx,
+					 h.name as hotelName, h.thumbnail as hotelThumbnail, h.idx as hotelIdx,
+					 rs.checkinDate,
+					 rs.checkoutDate,
+					 rs.guestCount,
+					 rs.petCount,
+					 rs.totalPrice from reservation rs
+					 join room r on rs.roomIdx = r.idx
+					 join hotel h on r.hotelIdx = h.idx
+					 where rs.mid = #{mid} and rs.status ='이용완료' order by rs.checkinDate desc;
+	</select>
+	
+	<select id="getRoomIdxCheck" resultType="com.spring.springProject3.vo.ReservationListVo">
+		select r.name as roomName, r.idx as roomIdx,
+				 	 h.idx as hotelIdx
+				   from reservation rs
+				   join room r on rs.roomIdx = r.idx
+				   join hotel h on r.hotelIdx = h.idx
+				   where rs.mid = #{mid} and rs.status ='이용완료' r.idx = #{roomIdx}; 
+	</select>
+	
+	<select id="getRoomReviewList" resultType="com.spring.springProject3.vo.ReviewVo">
+		select * from review where roomIdx = #{roomIdx} order by idx desc;
+	</select>
+	
+	<select id="getReviewTotCount" resultType="int">
+		select count(idx) from review where hotelIdx = #{hotelIdx};
+	</select>
+	
+	<select id="getRoomReviewAllList" resultType="com.spring.springProject3.vo.ReviewVo">
+		select * from review order by idx desc;
+	</select>
+	
+	
+	<select id="getRoomUsedAllList" resultType="com.spring.springProject3.vo.ReservationListVo">
+		select r.name as roomName, r.roomNumber, r.price, r.maxPeople, r.petSizeLimit, r.petCountLimit, r.thumbnail as roomThumbnail, r.idx as roomIdx,
+					 h.name as hotelName, h.thumbnail as hotelThumbnail, h.idx as hotelIdx,
+					 rs.checkinDate,
+					 rs.checkoutDate,
+					 rs.guestCount,
+					 rs.petCount,
+					 rs.totalPrice from reservation rs
+					 join room r on rs.roomIdx = r.idx
+					 join hotel h on r.hotelIdx = h.idx
+					 where rs.mid = #{mid} and rs.status ='리뷰작성완료' order by rs.checkinDate desc;
+	</select>
+	
+	
+	
+	
+	
+	
+	<insert id="setReviewInputOk">
+		insert into review values (default, #{vo.hotelIdx}, #{vo.roomIdx},default,default, #{vo.mid},#{vo.nickName}, #{vo.roomName},#{vo.purpose},#{vo.star},#{vo.content},#{vo.hostIp}, default);
+	</insert>
 
 
 

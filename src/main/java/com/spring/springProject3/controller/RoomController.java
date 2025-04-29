@@ -124,9 +124,9 @@ public class RoomController {
 			checkoutDate = tomorrow.toString();
 		}
 		
-		// 리뷰 보여주기
+		// 객실상세페이지에서 리뷰 보여주기
 		List<ReviewVo> rVos = reviewService.getRoomReviewList(roomIdx);
-		System.out.println("rVos : " + rVos);
+		//System.out.println("rVos : " + rVos);
 		// 날짜 차이 계산
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate checkin = LocalDate.parse(checkinDate, formatter);
@@ -270,6 +270,14 @@ public class RoomController {
 		
 		if(res !=0 ) return "redirect:/message/roomDeleteCheckOk?roomIdx="+idx;
 		else return "redirect:/message/roomDeleteCheckNo?roomIdx="+idx;
+	}
+	
+	// 마이페이지에서 리뷰 보기
+	@ResponseBody
+	@RequestMapping(value = ("/roomReviewList"), method = RequestMethod.POST)
+	public List<ReviewVo> roomReviewListPost(int roomIdx) {
+		List<ReviewVo> reviewVos = reviewService.getRoomReviewList(roomIdx);
+		return reviewVos;
 	}
 	
 	

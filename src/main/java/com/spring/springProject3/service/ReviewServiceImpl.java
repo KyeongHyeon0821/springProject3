@@ -23,8 +23,8 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public int setReviewInputOk(ReviewVo vo, String mid, String nickName) {
-		return reviewDao.setReviewInputOk(vo, mid, nickName);
+	public int setReviewInputOk(ReviewVo vo) {
+		return reviewDao.setReviewInputOk(vo);
 	}
 
 	@Override
@@ -35,5 +35,20 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public List<ReviewVo> getRoomReviewList(int roomIdx) {
 		return reviewDao.getRoomReviewList(roomIdx);
+	}
+
+	@Override
+	public List<Integer> getReviewTotCount(List<Integer> hotelIdx) {
+		return reviewDao.getReviewTotCount(hotelIdx);
+	}
+
+	@Override
+	public List<ReviewVo> getRoomReviewAllList() {
+		return reviewDao.getRoomReviewAllList();
+	}
+
+	@Override
+	public List<ReservationListVo> getRoomUsedAllList(String mid) {
+		return reviewDao.getRoomUsedAllList(mid);
 	}
 }

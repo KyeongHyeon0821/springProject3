@@ -72,6 +72,9 @@
   </update>
   
   
+  
+  
+  
   <!-- 기존 객실-옵션 데이터 삭제 -->
   <delete id="setDeleteRoomOptions">
   	delete from roomOptions where roomIdx=#{idx};

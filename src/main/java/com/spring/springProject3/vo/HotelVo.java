@@ -45,8 +45,6 @@ public class HotelVo {
 	private double y;
 	
 	
-	
-	
-	
 	private String oThumbnail;
+	private int reviewTotal;
 }

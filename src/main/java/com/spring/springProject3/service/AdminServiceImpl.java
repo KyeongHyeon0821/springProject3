@@ -1,5 +1,6 @@
 package com.spring.springProject3.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,6 +101,19 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public RoomVo getRoomDetailSearch(int idx) {
 		return adminDao.getRoomDetailSearch(idx);
+	}
+
+	@Override
+	public String setReviewDelete(String reviewStr) {
+		String[] reviewNum = reviewStr.split("/");
+		System.out.println("reviewStr : " + reviewStr );
+		
+		String str = "0";
+		for(String idx : reviewNum) {
+			adminDao.setReviewDelete(Integer.parseInt(idx));
+			str = "1";
+		}
+		return str;
 	}
 	
 	

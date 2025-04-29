@@ -70,7 +70,7 @@ public class ReservationController {
 		if(mid == null || mid.equals("")) return "redirect:/message/loginRequired";
 		
 		vo.setMid(mid);
-		vo.setStatus("대기중");
+		vo.setStatus("결제대기");
 		
 		int res = reservationService.setReservationInput(vo);
 		

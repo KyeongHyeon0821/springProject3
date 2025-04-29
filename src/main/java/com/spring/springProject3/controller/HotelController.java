@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.springProject3.service.HotelService;
 import com.spring.springProject3.service.ReservationService;
+import com.spring.springProject3.service.ReviewService;
 import com.spring.springProject3.service.RoomService;
 import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.RoomVo;
@@ -43,17 +44,24 @@ public class HotelController {
 	@Autowired
 	ReservationService reservationService;
 	
+	@Autowired
+	ReviewService reviewService;
+	
 	// 호텔 리스트
 	@RequestMapping("/hotelList")
 	public String hotelListGet(Model model, HttpSession session) {
 		String mid = session.getAttribute("sMid") + "";
 		List<HotelVo> vos = hotelService.getHotelList();
+		// 호텔 목록에서 전체리뷰수 보여주기
+		List<Integer> hotelIdx = hotelService.getHotelIdxAll();
+		List<Integer> reviewTotCnt = reviewService.getReviewTotCount(hotelIdx);
 		
 		if(!mid.equals("")) {
 			List<Integer> likedHotelListIdx = hotelService.getLikedHotelListIdx(mid);
 			model.addAttribute("likedHotelListIdx", likedHotelListIdx);
 		}
 		
+		model.addAttribute("reviewTotCnt", reviewTotCnt);
 		model.addAttribute("vos", vos);
 		return "hotel/hotelList";
 	}
@@ -206,5 +214,6 @@ public class HotelController {
 	public String hotelLikeNoPost(String mid, int hotelIdx) {
 		return hotelService.setHotelLikeNo(mid, hotelIdx) + "";
 	}
+	
 	
 }

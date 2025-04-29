@@ -8,7 +8,6 @@
 	<meta charset="UTF-8">
 	<title>memberReviewInput.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp" />
-	<jsp:include page="/WEB-INF/views/include/nav.jsp" />
 	<%-- <jsp:include page="/WEB-INF/views/review/reviewModalForm.jsp" /> --%>
 	<link rel="stylesheet" type="text/css" href="${ctp}/css/linkOrange.css"/>
 	<style>
@@ -63,21 +62,6 @@
 	<script>
 	  'use strict';
 	  
-	  function reviewUploadCheck() {
-		  let star = reviewForm.star.value;
-		  let purpose = reviewForm.purpose.value;
-		  
-		  if(star == "") {
-			  alert("별점을 입력하세요.");
-		  }
-		  else if(purpose == "" ) { alert("목적을 입력하세요."); 
-		  }
-		  else reviewForm.submit();
-	  }
-	  
-	  
-	  
-	  
 	  function modalCheck(hotelIdx,roomIdx,roomName) {
 		  $("#hotelIdx").val(hotelIdx);
 		  $("#roomIdx").val(roomIdx);
@@ -96,8 +80,10 @@
 			  success:function(res) {
 				  let str = '';
 				  if(res != "") {
+					  str += '<form name="reviewCheckForm">';
 					  str += '<table class="table table-hover text-center">';
 	          str += '<tr class="table-secondary">';
+	          str += '<th><input type="button" value="x" onclick="reviewDelete()" class="btn btn-danger"/></th>';
 	          str += '<th>글쓴이</th>';
 	          str += '<th>목적</th>';
 	          str += '<th>별점</th>';
@@ -107,6 +93,7 @@
 	          str += '</tr>';
 	          for(let i=0; i<res.length; i++) {
 			        str += '<tr>';
+			        str += '<td><input type="checkbox" name="reviewCheckBox" id="reviewCheckBox'+res[i].idx+'" value="'+res[i].idx+'" /></td>';
 			        str += '<td>'+res[i].nickName+'</td>';
 			        str += '<td>'+res[i].purpose+'</td>';
 			        str += '<td>'+res[i].star+'</td>';
@@ -116,6 +103,7 @@
 			        str += '</tr>';
 	          }
 	          str += '</table>';
+					  str += '</form>';
 				  }
 				  else {
 					  str += '<hr class="border-secondary mt-1 p-0">댓글이 존재하지 않습니다.';
@@ -130,6 +118,35 @@
 		  $("#reviewHideBtn"+roomIdx).hide();
 		  $(".reviewClass").hide();
 	  }
+	  
+	  function reviewDelete() {
+		  let reviewStr = '';
+		  for(let i=0; i<reviewCheckForm.reviewCheckBox.length; i++) {
+			  if(reviewCheckForm.reviewCheckBox[i].checked) {
+				  reviewStr += reviewCheckForm.reviewCheckBox[i].value + "/";
+			  }
+		  }
+		  reviewStr = reviewStr.substring(0,reviewStr.length-1);
+		  let ans = confirm("선택한 리뷰를 삭제하시겠습니까?");
+		  if(!ans) return false;
+		  
+		  
+		  $.ajax({
+			  url : "${ctp}/admin/reviewDelete",
+			  type : "post",
+			  data : {reviewStr : reviewStr},
+			  success:function(res) {
+				  if(res != "0") {
+					  alert( "해당 리뷰가 삭제되었습니다." );
+					  location.reload();
+				  }
+				  else alert("작업 실패");
+			  },
+			  error:function() { alert("전송오류"); }
+		  });
+		  
+	  }
+	  
 	</script>
 </head>
 <body>
@@ -157,7 +174,6 @@
 				    <div class="room-info"><span class="room-label" style="color: red">총 숙박비용: ${ReservationListVo.totalPrice}</span></div>
 			    </td>
 			    <td class="room-items3 border border-0">
-			    	<a href="#" onclick="modalCheck('${ReservationListVo.hotelIdx}','${ReservationListVo.roomIdx}','${ReservationListVo.roomName}')" class="btn btn-primary btn-sm ms-3 text-end" data-bs-toggle="modal" data-bs-target="#myModal">리뷰작성</a>
 			    	<a href="javascript:reviewShowCheck(${ReservationListVo.roomIdx})" id="reviewShowBtn${ReservationListVo.roomIdx}" class="btn btn-success btn-sm">리뷰보기</a>
 			    	<a href="javascript:reviewHideCheck(${ReservationListVo.roomIdx})" id="reviewHideBtn${ReservationListVo.roomIdx}" class="btn btn-warning btn-sm" style="display:none" >리뷰가리기</a>
 			    </td>
@@ -175,6 +191,7 @@
 </div>
 <p><br/></p>
 
+
 <!-- 모달로 리뷰작성창 띄우기 -->
 
 	<div class="modal modal-lg" id="myModal">
@@ -185,7 +202,7 @@
 	    	</div>
 				<form name="reviewForm" id="reviewForm" action="${ctp}/review/reviewInput" method="post">
 		      <div class="modal-body text-end">
-			      <fieldset style="border:0px;" class="starForm" id="starForm" name="starForm">
+			      <fieldset style="border:0px;" class="starForm" id="starForm">
 			        <div class="text-left viewPoint m-0 b-0" >
 			          <input type="radio" name="star" value="5" id="star1"><label for="star1">★</label>
 			          <input type="radio" name="star" value="4" id="star2"><label for="star2">★</label>
@@ -209,7 +226,7 @@
 		      	</div>
 					</div>
 					<div class="modal-footer">
-		      	<button type="button" class="btn btn-dark" onclick="reviewUploadCheck()">등록하기</button>
+		      	<button type="submit" class="btn btn-dark" >등록하기</button>
 		      	<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
 					</div>   
 					<input type="hidden" name="roomIdx" id="roomIdx" />
@@ -220,6 +237,7 @@
 		</div>      
 	</div>
 <p><br></p>
+
 
 	<!-- 모달창으로 리뷰 띄우기 -->
 	
@@ -255,6 +273,5 @@
 	  </div>
 	</div>
 
-<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>
 </html>

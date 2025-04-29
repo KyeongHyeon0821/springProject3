@@ -12,11 +12,17 @@ public interface ReviewDao {
 
 	List<ReservationListVo> getRoomUsedList(@Param("mid") String mid);
 
-	int setReviewInputOk(@Param("vo") ReviewVo vo, @Param("mid") String mid, @Param("nickName") String nickName);
+	int setReviewInputOk(@Param("vo") ReviewVo vo);
 
 	ReservationListVo getRoomIdxCheck(@Param("roomIdx") int roomIdx,@Param("mid") String mid);
 
 	List<ReviewVo> getRoomReviewList(@Param("roomIdx") int roomIdx);
+
+	List<Integer> getReviewTotCount(@Param("hotelIdx") List<Integer> hotelIdx);
+
+	List<ReviewVo> getRoomReviewAllList();
+
+	List<ReservationListVo> getRoomUsedAllList(@Param("mid") String mid);
 
 
 }

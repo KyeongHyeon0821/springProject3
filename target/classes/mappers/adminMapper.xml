@@ -77,4 +77,11 @@
   </update>
   
   
+  
+  
+  
+  <delete id="setReviewDelete">
+  	delete from review where idx = #{idx};
+  </delete>
+  
 </mapper>

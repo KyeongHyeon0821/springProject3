@@ -11,8 +11,8 @@
 	<style>
 		
 		footer {
-		  background-color: #3F7D58;
-		  color: white;
+		  background-color: #EFEFEF;
+		  color: black;
 		  padding: 60px 0 30px;
 		}
 		

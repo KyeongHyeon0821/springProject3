@@ -38,4 +38,7 @@ public interface AdminService {
 
 	RoomVo getRoomDetailSearch(int idx);
 
+	String setReviewDelete(String reviewStr);
+	
+
 }

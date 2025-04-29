@@ -11,11 +11,17 @@ public interface ReviewService {
 
 	List<ReservationListVo> getRoomUsedList(String mid);
 
-	int setReviewInputOk(ReviewVo vo, String mid, String nickName);
+	int setReviewInputOk(ReviewVo vo);
 
 	ReservationListVo getRoomIdxCheck(int roomIdx, String mid);
 
 	List<ReviewVo> getRoomReviewList(int roomIdx);
+
+	List<Integer> getReviewTotCount(List<Integer> hotelIdx);
+
+	List<ReviewVo> getRoomReviewAllList();
+
+	List<ReservationListVo> getRoomUsedAllList(String mid);
 
 
 }

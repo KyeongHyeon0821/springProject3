@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.spring.springProject3.dao.RoomDao;
 import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.OptionVo;
+import com.spring.springProject3.vo.ReviewVo;
 import com.spring.springProject3.vo.RoomVo;
 
 import net.coobird.thumbnailator.Thumbnailator;
@@ -257,6 +258,10 @@ public class RoomServiceImpl implements RoomService {
 	public List<RoomVo> getAvailableRoomList(int idx, String checkinDate, String checkoutDate, int guestCount, int petCount) {
 		return roomDao.getAvailableRoomList(idx, checkinDate, checkoutDate, guestCount,	petCount);
 	}
+
+
+
+
 
 	
 	

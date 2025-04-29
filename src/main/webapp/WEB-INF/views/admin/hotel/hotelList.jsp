@@ -48,7 +48,7 @@
 				},
 				error:function() { alert("전송오류!"); }
 			});
-  	} */ 
+  	} 
 		
     // 닉네임 클릭시 모달을 통해서 회원 '닉네임/아이디/사진' 보여주기
 /*     function imgInfor(nickName, mid, photo) {
@@ -93,7 +93,7 @@
     		return false;
     	}
     	
-    	let ans = confirm("선택한 항목의 상태를 "+statusSelectText+"상태로 변경하시겠습니까?");
+    	let ans = confirm("선택한 항목의 상태를 "+statusSelect+"상태로 변경하시겠습니까?");
     	if(!ans) return false;
     	
       idxSelectArray = idxSelectArray.substring(0,idxSelectArray.lastIndexOf("/"));
@@ -108,7 +108,7 @@
     	  type : "post",
     	  data : query,
     	  success:function(res) {
-    		  if(res != "0") alert("선택한 항목들이 "+statusSelectText+"(으)로 변경되었습니다.");
+    		  if(res != "0") alert("선택한 항목들이 "+statusSelect+"(으)로 변경되었습니다.");
     		  else alert("상태변경 실패~");
   			  location.reload();
     	  },

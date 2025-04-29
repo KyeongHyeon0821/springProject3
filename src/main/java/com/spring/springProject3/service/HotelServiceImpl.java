@@ -292,4 +292,9 @@ public class HotelServiceImpl implements HotelService {
 		return hotelDao.getLikedHotelListIdx(mid);
 	}
 
+	@Override
+	public List<Integer> getHotelIdxAll() {
+		return hotelDao.getHotelIdxAll();
+	}
+
 }

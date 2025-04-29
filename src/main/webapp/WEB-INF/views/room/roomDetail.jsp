@@ -131,7 +131,8 @@
 		input[type="button"],
 		a.btn-secondary,
 		a.btn-tertiary,
-		a.btn-danger {
+		a.btn-danger,
+		a.btn-warning {
 		  padding: 8px 16px;
 		  font-size: 0.95rem;
 		  border: none;
@@ -173,6 +174,10 @@
 		  background-color: #c62828;
 		}
 		
+		a.btn-warning {
+			background-color: #FCF259;
+			color: green; 
+		}
 		/* 기존 컨테이너에 아래 여백 추가 */
 		.room-detail-container {
 		  padding-bottom: 160px;
@@ -242,7 +247,12 @@
 		.btn-reserve:hover {
 		  background-color: #00796b;
 		}
-		
+		#reviewCheck {
+			text-decoration: none;
+		}
+		.modal-content {
+			border: 1px solid black;
+		}
 	</style>
 </head>
 <body>
@@ -290,7 +300,7 @@
 	    <c:if test="${vo.status != '서비스중지요청'}">
 	      <a href="javascript:roomDeleteCheck()" class="btn-danger">객실 서비스 중지 요청</a>
 	    </c:if>
-	    <a href="#" class="btn-warning" data-bs-toggle="modal" data-bs-target="#myModal" onclick="modalCheck('${ReviewVo.idx}','${ReviewVo.hotelIdx}','${ReviewVo.roomIdx}','${ReviewVo.reviewTotCnt}','${ReviewVo.reviewCnt}','${ReviewVo.mid}','${ReviewVo.nickName}','${ReviewVo.roomName}','${ReviewVo.purpose}','${ReviewVo.star}','${ReviewVo.content}','${ReviewVo.hostIp}','${ReviewVo.reviewDate}')">리뷰 확인하기</a>
+	    <a href="#" id="reviewCheck" class="btn-warning" data-bs-toggle="modal" data-bs-target="#myModal" onclick="modalCheck('${ReviewVo.idx}','${ReviewVo.hotelIdx}','${ReviewVo.roomIdx}','${ReviewVo.reviewTotCnt}','${ReviewVo.reviewCnt}','${ReviewVo.mid}','${ReviewVo.nickName}','${ReviewVo.roomName}','${ReviewVo.purpose}','${ReviewVo.star}','${ReviewVo.content}','${ReviewVo.hostIp}','${ReviewVo.reviewDate}')">리뷰 확인하기</a>
 	    <c:forEach var="ReivewVo" items="rVos">
 	    	<input type="hidden" value="${ReviewVo.idx}" >
 	    </c:forEach>
@@ -320,33 +330,45 @@
 	
 	<!-- 모달창으로 리뷰 띄우기 -->
 	
-	<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
+	<div class="modal modal-lg" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h1 class="modal-title fs-5" id="exampleModalLabel">리뷰 리스트</h1>
+	        <div class="modal-title fs-5" id="exampleModalLabel"><h3>리뷰</h3></div>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <c:forEach var="ReviewVo" items="${rVos}" varStatus="st">
 		      <div class="modal-body" style="">
-		      	<span>${ReviewVo.idx}</span>
-		      	<span>${ReviewVo.hotelIdx}</span>
-		      	<span>${ReviewVo.roomIdx}</span>
-		      	<span>${ReviewVo.reviewTotCnt}</span>
-		      	<span>${ReviewVo.reviewCnt}</span>
-		      	<span>${ReviewVo.mid}</span>
-		      	<span>${ReviewVo.nickName}</span>
-		      	<span>${ReviewVo.roomName}</span>
-		      	<span>${ReviewVo.purpose}</span>
-		      	<span>${ReviewVo.star}</span>
-		      	<span>${ReviewVo.content}</span>
-		      	<span>${ReviewVo.hostIp}</span>
-		      	<span>${ReviewVo.reviewDate}</span>
+		      	<div>
+		      			<c:if test="${ReviewVo.star == 5}">
+			      			<span class="btn btn-info btn-sm">${ReviewVo.star}</span><b style="font-size: 17px">  최고</b>
+			      		</c:if>
+			      		<c:if test="${ReviewVo.star == 4}">
+			      			<span class="btn btn-info btn-sm">${ReviewVo.star}</span><b style="font-size: 17px">  훌륭</b>
+			      		</c:if>
+			      		<c:if test="${ReviewVo.star == 3}">
+			      			<span class="btn btn-info btn-sm">${ReviewVo.star}</span><b style="font-size: 17px">  무난</b>
+			      		</c:if>
+			      		<c:if test="${ReviewVo.star == 2}">
+			      			<span class="btn btn-info btn-sm">${ReviewVo.star}</span><b style="font-size: 17px">  아쉬움</b>
+			      		</c:if>
+			      		<c:if test="${ReviewVo.star == 1}">
+			      			<span class="btn btn-info btn-sm">${ReviewVo.star}</span><b style="font-size: 17px">  부족함</b>
+			      		</c:if>
+			      	<font style="color: blue"><span class="modal-item">    ${ReviewVo.roomName} | </span><span>${ReviewVo.nickName} | </span><span>${ReviewVo.purpose}</span><span>${ReviewVo.reviewDate}</span></font>
+		      	</div>
+		      	<div>
+		      		<span style="color:black">${ReviewVo.content}</span>
+		      	</div>
+		      	<br/>
+		      	<c:if test="${sLevel == 0}">
+		      		<span>${ReviewVo.hostIp}</span>
+		      	</c:if>
+		      	<hr/>
 		      </div>
 	      </c:forEach>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Save changes</button>
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">X</button>
 	      </div>
 	    </div>
 	  </div>

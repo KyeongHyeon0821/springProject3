@@ -4,7 +4,7 @@
   
   <!-- 호텔리스트 조회 -->
   <select id="getHotelList" resultType="com.spring.springProject3.vo.HotelVo">
-		select * from hotel where status = '정상' order by idx desc;  	
+		select *,(select count(idx) from review where hotelIdx = h.idx) as reviewTotal from hotel h where status = '정상' order by idx desc;  	
   </select>
   
   <!-- 찜한 호텔 리스트 idx 조회 -->
@@ -21,6 +21,14 @@
   <select id="getHotelLike" resultType="int">
   	select count(*) from hotelLike where hotelIdx=#{idx} and mid=#{mid};
   </select>
+  
+  <!-- 호텔의 idx 목록 조회 -->
+	<select id="getHotelIdxAll" resultType="int">
+		select idx from hotel;
+	</select>  
+  
+  
+  
   
   <!-- 호텔 등록 -->
   <insert id="setHotelInput">

@@ -112,3 +112,4 @@ create table reviewReply(
 	foreign key(reviewIdx) references review(idx),
   foreign key(replyMid) references member(mid)
 );
+

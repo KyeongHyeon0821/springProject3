@@ -41,6 +41,8 @@ public interface AdminDao {
 
 	RoomVo getRoomDetailSearch(@Param("idx") int idx);
 
+	void setReviewDelete(@Param("idx") int idx);
+
 
 	
 }

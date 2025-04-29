@@ -149,6 +149,7 @@
 		}
 		
 		/* 주소/연락처 */
+		.hotel-review,
 		.hotel-address,
 		.hotel-tel {
 		  font-size: 14px;
@@ -198,6 +199,7 @@
             </c:otherwise>
           </c:choose>
         </div>
+        <span class="hotel-review"><input class="btn btn-success btn-sm" value="4.5" style="width:40px"><font class="ms-2" color="blue">${vo.reviewTotal}</font><font class="ms-2">개의 후기</font></span>
         <p class="hotel-address">${vo.address}</p>
         <p class="hotel-tel">${vo.tel}</p>
       </div>
