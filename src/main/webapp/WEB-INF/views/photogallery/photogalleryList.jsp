@@ -128,7 +128,7 @@
           <option ${pageVo.pageSize==15 ? 'selected' : ''}>15</option>
           <option ${pageVo.pageSize==20 ? 'selected' : ''}>20</option>
         </select>
-        <button class="btn btn-outline-success" onclick="location.href='${ctp}/photogallery/photogalleryInput';">작성하기</button>
+        <button class="btn btn-outline-success" onclick="location.href='${ctp}/photogallery/photogallerySingleView';">전체보기</button>
       </div>
       <div>
         <c:if test="${sLevel != 0}">
