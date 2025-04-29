@@ -8,7 +8,7 @@ import com.spring.springProject3.vo.HotelVo;
 
 public interface HotelService {
 
-	List<HotelVo> getHotelList();
+	List<HotelVo> getHotelList(int startIndexNo, int pageSize);
 
 	int setHotelInput(HotelVo vo, MultipartFile thumbnailFile);
 

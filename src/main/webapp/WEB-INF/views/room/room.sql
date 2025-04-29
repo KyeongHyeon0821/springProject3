@@ -38,6 +38,20 @@ insert into options(name) values('와이파이');
 insert into options(name) values('반려견 침대');
 insert into options(name) values('반려견 배변패드');
 insert into options(name) values('반려견 샴푸');
+insert into options(name) values('피트니스 센터');
+insert into options(name) values('실내 수영장');
+insert into options(name) values('야외 수영장');
+insert into options(name) values('레스토랑');
+insert into options(name) values('금연객실');
+insert into options(name) values('흡연구역');
+insert into options(name) values('짐보관가능');
+insert into options(name) values('주차가능');
+insert into options(name) values('카페');
+insert into options(name) values('레스토랑');
+insert into options(name) values('엘리베이터');
+insert into options(name) values('24시데스크');
+insert into options(name) values('조식운영');
+insert into options(name) values('테라스/발코니');
 
 
 /* 객실-옵션 연결 테이블 */

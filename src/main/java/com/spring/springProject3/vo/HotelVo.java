@@ -48,5 +48,4 @@ public class HotelVo {
 	
 	private int minPrice;
 	
-	
 }

@@ -6,10 +6,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,12 +18,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.springProject3.service.HotelService;
 import com.spring.springProject3.service.ReservationService;
@@ -53,7 +51,9 @@ public class HotelController {
       @RequestParam(name="checkoutDate", defaultValue = "", required = false) String checkoutDate,
       @RequestParam(name="guestCount", defaultValue = "1", required = false) int guestCount,
       @RequestParam(name="petCount", defaultValue = "1", required = false) int petCount,
-      @RequestParam(name="searchString", defaultValue = "", required = false) String searchString
+      @RequestParam(name="searchString", defaultValue = "", required = false) String searchString,
+      @RequestParam(name="startIndexNo", defaultValue = "0", required = false) int startIndexNo,
+			@RequestParam(name="pageSize", defaultValue = "6", required = false) int pageSize
 		) {
 		if(checkinDate.equals("") || checkoutDate.equals("")) {
 			LocalDate today = LocalDate.now();
@@ -67,7 +67,7 @@ public class HotelController {
 		
 		List<HotelVo> vos = null;
 		if(!searchString.equals("")) vos = hotelService.getSearchHotelList(searchString, checkinDate, checkoutDate, guestCount, petCount);
-		else vos = hotelService.getHotelList();
+		else vos = hotelService.getHotelList(startIndexNo, pageSize);
 			
 		
 		if(!mid.equals("")) {
@@ -84,6 +84,53 @@ public class HotelController {
 		return "hotel/hotelList";
 	}
 	
+	// 호텔 리스트 더보기
+	@ResponseBody
+	@RequestMapping(value =  "/hotelMore", method = RequestMethod.POST)
+	public ModelAndView hotelMorePost(Model model, HttpSession session,
+		@RequestParam(name="checkinDate", defaultValue = "", required = false) String checkinDate,
+		@RequestParam(name="checkoutDate", defaultValue = "", required = false) String checkoutDate,
+		@RequestParam(name="guestCount", defaultValue = "1", required = false) int guestCount,
+		@RequestParam(name="petCount", defaultValue = "1", required = false) int petCount,
+		@RequestParam(name="searchString", defaultValue = "", required = false) String searchString,
+		@RequestParam(name="startIndexNo", defaultValue = "0", required = false) int startIndexNo,
+		@RequestParam(name="pageSize", defaultValue = "6", required = false) int pageSize
+	) {
+		
+		if(checkinDate.equals("") || checkoutDate.equals("")) {
+			LocalDate today = LocalDate.now();
+			LocalDate tomorrow = today.plusDays(1);
+			
+			checkinDate = today.toString();      // ex) "2025-04-24"
+			checkoutDate = tomorrow.toString();  // ex) "2025-04-25"
+		}
+		
+		String mid = session.getAttribute("sMid") + "";
+		
+		List<HotelVo> vos = null;
+		if(!searchString.equals("")) vos = hotelService.getSearchHotelList(searchString, checkinDate, checkoutDate, guestCount, petCount);
+		else vos = hotelService.getHotelList(startIndexNo, pageSize);
+		
+		
+		if(!mid.equals("")) {
+			List<Integer> likedHotelListIdx = hotelService.getLikedHotelListIdx(mid);
+			model.addAttribute("likedHotelListIdx", likedHotelListIdx);
+		}
+		
+		model.addAttribute("vos", vos);
+		model.addAttribute("vosSize", vos.size());
+		model.addAttribute("checkinDate", checkinDate);
+		model.addAttribute("checkoutDate", checkoutDate);
+		model.addAttribute("guestCount", guestCount);
+		model.addAttribute("petCount", petCount);
+		model.addAttribute("searchString", searchString);
+		
+		 
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("hotel/hotelMore");
+		return mv;
+	}
+
 	
 	// 호텔 등록폼 보기
 	@RequestMapping(value =  "/hotelInput", method = RequestMethod.GET)
@@ -233,17 +280,6 @@ public class HotelController {
 	@RequestMapping(value = ("/hotelLikeNo"), method = RequestMethod.POST)
 	public String hotelLikeNoPost(String mid, int hotelIdx) {
 		return hotelService.setHotelLikeNo(mid, hotelIdx) + "";
-	}
-	
-	// 호텔 더보기 처리
-	@ResponseBody
-	@RequestMapping(value = ("/hotelMore"), method = RequestMethod.POST)
-	public List<HotelVo> hotelMorePost(int lastIdx, int count) {
-		System.out.println("lastIdx : " + lastIdx + ", count : " + count);
-		List<HotelVo> vos = hotelService.getMoreHotels(lastIdx, count);
-		System.out.println("vos : " + vos);
-		
-		return vos; 
 	}
 	
 }

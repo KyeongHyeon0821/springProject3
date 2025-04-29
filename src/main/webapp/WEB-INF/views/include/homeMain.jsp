@@ -86,7 +86,7 @@
   font-weight: bold;
   max-width: 1200px;
   text-align: start;
-  margin: 0 auto 60px;
+  margin: 0 auto 30px;
 }
 
 .hotel-search-container {

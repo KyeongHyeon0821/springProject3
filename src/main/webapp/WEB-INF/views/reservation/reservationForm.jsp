@@ -400,6 +400,8 @@
     <button onclick="closeTerms()" style="padding: 6px 16px; border: none; border-radius: 6px; background-color: #5A8DEE; color: #fff;">닫기</button>
   </div>
 </div>
-	
+	<!-- 모달 백그라운드 -->
+ <div id="modalOverlay" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.4); z-index: 9998;" onclick="closeTerms()"></div>
 </body>
 </html>

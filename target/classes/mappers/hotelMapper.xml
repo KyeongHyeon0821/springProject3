@@ -6,7 +6,7 @@
   <select id="getHotelList" resultType="com.spring.springProject3.vo.HotelVo">
 		<!-- select * from hotel where status = '정상' order by idx desc;  	 -->
 		select hotel.*, min(room.price) as minPrice from hotel left outer join room on hotel.idx = room.hotelIdx
-			where hotel.status = '정상' group by hotel.idx order by hotel.idx desc;
+			where hotel.status = '정상' group by hotel.idx order by hotel.idx desc limit #{startIndexNo}, #{pageSize};
   </select>
   
   <!-- 호텔 더보기

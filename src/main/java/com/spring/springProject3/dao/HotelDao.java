@@ -8,7 +8,7 @@ import com.spring.springProject3.vo.HotelVo;
 
 public interface HotelDao {
 
-	List<HotelVo> getHotelList();
+	List<HotelVo> getHotelList(@Param("startIndexNo") int startIndexNo, @Param("pageSize") int pageSize);
 
 	int setHotelInput(@Param("vo") HotelVo vo);
 

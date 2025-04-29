@@ -29,8 +29,8 @@ public class HotelServiceImpl implements HotelService {
 	HotelDao hotelDao;
 
 	@Override
-	public List<HotelVo> getHotelList() {
-		return hotelDao.getHotelList();
+	public List<HotelVo> getHotelList(int startIndexNo, int pageSize) {
+		return hotelDao.getHotelList(startIndexNo, pageSize);
 	}
 	
 	// 호텔 등록 처리 (1.썸네일 파일 저장처리, 2.썸네일용 이미지 파일 생성 3.이미지 파일들 이름 가공처리(ckeditor에서 올린것들), 4.실제 업로드 된 이미지 파일만 복사처리, 5.DB 저장처리)

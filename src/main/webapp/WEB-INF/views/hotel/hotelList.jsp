@@ -25,19 +25,18 @@
 				type : "post",
 				data : {
 					mid : mid,
-					hotelIdx, hotelIdx
+					hotelIdx : hotelIdx
 				},
 				success : function(res) {
 					if(res == "1") {
 						$("#likeImg" + hotelIdx).attr("src", "${ctp}/images/heartRed.png");
 						$("#likeFn" + hotelIdx).attr("href", "javascript:hotelLikeNo(" + hotelIdx + ")");
-						location.reload();
 					}
 					else {
 						alert("다시 시도해주세요.");
 					}
 				},
-				error : function() { alert("다시 시도해주세요."); }
+				error : function() { alert("에러"); }
 			});
 		}
 		
@@ -59,14 +58,13 @@
 				success : function(res) {
 					if(res == "1") {
 						$("#likeImg" + hotelIdx).attr("src", "${ctp}/images/heartBlack.png");
-						$("#likeFn" + hotelIdx).attr("href", "javascript:hotelLikeNo(" + hotelIdx + ")");
-						location.reload();
+						$("#likeFn" + hotelIdx).attr("href", "javascript:hotelLikeOk(" + hotelIdx + ")");
 					}
 					else {
 						alert("다시 시도해주세요.");
 					}
 				},
-				error : function() { alert("다시 시도해주세요."); }
+				error : function() { alert("에러"); }
 			});
 		}
 		
@@ -123,8 +121,33 @@
 		    }
 		  });
 		});
+		
+		
+		
+		let startIndexNo = 6;
+		// 호텔 더보기
+		function moreHotels() {
+			$.ajax({
+				url : "hotelMore",
+				type : "post",
+				data : {
+					startIndexNo : startIndexNo
+				},
+				success : function(res) {
+					startIndexNo += 6;
+					$("#hotel-list-container").append(res);
+				},
+				error : function() { alert("다시 시도해주세요."); }
+			});
+		}
+		
 	</script>
 	<style>
+		body	{
+			 background-color: #f9fefb !important;
+			 margin:0;
+		}
+	
 		.hotel-list-container {
 		  display: grid;
 		  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -136,14 +159,13 @@
 		
 		/* 호텔 카드 전체 */
 		.hotel-card {
-		  background-color: #f9f9fc; /* 연한 회색 */
-		  border-radius: 12px;
-		  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-		  overflow: hidden;
-		  transition: transform 0.2s ease, box-shadow 0.2s ease;
 		  display: flex;
 		  flex-direction: column;
-		  height: 100%;
+		  justify-content: space-between;
+		  height: 400px; /* 카드 높이 고정 */
+		  border: 1px solid #eee;
+		  border-radius: 8px;
+		  overflow: hidden;
 		}
 		
 		/* 이미지 영역 */
@@ -155,9 +177,11 @@
 		
 		/* 카드 본문 */
 		.hotel-details {
-		  padding: 16px;
-		  flex: 1;
-		  position: relative;
+		  display: flex;
+		  flex-direction: column;
+		  flex-grow: 1; /* 남는 공간 채우기 */
+		  padding: 12px;
+		  box-sizing: border-box;
 		}
 		
 		/* 호텔 이름 + 하트 정렬 */
@@ -199,7 +223,15 @@
 		.hotel-tel {
 		  font-size: 14px;
 		  color: #555;
-		  margin-top: 8px;
+		}
+		
+		/* 가격을 항상 맨 아래로 밀기 */
+		.hotel-minPrice {
+		  margin-top: auto; /* 핵심: 남는 공간을 밀어냄 */
+		  font-weight: bold;
+		  font-size: 18px;
+		  color: #222;
+		  text-align:end;
 		}
 		
 		.heart-icon {
@@ -211,12 +243,21 @@
 		}
 		
 	  .hotel-search-container {
-		  background-color: rgba(255, 255, 255, 0.95);
+	  	position: fixed;
+  		top: 120px;
+		  background-color: white;
 		  padding: 30px;
-		  border-radius: 16px;
-		  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+		  border-top-left-radius: 3px;
+			border-top-right-radius: 3px;
+		  border-bottom-left-radius: 10px;
+			border-bottom-right-radius: 10px;
+		  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+		  width: 100%;
+		  left: 50%;
+ 			transform: translateX(-50%);
 		  max-width: 1400px;
 		  margin: 0 auto 40px; 
+		  z-index: 1000;
 		}
 		
 		.hotel-search-form {
@@ -275,8 +316,6 @@
 		.search-button:hover {
 		  background-color: #3e8f52;
 		}
-		  
-		}
 	</style>
 </head>
 <body>
@@ -312,7 +351,7 @@
   </form>
 </div>
 
-<div class="hotel-list-container">
+<div class="hotel-list-container" id="hotel-list-container">
   <c:forEach var="vo" items="${vos}">
     <div class="hotel-card" data-idx="${vo.idx}">
       <div class="hotel-image">
@@ -343,22 +382,19 @@
             </c:otherwise>
           </c:choose>
         </div>
-        <p class="hotel-address">${vo.address}</p>
-        <p class="hotel-tel">${vo.tel}</p>
-        <p class="hotel-minPrice"><fmt:formatNumber value="${vo.minPrice}" type="number" pattern="#,##0" />원~</p>
+        <div class="hotel-address">${vo.address}</div>
+        <div class="hotel-tel">${vo.tel}</div>
+        <div class="hotel-minPrice"><fmt:formatNumber value="${vo.minPrice}" type="number" pattern="#,##0" />원~</div>
       </div>
     </div>
   </c:forEach>
-  
-  
 </div>
 <c:if test="${empty vos}">
 	<div class="text-center mb-5">검색 조건에 맞는 호텔이 없습니다. 조건을 변경하거나 다른 날짜를 시도해 보세요.</div>
 </c:if>
-<div class="text-center">
-	<button id="loadMoreBtn" class="btn btn-primary" onclick="moreHotels()">더보기</button>
+<div class="text-center mb-5">
+	<button id="hotelMoreBtn" class="btn btn-secondary" onclick="moreHotels()">더보기</button>
 </div>
-<div id="overlay" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-     background: rgba(0, 0, 0, 0.4); z-index: 999;"></div>
+
 </body>
 </html>
