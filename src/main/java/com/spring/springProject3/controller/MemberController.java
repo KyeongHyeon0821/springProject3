@@ -29,8 +29,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.spring.springProject3.service.MemberService;
 import com.spring.springProject3.service.PetService;
+import com.spring.springProject3.service.ReservationService;
 import com.spring.springProject3.vo.MemberVo;
 import com.spring.springProject3.vo.PetVo;
+import com.spring.springProject3.vo.ReservationVo;
 
 @Controller
 @RequestMapping("/member")
@@ -47,6 +49,9 @@ public class MemberController {
     
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
+    
+    @Autowired
+    ReservationService reservationService;
     
     // 로그인 폼 보기
     @RequestMapping(value = "/memberLogin", method = RequestMethod.GET)
@@ -471,13 +476,22 @@ public class MemberController {
 
     // 임시 비밀번호 생성 메서드
     public String makeTempPassword() {
-        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        StringBuilder sb = new StringBuilder();
-        Random rnd = new Random();
-        for (int i = 0; i < 10; i++) {
-            sb.append(chars.charAt(rnd.nextInt(chars.length())));
-        }
-        return sb.toString();
+      String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      StringBuilder sb = new StringBuilder();
+      Random rnd = new Random();
+      for (int i = 0; i < 10; i++) {
+          sb.append(chars.charAt(rnd.nextInt(chars.length())));
+      }
+      return sb.toString();
+    }
+    
+    // 예약 내역 조회 및 관리
+    @RequestMapping("/myReservation")
+    public String myReservationGet(HttpSession session, Model model) {
+    	String mid = session.getAttribute("sMid") + "";
+    	List<ReservationVo> vos = reservationService.getMyReservations(mid);
+    	model.addAttribute("vos", vos);
+    	return "member/myReservation";
     }
 
 }

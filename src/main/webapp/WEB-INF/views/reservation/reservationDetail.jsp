@@ -7,8 +7,23 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>paymentOk.jsp</title>
+	<title>reservationDetail.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
+	<script>
+		'use strict';
+		
+		function reservationCancel(reservationNo) {
+			let ans = confirm("예약을 취소하시겠습니까?");
+			if(!ans) return false;
+			else location.href="${ctp}/reservation/reservationCancel?reservationNo="+reservationNo;
+		}
+		
+		function payment(reservationNo) {
+			let ans = confirm("결제 페이지로 이동하시겠습니까?");
+			if(!ans) return false;
+			else location.href="${ctp}/reservation/payment/"+reservationNo;
+		}
+	</script>
 	<style>
 		.reservation-complete-container {
 		  max-width: 800px;
@@ -77,7 +92,30 @@
 		  color: #555;
 		}
 		
-		.btn-mypage {
+		.btn-payment {
+		  display: inline-block;
+		  margin-top: 10px;
+		  padding: 10px 22px;
+		  background-color: #5A8DEE;
+		  color: #fff;
+		  border-radius: 8px;
+		  text-decoration: none;
+		  font-weight: 600;
+		  transition: background-color 0.2s ease;
+		}
+		
+		.btn-cancel {
+		  display: inline-block;
+		  margin-top: 10px;
+		  padding: 10px 22px;
+		  background-color: #e74c3c;
+		  color: #fff;
+		  border-radius: 8px;
+		  text-decoration: none;
+		  font-weight: 600;
+		  transition: background-color 0.2s ease;
+		}
+		.btn-review {
 		  display: inline-block;
 		  margin-top: 10px;
 		  padding: 10px 22px;
@@ -89,8 +127,31 @@
 		  transition: background-color 0.2s ease;
 		}
 		
-		.btn-mypage:hover {
+		.btn-back {
+		  display: inline-block;
+		  margin-top: 10px;
+		  padding: 10px 22px;
+		  background-color: #6c757d;
+		  color: #fff;
+		  border-radius: 8px;
+		  text-decoration: none;
+		  font-weight: 600;
+		  transition: background-color 0.2s ease;
+		  outline: none;
+  		border: none;
+		}
+		
+		.btn-payment:hover {
+		  background-color: #3f6fd1;
+		}
+		.btn-cancel:hover {
+		  background-color: #c0392b;
+		}
+		.btn-review:hover {
 		  background-color: #3e8f52;
+		}
+		.btn-back:hover {
+		  background-color: #5a6268;
 		}
 		.memo-line {
 		  flex-direction: column;
@@ -119,9 +180,31 @@
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <div class="container">
 	<div class="reservation-complete-container">
-  <h2 class="complete-title">예약이 완료되었습니다!</h2>
-  <p class="complete-desc">예약 번호와 상세 내용을 확인해주세요.</p>
-
+  <h2 class="complete-title">
+  	<c:if test="${reservationVo.status == '결제대기'}">
+  		결제 대기중입니다!
+  	</c:if>
+  	<c:if test="${reservationVo.status == '결제완료'}">
+  		결제가 완료되었습니다!
+  	</c:if>
+  	<c:if test="${reservationVo.status == '이용완료'}">
+  		리뷰를 작성해주세요!
+  	</c:if>
+  	<c:if test="${reservationVo.status == '리뷰작성'}">
+  		리뷰가 작성되었습니다!
+  	</c:if>
+  </h2>
+  <c:if test="${reservationVo.status != '예약취소'}">
+  	<p class="complete-desc">예약 번호와 상세 내용을 확인해주세요.</p>
+	</c:if>
+  <c:if test="${reservationVo.status == '예약취소'}">
+  	<c:if test="${reservationVo.status == '예약취소'}">
+  		<div class="guide-box">
+   			 <p><strong>취소된 결제내역입니다.</strong></p>
+   		 </div>
+    </c:if>
+	</c:if>
+	
   <!-- 예약 완료 요약 -->
   <div class="summary-box">
     <div class="summary-item">
@@ -168,7 +251,15 @@
       <strong><fmt:formatNumber value="${reservationVo.totalPrice}" type="number" pattern="#,##0" />원</strong>
     </div>
     <div class="info-line">
-      🕒 결제 일시:
+    	<c:if test="${reservationVo.status == '결제대기'}">
+      	🕒 예약 일시:
+      </c:if>
+    	<c:if test="${reservationVo.status == '결제완료' || reservationVo.status == '이용완료' || reservationVo.status == '리뷰작성'}">
+      	🕒 결제 일시:
+      </c:if>
+    	<c:if test="${reservationVo.status == '예약취소'}">
+      	🕒 취소 일시:
+      </c:if>
       <strong>${fn:substring(reservationVo.regDate, 0, 19)}</strong>
     </div>
     <div class="info-line">
@@ -179,8 +270,19 @@
 
   <!-- 하단 안내 -->
   <div class="guide-box">
-    <p>예약 상세 내역은 <strong>마이페이지 > 예약 내역</strong>에서 확인하실 수 있습니다.</p>
-    <a href="${ctp}/member/memberMyPage" class="btn-mypage">마이페이지 가기</a>
+    <!-- <p>예약 상세 내역은 <strong>마이페이지 > 예약 내역</strong>에서 확인하실 수 있습니다.</p> -->
+    <input type="button" value="돌아가기" class="btn-back" onclick="location.href='${ctp}/member/myReservation'"/>
+    <c:if test="${reservationVo.status == '결제대기'}">
+    	<a href="javascript:reservationCancel('${reservationVo.reservationNo}')" class="btn-cancel">예약취소</a>
+    	<a href="javascript:payment('${reservationVo.reservationNo}')" class="btn-payment">결제하기</a>
+    </c:if>
+    <c:if test="${reservationVo.status == '결제완료'}">
+    	<!-- 결제 완료 후 예약취소는 환불처리가 없으므로 됐으므로 미구현 (포인트 생기면 포인트로 환불 가능)-->
+    	<a href="" class="btn-cancel">예약취소</a>
+    </c:if>
+    <c:if test="${reservationVo.status == '이용완료'}">
+    	<a href="" class="btn-review">리뷰작성</a>
+    </c:if>
   </div>
 </div>
 </div>

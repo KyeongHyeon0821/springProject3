@@ -89,7 +89,7 @@
 		// 체크인 체크아웃 날짜 처리
 		window.addEventListener('DOMContentLoaded', function () {
 			var size = ${vosSize};
-			if(size<6) $('#hotelMoreBtn').hide();
+			if(size < 6) $('#hotelMoreBtn').hide();
 			
 		  const checkinInput = document.getElementById('checkinDate');
 		  const checkoutInput = document.getElementById('checkoutDate');

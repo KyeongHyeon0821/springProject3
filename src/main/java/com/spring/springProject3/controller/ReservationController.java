@@ -9,6 +9,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -105,7 +107,7 @@ public class ReservationController {
 		
 		int res = reservationService.setReservationInput(vo); // 예약 테이블 입력 처리
 		
-		if(res != 0) { // 예약 대기 처리 되었으면 실행
+		if(res != 0) { // 결제대기 처리 되었으면 실행
 			RoomVo roomVo = roomService.getRoom(vo.getRoomIdx());
 			HotelVo hotelVo = hotelService.getHotel(roomVo.getHotelIdx());
 			
@@ -132,7 +134,40 @@ public class ReservationController {
 		model.addAttribute("reservationVo", reservationVo);
 		model.addAttribute("roomVo", roomVo);
 		model.addAttribute("hotelVo", hotelVo);
-		
+		session.removeAttribute("reservationVo");
 		return "reservation/paymentOk";
 	}
+	
+	
+	// 마이페이지 예약상태 상세보기
+	@RequestMapping(value = "/reservationDetail/{reservationNo}", method = RequestMethod.GET)
+	public String reservationStatusGet(HttpSession session, Model model, @PathVariable("reservationNo") String reservationNo) {
+		ReservationVo reservationVo = reservationService.getReservation(reservationNo);
+		RoomVo roomVo = roomService.getRoom(reservationVo.getRoomIdx());
+		HotelVo hotelVo = hotelService.getHotel(roomVo.getHotelIdx());
+		
+		session.setAttribute("reservationVo", reservationVo);
+		model.addAttribute("reservationVo", reservationVo);
+		model.addAttribute("roomVo", roomVo);
+		model.addAttribute("hotelVo", hotelVo);
+		return "reservation/reservationDetail";
+	}
+	
+	
+	// 마이페이지 결제 처리
+	@RequestMapping(value = "/payment/{reservationNo}", method = RequestMethod.GET)
+	public String paymentGet(HttpSession session, Model model, @PathVariable("reservationNo") String reservationNo) {
+		String mid = session.getAttribute("sMid") + "";
+		if(mid == null || mid.equals("")) return "redirect:/message/loginRequired"; // 로그인 체크
+		
+		ReservationVo vo = reservationService.getReservation(reservationNo);
+		RoomVo roomVo = roomService.getRoom(vo.getRoomIdx());
+		HotelVo hotelVo = hotelService.getHotel(roomVo.getHotelIdx());
+		
+		model.addAttribute("hotelVo", hotelVo);
+		model.addAttribute("vo", vo);
+		return "reservation/payment";
+	}
+	
+	
 }

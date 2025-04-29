@@ -1,5 +1,7 @@
 package com.spring.springProject3.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +37,10 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public ReservationVo getReservation(String reservationNo) {
 		return reservationDao.getReservation(reservationNo);
+	}
+
+	@Override
+	public List<ReservationVo> getMyReservations(String mid) {
+		return reservationDao.getMyReservations(mid);
 	}
 }

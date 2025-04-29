@@ -7,6 +7,10 @@
   	select * from reservation where reservationNo = #{reservationNo};
   </select>
   
+  <!-- 내 예약 내역 조회 -->
+  <select id="getMyReservations" resultType="com.spring.springProject3.vo.ReservationVo">
+  	select * from reservation where mid = #{mid} order by idx desc;
+  </select>
   <!-- 예악 정보 저장 처리(결제 전) -->
   <insert id="setReservationInput">
   	insert into reservation values(default, #{vo.reservationNo}, #{vo.mid}, #{vo.name}, #{vo.tel}, #{vo.email}, #{vo.roomIdx}, #{vo.checkinDate}, #{vo.checkoutDate}, #{vo.guestCount}, #{vo.petCount}, #{vo.totalPrice}, #{vo.status},#{vo.memo}, default);
