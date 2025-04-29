@@ -173,14 +173,7 @@
     </div>
     <div class="info-line">
       📄 결제 상태: 
-      <strong>
-      	<c:if test="${reservationVo.status == '예약완료'}">
-      		결제완료
-      	</c:if>
-      	<c:if test="${reservationVo.status == '대기중'}">
-      		대기중
-      	</c:if>
-      </strong>
+      <strong>${reservationVo.status}</strong>
     </div>
   </div>
 

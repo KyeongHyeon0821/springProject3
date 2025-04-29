@@ -11,7 +11,6 @@
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
 	<script>
 		'use strict';
-		
 		// 호텔 찜 추가하기
 		function hotelLikeOk(hotelIdx) {
 			let mid = '${sMid}';
@@ -89,6 +88,9 @@
 		
 		// 체크인 체크아웃 날짜 처리
 		window.addEventListener('DOMContentLoaded', function () {
+			var size = ${vosSize};
+			if(size<6) $('#hotelMoreBtn').hide();
+			
 		  const checkinInput = document.getElementById('checkinDate');
 		  const checkoutInput = document.getElementById('checkoutDate');
 		
@@ -127,11 +129,22 @@
 		let startIndexNo = 6;
 		// 호텔 더보기
 		function moreHotels() {
+			let searchString = '${searchString}';
+			let checkinDate = '${checkinDate}';
+			let checkoutDate = '${checkoutDate}';
+			let guestCount = '${guestCount}';
+			let petCount = '${petCount}';
+			
 			$.ajax({
 				url : "hotelMore",
 				type : "post",
 				data : {
-					startIndexNo : startIndexNo
+					startIndexNo : startIndexNo,
+					checkinDate : checkinDate,
+					checkoutDate : checkoutDate,
+					guestCount : guestCount,
+					petCount : petCount,
+					searchString : searchString
 				},
 				success : function(res) {
 					startIndexNo += 6;

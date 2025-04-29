@@ -100,7 +100,7 @@ SELECT * FROM hotel
         SELECT 1 
         FROM reservation res
         WHERE res.roomidx = r.idx
-          AND res.status IN ('대기중', '예약완료') 
+          AND res.status IN ('결제대기', '결제완료') 
           AND (res.checkinDate < '2025-04-30' AND res.checkoutDate > '2025-04-29')
       )
   );
@@ -109,8 +109,8 @@ SELECT * FROM hotel
 select h.idx, h.name, h.thumbnail, h.address, h.tel, min(r.price) as minprice
 from hotel h
 left outer join room r on h.idx = r.hotelidx
-where h.name like concat('%', '명동', '%') 
-   or h.address like concat('%', '앙성', '%')
+where h.name like concat('%', '서울', '%') 
+   or h.address like concat('%', '서울', '%')
    and h.status = '정상'
    and exists (
        select 1 
@@ -123,9 +123,11 @@ where h.name like concat('%', '명동', '%')
              select 1 
              from reservation res
              where res.roomidx = r.idx
-               and res.status in ('대기중', '예약완료')
+               and res.status in ('결제대기', '결제완료')
                and (res.checkindate < '2025-04-30' and res.checkoutdate > '2025-04-29')
          )
    )
 group by h.idx
-order by h.idx desc;
+order by h.idx desc
+limit 0, 6
+;

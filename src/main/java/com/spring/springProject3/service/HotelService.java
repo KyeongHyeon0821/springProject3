@@ -28,7 +28,7 @@ public interface HotelService {
 
 	List<HotelVo> getMoreHotels(int lastIdx, int count);
 
-	List<HotelVo> getSearchHotelList(String searchString, String checkinDate, String checkoutDate, int guestCount, int petCount);
+	List<HotelVo> getSearchHotelList(String searchString, String checkinDate, String checkoutDate, int guestCount, int petCount, int startIndexNo, int pageSize);
 
 
 }

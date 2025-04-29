@@ -32,12 +32,13 @@
 			             select 1 
 			             from reservation res
 			             where res.roomidx = r.idx
-			               and res.status in ('대기중', '예약완료')
+			               and res.status in ('결제대기', '결제완료')
 			               and (<![CDATA[res.checkindate < #{checkoutDate}]]>and <![CDATA[res.checkoutdate > #{checkinDate}]]>)
 			         )
 			   )
 			group by h.idx
-			order by h.idx desc;
+			order by h.idx desc
+			limit #{startIndexNo}, #{pageSize}
  	</select>
   
   <!-- 찜한 호텔 리스트 idx 조회 -->

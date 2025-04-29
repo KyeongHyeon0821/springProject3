@@ -100,7 +100,7 @@ public class ReservationController {
 		
 		
 		vo.setMid(mid);
-		vo.setStatus("대기중");
+		vo.setStatus("결제대기");
 		vo.setReservationNo(sdf.format(today) + UUID.randomUUID().toString().substring(0,2) + vo.getRoomIdx()); // 예약번호만들기
 		
 		int res = reservationService.setReservationInput(vo); // 예약 테이블 입력 처리

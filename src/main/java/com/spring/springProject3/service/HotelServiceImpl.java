@@ -298,8 +298,8 @@ public class HotelServiceImpl implements HotelService {
 	}
 
 	@Override
-	public List<HotelVo> getSearchHotelList(String searchString, String checkinDate, String checkoutDate, int guestCount, int petCount) {
-		return hotelDao.getSearchHotelList(searchString, checkinDate, checkoutDate, guestCount, petCount);
+	public List<HotelVo> getSearchHotelList(String searchString, String checkinDate, String checkoutDate, int guestCount, int petCount, int startIndexNo, int pageSize) {
+		return hotelDao.getSearchHotelList(searchString, checkinDate, checkoutDate, guestCount, petCount, startIndexNo, pageSize);
 	}
 
 }

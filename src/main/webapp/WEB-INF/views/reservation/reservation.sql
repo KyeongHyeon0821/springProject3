@@ -12,7 +12,7 @@ create table reservation (
   guestCount    int not null,                           /* 인원 수 */
   petCount      int not null,                           /* 반려견 수 */
   totalPrice    int not null,                           /* 총 결제 금액 */
-  status        varchar(20) not null default '대기중',    /* 예약 상태 (대기중, 예약완료, 예약취소, 이용완료) */
+  status        varchar(20) not null default '대기중',    /* 예약 상태 (결제대기, 결제완료, 예약취소, 이용완료, 리뷰작성완료) */
   memo					varchar(300),														/* 예약자 메모 */
   regDate       datetime default now(), 						    /* 예약 등록일 */
   foreign key (mid) references member(mid) on delete cascade,

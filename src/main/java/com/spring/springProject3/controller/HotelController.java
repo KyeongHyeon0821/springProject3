@@ -66,7 +66,7 @@ public class HotelController {
 		String mid = session.getAttribute("sMid") + "";
 		
 		List<HotelVo> vos = null;
-		if(!searchString.equals("")) vos = hotelService.getSearchHotelList(searchString, checkinDate, checkoutDate, guestCount, petCount);
+		if(!searchString.equals("")) vos = hotelService.getSearchHotelList(searchString, checkinDate, checkoutDate, guestCount, petCount, startIndexNo, pageSize);
 		else vos = hotelService.getHotelList(startIndexNo, pageSize);
 			
 		
@@ -76,6 +76,7 @@ public class HotelController {
 		}
 		
 		model.addAttribute("vos", vos);
+		model.addAttribute("vosSize", vos.size());
 	  model.addAttribute("checkinDate", checkinDate);
     model.addAttribute("checkoutDate", checkoutDate);
     model.addAttribute("guestCount", guestCount);
@@ -108,7 +109,7 @@ public class HotelController {
 		String mid = session.getAttribute("sMid") + "";
 		
 		List<HotelVo> vos = null;
-		if(!searchString.equals("")) vos = hotelService.getSearchHotelList(searchString, checkinDate, checkoutDate, guestCount, petCount);
+		if(!searchString.equals("")) vos = hotelService.getSearchHotelList(searchString, checkinDate, checkoutDate, guestCount, petCount, startIndexNo, pageSize);
 		else vos = hotelService.getHotelList(startIndexNo, pageSize);
 		
 		
