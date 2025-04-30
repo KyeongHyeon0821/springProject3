@@ -520,7 +520,6 @@
 	            document.getElementById('touristName').innerText = spot.name;
 	            document.getElementById('touristAddress').innerText = spot.address;
 	            document.getElementById('touristDescription').innerText = spot.description;
-	            
 	          });
 	          
 	          markerList.push({ marker: marker, infoWindow: infoWindow });
