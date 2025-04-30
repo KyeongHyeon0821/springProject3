@@ -62,6 +62,10 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
+<div style="max-width: 1000px; margin: 40px auto 20px; text-align: center;">
+  <h2 style="font-weight: bold; color: #2e7d32;">등록한 호텔 목록</h2>
+  <p style="color: #666;">위드펫에 등록한 숙소들을 한눈에 확인하세요 🏨</p>
+</div>
 
 <div class="hotel-list-container">
   <c:forEach var="vo" items="${hotelList}">
@@ -71,7 +75,7 @@
       </div>
       <div class="hotel-details">
         <div class="hotel-name">
-          <a href="${ctp}/hotel/hotelDetail?idx=${vo.idx}">${vo.name}</a>
+          <a href="${ctp}/hotel/hotelMyDetail?idx=${vo.idx}">${vo.name}</a>
         </div>
         <div class="hotel-address">${vo.address}</div>
         <div class="hotel-tel">${vo.tel}</div>

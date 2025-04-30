@@ -254,7 +254,6 @@ public class HotelController {
 	}
 
 
-	
 	// 호텔 정보 수정 페이지 보기
 	@RequestMapping(value =  "/hotelUpdate", method = RequestMethod.GET)
 	public String hotelUpdateGet(Model model, int idx) {
@@ -295,7 +294,7 @@ public class HotelController {
 		return hotelService.setHotelLikeNo(mid, hotelIdx) + "";
 	}
 	
-	// 등록된 호텔 목록 보기
+	// 본인이 등록한 호텔 목록 보기
 	@RequestMapping("/myHotelList")
 	public String myHotelList(HttpSession session, Model model) {
 	    String mid = (String) session.getAttribute("sMid");
@@ -305,6 +304,21 @@ public class HotelController {
 	    model.addAttribute("hotelList", hotelList);
 	    return "hotel/hotelMyList";
 	}
+	
+	// 본인이 등록한 호텔 상세정보
+	@RequestMapping("/hotelMyDetail")
+	public String hotelMyDetail(@RequestParam("idx") int idx, Model model) {
+		
+	    HotelVo hotelVo = hotelService.getHotel(idx); // 호텔 정보
+	    List<RoomVo> roomVos = roomService.getRoomList(idx); // 객실 목록 (없으면 생략 가능)
+	    List<TouristSpotVo> touristList = touristSpotService.getSpotsByHotelIdx(idx); // 관광지 정보
+	    
+	    model.addAttribute("touristList", touristList);
+	    model.addAttribute("hotelVo", hotelVo);
+	    model.addAttribute("roomVos", roomVos);
+	    return "hotel/hotelMyDetail";
+	}
+
 
 	
 	
