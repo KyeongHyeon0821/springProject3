@@ -75,6 +75,7 @@
 		  margin: 0 auto 2rem;
 		  border-radius: 12px;
 		  overflow: hidden;
+		  cursor:pointer;
 		}
 		
 		.room-slider img {
@@ -391,7 +392,68 @@
 		.warning-banner strong {
 		  color: #c82333;
 		}
-	
+		
+		
+		
+		/* 모달 전체 배경 */
+		.image-modal {
+		  display: none;
+		  position: fixed;
+		  z-index: 10000;
+		  inset: 0; /* top, right, bottom, left 0 */
+		  background-color: rgba(0, 0, 0, 0.3);
+		  justify-content: center;
+		  align-items: flex-start; /* 스크롤 시 위에서부터 보이게 */
+		  overflow-y: auto; 
+		  padding: 4vh 0;
+		}
+		
+		.image-modal-content {
+		  position: relative;
+		  background-color: white;
+		  margin: 5vh auto;
+		  padding: 3rem 0 1rem 0;
+		  width: 90%;
+		  max-width: 1000px;
+		  max-height: 90vh; /* ✅ 화면의 90%만 차지하도록 제한 */
+		  overflow-y: auto; /* ✅ 내부 스크롤 가능하게 */
+		  border-radius: 16px;
+		  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+		}
+		
+		/* 닫기 버튼 */
+		.image-modal-close {
+		  position: absolute;
+		  top: 0px;
+		  right: 13px;
+		  font-size: 28px;
+		  font-weight: bold;
+		  color: #888;
+		  cursor: pointer;
+		}
+		
+		.image-modal-close:hover {
+		  color: #000;
+		}
+		
+		/* 이미지 리스트 */
+		.modal-images {
+		  display: flex;
+		  flex-wrap: wrap;
+		  justify-content: center;
+		  gap: 1.2rem;
+		}
+		
+		/* 이미지 크기: 슬라이드와 동일 */
+		.modal-images img {
+		  width: 100%;
+		  max-width: 48%;
+		  height: auto;
+		  object-fit: cover;
+		  border-radius: 12px;
+		  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+		}
+		
 	</style>
 </head>
 <body>
@@ -402,11 +464,12 @@
     <div class="room-price"><fmt:formatNumber value="${vo.price}" type="number" pattern="#,##0" />원 / 1박</div>
   </div>
 
+	<!-- 이미지 슬라이드 -->
   <div class="room-slider swiper">
   <div class="swiper-wrapper">
     <!-- 썸네일 먼저 -->
     <div class="swiper-slide">
-      <img src="${ctp}/roomThumbnail/${vo.thumbnail}" alt="${vo.name}" />
+      <img src="${ctp}/roomThumbnail/${vo.thumbnail}" alt="${vo.name}" onclick="openModal()" />
     </div>
 
     <!-- 나머지 이미지 -->
@@ -414,7 +477,7 @@
       <c:set var="roomImages" value="${fn:split(vo.images, '/')}" />
       <c:forEach var="roomImage" items="${roomImages}">
         <div class="swiper-slide">
-          <img src="${ctp}/roomImages/${roomImage}" alt="객실 이미지" />
+          <img src="${ctp}/roomImages/${roomImage}" alt="객실 이미지" onclick="openModal()" />
         </div>
       </c:forEach>
     </c:if>
@@ -425,6 +488,22 @@
   <div class="swiper-button-prev"></div>
   <div class="swiper-pagination"></div>
 	</div>
+	
+	<!-- 이미지 모달 -->
+	<div id="imageModal" class="image-modal" onclick="closeModal(event)">
+	  <div class="image-modal-content">
+	    <span class="image-modal-close" onclick="closeModal()">&times;</span>
+	    <div class="modal-images">
+	      <img src="${ctp}/roomThumbnail/${vo.thumbnail}" alt="썸네일" />
+	      <c:if test="${!empty vo.images}">
+	        <c:forEach var="img" items="${roomImages}" varStatus="st">
+	          <img src="${ctp}/roomImages/${img}" alt="객실 이미지" />
+	        </c:forEach>
+	      </c:if>
+	    </div>
+	  </div>
+	</div>
+	
 
   <div class="room-info">
     <ul>
@@ -623,6 +702,31 @@
 	    disableOnInteraction: false
 	  }
 	});
+	
+	// 모달 관련 요소들 선택
+	const modal = document.getElementById('imageModal');
+	const closeModalBtn = document.querySelector('.image-modal-close');
+
+	// 모달 열기 함수
+	function openModal() {
+	  modal.style.display = 'flex';  // 모달을 보이게 설정
+	}
+
+	// 모달 닫기 함수
+	function closeModal(event) {
+	  if (event) {
+	    // 모달 외부를 클릭하면 닫히도록
+	    if (event.target === modal) {
+	      modal.style.display = 'none';
+	    }
+	  } else {
+	    modal.style.display = 'none';  // 닫기 버튼 클릭 시 모달 닫기
+	  }
+	}
+
+	// 닫기 버튼 클릭 시 모달 닫기
+	closeModalBtn.addEventListener('click', closeModal);
+	
 </script>
 </body>
 </html>
