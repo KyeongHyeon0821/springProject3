@@ -352,7 +352,7 @@
 
     <div class="search-field small">
       <label>인원</label>
-      <input type="number" id="guestCount" name="guestCount" min="1" max="5" value="${guestCount}" />
+      <input type="number" id="guestCount" name="guestCount" min="1" max="10" value="${guestCount}" />
     </div>
 
     <div class="search-field small">

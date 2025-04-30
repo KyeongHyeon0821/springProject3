@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.spring.springProject3.dao.ReservationDao;
 import com.spring.springProject3.vo.ReservationVo;
+import com.spring.springProject3.vo.ReviewVo;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -42,5 +43,10 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public List<ReservationVo> getMyReservations(String mid) {
 		return reservationDao.getMyReservations(mid);
+	}
+	
+	@Override
+	public void setReviewCheckOk(ReviewVo vo) {
+		reservationDao.setReviewCheckOk(vo);
 	}
 }

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<% pageContext.setAttribute("newLine", "\n"); %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
@@ -360,7 +362,7 @@
 		  </label>
 		  
 		  <label class="small-input">인원
-		    <input type="number" name="guestCount" min="1" max="5" value="${guestCount}" required />
+		    <input type="number" name="guestCount" min="1" max="10" value="${guestCount}" required />
 		  </label>
 		  
 		  <label class="small-input">반려견
@@ -396,7 +398,7 @@
 	          </a>
 	        </div>
 	        <div>${roomVo.roomNumber}</div> <!-- 호실 번호 -->
-	        <div>${roomVo.price}원</div>
+	        <div><fmt:formatNumber value="${roomVo.price}" type="number" pattern="#,##0" />원</div>
 	      </div>
 	    </div>
 	  </c:forEach>
@@ -413,7 +415,7 @@
 
   <div class="hotel-description">
     <h4>🏨 호텔 소개</h4>
-    <p>${vo.description}</p>
+    <p>${fn:replace(vo.description, newLine, "<br>")}</p>
   </div>
 
   <div class="button-group">

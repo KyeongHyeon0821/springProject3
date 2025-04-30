@@ -20,9 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.springProject3.service.HotelService;
+import com.spring.springProject3.service.ReviewService;
 import com.spring.springProject3.service.RoomService;
 import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.OptionVo;
+import com.spring.springProject3.vo.ReviewVo;
 import com.spring.springProject3.vo.RoomVo;
 
 @Controller
@@ -34,6 +36,9 @@ public class RoomController {
 	
 	@Autowired
 	HotelService hotelService;
+	
+	@Autowired
+	ReviewService reviewService;
 	
 	// 객실 등록 폼 보기
 	@RequestMapping(value = ("/roomInput"), method = RequestMethod.GET)
@@ -93,9 +98,13 @@ public class RoomController {
         nights = 1; // 최소 1박 보장
     }
     
+    // 객실상세페이지에서 리뷰 보여주기
+ 		List<ReviewVo> rVos = reviewService.getRoomReviewList(roomIdx);
+ 		
 		RoomVo vo = roomService.getRoom(roomIdx);
 		List<OptionVo> roomOptionList = roomService.getRoomOptionList(roomIdx);
 				
+		model.addAttribute("rVos", rVos);
 		model.addAttribute("vo", vo);
 		model.addAttribute("roomOptionList", roomOptionList);
 		model.addAttribute("checkinDate", checkinDate);
