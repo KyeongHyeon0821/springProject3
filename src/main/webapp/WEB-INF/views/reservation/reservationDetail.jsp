@@ -15,7 +15,7 @@
 		function reservationCancel(reservationNo) {
 			let ans = confirm("예약을 취소하시겠습니까?");
 			if(!ans) return false;
-			else location.href="${ctp}/reservation/reservationCancel?reservationNo="+reservationNo;
+			else location.href="${ctp}/reservation/reservationCancel/"+reservationNo;
 		}
 		
 		function payment(reservationNo) {
