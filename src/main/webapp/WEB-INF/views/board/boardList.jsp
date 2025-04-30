@@ -18,6 +18,15 @@
   .container {
     flex: 1;
   }
+  .board-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: #2e7d32;
+    padding-top: 30px;
+    padding-bottom: 20px;
+  }
   footer {
     margin-top: auto;
   }
@@ -26,8 +35,7 @@
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <div class="container mt-4">
-  <h2 class="mb-4">자유게시판</h2>
-
+  <h2 class="board-title mb-4">자유게시판</h2>
   <table class="table table-hover text-center align-middle">
     <thead class="table-success">
       <tr>
@@ -67,7 +75,7 @@
 	    </c:forEach>
 	  </ul>
 	</div>
-  <div class="text-end">
+  <div class="text-end mb-5">
     <a href="${pageContext.request.contextPath}/board/input" class="btn btn-primary">글쓰기</a>
   </div>
 </div>
