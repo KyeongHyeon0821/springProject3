@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.springProject3.common.Pagination;
 import com.spring.springProject3.common.ProjectProvide;
@@ -36,8 +37,8 @@ public class PhotogalleryController {
 	@RequestMapping(value = "/photogalleryList", method = RequestMethod.GET)
 	public String photogalleryListGet(Model model, HttpSession session,
 			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
-			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize,
-			@RequestParam(name="part", defaultValue = "전체", required = false) String part
+			@RequestParam(name="pageSize", defaultValue = "8", required = false) int pageSize,
+			@RequestParam(name="part", defaultValue = "최신순", required = false) String part
 		) {
 		PageVo pageVo = pagination.getTotRecCnt(pag, pageSize, "photogallery", part, "");
 		List<PhotogalleryVo> vos = photogalleryService.getPhotogalleryList(pageVo.getStartIndexNo(),pageSize,part);
@@ -75,12 +76,44 @@ public class PhotogalleryController {
 	// 포토갤러리 내용보기
 	@RequestMapping(value = "/photogalleryDetail", method = RequestMethod.GET)
 	public String photogalleryDetailGet(int idx, Model model) {
+		photogalleryService.setPhotogalleryReadNumPlus(idx);
 		PhotogalleryVo vo = photogalleryService.getPhotogalleryDetail(idx);
-		
 		model.addAttribute("vo", vo);
 		
 		return "photogallery/photogalleryDetail";
 	}
+	
+	// 포토갤러리 개별내용각각을 전체보기(무한스크롤)
+	@RequestMapping(value = "/photogallerySingleAll", method = RequestMethod.GET)
+	public String photogallerySingleAllGet(Model model,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "2", required = false) int pageSize,
+			@RequestParam(name="part", defaultValue = "최신순", required = false) String part
+		) {
+		int startIndexNo = (pag - 1) * pageSize;
+		List<PhotogalleryVo> vos = photogalleryService.getPhotogalleryList(startIndexNo, pageSize, part);
+		model.addAttribute("vos", vos);
+		
+		return "photogallery/photogallerySingleAll";
+	}
+	
+	// 무한스크롤 : 한화면 마지막으로 이동했을때 다음 페이지 스크롤하기
+	@ResponseBody
+	@RequestMapping(value = "/photogallerySingleAllPaging", method = RequestMethod.POST)
+	public ModelAndView photogallerySingleAllPagingPost(Model model,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag, 
+			@RequestParam(name="pageSize", defaultValue = "2", required = false) int pageSize,
+			@RequestParam(name="part", defaultValue = "최신순", required = false) String part
+		) {
+		int startIndexNo = (pag - 1) * pageSize;
+		List<PhotogalleryVo> vos = photogalleryService.getPhotogalleryList(startIndexNo, pageSize, part);
+		model.addAttribute("vos", vos);
+		System.out.println("vos: " + vos);
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("photogallery/photogallerySingleAllPaging");
+		return mv;
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	@ResponseBody

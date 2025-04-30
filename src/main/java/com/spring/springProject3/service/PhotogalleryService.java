@@ -16,8 +16,8 @@ public interface PhotogalleryService {
 
 	void setPhotogalleryGoodCheck(int idx);
 
-	PhotogalleryVo imgDelete(String content);
-
 	int setPhotogalleryDelete(int idx);
+
+	int setPhotogalleryReadNumPlus(int idx);
 
 }

@@ -86,11 +86,6 @@ public class PhotogalleryServiceImpl implements PhotogalleryService {
 			return photogalleryDao.getPhotogalleryDetail(idx);
 		}
 
-		@Override
-		public PhotogalleryVo imgDelete(String content) {
-			// TODO Auto-generated method stub
-			return null;
-		}
 
 		@Override
 		public void setPhotogalleryGoodCheck(int idx) {
@@ -101,8 +96,10 @@ public class PhotogalleryServiceImpl implements PhotogalleryService {
 		public int setPhotogalleryDelete(int idx) {
 			return photogalleryDao.setPhotogalleryDelete(idx);
 		}
-		
 
-
+		@Override
+		public int setPhotogalleryReadNumPlus(int idx) {
+			return photogalleryDao.setPhotogalleryReadNumPlus(idx);
+		}
 
 }

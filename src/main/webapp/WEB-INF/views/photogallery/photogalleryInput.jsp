@@ -112,7 +112,6 @@
 	
 	<div class="section-box">
 	  <form name="myform" method="post">
-	    <div class="form-text">※업로드시 마지막 사진이 썸네일로 지정됩니다.※</div>
 	    <table class="table">
 	      <tr>
 	        <th>작성자</th>
@@ -133,6 +132,8 @@
               <option>오산반려동물테마파크</option> <!-- 애견동반 실내 테마파크  -->
               <option>평창 육백마지기</option> <!-- 산책길?   -->
               <option>남해 독일마을</option> <!-- 반려동물과 둘러볼수있고 동반카페,식당이 있음   -->
+              <option>바다</option>
+              <option>여행</option>
             </select>
           </td>
         </tr>

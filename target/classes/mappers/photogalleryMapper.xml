@@ -3,16 +3,27 @@
 <mapper namespace="com.spring.springProject3.dao.PhotogalleryDao">
 
 	<select id="getPhotogalleryList" resultType="com.spring.springProject3.vo.PhotogalleryVo">
-		select * from photogallery <if test='part != "전체"'> where part=#{part} </if> order by idx desc limit #{startIndexNo},#{pageSize};
+		<if test='part == "최신순"'>
+			select * from photogallery order by idx desc limit #{startIndexNo},#{pageSize};
+		</if>
+		<if test='part == "조회수순"'>
+			select * from photogallery order by readNum desc limit #{startIndexNo},#{pageSize};
+		</if>
+		<if test='part == "좋아요순"'>
+			select * from photogallery order by good desc limit #{startIndexNo},#{pageSize};
+		</if>
 	</select>
 	
 	<select id="getPhotogalleryDetail" resultType="com.spring.springProject3.vo.PhotogalleryVo">
 		select * from photogallery where idx=#{idx};
 	</select>
 	
+	
 	<select id="getPhotogalleryTotRecCntSearch" resultType="int">
-		select count(*) from photogallery where part=#{part};
+		select count(*) from photogallery;
 	</select>
+
+	
 	
 	
 	
@@ -21,9 +32,12 @@
 	</insert>
 	
 	<update id="setPhotogalleryGoodCheck">
-		update photogallery set good = good + 1 where idx = ${idx};
+		update photogallery set good = good + 1 where idx = #{idx};
 	</update>
 
+	<update id="setPhotogalleryReadNumPlus">
+		update photogallery set readNum = readNum + 1 where idx = #{idx};
+	</update>
   
   
   <delete id="setPhotogalleryDelete">

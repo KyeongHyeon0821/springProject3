@@ -71,6 +71,23 @@
     .btn {
       font-size: 1rem;
     }
+    
+		h6 {
+		  position: fixed;
+		  right: 1rem;
+		  bottom: -50px;
+		  transition: 0.7s ease;
+		}
+   	.on {
+		  opacity: 0.8;
+		  cursor: pointer;
+		  bottom: 0;
+		}
+  
+    .container {
+      width: 1000px;
+      margin: 0 auto;
+    }
   </style>
   <script>
     'use strict';
@@ -93,6 +110,20 @@
     		error : function() { alert("전송오류!"); }
     	});
     }
+    
+    //
+    $(window).scroll(function(){
+    	if($(this).scrollTop() > 100) {
+    		$("#topBtn").addClass("on");
+    	}
+    	else {
+    		$("#topBtn").removeClass("on");
+    	}
+    	
+    	$("#topBtn").click(function(){
+    		window.scrollTo({top:0, behavior: "smooth"});
+    	});
+    });
 
   </script>
 </head>
@@ -104,23 +135,28 @@
 	  <span class="my-page-header">포토갤러리 상세보기</span>
 	</div>
   <div class="section-box">
-  	<div class="text-end">
-  		<a href="javascript:goodCheck()" title="좋아요" style="text-decoration: none;"><font size="5">👍 (${vo.good})</font></a>
-  	</div>
+<%--   	<div class="text-end">
+  		<a href="javascript:goodCheck()" title="좋아요" style="text-decoration: none;"><font size="3">👍 (${vo.good})</font></a>
+  	</div> --%>
+  	<div class="text-end"><input type="button" value="돌아가기" onclick="location.href='photogalleryList'" class="btn btn-outline-secondary btn-sm mb-2"/></div>
     <table class="table">
       <tr>
         <th>작성자</th>
         <td style="border-top: 1px solid #e5e5e5;">${vo.nickName}</td>
         <th>작성일시</th>
         <td style="border-top: 1px solid #e5e5e5;"><c:out value="${vo.WDate.substring(0,16)}" /></td>
+        <th>조회수</th>
+        <td style="border-top: 1px solid #e5e5e5;">${vo.readNum}</td>
+        <th>좋아요</th>
+        <td style="border-top: 1px solid #e5e5e5;"><a href="javascript:goodCheck()" title="좋아요" style="text-decoration: none;"><font size="4">👍 (${vo.good})</font></a></td>
       </tr>
       <tr>
         <th>제목</th>
-        <td colspan="3">${vo.title}</td>
+        <td colspan="9">${vo.title}</td>
       </tr>
       <tr style="border-bottom: 1px solid #e5e5e5">
         <th>내용</th>
-        <td colspan="3">
+        <td colspan="9">
         	<div style="min-height:300px; height:auto; ">${fn:replace(vo.content, newLine, "<br/>")}</div>
         </td>
       </tr>
@@ -141,5 +177,6 @@
 </div>
 <p><br/></p>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
+<h6 id="topBtn" class="text-right mr-3"><img src="${ctp}/images/arrowTop.png" title="위로이동" style="width: 42px; height: auto;"/></h6>
 </body>
 </html>

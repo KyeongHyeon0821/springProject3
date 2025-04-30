@@ -13,5 +13,6 @@ public class PhotogalleryVo {
 	private int good;
 	private String wDate;
 	private String thumbnail;
+	private int readNum;
 
 }

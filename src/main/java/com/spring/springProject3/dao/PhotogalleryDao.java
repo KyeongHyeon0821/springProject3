@@ -20,4 +20,6 @@ public interface PhotogalleryDao {
 
 	int setPhotogalleryDelete(@Param("idx") int idx);
 
+	int setPhotogalleryReadNumPlus(@Param("idx") int idx);
+
 }
