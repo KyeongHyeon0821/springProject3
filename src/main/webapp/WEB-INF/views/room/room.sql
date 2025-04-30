@@ -48,3 +48,17 @@ create table roomOptions (
   foreign key (optionIdx) references options(idx) on delete cascade
 );
 
+select rs.*, r.* from reservation rs, room r where rs.roomIdx=r.idx order by checkoutDate desc;
+
+select r.name as roomName, r.roomNumber, r.price, r.maxPeople, r.petSizeLimit, r.petCountLimit, r.thumbnail as roomThumbnail, r.idx as roomIdx,
+					 h.name as hotelName, h.thumbnail as hotelThumbnail, h.idx as hotelIdx,
+					 rs.idx as reservationIdx,
+					 rs.checkinDate,
+					 rs.checkoutDate,
+					 rs.guestCount,
+					 rs.petCount,
+					 rs.totalPrice from reservation rs
+					 join room r on rs.roomIdx = r.idx
+					 join hotel h on r.hotelIdx = h.idx
+					 where rs.mid = 'atom' and (rs.status ='이용완료' or rs.status ='리뷰작성') order by rs.checkinDate desc;
+					 

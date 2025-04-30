@@ -113,7 +113,10 @@ public class MessageController {
 			model.addAttribute("message", "리뷰 저장 실패");
 			model.addAttribute("url", "review/memberReviewInput");
 		}
-
+		
+		
+		
+		
 		return "include/message";
     }
 }

@@ -6,11 +6,36 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>memberReviewInput.jsp</title>
+	<title>reviewList.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp" />
 	<%-- <jsp:include page="/WEB-INF/views/review/reviewModalForm.jsp" /> --%>
 	<link rel="stylesheet" type="text/css" href="${ctp}/css/linkOrange.css"/>
 	<style>
+		.pagination .page-link {
+      color: #2e7d32;
+      border-color: #2e7d32;
+    }
+
+    .pagination .active .page-link {
+      background-color: #2e7d32;
+      border-color: #2e7d32;
+    }
+    
+		h6 {
+		  position: fixed;
+		  right: 1rem;
+		  bottom: -50px;
+		  transition: 0.7s ease;
+		}
+   	.on {
+		  opacity: 0.8;
+		  cursor: pointer;
+		  bottom: 0;
+		}
+    .container table {
+      width: 1000px;
+      padding-right:30px;
+    }
 		.container-review {
 			background-color: white;
 		}
@@ -24,21 +49,6 @@
 		.room-items3 {
 			width: 500px;
 		}
-		.modal-content {
-			box-sizing: border-box;
-		} 
-		.modal-content textarea {
-			width: 100%;
-			height: 100%;
-			box-sizing: border-box;
-			border-color: #eee;
-			resize: none;
-			
-		}
-		
-		fieldset {
-      direction: rtl;
-    }
     #starForm input[type=radio] {
       display: none;
     }
@@ -59,6 +69,20 @@
     
     a {text-decoration:none !important}
 	</style>
+	<script>
+		$(window).scroll(function(){
+	    	if($(this).scrollTop() > 100) {
+	    		$("#topBtn").addClass("on");
+	    	}
+	    	else {
+	    		$("#topBtn").removeClass("on");
+	    	}
+	    	
+	    	$("#topBtn").click(function(){
+	    		window.scrollTo({top:0, behavior: "smooth"});
+	   	});
+	  });
+	</script>
 	<script>
 	  'use strict';
 	  
@@ -153,6 +177,17 @@
 <p><br/></p>
 <div class="container container-review">
 		<p><br></p>
+  	<div class="input-group">
+	    <select name="part" id="part" class="form-select bg-success-subtle">
+	      <option value="mid">아이디</option>
+	      <option value="name">성명</option>
+	      <option value="address">주소</option>
+	    </select>
+	    <input type="text" name="content" id="content" placeholder="검색할 내용을 입력하세요" autofocus class="form-control"/>
+	    <div class="input-group-append">
+	      <input type="button" value="검색(완전일치)" onclick="formSearch()" class="btn btn-success ms-1 me-1"/>
+	    </div>
+	  </div>
 	  <table class="table text-center">
 	  	<tr>
         <th class="table-secondary">숙소 이용 내역</th>
@@ -174,8 +209,12 @@
 				    <div class="room-info"><span class="room-label" style="color: red">총 숙박비용: ${ReservationListVo.totalPrice}</span></div>
 			    </td>
 			    <td class="room-items3 border border-0">
-			    	<a href="javascript:reviewShowCheck(${ReservationListVo.roomIdx})" id="reviewShowBtn${ReservationListVo.roomIdx}" class="btn btn-success btn-sm">리뷰보기</a>
-			    	<a href="javascript:reviewHideCheck(${ReservationListVo.roomIdx})" id="reviewHideBtn${ReservationListVo.roomIdx}" class="btn btn-warning btn-sm" style="display:none" >리뷰가리기</a>
+			    	<c:forEach var="vo" items="${vos}">
+			    		<c:if test="${vo.roomIdx == ReservationListVo.roomIdx}">
+					    	<a href="javascript:reviewShowCheck(${ReservationListVo.roomIdx})" id="reviewShowBtn${ReservationListVo.roomIdx}" class="btn btn-success btn-sm">리뷰보기</a>
+					    	<a href="javascript:reviewHideCheck(${ReservationListVo.roomIdx})" id="reviewHideBtn${ReservationListVo.roomIdx}" class="btn btn-warning btn-sm" style="display:none" >리뷰가리기</a>
+				    	</c:if>
+			    	</c:forEach>
 			    </td>
 			    <td class="room-items4 border border-0 ms-10">
 			    	<a href="${ctp}/room/roomDetail?roomIdx=${ReservationListVo.roomIdx}&checkinDate=${ReservationListVo.checkinDate}&checkoutDate=${ReservationListVo.checkoutDate}&guestCount=${guestCount}&petCount=${petCount}" class="btn btn-danger btn-sm">상세보기</a>
@@ -188,90 +227,23 @@
 	      </tr>
       </c:forEach>
 	  </table>
+	  
+  <!-- 블록페이지 시작 -->
+	<div class="text-center mt-4">
+	  <ul class="pagination justify-content-center">
+	    <c:if test="${pageVo.pag > 1}"><li class="page-item"><a class="page-link" href="reviewList?part=${pageVo.part}&pag=1&pageSize=${pageSize}">첫페이지</a></li></c:if>
+	  	<c:if test="${pageVo.curBlock > 0}"><li class="page-item"><a class="page-link" href="reviewList?part=${pageVo.part}&pag=${(curBlock-1)*blockSize+1}&pageSize=${pageVo.pageSize}">이전블록</a></li></c:if>
+	  	<c:forEach var="i" begin="${(pageVo.curBlock*pageVo.blockSize)+1}" end="${(pageVo.curBlock*pageVo.blockSize)+pageVo.blockSize}" varStatus="st">
+		    <c:if test="${i <= pageVo.totPage && i == pageVo.pag}"><li class="page-item active"><a class="page-link" href="reviewList?part=${pageVo.part}&pag=${i}&pageSize=${pageVo.pageSize}">${i}</a></li></c:if>
+		    <c:if test="${i <= pageVo.totPage && i != pageVo.pag}"><li class="page-item"><a class="page-link" href="reviewList?part=${pageVo.part}&pag=${i}&pageSize=${pageVo.pageSize}">${i}</a></li></c:if>
+	  	</c:forEach>
+	  	<c:if test="${pageVo.curBlock < pageVo.lastBlock}"><li class="page-item"><a class="page-link" href="reviewList?part=${pageVo.part}&pag=${(pageVo.curBlock+1)*pageVo.blockSize+1}&pageSize=${pageVo.pageSize}">다음블록</a></li></c:if>
+	  	<c:if test="${pageVo.pag < pageVo.totPage}"><li class="page-item"><a class="page-link" href="reviewList?part=${pageVo.part}&pag=${pageVo.totPage}&pageSize=${pageVo.pageSize}">마지막페이지</a></li></c:if>
+	  </ul>
+	</div>
+	<!-- 블록페이지 끝 -->
 </div>
 <p><br/></p>
-
-
-<!-- 모달로 리뷰작성창 띄우기 -->
-
-	<div class="modal modal-lg" id="myModal">
-	  <div class="modal-dialog modal-dialog-centered">
-	    <div class="modal-content">
-	    	<div class="modal-header">
-	      	<h4>리뷰달기 </h4><span class="btn btn-info ms-3">${sNickName} 님</span>
-	    	</div>
-				<form name="reviewForm" id="reviewForm" action="${ctp}/review/reviewInput" method="post">
-		      <div class="modal-body text-end">
-			      <fieldset style="border:0px;" class="starForm" id="starForm">
-			        <div class="text-left viewPoint m-0 b-0" >
-			          <input type="radio" name="star" value="5" id="star1"><label for="star1">★</label>
-			          <input type="radio" name="star" value="4" id="star2"><label for="star2">★</label>
-			          <input type="radio" name="star" value="3" id="star3"><label for="star3">★</label>
-			          <input type="radio" name="star" value="2" id="star4"><label for="star4">★</label>
-			          <input type="radio" name="star" value="1" id="star5"><label for="star5">★</label>
-			          : 별점을 선택해 주세요 ■
-			        </div>
-			      </fieldset>
-			      
-			      <div class="m-0 p-0">
-			      	<div class="text-end">
-			          <input type="radio" name="purpose" value="가족과여행" id="purpose1"><label for="star1">가족과여행</label>
-			          <input type="radio" name="purpose" value="연인과여행" id="purpose2"><label for="star2">연인과함께</label>
-			          <input type="radio" name="purpose" value="친구와여행" id="purpose3"><label for="star3">친구와여행</label>
-			          <input type="radio" name="purpose" value="휴식" id="purpose4"><label for="star4">휴식</label>
-			          <input type="radio" name="purpose" value="행사" id="purpose5"><label for="star5">행사</label>
-			          : 목적을 선택해 주세요 ■
-			        </div>
-		      		<textarea rows="6" cols="80" name="content" id="content" placeholder="리뷰를 등록해주세요." required></textarea>
-		      	</div>
-					</div>
-					<div class="modal-footer">
-		      	<button type="submit" class="btn btn-dark" >등록하기</button>
-		      	<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-					</div>   
-					<input type="hidden" name="roomIdx" id="roomIdx" />
-					<input type="hidden" name="hotelIdx" id="hotelIdx" />
-					<input type="hidden" name="roomName" id="roomName" />
-				</form>      
-			</div>
-		</div>      
-	</div>
-<p><br></p>
-
-
-	<!-- 모달창으로 리뷰 띄우기 -->
-	
-	<div class="modal fade" id="myModalReview" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h1 class="modal-title fs-5" id="exampleModalLabel">리뷰 리스트</h1>
-	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	      </div>
-	      <c:forEach var="ReviewVo" items="${rVos}" varStatus="st">
-		      <div class="modal-body" style="">
-		      	<span>${ReviewVo.idx}</span>
-		      	<span>${ReviewVo.hotelIdx}</span>
-		      	<span>${ReviewVo.roomIdx}</span>
-		      	<span>${ReviewVo.reviewTotCnt}</span>
-		      	<span>${ReviewVo.reviewCnt}</span>
-		      	<span>${ReviewVo.mid}</span>
-		      	<span>${ReviewVo.nickName}</span>
-		      	<span>${ReviewVo.roomName}</span>
-		      	<span>${ReviewVo.purpose}</span>
-		      	<span>${ReviewVo.star}</span>
-		      	<span>${ReviewVo.content}</span>
-		      	<span>${ReviewVo.hostIp}</span>
-		      	<span>${ReviewVo.reviewDate}</span>
-		      </div>
-	      </c:forEach>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Save changes</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-
+<h6 id="topBtn" class="text-right mr-3"><img src="${ctp}/images/arrowTop.gif" title="위로이동"/></h6>
 </body>
 </html>

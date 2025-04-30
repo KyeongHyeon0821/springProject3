@@ -29,7 +29,7 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	@Override
-	public void setReviewCheckOk(ReviewVo vo) {
-		reservationDao.setReviewCheckOk(vo);
+	public void setReviewSave(ReviewVo vo) {
+		reservationDao.setReviewSave(vo);
 	}
 }

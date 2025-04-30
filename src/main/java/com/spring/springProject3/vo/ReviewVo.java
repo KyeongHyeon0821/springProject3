@@ -8,6 +8,7 @@ public class ReviewVo {
 	private int idx;
 	private int hotelIdx;
 	private int roomIdx;
+	private int reservationIdx;
 	private int reviewTotCnt;
 	private int reviewCnt;
 	private String mid;

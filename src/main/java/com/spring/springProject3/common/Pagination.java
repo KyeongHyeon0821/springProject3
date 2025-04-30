@@ -37,6 +37,10 @@ public class Pagination {
 			String choice = searchString;
 			totRecCnt = adminDao.getInquiryTotRecCnt(choice);
 		}
+		else if(section.equals("adminReview")) {
+			String choice = searchString;
+			totRecCnt = adminDao.getReviewTotRecCnt(choice);
+		}
 		else if(section.equals("qna")) { 
 			totRecCnt = qnaDao.getQnaTotRecCnt(); 
 		}

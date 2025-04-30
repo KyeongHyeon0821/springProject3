@@ -85,6 +85,7 @@
     <div class="section-title">활동 내역</div>
     <div class="link-list">
       <a href="#">예약 내역 조회 및 관리</a>
+      <a href="${ctp}/room/roomUseList">이용 내역 관리</a>
       <a href="#">찜 목록</a>
       <a href="${ctp}/review/memberReview">리뷰 관리</a>
       <a href="#">1:1 문의 내역</a>

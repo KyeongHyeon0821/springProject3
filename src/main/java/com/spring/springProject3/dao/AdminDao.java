@@ -43,6 +43,8 @@ public interface AdminDao {
 
 	void setReviewDelete(@Param("idx") int idx);
 
+	int getReviewTotRecCnt(@Param("choice") String choice);
+
 
 	
 }

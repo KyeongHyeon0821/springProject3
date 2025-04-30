@@ -2,19 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.springProject3.dao.ReviewDao">
 
-	<select id="getRoomUsedList" resultType="com.spring.springProject3.vo.ReservationListVo">
-		select r.name as roomName, r.roomNumber, r.price, r.maxPeople, r.petSizeLimit, r.petCountLimit, r.thumbnail as roomThumbnail, r.idx as roomIdx,
-					 h.name as hotelName, h.thumbnail as hotelThumbnail, h.idx as hotelIdx,
-					 rs.checkinDate,
-					 rs.checkoutDate,
-					 rs.guestCount,
-					 rs.petCount,
-					 rs.totalPrice from reservation rs
-					 join room r on rs.roomIdx = r.idx
-					 join hotel h on r.hotelIdx = h.idx
-					 where rs.mid = #{mid} and rs.status ='이용완료' order by rs.checkinDate desc;
-	</select>
-	
+
 	<select id="getRoomIdxCheck" resultType="com.spring.springProject3.vo.ReservationListVo">
 		select r.name as roomName, r.idx as roomIdx,
 				 	 h.idx as hotelIdx
@@ -40,23 +28,28 @@
 	<select id="getRoomUsedAllList" resultType="com.spring.springProject3.vo.ReservationListVo">
 		select r.name as roomName, r.roomNumber, r.price, r.maxPeople, r.petSizeLimit, r.petCountLimit, r.thumbnail as roomThumbnail, r.idx as roomIdx,
 					 h.name as hotelName, h.thumbnail as hotelThumbnail, h.idx as hotelIdx,
+					 rs.idx as reservationIdx,
 					 rs.checkinDate,
 					 rs.checkoutDate,
 					 rs.guestCount,
 					 rs.petCount,
-					 rs.totalPrice from reservation rs
+					 rs.totalPrice,
+					 (select count(*)) as roomTotal
+					 from reservation rs
 					 join room r on rs.roomIdx = r.idx
 					 join hotel h on r.hotelIdx = h.idx
-					 where rs.mid = #{mid} and rs.status ='리뷰작성완료' order by rs.checkinDate desc;
+					 where rs.mid = #{mid} and rs.status ='리뷰작성' order by rs.checkinDate desc limit #{startIndexNo},#{pageSize};
+	</select>
+	
+	<!-- 리뷰를 달았는지 확인한다 -->
+	<select id="getExistReviewedCheck" resultType="int">
+		select idx from reservation where mid = #{mid} and status = '리뷰작성';
 	</select>
 	
 	
 	
-	
-	
-	
 	<insert id="setReviewInputOk">
-		insert into review values (default, #{vo.hotelIdx}, #{vo.roomIdx},default,default, #{vo.mid},#{vo.nickName}, #{vo.roomName},#{vo.purpose},#{vo.star},#{vo.content},#{vo.hostIp}, default);
+		insert into review values (default, #{vo.hotelIdx}, #{vo.roomIdx}, #{vo.reservationIdx},#{vo.mid},#{vo.nickName}, #{vo.roomName},#{vo.purpose},#{vo.star},#{vo.content},#{vo.hostIp}, default);
 	</insert>
 
 

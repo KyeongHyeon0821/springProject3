@@ -21,7 +21,9 @@ public interface ReviewService {
 
 	List<ReviewVo> getRoomReviewAllList();
 
-	List<ReservationListVo> getRoomUsedAllList(String mid);
+	List<ReservationListVo> getRoomUsedAllList(int startIndexNo, int pageSize, String choice, String mid);
+
+	List<Integer> getExistReviewedCheck(String mid);
 
 
 }

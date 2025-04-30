@@ -13,6 +13,6 @@ public interface ReservationDao {
 
 	void setReservationAutoCancel();
 
-	void setReviewCheckOk(@Param("vo") ReviewVo vo);
+	void setReviewSave(@Param("vo") ReviewVo vo);
 
 }

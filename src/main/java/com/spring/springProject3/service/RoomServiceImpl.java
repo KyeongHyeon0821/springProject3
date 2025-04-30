@@ -18,9 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.springProject3.dao.RoomDao;
-import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.OptionVo;
-import com.spring.springProject3.vo.ReviewVo;
+import com.spring.springProject3.vo.ReservationListVo;
+import com.spring.springProject3.vo.ReservationVo;
 import com.spring.springProject3.vo.RoomVo;
 
 import net.coobird.thumbnailator.Thumbnailator;
@@ -257,6 +257,18 @@ public class RoomServiceImpl implements RoomService {
 	@Override
 	public List<RoomVo> getAvailableRoomList(int idx, String checkinDate, String checkoutDate, int guestCount, int petCount) {
 		return roomDao.getAvailableRoomList(idx, checkinDate, checkoutDate, guestCount,	petCount);
+	}
+
+
+	@Override
+	public List<ReservationListVo> getRoomUsedList(String mid) {
+		return roomDao.getRoomUsedList(mid);
+	}
+
+
+	@Override
+	public List<ReservationVo> getReviewSave(String mid) {
+		return roomDao.getReviewSave(mid);
 	}
 
 

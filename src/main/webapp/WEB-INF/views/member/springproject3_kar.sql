@@ -329,3 +329,4 @@ create table reservation (
 );
 
 select count(idx) from review where hotelIdx = 9;
+select roomIdx from reservation where mid = 'admin' and status = '리뷰작성';

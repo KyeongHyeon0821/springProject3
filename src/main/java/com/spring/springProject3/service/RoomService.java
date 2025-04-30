@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.OptionVo;
-import com.spring.springProject3.vo.ReviewVo;
+import com.spring.springProject3.vo.ReservationListVo;
+import com.spring.springProject3.vo.ReservationVo;
 import com.spring.springProject3.vo.RoomVo;
 
 public interface RoomService {
@@ -40,6 +40,10 @@ public interface RoomService {
 	int setroomStatusUpdate(int idx, String status);
 
 	List<RoomVo> getAvailableRoomList(int idx, String checkinDate, String checkoutDate, int guestCount, int petCount);
+
+	List<ReservationListVo> getRoomUsedList(String mid);
+
+	List<ReservationVo> getReviewSave(String mid);
 
 
 

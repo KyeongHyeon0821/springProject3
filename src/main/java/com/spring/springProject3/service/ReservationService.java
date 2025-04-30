@@ -11,6 +11,6 @@ public interface ReservationService {
 
 	void setReservationAutoCancel();
 
-	void setReviewCheckOk(ReviewVo vo);
+	void setReviewSave(ReviewVo vo);
 
 }

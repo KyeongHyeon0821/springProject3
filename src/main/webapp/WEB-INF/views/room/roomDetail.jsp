@@ -9,7 +9,6 @@
 	<meta charset="UTF-8">
 	<title>roomDetail.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
-	<link rel="stylesheet" type="text/css" href="${ctp}/css/linkOrange.css"/>
 	<script>
 		'use strict';
 		
@@ -124,7 +123,6 @@
 		  flex-wrap: wrap;
 		  gap: 10px;
 		  margin-top: 30px;
-		  align-items: center;
 		}
 		
 		/* 공통 버튼 스타일 */
@@ -173,7 +171,6 @@
 		a.btn-danger:hover {
 		  background-color: #c62828;
 		}
-		
 		a.btn-warning {
 			background-color: #FCF259;
 			color: green; 
@@ -247,11 +244,85 @@
 		.btn-reserve:hover {
 		  background-color: #00796b;
 		}
-		#reviewCheck {
-			text-decoration: none;
+		
+		.modal-backdrop.show {
+		  background-color: rgba(0, 0, 0, 0.6); 
 		}
-		.modal-content {
-			border: 1px solid black;
+		
+		/* 리뷰 모달 전체 박스 */
+		.review-modal {
+		  font-family: 'Arial', sans-serif;
+		}
+		
+		/* 리뷰 하나 박스 */
+		.review-box {
+		  padding: 15px;
+		  margin-bottom: 20px;
+		  background-color: #f9f9f9;
+		  border-radius: 10px;
+		  border: 1px solid #ddd;
+		  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+		}
+		
+		/* 리뷰 사이의 구분선 제거 (이미 박스로 구분되니까) */
+		.review-box hr {
+		  display: none;
+		}
+		
+		/* 별점 + 날짜 */
+		.review-line1 {
+		  display: flex;
+		  justify-content: space-between;
+		  align-items: center;
+		}
+		
+		/* 별 모양 */
+		.stars .star {
+		  color: gold;
+		  font-size: 18px;
+		  margin-right: 2px;
+		}
+		.stars .star.gray {
+		  color: #ccc;
+		}
+		
+		/* 닉네임, 목적, hostIp */
+		.review-line2 {
+		  display: flex;
+		  justify-content: space-between;
+		  font-size: 14px;
+		  color: #555;
+		  margin-top: 5px;
+		}
+		
+		/* 객실 이름 */
+		.review-line3 {
+		  font-weight: bold;
+		  margin-top: 5px;
+		  color: #333;
+		}
+		
+		/* 내용 */
+		.review-content {
+		  margin-top: 8px;
+		  line-height: 1.5;
+		  white-space: pre-wrap;
+		}
+		.modal-header {
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  position: relative;
+		}
+		
+		.modal-header .modal-title {
+		  flex-grow: 1;
+		  text-align: center;
+		}
+		
+		.modal-header .btn-close {
+		  position: absolute;
+		  right: 1rem;
 		}
 	</style>
 </head>
@@ -300,13 +371,15 @@
 	    <c:if test="${vo.status != '서비스중지요청'}">
 	      <a href="javascript:roomDeleteCheck()" class="btn-danger">객실 서비스 중지 요청</a>
 	    </c:if>
-	    <a href="#" id="reviewCheck" class="btn-warning" data-bs-toggle="modal" data-bs-target="#myModal" onclick="modalCheck('${ReviewVo.idx}','${ReviewVo.hotelIdx}','${ReviewVo.roomIdx}','${ReviewVo.reviewTotCnt}','${ReviewVo.reviewCnt}','${ReviewVo.mid}','${ReviewVo.nickName}','${ReviewVo.roomName}','${ReviewVo.purpose}','${ReviewVo.star}','${ReviewVo.content}','${ReviewVo.hostIp}','${ReviewVo.reviewDate}')">리뷰 확인하기</a>
-	    <c:forEach var="ReivewVo" items="rVos">
-	    	<input type="hidden" value="${ReviewVo.idx}" >
-	    </c:forEach>
 	  </div>
 	</c:if>
 	
+	<!-- 리뷰 -->
+	<a href="#" id="reviewCheck" class="btn-warning mt-5" data-bs-toggle="modal" data-bs-target="#myModal" onclick="modalCheck('${ReviewVo.idx}','${ReviewVo.hotelIdx}','${ReviewVo.roomIdx}','${ReviewVo.reviewTotCnt}','${ReviewVo.reviewCnt}','${ReviewVo.mid}','${ReviewVo.nickName}','${ReviewVo.roomName}','${ReviewVo.purpose}','${ReviewVo.star}','${ReviewVo.content}','${ReviewVo.hostIp}','${ReviewVo.reviewDate}')">리뷰 확인하기</a>
+  <c:forEach var="ReivewVo" items="rVos">
+  	<input type="hidden" value="${ReviewVo.idx}" >
+  </c:forEach>
+  
 	<!-- 예약 고정 바 (컨테이너 내부에 위치) -->
 	<div class="room-reserve-bar-wrapper">
 	  <div class="room-reserve-bar">
@@ -318,6 +391,7 @@
 	    </div>
 	    <form action="${ctp}/reservation/reservationForm" method="get" class="reserve-form">
 	      <input type="hidden" name="roomIdx" value="${vo.idx}" />
+	      <input type="hidden" name="searchString" value="${searchString}" />
 	      <input type="hidden" name="checkinDate" value="${checkinDate}" />
 	      <input type="hidden" name="checkoutDate" value="${checkoutDate}" />
 	      <input type="hidden" name="guestCount" value="${guestCount}" />
@@ -328,52 +402,53 @@
 	  </div>
 	</div>
 	
-	<!-- 모달창으로 리뷰 띄우기 -->
 	
+	<!-- 모달창으로 리뷰 띄우기 -->
 	<div class="modal modal-lg" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered">
-	    <div class="modal-content">
+	    <div class="modal-content review-modal">
 	      <div class="modal-header">
-	        <div class="modal-title fs-5" id="exampleModalLabel"><h3>리뷰</h3></div>
-	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	      </div>
-	      <c:forEach var="ReviewVo" items="${rVos}" varStatus="st">
-		      <div class="modal-body" style="">
-		      	<div>
-		      			<c:if test="${ReviewVo.star == 5}">
-			      			<span class="btn btn-info btn-sm">${ReviewVo.star}</span><b style="font-size: 17px">  최고</b>
-			      		</c:if>
-			      		<c:if test="${ReviewVo.star == 4}">
-			      			<span class="btn btn-info btn-sm">${ReviewVo.star}</span><b style="font-size: 17px">  훌륭</b>
-			      		</c:if>
-			      		<c:if test="${ReviewVo.star == 3}">
-			      			<span class="btn btn-info btn-sm">${ReviewVo.star}</span><b style="font-size: 17px">  무난</b>
-			      		</c:if>
-			      		<c:if test="${ReviewVo.star == 2}">
-			      			<span class="btn btn-info btn-sm">${ReviewVo.star}</span><b style="font-size: 17px">  아쉬움</b>
-			      		</c:if>
-			      		<c:if test="${ReviewVo.star == 1}">
-			      			<span class="btn btn-info btn-sm">${ReviewVo.star}</span><b style="font-size: 17px">  부족함</b>
-			      		</c:if>
-			      	<font style="color: blue"><span class="modal-item">    ${ReviewVo.roomName} | </span><span>${ReviewVo.nickName} | </span><span>${ReviewVo.purpose}</span><span>${ReviewVo.reviewDate}</span></font>
-		      	</div>
-		      	<div>
-		      		<span style="color:black">${ReviewVo.content}</span>
-		      	</div>
-		      	<br/>
-		      	<c:if test="${sLevel == 0}">
-		      		<span>${ReviewVo.hostIp}</span>
-		      	</c:if>
-		      	<hr/>
-		      </div>
-	      </c:forEach>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">X</button>
+				  <h3 class="modal-title" id="exampleModalLabel">리뷰</h3>
+				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+	
+	      <div class="modal-body">
+	        <c:forEach var="ReviewVo" items="${rVos}">
+	          <div class="review-box">
+	            <!-- 1줄: 별점 + 날짜 -->
+	            <div class="review-line1">
+	              <div class="stars">
+	                <c:forEach var="i" begin="1" end="${ReviewVo.star}">
+	                  <span class="star">★</span>
+	                </c:forEach>
+	                <c:forEach var="i" begin="${ReviewVo.star + 1}" end="5">
+	                  <span class="star gray">★</span>
+	                </c:forEach>
+	              </div>
+	              <div class="date">${fn:substring(ReviewVo.reviewDate, 0, 10)}</div>
+	            </div>
+	
+	            <!-- 2줄: 닉네임 | 목적    hostIp (관리자만) -->
+	            <div class="review-line2">
+	              <div class="writer">${ReviewVo.nickName} | ${ReviewVo.purpose}</div>
+	              <c:if test="${sLevel == 0}">
+	                <div class="host-ip">${ReviewVo.hostIp}</div>
+	              </c:if>
+	            </div>
+	
+	            <!-- 3줄: 객실 이름 -->
+	            <div class="review-line3">${ReviewVo.roomName}</div>
+	
+	            <!-- 4줄: 내용 -->
+	            <div class="review-content">${ReviewVo.content}</div>
+	
+	            <hr />
+	          </div>
+	        </c:forEach>
 	      </div>
 	    </div>
 	  </div>
 	</div>
-	
 	
 </div>
 </body>

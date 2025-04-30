@@ -57,6 +57,10 @@ public class AdminController {
 	
 	@GetMapping("/adminMain")
 	public String admiMainGet() {
+		// 결제 안 한 예약 자동 취소 ('대기중' -> '예약취소' 예약 당일 안 했을 경우)
+		reservationService.setReservationAutoCancel();
+		// 예약상태 업데이트(체크아웃 날짜가 오늘 날짜랑 같거나 이전이면 이용완료 처리(오늘 날짜부터 새 예약을 받을 수 있도록)
+		reservationService.setReservationUpdateToDone();
 		return "/admin/adminMain";
 	}
 	@GetMapping("/adminLeft")
@@ -71,10 +75,6 @@ public class AdminController {
 	// 관리자 메인화면(대시보드)폼 보기
 	@GetMapping("/dashBoard/dashBoard")
 	public String adminMainFormGet() {
-		// 결제 안 한 예약 자동 취소 ('대기중' -> '예약취소' 예약 당일 안 했을 경우)
-		reservationService.setReservationAutoCancel();
-		// 예약상태 업데이트(체크아웃 날짜가 오늘 날짜랑 같거나 이전이면 이용완료 처리(오늘 날짜부터 새 예약을 받을 수 있도록)
-		reservationService.setReservationUpdateToDone();
 		return "/admin/dashBoard/dashBoard";
 	}
 	
@@ -218,14 +218,23 @@ public class AdminController {
 	
 	// 리뷰 리스트 불러오기
 	@GetMapping("/review/reviewList")
-	public String memberReviewFormGet(Model model, HttpSession session) {
+	public String memberReviewFormGet(Model model, HttpSession session,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "8", required = false) int pageSize,
+			@RequestParam(name="choice", defaultValue = "전체", required = false) String choice
+			) {
 		String mid = session.getAttribute("sMid") + "";
-		 
+		
+		//페이징 처리
+		
 		// 리뷰가 달린 객실과 리뷰들의 정보를 가져올 수 있도록 한다.
-		List<ReservationListVo> rsVos = reviewService.getRoomUsedAllList(mid);
+		PageVo pageVo = pagination.getTotRecCnt(pag,pageSize,"adminReview","",choice);	// (페이지번호,한 페이지분량,section,part,검색어)
+		List<ReservationListVo> rsVos = reviewService.getRoomUsedAllList(pageVo.getStartIndexNo(),pageSize, choice, mid);
 		List<ReviewVo> rVos = reviewService.getRoomReviewAllList();
 		model.addAttribute("rsVos", rsVos);
 		model.addAttribute("rVos", rVos);
+		model.addAttribute("pageVo", pageVo);
+		model.addAttribute("choice", choice);
 		// sMid select * from reservation where mid = #{sMid} and status = '이용완료';
 		
 		return "admin/review/reviewList";

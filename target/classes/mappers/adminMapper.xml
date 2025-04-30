@@ -7,6 +7,14 @@
     <if test='choice != "전체"'> select count(*) from inquiry where reply=#{choice}; </if>
   </select>
 
+  <select id="getReviewTotRecCnt" resultType="int">
+   <if test='choice == "전체"'> select count(*)
+				 from reservation rs
+				 join room r on rs.roomIdx = r.idx
+				 join hotel h on r.hotelIdx = h.idx
+				 where rs.status ='리뷰작성'; </if>
+ 	</select>
+
   <select id="getInquiryList" resultType="com.spring.springProject3.vo.InquiryVo">
     <if test='choice == "전체"'> select * from inquiry; </if>
     <if test='choice != "전체"'> select * from inquiry where reply=#{choice}; </if>

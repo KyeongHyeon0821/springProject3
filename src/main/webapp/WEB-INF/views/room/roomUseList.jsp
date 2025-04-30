@@ -6,10 +6,9 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>memberReviewInput.jsp</title>
+	<title>roomUseList.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp" />
 	<jsp:include page="/WEB-INF/views/include/nav.jsp" />
-	<%-- <jsp:include page="/WEB-INF/views/review/reviewModalForm.jsp" /> --%>
 	<link rel="stylesheet" type="text/css" href="${ctp}/css/linkOrange.css"/>
 	<style>
 		.container-review {
@@ -78,10 +77,11 @@
 	  
 	  
 	  
-	  function modalCheck(hotelIdx,roomIdx,roomName) {
+	  function modalCheck(hotelIdx,roomIdx,roomName,reservationIdx) {
 		  $("#hotelIdx").val(hotelIdx);
 		  $("#roomIdx").val(roomIdx);
 		  $("#roomName").val(roomName);
+		  $("#reservationIdx").val(reservationIdx);
 	  }
 	  
 	  function reviewShowCheck(roomIdx) {
@@ -161,9 +161,9 @@
 				    <div class="room-info"><span class="room-label" style="color: red">총 숙박비용: ${ReservationListVo.totalPrice}</span></div>
 			    </td>
 			    <td class="room-items3 border border-0">
-		    		<%-- <a href="#" onclick="modalCheck('${ReservationListVo.hotelIdx}','${ReservationListVo.roomIdx}','${ReservationListVo.roomName}')" class="btn btn-primary btn-sm ms-3 text-end" data-bs-toggle="modal" data-bs-target="#myModal">리뷰작성</a> --%>
-			    	<a href="javascript:reviewShowCheck(${ReservationListVo.roomIdx})" id="reviewShowBtn${ReservationListVo.roomIdx}" class="btn btn-success btn-sm">리뷰보기</a>
-			    	<a href="javascript:reviewHideCheck(${ReservationListVo.roomIdx})" id="reviewHideBtn${ReservationListVo.roomIdx}" class="btn btn-warning btn-sm" style="display:none" >리뷰가리기</a>
+ 		    		<a href="#" onclick="modalCheck('${ReservationListVo.hotelIdx}','${ReservationListVo.roomIdx}','${ReservationListVo.roomName}','${ReservationListVo.reservationIdx}')" class="btn btn-primary btn-sm ms-3 text-end" data-bs-toggle="modal" data-bs-target="#myModal">리뷰작성</a>
+			    	<a href="javascript:reviewShowCheck(${st.index})" id="reviewShowBtn${st.index}" class="btn btn-success btn-sm">리뷰보기</a>
+			    	<a href="javascript:reviewHideCheck(${st.index})" id="reviewHideBtn${st.index}" class="btn btn-warning btn-sm" style="display:none" >리뷰가리기</a>
 			    </td>
 			    <td class="room-items4 border border-0 ms-10">
 			    	<a href="${ctp}/room/roomDetail?roomIdx=${ReservationListVo.roomIdx}&checkinDate=${ReservationListVo.checkinDate}&checkoutDate=${ReservationListVo.checkoutDate}&guestCount=${guestCount}&petCount=${petCount}" class="btn btn-danger btn-sm">상세보기</a>
@@ -171,7 +171,7 @@
 	      </tr>
 	      <tr>
 	        <td colspan="4" class="text-center">
-	          <div id="reviewDispaly${ReservationListVo.roomIdx}" class="reviewClass"></div>
+	          <div id="reviewDispaly${st.index}" class="reviewClass"></div>
 	        </td>
 	      </tr>
       </c:forEach>
@@ -203,16 +203,16 @@
 			      <div class="m-0 p-0">
 			      	<div class="text-end" class="purposeForm" id="purposeForm" >
 			      	  <select name="purpose" class="form-select">
-								  <option name="purpose" id="purpose1" value="휴식이 필요해서">휴식이 필요했어요</option>
-								  <option name="purpose" id="purpose2" value="반려견과 첫 여행">반려견과 첫 여행이에요</option>
-								  <option name="purpose" id="purpose3" value="기념일 여행">기념일이라 특별한 여행이에요</option>
-								  <option name="purpose" id="purpose4" value="가족과 힐링">가족과 힐링하려고 왔어요</option>
-								  <option name="purpose" id="purpose5" value="일상 탈출">일상에서 벗어나고 싶었어요</option>
-								  <option name="purpose" id="purpose6" value="사진 찍으러">예쁜 사진 찍으러 왔어요</option>
-								  <option name="purpose" id="purpose7" value="반려견 친구 만나러">친구 반려견이랑 만났어요</option>
-								  <option name="purpose" id="purpose8" value="반려견 생일여행">반려견 생일 기념 여행이에요</option>
-								  <option name="purpose" id="purpose9" value="그냥 함께 있고 싶어서">그냥 함께 있고 싶어서요</option>
-								  <option name="purpose" id="purpose10" value="기타">기타</option>
+								  <option id="purpose1" value="휴식이 필요해서">휴식이 필요했어요</option>
+								  <option id="purpose2" value="반려견과 첫 여행">반려견과 첫 여행이에요</option>
+								  <option id="purpose3" value="기념일 여행">기념일이라 특별한 여행이에요</option>
+								  <option id="purpose4" value="가족과 힐링">가족과 힐링하려고 왔어요</option>
+								  <option id="purpose5" value="일상 탈출">일상에서 벗어나고 싶었어요</option>
+								  <option id="purpose6" value="사진 찍으러">예쁜 사진 찍으러 왔어요</option>
+								  <option id="purpose7" value="반려견 친구 만나러">친구 반려견이랑 만났어요</option>
+								  <option id="purpose8" value="반려견 생일여행">반려견 생일 기념 여행이에요</option>
+								  <option id="purpose9" value="그냥 함께 있고 싶어서">그냥 함께 있고 싶어서요</option>
+								  <option id="purpose10" value="기타">기타</option>
 								</select>
 			        </div>
 		      		<textarea rows="6" cols="80" name="content" id="content" placeholder="리뷰를 등록해주세요." required></textarea>
@@ -225,45 +225,12 @@
 					<input type="hidden" name="roomIdx" id="roomIdx" />
 					<input type="hidden" name="hotelIdx" id="hotelIdx" />
 					<input type="hidden" name="roomName" id="roomName" />
+					<input type="hidden" name="reservationIdx" id="reservationIdx" />
 				</form>      
 			</div>
 		</div>      
 	</div>
 <p><br></p>
-
-	<!-- 모달창으로 리뷰 띄우기 -->
-	
-	<div class="modal fade" id="myModalReview" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h1 class="modal-title fs-5" id="exampleModalLabel">리뷰 리스트</h1>
-	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	      </div>
-	      <c:forEach var="ReviewVo" items="${rVos}" varStatus="st">
-		      <div class="modal-body" style="">
-		      	<span>${ReviewVo.idx}</span>
-		      	<span>${ReviewVo.hotelIdx}</span>
-		      	<span>${ReviewVo.roomIdx}</span>
-		      	<span>${ReviewVo.reviewTotCnt}</span>
-		      	<span>${ReviewVo.reviewCnt}</span>
-		      	<span>${ReviewVo.mid}</span>
-		      	<span>${ReviewVo.nickName}</span>
-		      	<span>${ReviewVo.roomName}</span>
-		      	<span>${ReviewVo.purpose}</span>
-		      	<span>${ReviewVo.star}</span>
-		      	<span>${ReviewVo.content}</span>
-		      	<span>${ReviewVo.hostIp}</span>
-		      	<span>${ReviewVo.reviewDate}</span>
-		      </div>
-	      </c:forEach>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Save changes</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>

@@ -8,11 +8,13 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +27,8 @@ import com.spring.springProject3.service.ReviewService;
 import com.spring.springProject3.service.RoomService;
 import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.OptionVo;
+import com.spring.springProject3.vo.ReservationListVo;
+import com.spring.springProject3.vo.ReservationVo;
 import com.spring.springProject3.vo.ReviewVo;
 import com.spring.springProject3.vo.RoomVo;
 
@@ -272,7 +276,7 @@ public class RoomController {
 		else return "redirect:/message/roomDeleteCheckNo?roomIdx="+idx;
 	}
 	
-	// 마이페이지에서 리뷰 보기
+	// 마이페이지에서 리뷰 보기 (리뷰서비스사용)
 	@ResponseBody
 	@RequestMapping(value = ("/roomReviewList"), method = RequestMethod.POST)
 	public List<ReviewVo> roomReviewListPost(int roomIdx) {
@@ -280,5 +284,18 @@ public class RoomController {
 		return reviewVos;
 	}
 	
+	// 마이페이지에서 내 이용내역 관리 보기 (리뷰서비스사용)
+	@GetMapping("/roomUseList")
+	public String roomUseListGet(Model model, HttpSession session) {
+		String mid = (String)session.getAttribute("sMid")+"";
+		List<ReservationListVo> rsVos = roomService.getRoomUsedList(mid);
+		List<ReservationVo> vos = roomService.getReviewSave(mid);
+		
+		model.addAttribute("vos", vos);
+		model.addAttribute("rsVos",rsVos);
+		model.addAttribute("mid", mid);
+		System.out.println("vos :" + vos );
+		return "room/roomUseList";
+	}
 	
 }

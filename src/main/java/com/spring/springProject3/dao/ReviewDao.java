@@ -22,7 +22,9 @@ public interface ReviewDao {
 
 	List<ReviewVo> getRoomReviewAllList();
 
-	List<ReservationListVo> getRoomUsedAllList(@Param("mid") String mid);
+	List<ReservationListVo> getRoomUsedAllList(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize,@Param("choice") String choice, @Param("mid") String mid);
+
+	List<Integer> getExistReviewedCheck(@Param("mid") String mid);
 
 
 }
