@@ -8,13 +8,13 @@ import com.spring.springProject3.vo.HotelVo;
 
 public interface HotelService {
 
-	List<HotelVo> getHotelList();
+	List<HotelVo> getHotelList(int startIndexNo, int pageSize);
 
 	int setHotelInput(HotelVo vo, MultipartFile thumbnailFile);
 
 	HotelVo getHotel(int idx);
 	
-	HotelVo getHotelSearchOne(int idx);
+	//HotelVo getHotelSearchOne(int idx);
 	
 	List<HotelVo> getHotelSearch(int idx);
 
@@ -29,5 +29,11 @@ public interface HotelService {
 	int setHotelLikeNo(String mid, int hotelIdx);
 
 	List<Integer> getLikedHotelListIdx(String mid);
+	
+	List<HotelVo> getMoreHotels(int lastIdx, int count);
+
+	List<HotelVo> getSearchHotelList(String searchString, String checkinDate, String checkoutDate, int guestCount, int petCount, int startIndexNo, int pageSize);
+
+	List<HotelVo> getHotelListByMid(String mid);
 
 }

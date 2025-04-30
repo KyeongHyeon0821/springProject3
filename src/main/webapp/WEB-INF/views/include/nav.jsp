@@ -78,29 +78,24 @@
 <body>
 <nav>
   <div class="nav-container">
-    <a href="${ctp}/" class="logo" style="display:flex; line-height: 80px;"><img src="${ctp}/images/logo.png" width="80px"/>withPet</a>
-    <ul class="nav-links">
-    	<li class="nav-item">
-      	<a class="nav-link" href="${ctp}/hotel/hotelInput">숙박시설 등록</a>
-      </li>
-      <c:if test="${empty sessionScope.sLogin}">
-	      <li class="nav-item">
-	      	<a class="nav-link" href="${ctp}/member/memberLogin">로그인</a>
-	      </li>
-      </c:if>
-      <c:if test="${sMid == 'admin'}">
-	      <li class="nav-item">
-	      	<a class="nav-link" href="${ctp}/admin/adminMain">관리자</a>
-	      </li>
-      </c:if>
+    <div class="nav-left">
+        <a href="${ctp}/" class="logo"><img src="${ctp}/images/logo.png" width="80px"/>withPet</a>
+    </div>
+     <ul class="nav-links">
+        <c:if test="${sLevel == 0 || sLevel == 1}">
+            <li><a href="${ctp}/hotel/hotelInput">숙박시설 등록</a></li>
+        </c:if>
+        <li><a href="${ctp}/hotel/hotelList">전체 숙소 보기</a></li>
+        <c:if test="${empty sessionScope.sLogin}">
+            <li class="nav-item"><a class="nav-link" href="${ctp}/member/memberLogin">로그인</a></li>
+        </c:if>
+        <c:if test="${sMid == 'admin'}">
+            <li class="nav-item"><a class="nav-link" href="${ctp}/admin/adminMain">관리자</a></li>
+        </c:if>
               <!-- 로그인 상태일 때만 로그아웃 & 마이페이지 표시 -->
 			<c:if test="${not empty sessionScope.sLogin}">
-		  	<li class="nav-item">
-		    	<a class="nav-link" href="${ctp}/member/memberLogout">로그아웃</a>
-		  	</li>
-			  <li class="nav-item">
-			    <a class="nav-link" href="${ctp}/member/memberMyPage">마이페이지</a>
-			  </li>
+		  	  <li class="nav-item"><a class="nav-link" href="${ctp}/member/memberLogout">로그아웃</a></li>
+			  <li class="nav-item"><a class="nav-link" href="${ctp}/member/memberMyPage">마이페이지</a></li>
 			</c:if>
 		<li class="nav-item dropdown">
           <a class="nav-link dropbtn" href="#" role="button" data-bs-toggle="modal" data-bs-target="#myModal3" id="customButton3">커뮤니티</a>

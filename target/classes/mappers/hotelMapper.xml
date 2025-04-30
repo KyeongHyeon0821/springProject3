@@ -2,10 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.springProject3.dao.HotelDao">
   
-  <!-- 호텔리스트 조회 -->
+   <!-- 호텔리스트 조회 -->
   <select id="getHotelList" resultType="com.spring.springProject3.vo.HotelVo">
-		select * from hotel where status = '정상' order by idx desc;  	
+		<!-- select * from hotel where status = '정상' order by idx desc;  	 -->
+		select hotel.*, min(room.price) as minPrice from hotel left outer join room on hotel.idx = room.hotelIdx
+			where hotel.status = '정상' group by hotel.idx order by hotel.idx desc limit #{startIndexNo}, #{pageSize};
   </select>
+  
+  <!-- 조건 검색 호텔리스트 조회 -->
+ 	<select id="getSearchHotelList" resultType="com.spring.springProject3.vo.HotelVo">
+ 		select h.idx, h.name, h.thumbnail, h.address, h.tel, min(r.price) as minprice	from hotel h left outer join room r on h.idx = r.hotelidx
+			where (h.name like concat('%', #{searchString}, '%') 
+			   or h.address like concat('%', #{searchString}, '%'))
+			   and h.status = '정상'
+			   and exists (
+			       select 1 
+			       from room r
+			       where r.hotelidx = h.idx 
+			         and <![CDATA[r.maxpeople >= #{guestCount}]]>
+			         and <![CDATA[r.petcountlimit >= #{petCount}]]>
+			         and r.status = '정상'
+			         and not exists (
+			             select 1 
+			             from reservation res
+			             where res.roomidx = r.idx
+			               and res.status in ('결제대기', '결제완료')
+			               and (<![CDATA[res.checkindate < #{checkoutDate}]]>and <![CDATA[res.checkoutdate > #{checkinDate}]]>)
+			         )
+			   )
+			group by h.idx
+			order by h.idx desc
+			limit #{startIndexNo}, #{pageSize}
+ 	</select>
   
   <!-- 찜한 호텔 리스트 idx 조회 -->
   <select id="getLikedHotelListIdx" resultType="Integer">
@@ -17,10 +45,10 @@
   	select * from hotel where idx = #{idx} and status = '정상';
   </select>
   
-  <!-- 호텔 조회 (idx)-->
+  <!-- 호텔 조회 (idx)
   <select id="getHotelSearchOne" resultType="com.spring.springProject3.vo.HotelVo">
   	select h.*, t.idx as spotIdx, t.hotelIdx as spotHotelIdx, t.name as spotName, t.lat as spotLat, t.lng as spotLng, t.address as spotAddress, t.description as spotDescription from hotel h, tourist_spot t where h.status = '정상' and h.idx = #{idx} order by h.idx desc limit 1;
-  </select>
+  </select> -->
   
   <!-- 호텔 관광지 조회 (idx)-->
   <select id="getHotelSearch" resultType="com.spring.springProject3.vo.HotelVo">
@@ -31,6 +59,12 @@
   <select id="getHotelLike" resultType="int">
   	select count(*) from hotelLike where hotelIdx=#{idx} and mid=#{mid};
   </select>
+  
+  <!-- 등록된 호텔 목록 조회 -->
+  <select id="getHotelListByMid" resultType="com.spring.springProject3.vo.HotelVo">
+	select * from hotel where mid = #{mid} order by idx desc
+  </select>
+  
   
   <!-- 호텔 등록 -->
   <insert id="setHotelInput">

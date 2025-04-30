@@ -29,8 +29,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.spring.springProject3.service.MemberService;
 import com.spring.springProject3.service.PetService;
+import com.spring.springProject3.service.ReservationService;
 import com.spring.springProject3.vo.MemberVo;
 import com.spring.springProject3.vo.PetVo;
+import com.spring.springProject3.vo.ReservationVo;
 
 @Controller
 @RequestMapping("/member")
@@ -47,6 +49,9 @@ public class MemberController {
     
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
+    
+    @Autowired
+    ReservationService reservationService;
     
     // 로그인 폼 보기
     @RequestMapping(value = "/memberLogin", method = RequestMethod.GET)
@@ -312,7 +317,7 @@ public class MemberController {
     }
 
 
-    // 마이페이지(일반회원, 사업자회원)
+    // 마이페이지(일반회원, 사업자회원, 관리자)
     @RequestMapping(value = "/memberMyPage", method = RequestMethod.GET)
     public String memberMyPageGet(HttpSession session, Model model) {
         String mid = (String) session.getAttribute("sMid");
@@ -320,10 +325,6 @@ public class MemberController {
         if (mid == null) {
             return "redirect:/message/loginRequired";
         }
-        
-        // 예약 자동 처리 추가 (임시 주석처리)
-        // reservationService.setReservationAutoCancel();      // 결제 안 한 예약 자동 취소
-        // reservationService.setReservationUpdateToDone();  // 체크아웃 지난 예약 '이용완료' 처리
         
         MemberVo mVo = memberService.getMemberIdCheck(mid);
         
@@ -339,8 +340,8 @@ public class MemberController {
         model.addAttribute("dogList", dogList);
 
         // level 값에 따라 다른 JSP로 보내기
-        if (mVo.getLevel() == 1) {
-            return "member/memberMyPageBiz"; // 사업자회원
+        if (mVo.getLevel() == 1 || mVo.getLevel() == 0) {
+            return "member/memberMyPageBiz"; // 사업자회원, 관리자
         } else {
             return "member/memberMyPage"; // 일반회원
         }
@@ -482,6 +483,15 @@ public class MemberController {
             sb.append(chars.charAt(rnd.nextInt(chars.length())));
         }
         return sb.toString();
+    }
+    
+    // 예약 내역 조회 및 관리
+    @RequestMapping("/myReservation")
+    public String myReservationGet(HttpSession session, Model model) {
+    	String mid = session.getAttribute("sMid") + "";
+    	List<ReservationVo> vos = reservationService.getMyReservations(mid);
+    	model.addAttribute("vos", vos);
+    	return "member/myReservation";
     }
 
 }

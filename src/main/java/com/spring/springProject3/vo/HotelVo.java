@@ -44,6 +44,8 @@ public class HotelVo {
 	
 	private Double y;
 	
+	private int minPrice;
+	
   private int spotIdx;
   private int spotHotelIdx;
   private String spotName;

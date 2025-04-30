@@ -7,7 +7,7 @@
 	<meta charset="UTF-8">
 	<title>homeMain.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp" />
-	<link rel="stylesheet" type="text/css" href="${ctp}/css/linkMain.css"/>
+	<link rel="stylesheet" type="text/css" href="${ctp}/css/linkMain.css?v=2.0"/>
 	<style>
 		ul, li {
 			text-decoration: none;
@@ -19,26 +19,14 @@
 		}
 		
 		.nav-container {
-		  display: grid;
-		  grid-template-columns: auto 1fr auto;
-		  align-items: center;
-		  padding: 20px;
-		  max-width: 1400px;
-		  margin: 0 auto;
-		}
+      display: flex; /* flex로 설정 */
+      justify-content: space-between; /* 항목 간 간격을 고르게 배치 */
+      align-items: center; /* 세로로 중앙 정렬 */
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 		
-		.hero {
-			width: 1400px;
-			background-repeat: no-repeat;
-		  background-image: url("https://cdn.pixabay.com/photo/2023/09/25/10/46/krka-8274679_960_720.jpg");
-		  background-size: cover;
-		  background-position: center;
-		  color: white;
-		  padding: 100px 0;
-		  margin: 45 auto 0 auto;
-		  border: background;
-		  border-radius: 20px;
-		}
 
 		/* Style The Dropdown Button */
 		.dropbtn {
@@ -85,6 +73,90 @@
 		.dropdown:hover .dropbtn {
 		  background-color: #eee;
 		}
+		
+.hero-section {
+  background: url("${ctp}/images/background.png") no-repeat center center/cover;
+  padding: 80px 20px;
+  text-align: center;
+  color: #fff;
+}
+
+.hero-heading {
+  font-size: 2.0rem;
+  font-weight: bold;
+  max-width: 1200px;
+  text-align: start;
+  margin: 0 auto 30px;
+}
+
+.hotel-search-container {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hotel-search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: center; 
+  padding-top: 20px; 
+  padding-bottom: 10px; 
+}
+
+.search-field {
+  flex: 1 1 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 150px;
+}
+
+.search-field.large {
+  flex: 2 1 260px;
+}
+
+.search-field.small {
+  flex: 0 1 100px;
+}
+
+.search-field label {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.search-field input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.search-button {
+  height: 50px;
+  padding: 0 25px;
+  background-color: #4da764;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: center;
+  margin-top:24px;
+}
+
+.search-button:hover {
+  background-color: #3e8f52;
+}
+
 	</style>
 </head>
 <body>
@@ -92,8 +164,11 @@
   <div class="nav-container">
     <a href="${ctp}/" class="logo" style="display:flex; line-height: 80px;"><img src="${ctp}/images/logo.png" width="80px"/>withPet</a>
     <ul class="nav-links">
+    	<c:if test="${sLevel == 0 || sLevel == 1}">
+    		<li><a href="${ctp}/hotel/hotelInput">숙박시설 등록</a></li>
+    	</c:if>
     	<li>
-      	<a href="${ctp}/hotel/hotelInput">숙박시설 등록</a>
+      	<a href="${ctp}/hotel/hotelList">전체 숙소 보기</a>
       </li>
       <c:if test="${empty sessionScope.sLogin}">
 	      <li>
@@ -106,21 +181,17 @@
 	      </li>
       </c:if>
       <!-- 로그인 상태일 때만 로그아웃 & 마이페이지 표시 -->
-			<c:if test="${not empty sessionScope.sLogin}">
-		  	<li class="nav-item">
-		    	<a class="nav-link" href="${ctp}/member/memberLogout">로그아웃</a>
-		  	</li>
-			  <li class="nav-item">
-			    <a class="nav-link" href="${ctp}/member/memberMyPage">마이페이지</a>
-			  </li>
-			</c:if>
+		<c:if test="${not empty sessionScope.sLogin}">
+		  <li class="nav-item"><a class="nav-link" href="${ctp}/member/memberLogout">로그아웃</a></li>
+		  <li class="nav-item"><a class="nav-link" href="${ctp}/member/memberMyPage">마이페이지</a></li>
+		</c:if>
 		<li class="nav-item dropdown">
           <a class="nav-link dropbtn" href="#" role="button" data-bs-toggle="modal" data-bs-target="#myModal3" id="customButton3">커뮤니티</a>
           <div class="dropdown-content">
             <a href="${ctp}/board/list">자유게시판</a>
             <a href="${ctp}/photogallery/photogalleryList">포토갤러리</a>
           </div>
-        </li>
+        </li> 
 	    <li class="nav-item dropdown">
         <a class="nav-link dropbtn" href="#" role="button" data-bs-toggle="modal" data-bs-target="#myModal3" id="customButton3">고객센터</a>
         <div class="dropdown-content">
@@ -136,22 +207,44 @@
    </div>
 </nav>
 
-<section class="hero">
-  <div class="hero-content">
-    <div class="hero-text">
-      <h2>다음엔 어디로 떠나세요?(호텔리스트)</h2>
-      <p></p>
-      <div class="row hero-row">
-      	<div class="col">
-      		<a href="${ctp}/hotel/hotelList" class="cta-button">어디로 가시나요?</a>
-      		<button id="cta-button" class="me-3" data-bs-toggle="modal" data-bs-target="#myModal1">테스트중</button>
-      	</div>
+<section class="hero-section">
+  <h2 class="hero-heading">위드펫, 반려견 동반 여행을 위한 최적의 선택!</h2>
+
+  <div class="hotel-search-container">
+    <form method="get" action="${ctp}/hotel/hotelList" onsubmit="return hotelSearch()" class="hotel-search-form">
+      
+      <div class="search-field large">
+        <label>지역 또는 숙소명</label>
+        <input id="searchString" type="text" name="searchString" placeholder="지역이나 숙소명을 입력하세요" required />
       </div>
-    </div>
-    <div class="hero-image">
-    </div>
+
+      <div class="search-field">
+        <label>체크인</label>
+        <input type="date" id="checkinDate" name="checkinDate" value="${checkinDate}" required />
+      </div>
+
+      <div class="search-field">
+        <label>체크아웃</label>
+        <input type="date" id="checkoutDate" name="checkoutDate" value="${checkoutDate}" required />
+      </div>
+
+      <div class="search-field small">
+        <label>인원</label>
+        <input type="number" id="guestCount" name="guestCount" min="1" max="5" value="${guestCount}" required />
+      </div>
+
+      <div class="search-field small">
+        <label>반려견</label>
+        <input type="number" id="petCount" name="petCount" min="1" max="5" value="${petCount}" required />
+      </div>
+
+      <button type="submit" class="search-button">검색</button>
+
+    </form>
   </div>
 </section>
+
+
 
 <section class="featured">
   <div class="container">
@@ -364,18 +457,6 @@
   </div>
 </section>
 
-<section class="newsletter">
-  <div class="newsletter-container">
-    <div>
-      <h2>로그인</h2>
-      <p>회원가입시 국내 애견동반 호텔의 모든 서비스를 10% 싼 가격으로 체험할 수 있습니다.</p>
-    </div>
-    <form class="newsletter-form">
-      <input type="email" placeholder="Your email address">
-      <button type="submit">로그인하여<br/>숙소찾기</button>
-    </form>
-  </div>
-</section>
 <footer>
   <div class="container">
     <div class="footer-grid">
@@ -435,5 +516,60 @@
     </div>
   </div>
 </footer>
+
+<script>
+	'use strict';
+	function hotelSearch() {
+		let searchString = $("#searchString").val().trim();
+		let checkinDate = $("#checkinDate").val();
+		let checkoutDate = $("#checkoutDate").val();
+		let guestCount = $("#guestCount").val();
+		let petCount = $("#petCount").val();
+		
+		if(searchString == "") {
+			alert("지역이나 숙소명을 입력하세요");
+			$("#searchString").focus();
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	
+	// 체크인 체크아웃 날짜 처리
+	window.addEventListener('DOMContentLoaded', function () {
+	  const checkinInput = document.getElementById('checkinDate');
+	  const checkoutInput = document.getElementById('checkoutDate');
+	
+	  // 오늘 날짜로 체크인 최소 설정
+	  const today = new Date().toISOString().split('T')[0];
+	  checkinInput.min = today;
+	
+	  // 체크인 값이 이미 있는 경우 초기 처리
+	  if (checkinInput.value) {
+	    checkoutInput.disabled = false;
+	    checkoutInput.min = checkinInput.value;
+	
+	    // 체크아웃 날짜가 체크인보다 빠른 경우 초기화
+	    if (checkoutInput.value && checkoutInput.value < checkinInput.value) {
+	      checkoutInput.value = '';
+	    }
+	  } else {
+	    checkoutInput.disabled = true;
+	  }
+
+	  // 체크인 날짜가 변경되면
+	  checkinInput.addEventListener('change', function () {
+	    if (checkinInput.value) {
+	      checkoutInput.disabled = false;
+	      checkoutInput.min = checkinInput.value;
+	      checkoutInput.value = '';
+	    } else {
+	      checkoutInput.disabled = true;
+	      checkoutInput.value = '';
+	    }
+	  });
+	});
+</script>
 </body>
 </html>

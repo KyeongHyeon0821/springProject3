@@ -4,7 +4,7 @@
   
   <!-- 객실 등록 처리 -->
   <insert id="setRoomInput">
-  	insert into room values(default, #{vo.hotelIdx}, #{vo.name}, #{vo.price}, #{vo.maxPeople}, #{vo.petSizeLimit}, #{vo.petCountLimit}, #{vo.thumbnail}, #{vo.images}, default, default);
+  	insert into room values(default, #{vo.mid}, #{vo.hotelIdx}, #{vo.name}, #{vo.roomNumber}, #{vo.price}, #{vo.maxPeople}, #{vo.petSizeLimit}, #{vo.petCountLimit}, #{vo.thumbnail}, #{vo.images}, default, default);
   </insert>
   
   <!-- 객실의 옵션 등록 처리 -->
@@ -21,5 +21,61 @@
   <select id="getMaxIdx" resultType="int">
 		select max(idx) from room;  
   </select>
+  
+  <!-- 호텔별 객실 리스트 조회  -->
+  <select id="getRoomList" resultType="com.spring.springProject3.vo.RoomVo">
+  	select * from room where hotelIdx = #{idx};
+  </select>
+  
+  <!-- 호텔별 예약 가능한 객실 리스트 조회 -->
+  <select id="getAvailableRoomList" resultType="com.spring.springProject3.vo.RoomVo">
+  	select * from room 
+  		where hotelidx = #{idx} and <![CDATA[maxpeople >= #{guestCount}]]> and <![CDATA[petcountlimit >= #{petCount}]]> and status = '정상' 
+  			and idx not in (select roomidx from reservation where status in ('결제대기', '결제완료')  and (<![CDATA[checkinDate < #{checkoutDate}]]> and <![CDATA[checkoutDate > #{checkinDate}]]>))
+  		order by name desc;
+  </select>
+  
+  
+   <!-- 객실 1개 조회 -->
+  <select id="getRoom" resultType="com.spring.springProject3.vo.RoomVo">
+  	select * from room where idx=#{roomIdx};
+  </select>
+  
+  <!-- 객실별 옵션 리스트 조회 -->
+  <select id="getRoomOptionList" resultType="com.spring.springProject3.vo.OptionVo">
+  	select * from options where idx in (select optionIdx from roomOptions where roomIdx = ${roomIdx});
+  </select>
+  
+  <!-- 객실 정보 수정 처리 -->
+  <update id="setRoomUpdate">
+  	update room set name=#{vo.name},roomNumber=#{vo.roomNumber},price=#{vo.price},maxPeople=#{vo.maxPeople},petSizeLimit=#{vo.petSizeLimit},petCountLimit=#{vo.petCountLimit} where idx=#{vo.idx};
+  </update>
+  
+  <!-- 객실 이미지 수정(이미지 파일 1개 이름 삭제) -->
+  <update id="setUpdateImages">
+  	update room set images = #{images} where idx = #{idx};
+  </update>
+  
+  <!-- 객실 이미지 삭제 -->
+  <update id="setDeleteImages">
+  	update room set images = null where idx = #{idx};
+  </update>
+  
+  <!-- 객실 썸네일, 이미지 수정 -->
+  <update id="setRoomThumbnailAndImageUpdate">
+  	update room set thumbnail = #{vo.thumbnail}, images = #{vo.images} where idx = #{vo.idx};
+  </update>
+  
+  <!-- 객실 상태 수정 -->
+  <update id="setroomStatusUpdate">
+  	update room set status = #{status} where idx = #{idx};
+  </update>
+  
+  
+  <!-- 기존 객실-옵션 데이터 삭제 -->
+  <delete id="setDeleteRoomOptions">
+  	delete from roomOptions where roomIdx=#{idx};
+  </delete>
+  
   
 </mapper>

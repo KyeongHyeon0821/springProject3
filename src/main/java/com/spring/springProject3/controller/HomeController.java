@@ -4,37 +4,39 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
-import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class HomeController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
-		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
+	public String home(Model model,
+			@RequestParam(name="checkinDate", defaultValue = "", required = false) String checkinDate,
+      @RequestParam(name="checkoutDate", defaultValue = "", required = false) String checkoutDate,
+      @RequestParam(name="guestCount", defaultValue = "1", required = false) int guestCount,
+      @RequestParam(name="petCount", defaultValue = "1", required = false) int petCount
+		) {
+		LocalDate today = LocalDate.now();
+    LocalDate tomorrow = today.plusDays(1);
+
+    checkinDate = today.toString();      // ex) "2025-04-24"
+    checkoutDate = tomorrow.toString();  // ex) "2025-04-25"
+    model.addAttribute("checkinDate", checkinDate);
+    model.addAttribute("checkoutDate", checkoutDate);
+    model.addAttribute("guestCount", guestCount);
+    model.addAttribute("petCount", petCount);
 		
 		return "home";
 	}

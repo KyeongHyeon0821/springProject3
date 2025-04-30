@@ -29,8 +29,8 @@ public class HotelServiceImpl implements HotelService {
 	HotelDao hotelDao;
 
 	@Override
-	public List<HotelVo> getHotelList() {
-		return hotelDao.getHotelList();
+	public List<HotelVo> getHotelList(int startIndexNo, int pageSize) {
+		return hotelDao.getHotelList(startIndexNo, pageSize);
 	}
 	
 	// 호텔 등록 처리 (1.썸네일 파일 저장처리, 2.썸네일용 이미지 파일 생성 3.이미지 파일들 이름 가공처리(ckeditor에서 올린것들), 4.실제 업로드 된 이미지 파일만 복사처리, 5.DB 저장처리)
@@ -151,16 +151,10 @@ public class HotelServiceImpl implements HotelService {
 		fos.close();
 	}
 
-	// 호텔 전체보기
+	// 호텔 상세보기
 	@Override
 	public HotelVo getHotel(int idx) {
 		return hotelDao.getHotel(idx);
-	}
-	
-	// 호텔 상세보기
-	@Override
-	public HotelVo getHotelSearchOne(int idx) {
-		return hotelDao.getHotelSearchOne(idx);
 	}
 	
 	// 관광지 정보 리스트
@@ -303,4 +297,27 @@ public class HotelServiceImpl implements HotelService {
 	public List<Integer> getLikedHotelListIdx(String mid) {
 		return hotelDao.getLikedHotelListIdx(mid);
 	}
+	
+	@Override
+	public List<HotelVo> getMoreHotels(int lastIdx, int count) {
+		return hotelDao.getMoreHotels(lastIdx, count);
+	}
+
+	@Override
+	public List<HotelVo> getSearchHotelList(String searchString, String checkinDate, String checkoutDate, int guestCount, int petCount, int startIndexNo, int pageSize) {
+		return hotelDao.getSearchHotelList(searchString, checkinDate, checkoutDate, guestCount, petCount, startIndexNo, pageSize);
+	}
+
+	@Override
+	public List<HotelVo> getHotelListByMid(String mid) {
+		return hotelDao.getHotelListByMid(mid);
+	}
+
+//	@Override
+//	public HotelVo getHotelSearchOne(int idx) {
+//		return null;
+//	}
+	
+	
+
 }

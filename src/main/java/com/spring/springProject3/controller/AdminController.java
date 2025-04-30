@@ -124,9 +124,12 @@ public class AdminController {
 	
 	//호텔리스트 부르기
 	@RequestMapping("/hotelList")
-	public String hotelListGet(Model model, HttpSession session) {
+	public String hotelListGet(Model model, HttpSession session,
+			 @RequestParam(name="startIndexNo", defaultValue = "0", required = false) int startIndexNo,
+			 @RequestParam(name="pageSize", defaultValue = "6", required = false) int pageSize
+		) {
 		String mid = session.getAttribute("sMid") + "";
-		List<HotelVo> vos = hotelService.getHotelList();
+		List<HotelVo> vos = hotelService.getHotelList(startIndexNo, pageSize);
 		
 		if(!mid.equals("")) {
 			List<Integer> likedHotelListIdx = hotelService.getLikedHotelListIdx(mid);

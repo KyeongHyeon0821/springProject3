@@ -8,7 +8,7 @@ import com.spring.springProject3.vo.HotelVo;
 
 public interface HotelDao {
 
-	List<HotelVo> getHotelList();
+	List<HotelVo> getHotelList(@Param("startIndexNo") int startIndexNo, @Param("pageSize") int pageSize);
 
 	int setHotelInput(@Param("vo") HotelVo vo);
 
@@ -29,5 +29,11 @@ public interface HotelDao {
 	int setHotelLikeNo(@Param("mid") String mid, @Param("hotelIdx") int hotelIdx);
 
 	List<Integer> getLikedHotelListIdx(@Param("mid") String mid);
+	
+	List<HotelVo> getMoreHotels(@Param("lastIdx") int lastIdx, @Param("count") int count);
+
+	List<HotelVo> getSearchHotelList(@Param("searchString") String searchString, @Param("checkinDate") String checkinDate, @Param("checkoutDate") String checkoutDate, @Param("guestCount") int guestCount, @Param("petCount") int petCount, @Param("startIndexNo") int startIndexNo, @Param("pageSize") int pageSize);
+
+	List<HotelVo> getHotelListByMid(@Param("mid") String mid);
 
 }
