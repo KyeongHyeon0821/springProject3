@@ -9,6 +9,7 @@
 	<meta charset="UTF-8">
 	<title>roomDetail.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 	<script>
 		'use strict';
 		
@@ -68,26 +69,36 @@
 		  font-weight: 600;
 		}
 		
-		.room-thumbnail img {
+		.room-slider {
+		  width: 100%;
+		  max-width: 800px;
+		  margin: 0 auto 2rem;
+		  border-radius: 12px;
+		  overflow: hidden;
+		}
+		
+		.room-slider img {
 		  width: 100%;
 		  height: auto;
-		  border-radius: 12px;
-		  margin-bottom: 20px;
-		}
-		
-		.room-gallery {
-		  display: flex;
-		  gap: 10px;
-		  overflow-x: auto;
-		  margin-bottom: 20px;
-		}
-		
-		.room-gallery img {
-		  width: 160px;
-		  height: auto;
-		  border-radius: 8px;
 		  object-fit: cover;
+		  border-radius: 12px;
 		}
+		.swiper-button-next,
+		.swiper-button-prev {
+		  color: #888888; 
+		}
+		.swiper-button-next:hover,
+		.swiper-button-prev:hover {
+		  color: #666666; 
+		}
+		.swiper-pagination-bullet {
+		  background-color: #cccccc;
+		}
+		.swiper-pagination-bullet-active {
+		  background-color: #666666; 
+		}
+								
+		
 		
 		.room-info ul {
 		  list-style: none;
@@ -365,6 +376,21 @@
    		margin-bottom: 5px;
     	margin-right: 2px;
 		}	
+		
+		.warning-banner {
+		  background-color: #f8d7da; /* 붉은 배경 */
+		  color: #721c24; /* 붉은색 텍스트 */
+		  padding: 15px;
+		  border-radius: 8px;
+		  font-size: 1rem;
+		  font-weight: bold;
+		  margin-bottom: 20px;
+		  text-align: center;
+		}
+		
+		.warning-banner strong {
+		  color: #c82333;
+		}
 	
 	</style>
 </head>
@@ -373,21 +399,32 @@
 <div class="room-detail-container">
   <div class="room-header">
     <h2 class="room-title">${vo.name}</h2>
-    <div class="room-price">${vo.price}원 / 1박</div>
+    <div class="room-price"><fmt:formatNumber value="${vo.price}" type="number" pattern="#,##0" />원 / 1박</div>
   </div>
 
-  <div class="room-thumbnail">
-    <img src="${ctp}/roomThumbnail/${vo.thumbnail}" alt="${vo.name}" />
-  </div>
-
-  <c:if test="${!empty vo.images}">
-    <c:set var="roomImages" value="${fn:split(vo.images, '/')}" />
-    <div class="room-gallery">
-      <c:forEach var="roomImage" items="${roomImages}">
-        <img src="${ctp}/roomImages/${roomImage}" alt="객실 이미지" />
-      </c:forEach>
+  <div class="room-slider swiper">
+  <div class="swiper-wrapper">
+    <!-- 썸네일 먼저 -->
+    <div class="swiper-slide">
+      <img src="${ctp}/roomThumbnail/${vo.thumbnail}" alt="${vo.name}" />
     </div>
-  </c:if>
+
+    <!-- 나머지 이미지 -->
+    <c:if test="${!empty vo.images}">
+      <c:set var="roomImages" value="${fn:split(vo.images, '/')}" />
+      <c:forEach var="roomImage" items="${roomImages}">
+        <div class="swiper-slide">
+          <img src="${ctp}/roomImages/${roomImage}" alt="객실 이미지" />
+        </div>
+      </c:forEach>
+    </c:if>
+  </div>
+
+  <!-- 네비게이션 (옵션) -->
+  <div class="swiper-button-next"></div>
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-pagination"></div>
+	</div>
 
   <div class="room-info">
     <ul>
@@ -414,35 +451,41 @@
 	  <h4>📋기본 정보 및 반려견 동반 안내</h4>
 	  <ul>
 	    <li>상기 이미지는 실제와 다를 수 있습니다.</li>
-	    <li>객실(취사불가) + 펫 동반 가능</li>
+	    <li>객실은 취사가 불가하며, 반려견 동반이 가능합니다.</li>
 	  </ul>
-	
+	  
+		<div class="warning-banner">
+		  <p><strong>⚠️ 입실 시 반려견의 크기와 수에 따라 추가 요금이 발생합니다!</strong></p>
+		  <p>소형견 1마리: 10,000원 / 중형견 1마리: 15,000원 / 대형견 1마리: 20,000원</p>
+		</div>
+		
 	  <h5>■ 객실 제공 서비스 안내</h5>
 	  <ul>
 	    <li>펫 객실 비품: 방석, 식기, 배변판, 배변시트 3ea, 펫타월 2ea, 접착 테이프, 탈취제, 고정형 목줄(1.5m)</li>
 	    <li>펫 플레이그라운드 무료 이용</li>
-	    <li>펫플레이그라운드 이용 인원 기준: (패밀리/스위트) 보호자 2인 + 투숙 반려견 / (실버/골드) 보호자 4인 + 투숙 반려견</li>
+	    <li>펫플레이그라운드 이용은 보호자와 함께 동반한 반려견만 가능합니다.</li>
 	  </ul>
 	
 	  <h5>■ 반려동물 입실 기준</h5>
 	  <ul>
-	    <li>체급 분류: 소형 ~10kg / 중형 11~15kg / 중대형 16~25kg / 대형 26~45kg</li>
-	    <li>객실 타입별 허용 마리 수 상세 설명</li>
-	    <li>중대/대형견 추가 시 보호자 1인 동반 필수 (프론트 확인)</li>
+	    <li>반려동물 입실 시 체급 분류가 적용됩니다: 소형 ~10kg / 중형 11~15kg / 중대형 16~25kg / 대형 26~45kg</li>
+	    <li>객실 타입별 허용 마리 수가 다를 수 있으며, 중대형견 이상은 추가 요금이 부과될 수 있습니다.</li>
+	    <li>반려동물 입실 시, 보호자는 반드시 입실 규정을 준수해야 하며, 맹견, 3개월 이하의 강아지 및 공격성이 강한 견종은 입실이 불가합니다.</li>
 	  </ul>
 	
 	  <h5>■ 반려동물 입실 구비서류</h5>
 	  <ul>
 	    <li>광견병, 종합백신 접종확인서 (연령별 기준 있음)</li>
-	    <li>추가 요금: 소/중형 3만원, 중대형 4만원, 대형 5만원</li>
+	    <li>추가 요금: 소형/중형 3만원, 중대형 4만원, 대형 5만원</li>
 	    <li>맹견, 3개월 이하, 공격성 강한 견종 불가</li>
 	  </ul>
 	
 	  <h5>■ 기타 안내</h5>
 	  <ul>
-	    <li>132.23㎡ / 기준 6인, 최대 9인</li>
-	    <li>구성: 침실2 + 파우더룸 + 거실 + 주방 및 식당 + 욕실2</li>
-	    <li>※ 하이라이트(1구) 설치로 최소 조리만 가능</li>
+	    <li>객실 기본 크기: 132.23㎡ / 최대 9인까지 이용 가능 (객실마다 다를 수 있습니다)</li>
+	    <li>기본 구성: 침실, 파우더룸, 거실, 주방, 욕실 등</li>
+	    <li>※ 객실 내 취사 및 조리 불가, 일부 객실에는 제한된 조리 시설이 제공될 수 있습니다.</li>
+	    <li>※ 객실 내 시설 및 비품은 객실 유형에 따라 다를 수 있습니다.</li>
 	  </ul>
 	</div>
 	
@@ -562,5 +605,24 @@
 	</div>
 	
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+	new Swiper('.room-slider', {
+	  loop: true,
+	  pagination: {
+	    el: '.swiper-pagination',
+	    clickable: true
+	  },
+	  navigation: {
+	    nextEl: '.swiper-button-next',
+	    prevEl: '.swiper-button-prev'
+	  },
+	  autoplay: {
+	    delay: 5000,
+	    disableOnInteraction: false
+	  }
+	});
+</script>
 </body>
 </html>

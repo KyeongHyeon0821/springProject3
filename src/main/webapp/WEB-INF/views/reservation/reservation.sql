@@ -1,7 +1,7 @@
 /* 예약 테이블 */
 create table reservation (
   idx           int auto_increment primary key,         /* 예약 아이디	*/
-  reservationNo varchar(20) not null,										/* 예약 번호 */
+  reservationNo varchar(20) not null,										/* 예약 번호 (년월일시분 10자리 + uuid 2자리 + 객실idx) */
   mid      		  varchar(20) not null,                		/* 예약한 회원 아이디 */
   name					varchar(10) not null,										/* 예약자 이름 */
   tel						varchar(15) not null,										/* 예약자 연락처 */
