@@ -194,23 +194,23 @@
 		
 		// 결제 창으로 이동 전 폼 체크
 		function fCheck() {
-			let name = document.getElementById('name').value.trim();
+			let name = document.getElementById('name').value;
 			let tel = document.getElementById('tel').value.trim();
 			let memo = document.getElementById('memo').value.trim();
 			let regTel = /^\d{2,3}-\d{3,4}-\d{4}$/;
 			let regName = /^[가-힣a-zA-Z]+$/;
-
+			
 			if (name == "") {
 				alert("예약자 이름을 입력해주세요.");
 				document.getElementById('name').focus();
 				return false;
-			}
+			} 
 			if (!regName.test(name)) {
 				alert("성명은 한글 또는 영문만 입력 가능합니다.");
 				document.getElementById('name').focus();
 				return false;
 			}
-			if (name.length > 10) {
+			if (name.length > 10 || name.length < 1) {
 	      alert("예약자 이름은 10자 이내로 입력해주세요.");
 	      document.getElementById('name').focus();
 	      return false;
@@ -348,7 +348,7 @@
 			</div>
 			<div class="form-group">
 				<label for="name">예약자 이름</label>
-				<input type="text" name="name" id="name" class="form-control" required placeholder="예 : 홍길동 또는 John">
+				<input type="text" name="name" id="name" class="form-control" placeholder="예 : 홍길동 또는 John">
 			</div>
 			<div class="form-group">
 			  <label for="tel">예약자 연락처</label>
