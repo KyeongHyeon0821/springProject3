@@ -165,6 +165,9 @@ public class ReservationController {
 		
 		model.addAttribute("hotelVo", hotelVo);
 		model.addAttribute("vo", vo);
+		
+		System.out.println("hotelVo" + hotelVo);
+		System.out.println("vo" + vo);
 		return "reservation/payment";
 	}
 	

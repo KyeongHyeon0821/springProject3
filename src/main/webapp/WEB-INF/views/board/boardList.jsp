@@ -36,6 +36,18 @@
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <div class="container mt-4">
   <h2 class="board-title mb-4">자유게시판</h2>
+  <form method="get" action="${ctp}/board/list" class="d-flex justify-content-end mb-3" role="search">
+    <select name="searchType" class="form-select me-2" style="width: 120px;">
+	  <option value="title" ${searchType == 'title' ? 'selected' : ''}>제목</option>
+	  <option value="content" ${searchType == 'content' ? 'selected' : ''}>내용</option>
+	  <option value="writer" ${searchType == 'writer' ? 'selected' : ''}>작성자</option>
+	  <option value="tc" ${searchType == 'tc' ? 'selected' : ''}>제목+내용</option>
+	</select>
+    <input type="text" name="search" value="${search}" class="form-control me-2" placeholder="검색어 입력" style="width: 200px;">
+    <input type="hidden" name="pageSize" value="${pageSize}"/>
+    <button type="submit" class="btn btn-outline-success">검색</button>
+  </form>
+
   <table class="table table-hover text-center align-middle">
     <thead class="table-success">
       <tr>
@@ -51,10 +63,13 @@
         <tr>
           <td>${vo.idx}</td>
           <td class="text-start">
-            <a href="${pageContext.request.contextPath}/board/content?idx=${vo.idx}" class="text-decoration-none text-dark">
-              ${vo.title}
-            </a>
-          </td>
+			<a href="${ctp}/board/content?idx=${vo.idx}" class="text-decoration-none text-dark">
+			  ${vo.title}
+			  <c:if test="${replyCountMap[vo.idx] > 0}">
+			    <span class="badge bg-secondary ms-1">${replyCountMap[vo.idx]}</span>
+			  </c:if>
+		    </a>
+		   </td>
           <td>${vo.nickName}</td>
           <td>${vo.readCount}</td>
           <td>${vo.createdAt}</td>
@@ -62,12 +77,12 @@
       </c:forEach>
     </tbody>
   </table>
-  <div class="d-flex justify-content-center mt-3 mb-2">
+  <div class="d-flex justify-content-center mt-5 mb-2">
 	  <ul class="pagination" style="margin: 0;">
 	    <c:forEach var="i" begin="1" end="${totPage}">
 	      <li class="page-item ${i == pag ? 'active' : ''}">
 	        <a class="page-link ${i == pag ? 'bg-success text-white border-success' : ''}" 
-	           href="${ctp}/board/list?pag=${i}&pageSize=${pageSize}" 
+	           href="${ctp}/board/list?pag=${i}&pageSize=${pageSize}&search=${search}&searchType=${searchType}"
 	           style="${i == pag ? 'border: 1px solid #28a745;' : ''}">
 	          ${i}
 	        </a>

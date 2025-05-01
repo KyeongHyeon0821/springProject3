@@ -18,8 +18,8 @@ public interface BoardService {
     
     void updateBoard(BoardVo vo);
 
-		int getBoardTotCnt();
+		int getBoardTotCnt(String search, String searchType);
 
-		List<BoardVo> getBoardListPaging(int startIndexNo, int pageSize);    
+		List<BoardVo> getBoardListPaging(int startIndexNo, int pageSize, String search, String searchType);    
     
 }

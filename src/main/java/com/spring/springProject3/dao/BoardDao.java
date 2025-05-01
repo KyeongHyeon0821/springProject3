@@ -20,7 +20,7 @@ public interface BoardDao {
 
     int updateBoard(@Param("vo") BoardVo vo);
 
-		int getBoardTotCnt();
+		int getBoardTotCnt(@Param("search") String search, @Param("searchType") String searchType);
 
-		List<BoardVo> getBoardListPaging(@Param("startIndexNo") int startIndexNo, @Param("pageSize") int pageSize);
+		List<BoardVo> getBoardListPaging(@Param("startIndexNo") int startIndexNo, @Param("pageSize") int pageSize, @Param("search") String search, @Param("searchType") String searchType);
 }

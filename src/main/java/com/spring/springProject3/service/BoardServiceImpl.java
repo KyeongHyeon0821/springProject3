@@ -46,13 +46,13 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public int getBoardTotCnt() {
-        return boardDao.getBoardTotCnt();
+    public int getBoardTotCnt(String search, String searchType) {
+        return boardDao.getBoardTotCnt(search, searchType);
     }
 
     @Override
-    public List<BoardVo> getBoardListPaging(int startIndexNo, int pageSize) {
-        return boardDao.getBoardListPaging(startIndexNo, pageSize);
+    public List<BoardVo> getBoardListPaging(int startIndexNo, int pageSize, String search, String searchType) {
+        return boardDao.getBoardListPaging(startIndexNo, pageSize, search, searchType);
     }
 
 }

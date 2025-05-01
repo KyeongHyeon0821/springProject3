@@ -14,15 +14,49 @@
   
   <!-- 전체 게시글 -->
   <select id="getBoardTotCnt" resultType="int">
-	select count(*) from board
-  </select>
+	  select count(*) from board b join member m on b.mid = m.mid
+	  <where>
+	    <choose>
+	      <when test="searchType.equals('title')">
+	        b.title like concat('%', #{search}, '%')
+	      </when>
+	      <when test="searchType.equals('content')">
+	        b.content like concat('%', #{search}, '%')
+	      </when>
+	      <when test="searchType.equals('writer')">
+	        m.nickName like concat('%', #{search}, '%')
+	      </when>
+	      <otherwise>
+	        (b.title like concat('%', #{search}, '%') or b.content like concat('%', #{search}, '%'))
+	      </otherwise>
+	    </choose>
+	  </where>
+	</select>
+
 
   <!-- 게시글 리스트 페이징 처리 -->
   <select id="getBoardListPaging" resultType="BoardVo">
-	select b.*, m.nickName from board b join member m on b.mid = m.mid order by b.idx desc limit #{startIndexNo}, #{pageSize}
+    select b.*, m.nickName from board b join member m ON b.mid = m.mid
+    <where>
+      <choose>
+        <when test="searchType.equals('title')">
+          b.title like concat('%', #{search}, '%')
+        </when>
+        <when test="searchType.equals('content')">
+          b.content like concat('%', #{search}, '%')
+        </when>
+        <when test="searchType.equals('writer')">
+          m.nickName like concat('%', #{search}, '%')
+        </when>
+        <otherwise>
+          (b.title like concat('%', #{search}, '%') or b.content like concat('%', #{search}, '%'))
+        </otherwise>
+      </choose>
+    </where>
+    order by b.idx desc
+    limit #{startIndexNo}, #{pageSize}
   </select>
-  
-  
+
   
   
   <!-- 게시글 작성 -->

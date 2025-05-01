@@ -35,7 +35,7 @@ insert into options(name) values('드라이기');
 insert into options(name) values('전자레인지');
 insert into options(name) values('전기포트');
 insert into options(name) values('와이파이');
-insert into options(name) values('반려견 침대');
+insert into options(name) values('반려견 방석');
 insert into options(name) values('반려견 배변패드');
 insert into options(name) values('반려견 샴푸');
 insert into options(name) values('피트니스 센터');

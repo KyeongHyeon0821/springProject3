@@ -1,6 +1,8 @@
 package com.spring.springProject3.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.spring.springProject3.service.BoardReplyService;
 import com.spring.springProject3.service.BoardService;
+import com.spring.springProject3.vo.BoardReplyVo;
 import com.spring.springProject3.vo.BoardVo;
 
 @Controller
@@ -22,14 +26,19 @@ public class BoardController {
 
     @Autowired
     BoardService boardService;
+    
+    @Autowired
+    BoardReplyService boardReplyService;
 
     // 게시글 목록 보기
     @GetMapping("/list")
     public String boardListGet(Model model,
         @RequestParam(name="pag", defaultValue = "1", required = false) int pag,
-        @RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize
+        @RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize,
+        @RequestParam(name="search", defaultValue = "", required = false) String search,
+        @RequestParam(name="searchType", defaultValue = "tc", required = false) String searchType
     ) {
-        int totRecCnt = boardService.getBoardTotCnt(); // 전체 게시글 수
+        int totRecCnt = boardService.getBoardTotCnt(search, searchType); // 전체 게시글 수
         int totPage = (totRecCnt % pageSize) == 0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize) + 1;
         int startIndexNo = (pag - 1) * pageSize;
         int curScrStartNo = totRecCnt - startIndexNo;
@@ -39,13 +48,22 @@ public class BoardController {
         int startPage = curBlock * blockSize + 1;
         int endPage = Math.min(startPage + blockSize - 1, totPage);
 
-        List<BoardVo> vos = boardService.getBoardListPaging(startIndexNo, pageSize);
+        List<BoardVo> vos = boardService.getBoardListPaging(startIndexNo, pageSize, search, searchType);
 
+        Map<Integer, Integer> replyCountMap = new HashMap<>();
+        for (BoardVo vo : vos) {
+            int count = boardReplyService.getReplyCount(vo.getIdx());
+            replyCountMap.put(vo.getIdx(), count);
+        }
+        
+        model.addAttribute("replyCountMap", replyCountMap);
         model.addAttribute("vos", vos);
         model.addAttribute("pag", pag);
         model.addAttribute("totPage", totPage);
         model.addAttribute("curScrStartNo", curScrStartNo);
         model.addAttribute("pageSize", pageSize);
+        model.addAttribute("search", search);
+        model.addAttribute("searchType", searchType);
 
         return "board/boardList";
     }
@@ -76,6 +94,10 @@ public class BoardController {
         model.addAttribute("vo", vo);
         model.addAttribute("sMid", session.getAttribute("sMid"));
         model.addAttribute("sLevel", session.getAttribute("sLevel"));
+        
+        List<BoardReplyVo> replyList = boardReplyService.getReplies(idx);
+        model.addAttribute("replyList", replyList);
+        
         return "board/boardContent";
     }
 
