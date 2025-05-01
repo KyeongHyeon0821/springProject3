@@ -24,5 +24,7 @@ public interface ReviewDao {
 
 	List<ReservationListVo> getRoomUsedAllList(@Param("mid") String mid);
 
+	List<ReviewVo> getHotelReviewList(@Param("idx") int idx);
+
 
 }

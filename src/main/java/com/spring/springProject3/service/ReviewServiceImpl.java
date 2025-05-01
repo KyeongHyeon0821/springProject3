@@ -51,4 +51,9 @@ public class ReviewServiceImpl implements ReviewService {
 	public List<ReservationListVo> getRoomUsedAllList(String mid) {
 		return reviewDao.getRoomUsedAllList(mid);
 	}
+
+	@Override
+	public List<ReviewVo> getHotelReviewList(int idx) {
+		return reviewDao.getHotelReviewList(idx);
+	}
 }

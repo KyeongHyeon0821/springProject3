@@ -245,6 +245,91 @@
 		#category li:hover {
 		  background-color: #1b5e20;
 		}
+		
+		/* 리뷰 모달 전체 박스 */
+		.review-modal {
+		  font-family: 'Arial', sans-serif;
+		}
+		
+		/* 리뷰 하나 박스 */
+		.review-box {
+		  padding: 15px;
+		  margin-bottom: 20px;
+		  background-color: #f9f9f9;
+		  border-radius: 10px;
+		  border: 1px solid #ddd;
+		  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+		}
+		
+		/* 리뷰 사이의 구분선 제거 (이미 박스로 구분되니까) */
+		.review-box hr {
+		  display: none;
+		}
+		
+		/* 별점 + 날짜 */
+		.review-line1 {
+		  display: flex;
+		  justify-content: space-between;
+		  align-items: center;
+		}
+		
+		/* 별 모양 */
+		.stars .star {
+		  color: gold;
+		  font-size: 18px;
+		  margin-right: 2px;
+		}
+		.stars .star.gray {
+		  color: #ccc;
+		}
+		
+		/* 닉네임, 목적, hostIp */
+		.review-line2 {
+		  display: flex;
+		  justify-content: space-between;
+		  font-size: 14px;
+		  color: #555;
+		  margin-top: 5px;
+		}
+		
+		/* 객실 이름 */
+		.review-line3 {
+		  font-weight: bold;
+		  margin-top: 5px;
+		  color: #333;
+		}
+		
+		/* 내용 */
+		.review-content {
+		  margin-top: 8px;
+		  line-height: 1.5;
+		  white-space: pre-wrap;
+		}
+		
+		.review-preview-container{
+			margin-top: 1rem;
+		}
+		#allReviewShow {
+			text-decoration: none;
+   		margin-bottom: 5px;
+    	margin-right: 2px;
+		}	
+		.modal-header {
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  position: relative;
+		}
+		
+		.modal-header .modal-title {
+		  flex-grow: 1;
+		  text-align: center;
+		}
+		
+		.modal-header .btn-close {
+		  position: absolute;
+		  right: 1rem;
+		}
 	</style>
 
 	<script>
@@ -378,6 +463,89 @@
     ${hotelVo.images}
   </div>
   
+  <!-- 리뷰 미리보기 -->
+	<div class="review-preview-container">
+		<h4>리뷰</h4>
+		<c:if test="${!empty rVos}">
+			<a id="allReviewShow" href="#" class="text-end" data-bs-toggle="modal" data-bs-target="#myModal" style="display:block">전체 리뷰 보기</a>
+		  <c:forEach var="ReviewVo" items="${rVos}" varStatus="st">
+		    <c:if test="${st.index < 2}">
+		      <div class="review-box">
+		        <!-- 별점 + 날짜 -->
+		        <div class="review-line1">
+		          <div class="stars">
+		            <c:forEach var="i" begin="1" end="${ReviewVo.star}">
+		              <span class="star">★</span>
+		            </c:forEach>
+		            <c:forEach var="i" begin="${ReviewVo.star + 1}" end="5">
+		              <span class="star gray">★</span>
+		            </c:forEach>
+		          </div>
+		          <div class="date">${fn:substring(ReviewVo.reviewDate, 0, 10)}</div>
+		        </div>
+		        <div class="review-line2">
+		          <div class="writer">${ReviewVo.nickName} | ${ReviewVo.purpose}</div>
+		          <c:if test="${sLevel == 0}">
+		            <div class="host-ip">${ReviewVo.hostIp}</div>
+		          </c:if>
+		        </div>
+		        <div class="review-line3">${ReviewVo.roomName}</div>
+		        <div class="review-content">${ReviewVo.content}</div>
+		      </div>
+		    </c:if>
+		  </c:forEach>
+	  </c:if>
+	  <c:if test="${empty rVos}"><div class="mt-2">아직 작성된 리뷰가 없습니다.</div></c:if>
+	</div>
+	
+	
+	<!-- 모달창으로 리뷰 띄우기 -->
+	<div class="modal modal-lg" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered">
+	    <div class="modal-content review-modal">
+	      <div class="modal-header">
+				  <h3 class="modal-title" id="exampleModalLabel">리뷰</h3>
+				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+	
+	      <div class="modal-body">
+	        <c:forEach var="ReviewVo" items="${rVos}">
+	          <div class="review-box">
+	            <!-- 1줄: 별점 + 날짜 -->
+	            <div class="review-line1">
+	              <div class="stars">
+	                <c:forEach var="i" begin="1" end="${ReviewVo.star}">
+	                  <span class="star">★</span>
+	                </c:forEach>
+	                <c:forEach var="i" begin="${ReviewVo.star + 1}" end="5">
+	                  <span class="star gray">★</span>
+	                </c:forEach>
+	              </div>
+	              <div class="date">${fn:substring(ReviewVo.reviewDate, 0, 10)}</div>
+	            </div>
+	
+	            <!-- 2줄: 닉네임 | 목적    hostIp (관리자만) -->
+	            <div class="review-line2">
+	              <div class="writer">${ReviewVo.nickName} | ${ReviewVo.purpose}</div>
+	              <c:if test="${sLevel == 0}">
+	                <div class="host-ip">${ReviewVo.hostIp}</div>
+	              </c:if>
+	            </div>
+	
+	            <!-- 3줄: 객실 이름 -->
+	            <div class="review-line3">${ReviewVo.roomName}</div>
+	
+	            <!-- 4줄: 내용 -->
+	            <div class="review-content">${ReviewVo.content}</div>
+	
+	            <hr />
+	          </div>
+	        </c:forEach>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
   <div class="reservation-search" style="margin: 30px 0;">
 	  <form method="get" action="hotelDetail?idx=${hotelVo.idx}">
 		  <input type="hidden" name="idx" value="${hotelVo.idx}" />

@@ -23,5 +23,7 @@ public interface ReviewService {
 
 	List<ReservationListVo> getRoomUsedAllList(String mid);
 
+	List<ReviewVo> getHotelReviewList(int idx);
+
 
 }

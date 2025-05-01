@@ -27,9 +27,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.springProject3.service.HotelService;
 import com.spring.springProject3.service.ReservationService;
+import com.spring.springProject3.service.ReviewService;
 import com.spring.springProject3.service.RoomService;
 import com.spring.springProject3.service.TouristSpotService;
 import com.spring.springProject3.vo.HotelVo;
+import com.spring.springProject3.vo.ReviewVo;
 import com.spring.springProject3.vo.RoomVo;
 import com.spring.springProject3.vo.TouristSpotVo;
 
@@ -48,6 +50,9 @@ public class HotelController {
 	
 	@Autowired
 	TouristSpotService touristSpotService;
+	
+	@Autowired
+	ReviewService reviewService;
 	
 	// 호텔 리스트
 	@RequestMapping("/hotelList")
@@ -227,6 +232,9 @@ public class HotelController {
 		// 호텔 정보
     HotelVo hotelVo = hotelService.getHotel(idx); // 단일 호텔 정보
     List<HotelVo> vos = hotelService.getHotelSearch(idx); // 연관 호텔 리스트 (예: 같은 지역 등)
+    
+    // 호텔 리뷰 보여주기
+		List<ReviewVo> rVos = reviewService.getHotelReviewList(idx);
 		
     // 찜 상태 확인
     int res = hotelService.getHotelLike(mid, idx);
@@ -245,6 +253,7 @@ public class HotelController {
     
     // 모델에 담기
     model.addAttribute("hotelVo", hotelVo);
+    model.addAttribute("rVos", rVos);
     model.addAttribute("vos", vos); // 연관 호텔 리스트
     model.addAttribute("hotelLike", hotelLike);
     model.addAttribute("roomVos", roomVos);
