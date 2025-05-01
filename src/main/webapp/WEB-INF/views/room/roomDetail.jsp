@@ -466,27 +466,27 @@
 
 	<!-- 이미지 슬라이드 -->
   <div class="room-slider swiper">
-  <div class="swiper-wrapper">
-    <!-- 썸네일 먼저 -->
-    <div class="swiper-slide">
-      <img src="${ctp}/roomThumbnail/${vo.thumbnail}" alt="${vo.name}" onclick="openModal()" />
-    </div>
-
-    <!-- 나머지 이미지 -->
-    <c:if test="${!empty vo.images}">
-      <c:set var="roomImages" value="${fn:split(vo.images, '/')}" />
-      <c:forEach var="roomImage" items="${roomImages}">
-        <div class="swiper-slide">
-          <img src="${ctp}/roomImages/${roomImage}" alt="객실 이미지" onclick="openModal()" />
-        </div>
-      </c:forEach>
-    </c:if>
-  </div>
-
-  <!-- 네비게이션 (옵션) -->
-  <div class="swiper-button-next"></div>
-  <div class="swiper-button-prev"></div>
-  <div class="swiper-pagination"></div>
+	  <div class="swiper-wrapper">
+	    <!-- 썸네일 먼저 -->
+	    <div class="swiper-slide">
+	      <img src="${ctp}/roomThumbnail/${vo.thumbnail}" alt="${vo.name}" onclick="openModal()" />
+	    </div>
+	
+	    <!-- 나머지 이미지 -->
+	    <c:if test="${!empty vo.images}">
+	      <c:set var="roomImages" value="${fn:split(vo.images, '/')}" />
+	      <c:forEach var="roomImage" items="${roomImages}">
+	        <div class="swiper-slide">
+	          <img src="${ctp}/roomImages/${roomImage}" alt="객실 이미지" onclick="openModal()" />
+	        </div>
+	      </c:forEach>
+	    </c:if>
+	  </div>
+	
+	  <!-- 네비게이션 (옵션) -->
+	  <div class="swiper-button-next"></div>
+	  <div class="swiper-button-prev"></div>
+	  <div class="swiper-pagination"></div>
 	</div>
 	
 	<!-- 이미지 모달 -->

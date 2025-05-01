@@ -10,25 +10,30 @@
 	<meta charset="UTF-8">
 	<title>hotelDetail.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f5f016ee8ec4b87750154cd5e9d07dfb&libraries=services"></script>
 	<style>
-		.hotel-container {
-		  max-width: 1000px;
-		  margin: 0 auto;
-		  padding: 20px;
-		  font-family: sans-serif;
+		.hotel-detail-container {
+		  max-width: 800px;
+		  margin: 40px auto;
+		  padding: 24px;
+		  background-color: #ffffff;
+		  border-radius: 16px;
+		  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+		  font-family: 'Noto Sans KR', sans-serif;
+		  color: #333;
 		}
 		
 		.hotel-header {
-		  text-align: center;
+	 	  display: flex;
+		  justify-content: space-between;
+		  align-items: baseline;
 		  margin-bottom: 20px;
 		}
 		
 		.hotel-title {
-		  font-size: 28px;
-		  display: inline-flex;
-		  align-items: center;
-		  gap: 8px;
+		  font-size: 1.8rem;
+		  font-weight: bold;
 		}
 		
 		.heart-icon img {
@@ -36,22 +41,34 @@
 		  vertical-align: middle;
 		}
 		
-		.hotel-thumbnail {
-		  text-align: center;
-		  margin-bottom: 16px;
+		.hotel-slider {
+		  width: 100%;
+		  max-width: 800px;
+		  margin: 0 auto 2rem;
+		  border-radius: 12px;
+		  overflow: hidden;
+		  cursor:pointer;
 		}
 		
-		.hotel-thumbnail img {
+		.hotel-slider img {
 		  width: 100%;
-		  max-width: 700px;
+		  height: auto;
+		  object-fit: cover;
 		  border-radius: 12px;
 		}
-		
-		.hotel-images img {
-		  width: 200px !important;
-		  height: auto !important;
-		  margin: 5px 5px 0 0;
-		  border-radius: 8px;
+		.swiper-button-next,
+		.swiper-button-prev {
+		  color: #888888; 
+		}
+		.swiper-button-next:hover,
+		.swiper-button-prev:hover {
+		  color: #666666; 
+		}
+		.swiper-pagination-bullet {
+		  background-color: #cccccc;
+		}
+		.swiper-pagination-bullet-active {
+		  background-color: #666666; 
 		}
 		
 		.roomList {
@@ -165,18 +182,16 @@
 		}
 		
 		.reservation-search {
-		  background-color: #f2f4f7;
 		  border-radius: 10px;
-		  padding: 24px 20px;
+		  padding: 5px 0 30px 0;
 		  margin: 30px 0;
-		  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 		}
 		
 		.reservation-search form {
 		  display: flex;
 		  flex-wrap: wrap;
 		  align-items: flex-end;
-		  gap: 16px;
+		  gap: 32px;
 		}
 		
 		.reservation-search label {
@@ -184,7 +199,7 @@
 		  flex-direction: column;
 		  font-size: 14px;
 		  color: #333;
-		  flex: 1 1 200px;
+		  flex: -1 1 200px;
 		}
 		
 		.reservation-search label.small-input {
@@ -198,6 +213,7 @@
 		  font-size: 14px;
 		  margin-top: 4px;
 		  width: 100%;
+		  cursor: pointer;
 		}
 		
 		.reservation-search button {
@@ -330,6 +346,66 @@
 		  position: absolute;
 		  right: 1rem;
 		}
+		
+		/* 호텔 이미지 모달 */
+		/* 모달 전체 배경 */
+		.image-modal {
+		  display: none;
+		  position: fixed;
+		  z-index: 10000;
+		  inset: 0; /* top, right, bottom, left 0 */
+		  background-color: rgba(0, 0, 0, 0.3);
+		  justify-content: center;
+		  align-items: flex-start; /* 스크롤 시 위에서부터 보이게 */
+		  overflow-y: auto; 
+		  padding: 4vh 0;
+		}
+		
+		.image-modal-content {
+		  position: relative;
+		  background-color: white;
+		  margin: auto auto;
+		  padding: 3rem 0 1rem 0;
+		  width: 90%;
+		  max-width: 1000px;
+		  max-height: 90vh; /* ✅ 화면의 90%만 차지하도록 제한 */
+		  overflow-y: auto; /* ✅ 내부 스크롤 가능하게 */
+		  border-radius: 16px;
+		  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+		}
+		
+		/* 닫기 버튼 */
+		.image-modal-close {
+		  position: absolute;
+		  top: 0px;
+		  right: 13px;
+		  font-size: 28px;
+		  font-weight: bold;
+		  color: #888;
+		  cursor: pointer;
+		}
+		
+		.image-modal-close:hover {
+		  color: #000;
+		}
+		
+		/* 이미지 리스트 */
+		.modal-images {
+		  display: flex;
+		  flex-wrap: wrap;
+		  justify-content: center;
+		  gap: 1.2rem;
+		}
+		
+		/* 이미지 크기: 슬라이드와 동일 */
+		.modal-images img {
+		  width: 100%;
+		  max-width: 48%;
+		  height: auto;
+		  object-fit: cover;
+		  border-radius: 12px;
+		  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+		}
 	</style>
 
 	<script>
@@ -345,7 +421,7 @@
 		// 호텔 찜 추가하기
 		function hotelLikeOk() {
 			let mid = '${sMid}';
-			let hotelIdx = ${vo.idx};
+			let hotelIdx = ${hotelVo.idx};
 			
 			if(mid == "") {
 				alert("로그인 후 이용해주세요.");
@@ -375,7 +451,7 @@
 		// 호텔 찜 취소하기
 		function hotelLikeNo() {
 			let mid = '${sMid}';
-			let hotelIdx = ${vo.idx};
+			let hotelIdx = ${hotelVo.idx};
 			
 			if(mid == "") {
 				alert("로그인 후 이용해주세요.");
@@ -440,32 +516,61 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<div class="hotel-container">
+<div class="hotel-detail-container">
   <div class="hotel-header">
     <h2 class="hotel-title">
       ${hotelVo.name} 
-      <span class="heart-icon">
-        <c:if test="${hotelLike == 'Ok'}">
-          <a id="likeFn" href="javascript:hotelLikeNo()"><img id="likeImg" src="${ctp}/images/heartRed.png" /></a>
-        </c:if>
-        <c:if test="${hotelLike == 'No'}">
-          <a id="likeFn" href="javascript:hotelLikeOk()"><img id="likeImg" src="${ctp}/images/heartBlack.png" /></a>
-        </c:if>
-      </span>
     </h2>
+    <span class="heart-icon">
+      <c:if test="${hotelLike == 'Ok'}">
+        <a id="likeFn" href="javascript:hotelLikeNo()"><img id="likeImg" src="${ctp}/images/heartRed.png" /></a>
+      </c:if>
+      <c:if test="${hotelLike == 'No'}">
+        <a id="likeFn" href="javascript:hotelLikeOk()"><img id="likeImg" src="${ctp}/images/heartBlack.png" /></a>
+      </c:if>
+    </span>
   </div>
 
-  <div class="hotel-thumbnail">
-    <img src="${ctp}/hotelThumbnail/${hotelVo.thumbnail}" title="${hotelVo.name}" alt="대표이미지" />
-  </div>
-
-  <div class="hotel-images">
-    ${hotelVo.images}
-  </div>
-  
+  <!-- 이미지 슬라이드 -->
+  <div class="hotel-slider swiper">
+	  <div class="swiper-wrapper">
+	    <!-- 썸네일 먼저 -->
+	    <div class="swiper-slide">
+	      <img src="${ctp}/hotelThumbnail/${hotelVo.thumbnail}" alt="${hotelVo.name}" onclick="openModal()" />
+	    </div>
+	 
+		  <!-- 나머지 이미지 -->
+	   <%--  <c:if test="${!empty hotelVo.images}">
+	      <c:set var="hotelImages" value="${fn:split(hotelVo.images, '/')}" />
+	      <c:forEach var="hotelImage" items="${hotelImages}">
+	        <div class="swiper-slide">
+	        	${hotelImage}
+	        </div>
+	      </c:forEach>
+	    </c:if> --%>
+	 </div>
+	  <!-- 네비게이션 (옵션) -->
+	  <div class="swiper-button-next"></div>
+	  <div class="swiper-button-prev"></div>
+	  <div class="swiper-pagination"></div>
+	</div>
+	
+	<!-- 이미지 모달 -->
+	<div id="imageModal" class="image-modal" onclick="closeModal(event)">
+	  <div class="image-modal-content">
+	    <span class="image-modal-close" onclick="closeModal()">&times;</span>
+	    <div class="modal-images">
+	      <img src="${ctp}/hotelThumbnail/${hotelVo.thumbnail}" alt="썸네일" />
+	      <c:if test="${!empty hotelVo.images}">
+	      	${hotelVo.images}
+	      </c:if>
+	    </div>
+	  </div>
+	</div>
+	
   <!-- 리뷰 미리보기 -->
 	<div class="review-preview-container">
-		<h4>리뷰</h4>
+		<h4 class="mb-0">리뷰</h4>
 		<c:if test="${!empty rVos}">
 			<a id="allReviewShow" href="#" class="text-end" data-bs-toggle="modal" data-bs-target="#myModal" style="display:block">전체 리뷰 보기</a>
 		  <c:forEach var="ReviewVo" items="${rVos}" varStatus="st">
@@ -546,7 +651,8 @@
 	  </div>
 	</div>
 	
-  <div class="reservation-search" style="margin: 30px 0;">
+	<h4 class="mt-5 mb-1">예약 가능 객실</h4>
+  <div class="reservation-search" style="margin: 0 0 30px 0;">
 	  <form method="get" action="hotelDetail?idx=${hotelVo.idx}">
 		  <input type="hidden" name="idx" value="${hotelVo.idx}" />
 		  
@@ -566,21 +672,20 @@
 		    <input type="number" name="petCount" min="0" max="5" value="${petCount}" required />
 		  </label>
 		
-		  <button type="submit">예약 가능 객실 검색</button>
+		  <button type="submit">예약가능 객실검색</button>
 		</form>
 	</div>
 
   
 	<div class="roomList">
   <!-- 예약 가능 객실 리스트 (검색 결과) -->
-  <h3>예약 가능 객실</h3>
   <!-- 이전 객실 타입 저장 변수 -->
   <c:set var="previousRoomType" value="" />
   
 	  <c:forEach items="${roomVos}" var="roomVo">
 	    <!-- 객실 타입이 변경될 때마다 새로운 섹션 시작 -->
 	    <c:if test="${roomVo.name != previousRoomType}">
-	      <h4>${roomVo.name}</h4> <!-- 객실 타입 제목 출력 -->
+	      <h5>${roomVo.name}</h5> <!-- 객실 타입 제목 출력 -->
 	      <c:set var="previousRoomType" value="${roomVo.name}" />
 	    </c:if>
 	    
@@ -601,18 +706,20 @@
 	  </c:forEach>
 	</div>
 
-  <div class="hotel-info">
-    <p>📞 ${hotelVo.tel}</p>
+  
+	
+	<h4>위치/주변관광지</h4>
+  <div id="mapContainer" style="cursor:pointer; position:relative;">
+		<div id="map" style="width:100%; height:350px; position:relative;">
+			<ul id="category">
+				<li id="TOUR" data-order="99"><span class="category_bg tour"></span>관광지</li>
+				<li id="mapBig" data-order="99"><span class="category_bg tour"></span>지도크게보기</li>
+			</ul>
+		</div>
+	</div>
+	<div class="hotel-info">
     <p>📍 ${hotelVo.address}</p>
-  </div>
-
-   <div id="mapContainer" style="cursor:pointer; position:relative;">
-	  <div id="map" style="width:100%; height:350px; position:relative;">
-	    <ul id="category">
-	      <li id="TOUR" data-order="99"><span class="category_bg tour"></span>관광지</li>
-	      <li id="mapBig" data-order="99"><span class="category_bg tour"></span>지도크게보기</li>
-	    </ul>
-	  </div>
+    <p>📞 ${hotelVo.tel}</p>
   </div>
 
   <!-- 관광지 정보 출력 -->
@@ -860,6 +967,49 @@
   	    }
   	  }, 500); // 지도가 렌더링될 시간 기다려줌
   	}); */
+</script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+	new Swiper('.hotel-slider', {
+	  loop: true,
+	  pagination: {
+	    el: '.swiper-pagination',
+	    clickable: true
+	  },
+	  navigation: {
+	    nextEl: '.swiper-button-next',
+	    prevEl: '.swiper-button-prev'
+	  },
+	  autoplay: {
+	    delay: 5000,
+	    disableOnInteraction: false
+	  }
+	});
+	
+	// 모달 관련 요소들 선택
+	const modal = document.getElementById('imageModal');
+	const closeModalBtn = document.querySelector('.image-modal-close');
+
+	// 모달 열기 함수
+	function openModal() {
+	  modal.style.display = 'flex';  // 모달을 보이게 설정
+	}
+
+	// 모달 닫기 함수
+	function closeModal(event) {
+	  if (event) {
+	    // 모달 외부를 클릭하면 닫히도록
+	    if (event.target === modal) {
+	      modal.style.display = 'none';
+	    }
+	  } else {
+	    modal.style.display = 'none';  // 닫기 버튼 클릭 시 모달 닫기
+	  }
+	}
+
+	// 닫기 버튼 클릭 시 모달 닫기
+	closeModalBtn.addEventListener('click', closeModal);
+	
 </script>
 <p><br/></p>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
