@@ -49,7 +49,7 @@
 	
 	
 	<insert id="setReviewInputOk">
-		insert into review values (default, #{vo.hotelIdx}, #{vo.roomIdx}, #{vo.reservationIdx},#{vo.mid},#{vo.nickName}, #{vo.roomName},#{vo.purpose},#{vo.star},#{vo.content},#{vo.hostIp}, default);
+		insert into review values (default, #{vo.hotelIdx}, #{vo.roomIdx}, #{vo.reservationIdx}, #{vo.reservationNo}, #{vo.mid},#{vo.nickName}, #{vo.roomName},#{vo.purpose},#{vo.star},#{vo.content},#{vo.hostIp}, default);
 	</insert>
 
 

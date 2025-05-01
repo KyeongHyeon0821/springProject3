@@ -217,7 +217,7 @@ public class AdminController {
 	}
 	
 	// 리뷰 리스트 불러오기
-	@GetMapping("/review/reviewList")
+	@GetMapping("/review/adReviewList")
 	public String memberReviewFormGet(Model model, HttpSession session,
 			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
 			@RequestParam(name="pageSize", defaultValue = "8", required = false) int pageSize,
@@ -237,7 +237,7 @@ public class AdminController {
 		model.addAttribute("choice", choice);
 		// sMid select * from reservation where mid = #{sMid} and status = '이용완료';
 		
-		return "admin/review/reviewList";
+		return "admin/review/adReviewList";
 	}
 	
 	// 리뷰 삭제하기

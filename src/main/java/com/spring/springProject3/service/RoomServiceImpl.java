@@ -21,6 +21,7 @@ import com.spring.springProject3.dao.RoomDao;
 import com.spring.springProject3.vo.OptionVo;
 import com.spring.springProject3.vo.ReservationListVo;
 import com.spring.springProject3.vo.ReservationVo;
+import com.spring.springProject3.vo.ReviewVo;
 import com.spring.springProject3.vo.RoomVo;
 
 import net.coobird.thumbnailator.Thumbnailator;
@@ -269,6 +270,12 @@ public class RoomServiceImpl implements RoomService {
 	@Override
 	public List<ReservationVo> getReviewSave(String mid) {
 		return roomDao.getReviewSave(mid);
+	}
+
+
+	@Override
+	public ReviewVo getReviewSaveCheck(String reservationNo) {
+		return roomDao.getReviewSaveCheck(reservationNo);
 	}
 
 

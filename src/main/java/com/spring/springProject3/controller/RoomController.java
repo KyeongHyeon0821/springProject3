@@ -284,7 +284,7 @@ public class RoomController {
 		return reviewVos;
 	}
 	
-	// 마이페이지에서 내 이용내역 관리 보기 (리뷰서비스사용)
+	// 마이페이지에서 내 이용내역 관리 보기
 	@GetMapping("/roomUseList")
 	public String roomUseListGet(Model model, HttpSession session) {
 		String mid = (String)session.getAttribute("sMid")+"";
@@ -293,9 +293,19 @@ public class RoomController {
 		
 		model.addAttribute("vos", vos);
 		model.addAttribute("rsVos",rsVos);
-		model.addAttribute("mid", mid);
 		System.out.println("vos :" + vos );
+		System.out.println("rsVos :" + rsVos);
+		
 		return "room/roomUseList";
+	}
+	
+	// 마이페이지에서 내 이용내역에 리뷰를 달았는지 체크
+	@ResponseBody
+	@GetMapping("/reviewSaveCheck")
+	public String ReviewSaveCheckGet(String reservationNo) {
+		ReviewVo vo = roomService.getReviewSaveCheck(reservationNo);
+		if(vo != null) return "1";
+		else return "0";
 	}
 	
 }

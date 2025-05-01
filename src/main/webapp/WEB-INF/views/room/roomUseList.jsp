@@ -65,25 +65,31 @@
 	  function reviewUploadCheck() {
 		  let star = reviewForm.star.value;
 		  let purpose = reviewForm.purpose.value;
+		  let content = reviewForm.content.value;
 		  
 		  if(star == "") {
 			  alert("별점을 입력하세요.");
 		  }
 		  else if(purpose == "" ) { alert("목적을 입력하세요."); 
 		  }
+		  else if(content == "") { alert("내용을 입력하세요."); 
+		  } 
 		  else reviewForm.submit();
 	  }
 	  
+
 	  
-	  
-	  
-	  function modalCheck(hotelIdx,roomIdx,roomName,reservationIdx) {
+	  function modalCheck(hotelIdx,roomIdx,roomName,reservationIdx,reservationNo) {
 		  $("#hotelIdx").val(hotelIdx);
 		  $("#roomIdx").val(roomIdx);
 		  $("#roomName").val(roomName);
 		  $("#reservationIdx").val(reservationIdx);
+		  $("#reservationNo").val(reservationNo);
+
 	  }
 	  
+	  
+
 	  function reviewShowCheck(roomIdx) {
 		  $("#reviewShowBtn"+roomIdx).hide();
 		  $("#reviewHideBtn"+roomIdx).show();
@@ -130,6 +136,33 @@
 		  $("#reviewHideBtn"+roomIdx).hide();
 		  $(".reviewClass").hide();
 	  }
+	  
+/* 	  function reviewCheck(hotelIdx,roomIdx,roomName,reservationIdx,reservationNo) {
+		  alert("reservationNo : " + reservationNo);
+		  $.ajax({
+			  url  : "${ctp}/room/reviewSaveCheck",
+			  type : "get",
+			  data : {reservationNo : reservationNo},
+			  success:function(res) {
+				  if(res != "0") alert("이미 리뷰를 등록하셨습니다.");
+				  else {
+		        let str = 
+             `<form id="reviewForm">
+                <input type="hidden" id="hotelIdx" name="hotelIdx" value="${hotelIdx}">
+                <input type="hidden" id="roomIdx" name="roomIdx" value="${roomIdx}">
+                <input type="hidden" id="roomName" name="roomName" value="${roomName}">
+                <input type="hidden" id="reservationIdx" name="reservationIdx" value="${reservationIdx}">
+                <input type="hidden" id="reservationNo" name="reservationNo" value="${reservationNo}">
+                <textarea name="reviewContent" placeholder="리뷰 내용"></textarea>
+            	</form>`;
+
+					  $('#modalContent').html(str);  // 모달 내용 주입
+			      $('#myModal').modal('show');    // 모달 표시
+				  }
+			  }
+			  
+		  }); 
+	  }*/
 	</script>
 </head>
 <body>
@@ -159,11 +192,15 @@
 				    <div class="room-info"><span class="room-label">체크인 날짜: ${ReservationListVo.checkinDate}</span></div>
 				    <div class="room-info"><span class="room-label">체크아웃 날짜: ${ReservationListVo.checkoutDate}</span></div>
 				    <div class="room-info"><span class="room-label" style="color: red">총 숙박비용: ${ReservationListVo.totalPrice}</span></div>
+				    <c:if test="${sMid == 'admin'}">
+				    	<div class="room-info"><span class="room-label" style="color: red">예약idx: ${ReservationListVo.reservationIdx}</span></div>
+				    </c:if>
 			    </td>
 			    <td class="room-items3 border border-0">
- 		    		<a href="#" onclick="modalCheck('${ReservationListVo.hotelIdx}','${ReservationListVo.roomIdx}','${ReservationListVo.roomName}','${ReservationListVo.reservationIdx}')" class="btn btn-primary btn-sm ms-3 text-end" data-bs-toggle="modal" data-bs-target="#myModal">리뷰작성</a>
-			    	<a href="javascript:reviewShowCheck(${st.index})" id="reviewShowBtn${st.index}" class="btn btn-success btn-sm">리뷰보기</a>
-			    	<a href="javascript:reviewHideCheck(${st.index})" id="reviewHideBtn${st.index}" class="btn btn-warning btn-sm" style="display:none" >리뷰가리기</a>
+ 		    		<a href="#" onclick="modalCheck('${ReservationListVo.hotelIdx}','${ReservationListVo.roomIdx}','${ReservationListVo.roomName}'
+ 		    		,'${ReservationListVo.reservationIdx}','${ReservationListVo.reservationNo}')" class="btn btn-primary btn-sm ms-3 text-end" data-bs-toggle="modal" 
+ 		    		data-bs-target="#myModal">리뷰작성</a>
+ 		    		<%-- <input type="button" value="리뷰작성" onclick="reviewCheck('${ReservationListVo.reservationNo}')" class="btn btn-success btn-sm"/> --%>
 			    </td>
 			    <td class="room-items4 border border-0 ms-10">
 			    	<a href="${ctp}/room/roomDetail?roomIdx=${ReservationListVo.roomIdx}&checkinDate=${ReservationListVo.checkinDate}&checkoutDate=${ReservationListVo.checkoutDate}&guestCount=${guestCount}&petCount=${petCount}" class="btn btn-danger btn-sm">상세보기</a>
@@ -226,11 +263,13 @@
 					<input type="hidden" name="hotelIdx" id="hotelIdx" />
 					<input type="hidden" name="roomName" id="roomName" />
 					<input type="hidden" name="reservationIdx" id="reservationIdx" />
+					<input type="hidden" name="reservationNo" id="reservationNo" />
 				</form>      
 			</div>
 		</div>      
 	</div>
 <p><br></p>
+
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>

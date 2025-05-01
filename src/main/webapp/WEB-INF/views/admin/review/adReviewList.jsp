@@ -6,7 +6,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>reviewList.jsp</title>
+	<title>adReviewList.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp" />
 	<%-- <jsp:include page="/WEB-INF/views/review/reviewModalForm.jsp" /> --%>
 	<link rel="stylesheet" type="text/css" href="${ctp}/css/linkOrange.css"/>
@@ -132,7 +132,7 @@
 				  else {
 					  str += '<hr class="border-secondary mt-1 p-0">댓글이 존재하지 않습니다.';
 				  }
-				  $("#reviewDispaly"+roomIdx).html(str);
+				  $("#reviewDispaly"+reservationIdx).html(str);
 			  }
 		  });
 	  }
@@ -183,7 +183,7 @@
 	      <option value="name">성명</option>
 	      <option value="address">주소</option>
 	    </select>
-	    <input type="text" name="content" id="content" placeholder="검색할 내용을 입력하세요" autofocus class="form-control"/>
+	    <input type="text" name="content" id="content" placeholder="검색할 내용을 입력하세요" class="form-control"/>
 	    <div class="input-group-append">
 	      <input type="button" value="검색(완전일치)" onclick="formSearch()" class="btn btn-success ms-1 me-1"/>
 	    </div>
@@ -195,6 +195,7 @@
       <c:forEach var="ReservationListVo" items="${rsVos}" varStatus="st">
 	      <tr class="room-detail">
 					<td class="room-items1 border border-0 ">
+				    <div class="room-info"><span class="room-label">예약번호: ${ReservationListVo.reservationNo}</span></div>
 				    <img class="room-photo" src="${ctp}/roomThumbnail/${ReservationListVo.roomThumbnail}" alt="객실 사진" style="width:200px;max-height:180px;border:none;"/>
 					</td>
 			    <td class="room-items2 ms-4 border border-0">
@@ -209,12 +210,10 @@
 				    <div class="room-info"><span class="room-label" style="color: red">총 숙박비용: ${ReservationListVo.totalPrice}</span></div>
 			    </td>
 			    <td class="room-items3 border border-0">
-			    	<c:forEach var="vo" items="${vos}">
-			    		<c:if test="${vo.roomIdx == ReservationListVo.roomIdx}">
-					    	<a href="javascript:reviewShowCheck(${ReservationListVo.roomIdx})" id="reviewShowBtn${ReservationListVo.roomIdx}" class="btn btn-success btn-sm">리뷰보기</a>
-					    	<a href="javascript:reviewHideCheck(${ReservationListVo.roomIdx})" id="reviewHideBtn${ReservationListVo.roomIdx}" class="btn btn-warning btn-sm" style="display:none" >리뷰가리기</a>
-				    	</c:if>
-			    	</c:forEach>
+			      <a href="javascript:reviewShowCheck(${st.index})" id="reviewShowBtn${st.index}" class="btn btn-success btn-sm">리뷰보기</a>
+			    	<a href="javascript:reviewHideCheck(${st.index})" id="reviewHideBtn${st.index}" class="btn btn-warning btn-sm" style="display:none" >리뷰가리기</a>
+			    	<a href="javascript:reviewShowCheck(${ReservationListVo.roomIdx})" id="reviewShowBtn${ReservationListVo.roomIdx}" class="btn btn-success btn-sm">리뷰보기</a>
+			    	<a href="javascript:reviewHideCheck(${ReservationListVo.roomIdx})" id="reviewHideBtn${ReservationListVo.roomIdx}" class="btn btn-warning btn-sm" style="display:none" >리뷰가리기</a>
 			    </td>
 			    <td class="room-items4 border border-0 ms-10">
 			    	<a href="${ctp}/room/roomDetail?roomIdx=${ReservationListVo.roomIdx}&checkinDate=${ReservationListVo.checkinDate}&checkoutDate=${ReservationListVo.checkoutDate}&guestCount=${guestCount}&petCount=${petCount}" class="btn btn-danger btn-sm">상세보기</a>
@@ -244,6 +243,5 @@
 	<!-- 블록페이지 끝 -->
 </div>
 <p><br/></p>
-<h6 id="topBtn" class="text-right mr-3"><img src="${ctp}/images/arrowTop.gif" title="위로이동"/></h6>
 </body>
 </html>

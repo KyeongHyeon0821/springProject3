@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.spring.springProject3.vo.OptionVo;
 import com.spring.springProject3.vo.ReservationListVo;
 import com.spring.springProject3.vo.ReservationVo;
+import com.spring.springProject3.vo.ReviewVo;
 import com.spring.springProject3.vo.RoomVo;
 
 public interface RoomService {
@@ -44,6 +45,8 @@ public interface RoomService {
 	List<ReservationListVo> getRoomUsedList(String mid);
 
 	List<ReservationVo> getReviewSave(String mid);
+
+	ReviewVo getReviewSaveCheck(String reservationNo);
 
 
 
