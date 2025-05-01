@@ -36,4 +36,6 @@ public interface HotelService {
 
 	List<HotelVo> getHotelListByMid(String mid);
 
+	List<HotelVo> getRecentHotels(int limit);
+
 }

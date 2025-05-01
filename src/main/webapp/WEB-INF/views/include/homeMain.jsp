@@ -15,17 +15,22 @@
 		}
 				
 		body.modal-open {
-  		padding-right: 0 !important;
+	 		padding-right: 0 !important;
 		}
 		
 		.nav-container {
-      display: flex; /* flex로 설정 */
-      justify-content: space-between; /* 항목 간 간격을 고르게 배치 */
-      align-items: center; /* 세로로 중앙 정렬 */
-      padding: 20px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+		     display: flex; /* flex로 설정 */
+		     justify-content: space-between; /* 항목 간 간격을 고르게 배치 */
+		     align-items: center; /* 세로로 중앙 정렬 */
+		     padding: 20px;
+		     max-width: 1200px;
+		     margin: 0 auto;
+		   }
+    
+	    .nav-links a {
+		  font-size: 18px;
+		  font-weight: 500;
+		}
 		
 
 		/* Style The Dropdown Button */
@@ -74,95 +79,101 @@
 		  background-color: #eee;
 		}
 		
-.hero-section {
-  background: url("${ctp}/images/background.png") no-repeat center center/cover;
-  padding: 80px 20px;
-  text-align: center;
-  color: #fff;
-}
-
-.hero-heading {
-  font-size: 2.0rem;
-  font-weight: bold;
-  max-width: 1200px;
-  text-align: start;
-  margin: 0 auto 30px;
-}
-
-.hotel-search-container {
-  background-color: rgba(255, 255, 255, 0.95);
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.hotel-search-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  align-items: center; 
-  padding-top: 20px; 
-  padding-bottom: 10px; 
-}
-
-.search-field {
-  flex: 1 1 180px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  min-width: 150px;
-}
-
-.search-field.large {
-  flex: 2 1 260px;
-}
-
-.search-field.small {
-  flex: 0 1 100px;
-}
-
-.search-field label {
-  font-size: 14px;
-  color: #555;
-  margin-bottom: 6px;
-}
-
-.search-field input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  font-size: 16px;
-}
-
-.search-button {
-  height: 50px;
-  padding: 0 25px;
-  background-color: #4da764;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  align-self: center;
-  margin-top:24px;
-}
-
-.search-button:hover {
-  background-color: #3e8f52;
-}
-
+		.hero-section {
+		  background: url("${ctp}/images/background.png") no-repeat center center/cover;
+		  padding: 80px 20px;
+		  text-align: center;
+		  color: #fff;
+		}
+		
+		.hero-heading {
+		  font-size: 2.0rem;
+		  font-weight: bold;
+		  max-width: 1200px;
+		  text-align: start;
+		  margin: 0 auto 30px;
+		}
+		
+		.hotel-search-container {
+		  background-color: rgba(255, 255, 255, 0.95);
+		  padding: 30px;
+		  border-radius: 16px;
+		  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+		  max-width: 1200px;
+		  margin: 0 auto;
+		}
+		
+		.hotel-search-form {
+		  display: flex;
+		  flex-wrap: wrap;
+		  gap: 20px;
+		  justify-content: center;
+		  align-items: center; 
+		  padding-top: 20px; 
+		  padding-bottom: 10px; 
+		}
+		
+		.search-field {
+		  flex: 1 1 180px;
+		  display: flex;
+		  flex-direction: column;
+		  align-items: flex-start;
+		  min-width: 150px;
+		}
+		
+		.search-field.large {
+		  flex: 2 1 260px;
+		}
+		
+		.search-field.small {
+		  flex: 0 1 100px;
+		}
+		
+		.search-field label {
+		  font-size: 14px;
+		  color: #555;
+		  margin-bottom: 6px;
+		}
+		
+		.search-field input {
+		  width: 100%;
+		  padding: 12px;
+		  border: 1px solid #ddd;
+		  border-radius: 10px;
+		  font-size: 16px;
+		}
+		
+		.search-button {
+		  height: 50px;
+		  padding: 0 25px;
+		  background-color: #4da764;
+		  color: #fff;
+		  border: none;
+		  border-radius: 10px;
+		  font-size: 16px;
+		  font-weight: bold;
+		  cursor: pointer;
+		  transition: background-color 0.3s ease;
+		  align-self: center;
+		  margin-top:24px;
+		}
+		
+		.search-button:hover {
+		  background-color: #3e8f52;
+		}
+		.section-header h2 {
+		  color: #2e7d32 !important;
+		}
+		.benefit-icon {
+		  background-color: #81c784 !important;  /* 초록색 */
+		}
+		
 	</style>
 </head>
 <body>
 <nav>
   <div class="nav-container">
-    <a href="${ctp}/" class="logo" style="display:flex; line-height: 80px;"><img src="${ctp}/images/logo.png" width="80px"/>withPet</a>
+    <a href="${ctp}/" class="logo" style="display:flex; line-height: 80px;"><img src="${ctp}/images/logo.png" width="110px"/></a>
     <ul class="nav-links">
     	<c:if test="${sLevel == 0 || sLevel == 1}">
     		<li><a href="${ctp}/hotel/hotelInput">숙박시설 등록</a></li>
@@ -244,73 +255,34 @@
   </div>
 </section>
 
-
-
 <section class="featured">
   <div class="container">
     <div class="section-header">
-      <h2>편하고 쾌적한 숙소</h2>
+      <h2>신규 등록 숙소</h2>
       <p>여유롭게 즐길 수 있는 시설을 찾아드려요.</p>
     </div>
     <div class="product-grid">
-      <div class="product-card">
-        <div class="product-image">
-          <img src="${ctp}/images/hotel1.jpg" alt="" />
-        </div>
-        <div class="product-info">
-          <span class="product-tag">9.7</span>
-          <h3 class="product-title">시그니엘 부산</h3>
-          <p>부산</p>
-          <div class="product-price">
-            <span class="price">₩369,000</span>
-            <button class="add-to-cart" style="font-size: 0.8em; width: 80px; border-radius: 10%;">20%할인</button>
-          </div>
-        </div>
-      </div>
-      <div class="product-card">
-        <div class="product-image">
-          <img src="${ctp}/images/hotel2.jpg" alt="" />
-        </div>
-        <div class="product-info">
-          <span class="product-tag">10.0</span>
-          <h3 class="product-title">신라스테이 해운대 벡스코</h3>
-          <p>부산</p>
-          <div class="product-price">
-            <span class="price">₩340.950</span>
-            <button class="add-to-cart" style="font-size: 0.8em; width: 80px; border-radius: 10%;">회원가 제공</button>
-          </div>
-        </div>
-      </div>
-      <div class="product-card">
-        <div class="product-image">
-          <img src="${ctp}/images/hotel3.jpg" alt="" />
-        </div>
-        <div class="product-info">
-          <span class="product-tag">9.0</span>
-          <h3 class="product-title">ENA 스위트 호텔 남대문</h3>
-          <p>서울</p>
-          <div class="product-price">
-            <span class="price">₩490,803</span>
-            <button class="add-to-cart" style="font-size: 0.8em; width: 80px; border-radius: 10%;">31%할인</button>
-          </div>
-        </div>
-      </div>
-      <div class="product-card">
-        <div class="product-image">
-          <img src="${ctp}/images/hotel4.jpg" alt="" />
-        </div>
-        <div class="product-info">
-          <span class="product-tag">8.1</span>
-          <h3 class="product-title">메종 글래드 제주</h3>
-          <p>제주시</p>
-          <div class="product-price">
-            <span class="price">₩528,338</span>
-            <button class="add-to-cart" style="font-size: 0.8em; width: 80px; border-radius: 10%;">회원가 제공</button>
-          </div>
-        </div>
-      </div>
-    </div>
+	  <c:forEach var="hotel" items="${recentHotels}" varStatus="status">
+	    <div class="product-card">
+	      <div class="product-image">
+	        <img src="${ctp}/data/hotelThumbnail/${empty hotel.thumbnail ? 'default.png' : hotel.thumbnail}" alt="${hotel.name}" />
+	      </div>
+	      <div class="product-info">
+	        <span class="product-tag">NEW</span>
+	        <h3 class="product-title">${hotel.name}</h3>
+	        <p>${hotel.address}</p>
+	        <div class="product-price">
+	          <span class="price">₩${hotel.minPrice}</span>
+	          <a href="${ctp}/hotel/hotelDetail?idx=${hotel.idx}" class="add-to-cart btn btn-success" 
+	             style="font-size: 1em; width: 80px; border-radius: 10%; display:inline-block; text-align:center; text-decoration: none;">
+	            보기
+	          </a>
+	        </div>
+	      </div>
+	    </div>
+	  </c:forEach>
   </div>
+ </div>
 </section>
 
 <section class="benefits">
@@ -456,67 +428,6 @@
     </div>
   </div>
 </section>
-
-<footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-about">
-        <a href="#" class="footer-logo">withPet</a>
-        <p>반려동물 동반 호텔 예약사이트</p>
-        <div class="social-icons">
-          <a href="#" class="social-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-            </svg>
-          </a>
-          <a href="#" class="social-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
-          </a>
-          <a href="#" class="social-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-            </svg>
-          </a>
-        </div>
-      </div>
-      <div class="footer-links">
-        <h3>메뉴1</h3>
-        <ul>
-          <li><a href="#">All Products</a></li>
-          <li><a href="#">New Arrivals</a></li>
-          <li><a href="#">Best Sellers</a></li>
-          <li><a href="#">Gift Sets</a></li>
-        </ul>
-      </div>
-      <div class="footer-links">
-        <h3>메뉴2(About)</h3>
-        <ul>
-          <li><a href="#">Our Story</a></li>
-          <li><a href="#">Sustainability</a></li>
-          <li><a href="#">Ingredients</a></li>
-          <li><a href="#">Blog</a></li>
-        </ul>
-      </div>
-      <div class="footer-links">
-        <h3>메뉴3(Help)</h3>
-        <ul>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">Shipping & Returns</a></li>
-          <li><a href="#">FAQs</a></li>
-          <li><a href="#">Track Order</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2025 withPet All rights reserved. | Designed in Korea</p>
-    </div>
-  </div>
-</footer>
-
 <script>
 	'use strict';
 	function hotelSearch() {
@@ -571,5 +482,6 @@
 	  });
 	});
 </script>
+<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>
 </html>

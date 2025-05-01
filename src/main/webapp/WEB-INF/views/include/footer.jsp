@@ -8,6 +8,7 @@
 	<title>footer.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp" />
 	<link rel="stylesheet" type="text/css" href="${ctp}/css/linkMain.css"/>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 	<style>
 		
 		footer {
@@ -17,7 +18,8 @@
 		}
 		
 		.footer-logo {
-		  font-size: 24px;
+		  text-decoration: none;
+		  font-size: 30px;
 		  font-weight: bold;
 		  color: black;
 		  margin-bottom: 20px;
@@ -26,8 +28,10 @@
 		
 		.footer-links h3 {
 		  margin-bottom: 20px;
-		  font-size: 1.2rem;
+		  font-size: 1.25rem;
 		  color: black;
+		  font-weight: 700;
+  		  letter-spacing: 0.5px;
 		}
 		
 		.footer-grid {
@@ -36,7 +40,6 @@
 		  gap: 50px;
 		  margin-bottom: 40px;
 		}
-		
 		
 		.footer-about p {
 		  margin-bottom: 20px;
@@ -71,10 +74,14 @@
 		
 		.footer-links ul {
 		  list-style: none;
+		  margin-bottom: 12px;
+		  text-align: left;
+		  padding-left: 5;  
 		}
-		
+
 		.footer-links li {
 		  margin-bottom: 10px;
+		  margin-bottom: 12px;
 		}
 		
 		.footer-links a {
@@ -184,59 +191,59 @@
 <footer>
   <div class="container">
     <div class="footer-grid">
+      <!-- 소개 -->
       <div class="footer-about">
-        <a href="#" class="footer-logo">withPet</a>
-        <p>반려동물 동반 호텔 예약사이트</p>
+        <a href="${ctp}/" class="footer-logo">withPET</a>
+        <p>반려동물이 함께하는 여행, withPET에서 시작하세요.</p>
         <div class="social-icons">
-          <a href="#" class="social-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-            </svg>
+          <a href="https://www.instagram.com/withpet" class="social-icon" target="_blank">
+            <i class="bi bi-instagram"></i>
           </a>
-          <a href="#" class="social-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
+          <a href="https://www.facebook.com/withpet" class="social-icon" target="_blank">
+            <i class="bi bi-facebook"></i>
           </a>
-          <a href="#" class="social-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-            </svg>
+          <a href="https://www.youtube.com/@withpet" class="social-icon" target="_blank">
+            <i class="bi bi-youtube"></i>
           </a>
         </div>
       </div>
+
+      <!-- 고객센터 -->
       <div class="footer-links">
-        <h3>메뉴1</h3>
+        <h3>고객센터</h3>
         <ul>
-          <li><a href="#">All Products</a></li>
-          <li><a href="#">New Arrivals</a></li>
-          <li><a href="#">Best Sellers</a></li>
-          <li><a href="#">Gift Sets</a></li>
+          <li><a href="${ctp}/contact">문의하기</a></li>
+          <li><a href="${ctp}/reservation/check">예약 확인</a></li>
+          <li><a href="${ctp}/faq">자주 묻는 질문</a></li>
+          <li><a href="${ctp}/terms">이용약관</a></li>
         </ul>
       </div>
+
+      <!-- 반려동물 정책 -->
       <div class="footer-links">
-        <h3>메뉴2(About)</h3>
+        <h3>반려동물 안내</h3>
         <ul>
-          <li><a href="#">Our Story</a></li>
-          <li><a href="#">Sustainability</a></li>
-          <li><a href="#">Ingredients</a></li>
-          <li><a href="#">Blog</a></li>
+          <li><a href="${ctp}/policy">동반 기준</a></li>
+          <li><a href="${ctp}/safety">펫 안전 수칙</a></li>
+          <li><a href="${ctp}/hotel/rules">호텔 이용규칙</a></li>
         </ul>
       </div>
+
+      <!-- 회사정보 -->
       <div class="footer-links">
-        <h3>메뉴3(Help)</h3>
+        <h3>회사 정보</h3>
         <ul>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">Shipping & Returns</a></li>
-          <li><a href="#">FAQs</a></li>
-          <li><a href="#">Track Order</a></li>
+          <li>대표: 홍길동</li>
+          <li>사업자등록번호: 123-45-67890</li>
+          <li>고객센터: 1600-1234</li>
+          <li>Email: support@withpet.co.kr</li>
         </ul>
       </div>
     </div>
+
+    <!-- 하단 바 -->
     <div class="footer-bottom">
-      <p>© 2025 withPet All rights reserved. | Designed in Korea</p>
+      <p>© 2025 withPET | 반려동물과의 여행, 이제는 걱정 없이.</p>
     </div>
   </div>
 </footer>

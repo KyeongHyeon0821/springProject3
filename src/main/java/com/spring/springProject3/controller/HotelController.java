@@ -208,7 +208,7 @@ public class HotelController {
 	    @RequestParam(name = "petCount", defaultValue = "0", required = false) int petCount,
 	    @RequestParam(name = "searchString", defaultValue = "", required = false) String searchString) {
 
-	    // 기본값 설정
+	    // 기본 체크인 & 체크아웃 날짜, 인원수, 반려견수 설정
 	    if (checkinDate.equals("") || checkoutDate.equals("") || guestCount == 0 || petCount == 0) {
 	        LocalDate today = LocalDate.now();
 	        LocalDate tomorrow = today.plusDays(1);
@@ -228,8 +228,9 @@ public class HotelController {
 	    int res = hotelService.getHotelLike(mid, idx);
 	    String hotelLike = (res != 0) ? "Ok" : "No";
 
-	    // 자동 예약 상태 처리
+	    // 결제 안 한 예약 자동 취소 ('대기중' -> '예약취소' 예약 당일 안 했을 경우)
 	    reservationService.setReservationAutoCancel();
+	    // 예약 상태 업데이트 ('예약완료'->'이용완료' 체크아웃 날짜가 오늘 날짜랑 같거나 이전이면 이용완료 처리(오늘 날짜 부터 새 예약을 받을 수 있도록))
 	    reservationService.setReservationUpdateToDone();
 
 	    // 객실 정보 조회

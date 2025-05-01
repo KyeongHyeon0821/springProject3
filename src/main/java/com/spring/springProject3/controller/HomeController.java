@@ -7,10 +7,12 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +20,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.spring.springProject3.service.HotelService;
+import com.spring.springProject3.vo.HotelVo;
+
 @Controller
 public class HomeController {
 	
+	@Autowired
+	HotelService hotelService;
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model,
 			@RequestParam(name="checkinDate", defaultValue = "", required = false) String checkinDate,
@@ -33,10 +41,14 @@ public class HomeController {
 
     checkinDate = today.toString();      // ex) "2025-04-24"
     checkoutDate = tomorrow.toString();  // ex) "2025-04-25"
+    
     model.addAttribute("checkinDate", checkinDate);
     model.addAttribute("checkoutDate", checkoutDate);
     model.addAttribute("guestCount", guestCount);
     model.addAttribute("petCount", petCount);
+    
+    List<HotelVo> recentHotels = hotelService.getRecentHotels(4);
+    model.addAttribute("recentHotels", recentHotels);
 		
 		return "home";
 	}

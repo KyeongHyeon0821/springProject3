@@ -28,6 +28,11 @@
 			align-items: center;
 		}
 		
+		.nav-links a {
+		  font-size: 18px;
+		  font-weight: 500;
+		}
+		
 		/* Style The Dropdown Button */
 		.dropbtn {
 		  color: black;
@@ -79,7 +84,7 @@
 <nav>
   <div class="nav-container">
     <div class="nav-left">
-        <a href="${ctp}/" class="logo"><img src="${ctp}/images/logo.png" width="80px"/>withPet</a>
+        <a href="${ctp}/" class="logo" style="display:flex; line-height: 80px;"><img src="${ctp}/images/logo.png" width="110px"/></a>
     </div>
      <ul class="nav-links">
         <c:if test="${sLevel == 0 || sLevel == 1}">

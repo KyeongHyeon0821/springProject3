@@ -313,6 +313,11 @@ public class HotelServiceImpl implements HotelService {
 		return hotelDao.getHotelListByMid(mid);
 	}
 
+	@Override
+	public List<HotelVo> getRecentHotels(int limit) {
+		return hotelDao.getRecentHotels(limit);
+	}
+
 //	@Override
 //	public HotelVo getHotelSearchOne(int idx) {
 //		return null;

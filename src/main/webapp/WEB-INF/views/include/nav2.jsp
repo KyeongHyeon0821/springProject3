@@ -71,6 +71,11 @@
       display: flex;
       align-items: center;
     }
+    
+    .nav-links a {
+	  font-size: 18px;
+	  font-weight: 500;
+	}
 
     /* Style The Dropdown Button */
     .dropbtn {
@@ -133,7 +138,7 @@
 <nav>
   <div class="nav-container">
     <div class="nav-left">
-        <a href="${ctp}/" class="logo"><img src="${ctp}/images/logo.png" width="80px"/>withPet</a>
+        <a href="${ctp}/" class="logo" style="display:flex; line-height: 80px;"><img src="${ctp}/images/logo.png" width="110px"/></a>
         
         <div class="search-result" id="search-result">
             <div class="search-item"><span><img src="${ctp}/images/search.png" width="19px" class="me-2"/>${searchString}</span></div>

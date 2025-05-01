@@ -36,4 +36,6 @@ public interface HotelDao {
 
 	List<HotelVo> getHotelListByMid(@Param("mid") String mid);
 
+	List<HotelVo> getRecentHotels(@Param("limit") int limit);
+
 }
