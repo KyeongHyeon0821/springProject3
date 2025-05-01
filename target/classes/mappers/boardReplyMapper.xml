@@ -9,7 +9,7 @@
   
   <!-- 댓글 갯수 가져오기 -->
   <select id="getReplyCount" resultType="int">
-    select count (*) from boardreply where boardidx = #{boardIdx}
+    select count(*) from boardreply where boardidx = #{boardIdx}
   </select>
   
 

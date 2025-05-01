@@ -21,12 +21,16 @@
 		  padding: 20px;
 		  max-width: 1400px;
 		  margin: 0 auto;
+		  margin-left: 360px;
 		}
 
 		.nav-links {
-			display: flex;
-			align-items: center;
-		}
+  display: flex;
+  align-items: center;
+  margin-left: 160px;      /* 오른쪽 끝으로 밀기 */
+  margin-top: 20px;       /* 아래로 10px 내리기 */
+}
+
 		
 		.nav-links a {
 		  font-size: 18px;
@@ -87,6 +91,7 @@
         <a href="${ctp}/" class="logo" style="display:flex; line-height: 80px;"><img src="${ctp}/images/logo.png" width="110px"/></a>
     </div>
      <ul class="nav-links">
+        <li><a href="${ctp}/">홈</a></li>
         <c:if test="${sLevel == 0 || sLevel == 1}">
             <li><a href="${ctp}/hotel/hotelInput">숙박시설 등록</a></li>
         </c:if>

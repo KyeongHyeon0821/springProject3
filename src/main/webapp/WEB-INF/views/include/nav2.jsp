@@ -151,6 +151,7 @@
     </div>
     
     <ul class="nav-links">
+        <li><a href="${ctp}/">홈</a></li>
         <c:if test="${sLevel == 0 || sLevel == 1}">
             <li><a href="${ctp}/hotel/hotelInput">숙박시설 등록</a></li>
         </c:if>

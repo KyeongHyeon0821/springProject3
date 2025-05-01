@@ -168,56 +168,38 @@
 		  background-color: #81c784 !important;  /* 초록색 */
 		}
 		
+		.product-card {
+		  position: relative;
+		  padding: 20px;
+		  background-color: #fff;
+		  border-radius: 12px;
+		  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+		  min-height: 500px;
+		}
+		.product-image img {
+		  border-radius: 12px;
+		  width: 100%;
+		  height: auto;
+		  object-fit: cover;
+		}
+		.product-info {
+		  padding-bottom: 100px;
+		  min-height: 200px;
+		}
+		.product-price {
+		  position: absolute;
+		  bottom: 20px;
+		  left: 40px;
+		  right: 20px;
+		  margin-top: 20px;
+		  display: flex;
+		  justify-content: space-between;
+		  align-items: center;
+		}
 	</style>
 </head>
 <body>
-<nav>
-  <div class="nav-container">
-    <a href="${ctp}/" class="logo" style="display:flex; line-height: 80px;"><img src="${ctp}/images/logo.png" width="110px"/></a>
-    <ul class="nav-links">
-    	<c:if test="${sLevel == 0 || sLevel == 1}">
-    		<li><a href="${ctp}/hotel/hotelInput">숙박시설 등록</a></li>
-    	</c:if>
-    	<li>
-      	<a href="${ctp}/hotel/hotelList">전체 숙소 보기</a>
-      </li>
-      <c:if test="${empty sessionScope.sLogin}">
-	      <li>
-	      	<a href="${ctp}/member/memberLogin">로그인</a>
-	      </li>
-      </c:if>
-      <c:if test="${sMid == 'admin'}">
-	      <li>
-	      	<a href="${ctp}/admin/adminMain">관리자</a>
-	      </li>
-      </c:if>
-      <!-- 로그인 상태일 때만 로그아웃 & 마이페이지 표시 -->
-		<c:if test="${not empty sessionScope.sLogin}">
-		  <li class="nav-item"><a class="nav-link" href="${ctp}/member/memberLogout">로그아웃</a></li>
-		  <li class="nav-item"><a class="nav-link" href="${ctp}/member/memberMyPage">마이페이지</a></li>
-		</c:if>
-		<li class="nav-item dropdown">
-          <a class="nav-link dropbtn" href="#" role="button" data-bs-toggle="modal" data-bs-target="#myModal3" id="customButton3">커뮤니티</a>
-          <div class="dropdown-content">
-            <a href="${ctp}/board/list">자유게시판</a>
-            <a href="${ctp}/photogallery/photogalleryList">포토갤러리</a>
-          </div>
-        </li> 
-	    <li class="nav-item dropdown">
-        <a class="nav-link dropbtn" href="#" role="button" data-bs-toggle="modal" data-bs-target="#myModal3" id="customButton3">고객센터</a>
-        <div class="dropdown-content">
-			    <a class="dropdown-item" href="${ctp}/inquiry/inquiryList?mid=hkd1234">1:1문의</a><!-- 수정해야함 -->
-          <a class="dropdown-item" href="${ctp}/admin/inquiry/adInquiryList">1:1문의(관리자답변)</a>
-          <a class="dropdown-item" href="#">FAQ</a>
-          <a class="dropdown-item" href="${ctp}/qna/qnaLogin?mid=admin&nickName=관리맨&level=0">Q&A(관리자)</a>
-          <a class="dropdown-item" href="${ctp}/qna/qnaLogin?mid=hkd1234&nickName=홍장군&level=1">Q&A(홍길동)</a>
-          <a class="dropdown-item" href="${ctp}/qna/qnaLogin?mid=kms1234&nickName=김장미&level=2">Q&A(김말숙)</a>
-				</div>
-      </li>
-    </ul>
-   </div>
-</nav>
-
+<jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <section class="hero-section">
   <h2 class="hero-heading">위드펫, 반려견 동반 여행을 위한 최적의 선택!</h2>
 
@@ -270,7 +252,7 @@
 	      <div class="product-info">
 	        <span class="product-tag">NEW</span>
 	        <h3 class="product-title">${hotel.name}</h3>
-	        <p>${hotel.address}</p>
+	        <p class="mb-3">${hotel.address}</p>
 	        <div class="product-price">
 	          <span class="price">₩${hotel.minPrice}</span>
 	          <a href="${ctp}/hotel/hotelDetail?idx=${hotel.idx}" class="add-to-cart btn btn-success" 
