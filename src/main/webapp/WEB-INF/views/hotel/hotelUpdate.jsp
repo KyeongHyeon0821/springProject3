@@ -248,14 +248,15 @@
 
     <div class="form-group">
       <label>썸네일 미리보기</label>
-      <img id="beforeThumbnailPreview" src="${ctp}/hotelThumbnail/${vo.thumbnail}" width="150px" />
-      <img id="thumbnailPreview" width="150px" style="display:none">
+      <img id="beforeThumbnailPreview" src="${ctp}/hotelThumbnail/${vo.thumbnail}" width="300px" />
+      <img id="thumbnailPreview" width="300px" style="display:none">
     </div>
 
     <div class="form-group">
       <label for="images">사진 등록</label>
       <div class="text-muted" style="margin-bottom:5px;">
-        ※ 사진만 등록 가능합니다. 여러 장의 이미지는 마우스로 드래그하여 추가할 수 있습니다.
+        ※ 사진만 등록 가능합니다. 여러 장의 이미지는 마우스로 드래그하여 추가할 수 있습니다.<br>
+        ※ 권장 이미지 비율: 16:9 (예: 1600x900px)
       </div>
       <textarea rows="6" name="images" id="images">${vo.images}</textarea>
       <script>

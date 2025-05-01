@@ -95,6 +95,7 @@
 	      reader.readAsDataURL(e.files[0]);
 	    }
 	    $("#thumbnailPreview").show();
+	    $(".thumbnail-frame").hide();
 	  }
 	</script>
 	<style>
@@ -193,6 +194,29 @@
 	  .form-group.text-center input[type="button"]:hover {
 	    background-color: #138496;
 	  }
+	  .thumbnail-frame {
+		  width: 100%;
+		  max-width: 300px;
+		  height: 170px; /* 16:9 비율에 맞게 (300 x 170) */
+		  border: 1px dashed #ccc;
+		  border-radius: 8px;
+		  display: flex;
+		  align-items: center;
+		  justify-content: center;
+		  background-color: #f8f9fa;
+		  position: relative;
+		  overflow: hidden;
+		}
+		.thumbnail-frame img {
+		  max-width: 100%;
+		  max-height: 100%;
+		  display: block;
+		  object-fit: cover;
+		}
+		.placeholder-text {
+		  color: #999;
+		  font-size: 0.9em;
+		}
 	</style>
 </head>
 <body>
@@ -248,14 +272,18 @@
     </div>
 
     <div class="form-group">
-      <label>썸네일 미리보기</label>
-      <img id="thumbnailPreview" width="150px" style="display:none">
-    </div>
+		  <label>썸네일 미리보기</label>
+		  <div class="thumbnail-frame">
+		    <span class="placeholder-text" id="placeholderText">미리보기 이미지 없음</span>
+		  </div>
+  	  <img id="thumbnailPreview" width="300px" style="display: none;" />
+		</div>
 
     <div class="form-group">
       <label for="images">사진 등록</label>
       <div class="text-muted" style="margin-bottom:5px;">
-        ※ 사진만 등록 가능합니다. 여러 장의 이미지는 마우스로 드래그하여 추가할 수 있습니다.
+        ※ 사진만 등록 가능합니다. 여러 장의 이미지는 마우스로 드래그하여 추가할 수 있습니다.<br>
+        ※ 권장 이미지 비율: 16:9 (예: 1600x900px)
       </div>
       <textarea rows="6" name="images" id="images"></textarea>
       <script>

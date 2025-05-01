@@ -166,6 +166,7 @@
 		  font-weight: bold;
 		  color: #2e7d32;
 		  margin-bottom: 5px;
+		  margin-top: 2rem;
 		  display: block;
 		}
 		
@@ -217,12 +218,6 @@
 		  background-color: #d32f2f;
 		}
 		
-		.image-header {
-		  display: flex;
-		  justify-content: space-between;
-		  align-items: center;
-		}
-		
 		.text-center {
 		  text-align: center;
 		}
@@ -254,6 +249,13 @@
 		.btn-custom-back:hover {
 		  background-color: #138496;
 		}
+		.form-text.text-muted {
+		  display: block;
+		  margin-top: 4px;
+		  margin-bottom: 6px;
+		  font-size: 0.9em;
+		  color: #6c757d;
+		}
 	</style>
 </head>
 <body>
@@ -273,17 +275,13 @@
 
     <div class="form-group">
       <label class="form-label">썸네일 미리보기</label>
-      <img id="beforeThumbnailPreview" src="${ctp}/roomThumbnail/${vo.thumbnail}" width="200px" />
-      <img id="thumbnailPreview" width="150px" style="display:none">
+      <img id="beforeThumbnailPreview" src="${ctp}/roomThumbnail/${vo.thumbnail}" width="300px" />
+      <img id="thumbnailPreview" width="300px" style="display:none">
     </div>
 
     <c:if test="${!empty vo.images}">
       <div class="form-group">
         <label class="form-label">기존 등록 이미지</label>
-        <div class="image-header">
-          <span>아래 이미지를 클릭해 삭제할 수 있습니다.</span>
-          <button type="button" class="btn-custom-delete" onclick="imageFilesDeleteAll()">전체 삭제</button>
-        </div>
         <div class="image-gallery">
           <c:set var="imageFileNames" value="${fn:split(vo.images, '/')}" />
           <c:forEach var="imageFileName" items="${imageFileNames}" varStatus="st">
@@ -297,11 +295,17 @@
     </c:if>
 
     <c:if test="${empty vo.images}">
-      <div class="form-group">썸네일 외 등록된 이미지가 없습니다.</div>
+      <div class="form-label">썸네일 외 등록된 이미지가 없습니다.</div>
     </c:if>
+    <c:if test="${!empty vo.images}">
+    	<div class="text-center"><button type="button" class="btn-custom-delete" onclick="imageFilesDeleteAll()">이미지 전체 삭제</button></div>
+    </c:if>
+    
+    
 
     <div class="form-group">
       <label for="images" class="form-label">객실 이미지 추가 (여러 장 가능)</label>
+      <small class="form-text text-muted">※ 권장 이미지 비율: 16:9 (예: 1600x900px)</small>
       <input type="file" name="imageFiles" id="imageFiles" class="form-control" accept=".jpg,.gif,.png,.jpeg,.webp" multiple />
     </div>
 

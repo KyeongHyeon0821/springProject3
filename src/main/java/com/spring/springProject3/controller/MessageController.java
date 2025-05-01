@@ -77,11 +77,11 @@ public class MessageController {
 		}
 		else if(msgFlag.equals("roomImageUpdateOk")) {
 			model.addAttribute("message", "객실 이미지가 수정되었습니다.");
-			model.addAttribute("url", "room/roomDetail?roomIdx="+roomIdx);
+			model.addAttribute("url", "room/roomImageUpdate?roomIdx="+roomIdx);
 		}
 		else if(msgFlag.equals("roomImageUpdateNo")) {
 			model.addAttribute("message", "객실 이미지 수정 중 오류가 발생했습니다.\\n다시 시도해주세요.");
-			model.addAttribute("url", "room/roomUpdate?roomIdx="+roomIdx);
+			model.addAttribute("url", "room/roomImageUpdate?roomIdx="+roomIdx);
 		}
 		else if(msgFlag.equals("roomDeleteCheckOk")) {
 			model.addAttribute("message", "객실 서비스 중지 요청이 접수되었습니다.");

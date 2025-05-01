@@ -99,6 +99,7 @@
 	      reader.readAsDataURL(e.files[0]);
 	    }
 	    $("#thumbnailPreview").show();
+	    $(".thumbnail-frame").hide();
 	  }
 	</script>
 	<style>
@@ -219,6 +220,36 @@
 		.btn-link:hover {
 		  background-color: #138496;
 		}
+		.form-text.text-muted {
+		  display: block;
+		  margin-top: 4px;
+		  margin-bottom: 6px;
+		  font-size: 0.9em;
+		  color: #6c757d;
+		}
+		.thumbnail-frame {
+		  width: 100%;
+		  max-width: 300px;
+		  height: 170px; /* 16:9 비율에 맞게 (300 x 170) */
+		  border: 1px dashed #ccc;
+		  border-radius: 8px;
+		  display: flex;
+		  align-items: center;
+		  justify-content: center;
+		  background-color: #f8f9fa;
+		  position: relative;
+		  overflow: hidden;
+		}
+		.thumbnail-frame img {
+		  max-width: 100%;
+		  max-height: 100%;
+		  display: block;
+		  object-fit: cover;
+		}
+		.placeholder-text {
+		  color: #999;
+		  font-size: 0.9em;
+		}
 	</style>
 </head>
 <body>
@@ -287,19 +318,24 @@
     </div>
 
     <div class="form-group">
-      <label for="thumbnailFile">썸네일 이미지</label>
-      <input type="file" name="thumbnailFile" id="thumbnailFile" onchange="thumbnailCheck(this)" class="form-control" accept=".jpg,.gif,.png,.jpeg,.webp" required />
-    </div>
+		  <label for="thumbnailFile">썸네일 이미지</label>
+		  <small class="form-text text-muted">※ 권장 이미지 비율: 16:9 (예: 1600x900px)</small>
+		  <input type="file" name="thumbnailFile" id="thumbnailFile" onchange="thumbnailCheck(this)" class="form-control" accept=".jpg,.gif,.png,.jpeg,.webp" required />
+		</div>
 
     <div class="form-group">
-      <label>썸네일 미리보기</label>
-      <img id="thumbnailPreview" width="150px" style="display:none">
-    </div>
+		  <label>썸네일 미리보기</label>
+		  <div class="thumbnail-frame">
+		    <span class="placeholder-text" id="placeholderText">미리보기 이미지 없음</span>
+		  </div>
+  	  <img id="thumbnailPreview" width="300px" style="display: none;" />
+		</div>
 
     <div class="form-group">
-      <label for="imageFiles">객실 이미지 (여러 장 가능)</label>
-      <input type="file" name="imageFiles" id="imageFiles" class="form-control" accept=".jpg,.gif,.png,.jpeg,.webp" multiple />
-    </div>
+		  <label for="imageFiles">객실 이미지 (여러 장 가능)</label>
+		  <small class="form-text text-muted">※ 권장 이미지 비율: 16:9 (예: 1600x900px)</small>
+		  <input type="file" name="imageFiles" id="imageFiles" class="form-control" accept=".jpg,.gif,.png,.jpeg,.webp" multiple />
+		</div>
 
     <div class="form-group">
 		  <label>객실 옵션</label>
