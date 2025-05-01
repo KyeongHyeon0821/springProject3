@@ -31,21 +31,20 @@ public class HotelVo {
 	private String tel;
 	
 	private String description;
-	
 	private String thumbnail;
-	
 	private String images;
-	
 	private String regDate;
-	
 	private String status;
-	
 	private String oThumbnail;
-	
 	private Double x;
-	
 	private Double y;
-	
 	private int minPrice;
+	private int spotIdx;
+  private int spotHotelIdx;
+  private String spotName;
+  private String spotLat;         
+  private String spotLng;         
+  private String spotAddress;     
+  private String spotDescription; 
 	
 }

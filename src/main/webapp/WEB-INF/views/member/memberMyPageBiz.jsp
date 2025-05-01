@@ -76,8 +76,8 @@
 <div class="section-box">
   <div class="section-title">내 호텔 관리</div>
   <div class="link-list">
-    <a href="#">호텔 등록하기</a>
-    <a href="#">등록된 호텔 목록 보기</a>
+    <a href="${ctp}/hotel/hotelInput">호텔 등록하기</a>
+    <a href="${ctp}/hotel/myHotelList">등록된 호텔 목록 보기</a>
     <a href="#">예약 내역 관리</a>
   </div>
 </div>

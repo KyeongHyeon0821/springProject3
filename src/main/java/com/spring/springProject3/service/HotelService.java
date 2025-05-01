@@ -30,5 +30,9 @@ public interface HotelService {
 
 	List<HotelVo> getSearchHotelList(String searchString, String checkinDate, String checkoutDate, int guestCount, int petCount, int startIndexNo, int pageSize);
 
+	List<HotelVo> getHotelListByMid(String mid);
+
+	List<HotelVo> getHotelSearch(int idx);
+
 
 }

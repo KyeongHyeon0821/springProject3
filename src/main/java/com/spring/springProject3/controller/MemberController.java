@@ -268,13 +268,13 @@ public class MemberController {
 
         if (title.contains("임시 비밀번호")) {
             subject = "[withPET] 임시 비밀번호";
-            mainTitle = "🐾 withPET 임시 비밀번호 안내";
+            mainTitle = "withPET 임시 비밀번호 안내";
             description = "회원님의 요청으로 아래와 같이 임시 비밀번호를 발급해드렸습니다.";
             subMessage = "보안을 위해 <strong>로그인 후 반드시 비밀번호를 변경</strong>해 주세요.";
             prefix = "임시 비밀번호 : ";
         } else if (title.contains("인증키")) {
             subject = "[withPET] 이메일 인증키";
-            mainTitle = "🐾 withPET 이메일 인증 안내";
+            mainTitle = "withPET 이메일 인증 안내";
             description = "회원가입을 위해 이메일 인증이 필요합니다.";
             subMessage = "아래 인증키를 입력해 주세요.";
             prefix = "인증키 : ";
@@ -317,7 +317,7 @@ public class MemberController {
     }
 
 
-    // 마이페이지(일반회원, 사업자회원)
+    // 마이페이지(일반회원, 사업자회원, 관리자)
     @RequestMapping(value = "/memberMyPage", method = RequestMethod.GET)
     public String memberMyPageGet(HttpSession session, Model model) {
         String mid = (String) session.getAttribute("sMid");
@@ -340,8 +340,8 @@ public class MemberController {
         model.addAttribute("dogList", dogList);
 
         // level 값에 따라 다른 JSP로 보내기
-        if (mVo.getLevel() == 1) {
-            return "member/memberMyPageBiz"; // 사업자회원
+        if (mVo.getLevel() == 1 || mVo.getLevel() == 0) {
+            return "member/memberMyPageBiz"; // 사업자회원, 관리자
         } else {
             return "member/memberMyPage"; // 일반회원
         }
@@ -476,13 +476,13 @@ public class MemberController {
 
     // 임시 비밀번호 생성 메서드
     public String makeTempPassword() {
-      String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      StringBuilder sb = new StringBuilder();
-      Random rnd = new Random();
-      for (int i = 0; i < 10; i++) {
-          sb.append(chars.charAt(rnd.nextInt(chars.length())));
-      }
-      return sb.toString();
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder sb = new StringBuilder();
+        Random rnd = new Random();
+        for (int i = 0; i < 10; i++) {
+            sb.append(chars.charAt(rnd.nextInt(chars.length())));
+        }
+        return sb.toString();
     }
     
     // 예약 내역 조회 및 관리

@@ -24,11 +24,13 @@
     background-color: #f9fefb;
     font-family: 'Arial', sans-serif;
     font-size: 1.1rem;
+    width: 100%;
   }
 
-  .container {
+  .my-container {
 	max-width: 1200px;
 	margin: 0 auto;
+	overflow-x: visible;
   }
 
   .my-page-header {
@@ -134,12 +136,23 @@
   .dog-card ul li {
     margin-bottom: 6px;
   }
+  
+  footer {
+	position: relative;
+	left: 50%;
+	right: 50%;
+	margin-left: -50vw;
+	margin-right: -50vw;
+	width: 100vw;
+	max-width: 100vw;
+  }
+  
 </style>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <p><br/></p>
-<div class="container">
+<div class="my-container">
 <h3 class="text-center mb-4">
 <img src="${ctp}/images/logo.png" width="150px"/><br/>
   <div class="my-page-header">마이페이지</div>
@@ -159,7 +172,7 @@
     <div class="link-list">
       <a href="${ctp}/member/myReservation">예약 내역 조회 및 관리</a>
       <a href="#">찜 목록</a>
-      <a href="${ctp}/review/memberReview">리뷰 관리</a>
+      <a href="#">리뷰 관리</a>
       <a href="#">1:1 문의 내역</a>
     </div>
   </div>

@@ -26,7 +26,7 @@
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <p><br/></p>
-<div class="container" style="max-width: 500px;">
+<div class="container flex-fill" style="max-width: 500px; margin-top: 70px; margin-bottom: 40px;">
   <div class="card shadow-sm p-4">
     <h3 class="text-center mb-4">비밀번호 변경</h3>
 

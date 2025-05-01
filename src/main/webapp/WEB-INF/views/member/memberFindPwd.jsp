@@ -7,13 +7,43 @@
   <meta charset="UTF-8">
   <title>memberFindPwd.jsp</title>
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
-  <style>
-    .container { max-width: 500px; margin: 50px auto; }
-  </style>
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 0;
+  }
+  .form-box {
+    width: 100%;
+    max-width: 400px;
+    padding: 30px;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin: 0 auto;
+  }
+  footer {
+    width: 100%;
+  }
+</style>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<div class="container">
+<main>
+<div class="form-box">
   <h3 class="text-center mb-4">
 	<img src="${ctp}/images/logo.png" width="150px"/><br/>
   	<span style="color: #2e7d32; font-weight: bold;">비밀번호찾기</span>
@@ -47,10 +77,10 @@
       </div>
     </div>
 
-    <button type="submit" class="btn btn-success w-100">비밀번호 찾기</button>
+    <button type="submit" class="btn btn-success w-100 mt-4">비밀번호 찾기</button>
   </form>
 </div>
-
+</main>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
 
 <script>

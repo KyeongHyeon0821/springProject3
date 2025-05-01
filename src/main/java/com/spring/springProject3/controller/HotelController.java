@@ -28,8 +28,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.spring.springProject3.service.HotelService;
 import com.spring.springProject3.service.ReservationService;
 import com.spring.springProject3.service.RoomService;
+import com.spring.springProject3.service.TouristSpotService;
 import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.RoomVo;
+import com.spring.springProject3.vo.TouristSpotVo;
 
 @RequestMapping("/hotel")
 @Controller
@@ -43,6 +45,9 @@ public class HotelController {
 	
 	@Autowired
 	ReservationService reservationService;
+	
+	@Autowired
+	TouristSpotService touristSpotService;
 	
 	// 호텔 리스트
 	@RequestMapping("/hotelList")
@@ -217,29 +222,39 @@ public class HotelController {
       petCount = 1;
 		}
 		
-		HotelVo vo = hotelService.getHotel(idx);
 		String mid = (String) session.getAttribute("sMid");
 		
-		// 사용자 찜 여부 체크
-		int res = hotelService.getHotelLike(mid, idx);
-		String hotelLike = (res != 0) ? "Ok" : "No";
+		// 호텔 정보
+    HotelVo hotelVo = hotelService.getHotel(idx); // 단일 호텔 정보
+    List<HotelVo> vos = hotelService.getHotelSearch(idx); // 연관 호텔 리스트 (예: 같은 지역 등)
+		
+    // 찜 상태 확인
+    int res = hotelService.getHotelLike(mid, idx);
+    String hotelLike = (res != 0) ? "Ok" : "No";
 		
 		// 결제 안 한 예약 자동 취소 ('대기중' -> '예약취소' 예약 당일 안 했을 경우)
 		reservationService.setReservationAutoCancel();
-		
 		// 예약 상태 업데이트 ('예약완료'->'이용완료' 체크아웃 날짜가 오늘 날짜랑 같거나 이전이면 이용완료 처리(오늘 날짜 부터 새 예약을 받을 수 있도록))
 		reservationService.setReservationUpdateToDone();
 		
-		// 객실 리스트 조회
-		List<RoomVo> roomVos = roomService.getAvailableRoomList(idx, checkinDate, checkoutDate, guestCount, petCount);
-		model.addAttribute("vo", vo);
-		model.addAttribute("hotelLike", hotelLike);
-		model.addAttribute("roomVos", roomVos);
-		model.addAttribute("checkinDate", checkinDate);
+		// 객실 정보 조회
+    List<RoomVo> roomVos = roomService.getAvailableRoomList(idx, checkinDate, checkoutDate, guestCount, petCount);
+
+    // 관광지 정보 조회
+    List<TouristSpotVo> touristList = touristSpotService.getSpotsByHotelIdx(idx);
+    
+    // 모델에 담기
+    model.addAttribute("hotelVo", hotelVo);
+    model.addAttribute("vos", vos); // 연관 호텔 리스트
+    model.addAttribute("hotelLike", hotelLike);
+    model.addAttribute("roomVos", roomVos);
+    model.addAttribute("checkinDate", checkinDate);
     model.addAttribute("checkoutDate", checkoutDate);
     model.addAttribute("guestCount", guestCount);
     model.addAttribute("petCount", petCount);
     model.addAttribute("searchString", searchString);
+    model.addAttribute("touristList", touristList);
+    
 		return "hotel/hotelDetail";
 	}
 	
@@ -281,6 +296,31 @@ public class HotelController {
 	@RequestMapping(value = ("/hotelLikeNo"), method = RequestMethod.POST)
 	public String hotelLikeNoPost(String mid, int hotelIdx) {
 		return hotelService.setHotelLikeNo(mid, hotelIdx) + "";
+	}
+	
+	//본인이 등록한 호텔 목록 보기
+	@RequestMapping("/myHotelList")
+	public String myHotelList(HttpSession session, Model model) {
+	    String mid = (String) session.getAttribute("sMid");
+	    if (mid == null) return "redirect:/message/loginRequired";
+
+	    List<HotelVo> hotelList = hotelService.getHotelListByMid(mid);
+	    model.addAttribute("hotelList", hotelList);
+	    return "hotel/hotelMyList";
+	}
+	
+	// 본인이 등록한 호텔 상세정보
+	@RequestMapping("/hotelMyDetail")
+	public String hotelMyDetail(@RequestParam("idx") int idx, Model model) {
+		
+	    HotelVo hotelVo = hotelService.getHotel(idx); // 호텔 정보
+	    List<RoomVo> roomVos = roomService.getRoomList(idx); // 객실 목록 (없으면 생략 가능)
+	    List<TouristSpotVo> touristList = touristSpotService.getSpotsByHotelIdx(idx); // 관광지 정보
+	    
+	    model.addAttribute("touristList", touristList);
+	    model.addAttribute("hotelVo", hotelVo);
+	    model.addAttribute("roomVos", roomVos);
+	    return "hotel/hotelMyDetail";
 	}
 	
 }

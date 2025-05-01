@@ -30,5 +30,9 @@ public interface HotelDao {
 
 	List<HotelVo> getSearchHotelList(@Param("searchString") String searchString, @Param("checkinDate") String checkinDate, @Param("checkoutDate") String checkoutDate, @Param("guestCount") int guestCount, @Param("petCount") int petCount, @Param("startIndexNo") int startIndexNo, @Param("pageSize") int pageSize);
 
+	List<HotelVo> getHotelListByMid(@Param("mid") String mid);
+
+	List<HotelVo> getHotelSearch(@Param("idx") int idx);
+
 
 }

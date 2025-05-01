@@ -302,4 +302,14 @@ public class HotelServiceImpl implements HotelService {
 		return hotelDao.getSearchHotelList(searchString, checkinDate, checkoutDate, guestCount, petCount, startIndexNo, pageSize);
 	}
 
+	@Override
+	public List<HotelVo> getHotelListByMid(String mid) {
+		return hotelDao.getHotelListByMid(mid);
+	}
+
+	@Override
+	public List<HotelVo> getHotelSearch(int idx) {
+		return hotelDao.getHotelSearch(idx);
+	}
+
 }

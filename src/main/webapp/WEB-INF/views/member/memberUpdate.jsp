@@ -222,9 +222,6 @@
     .btn-info:hover {
       background-color: #02b757;
     }
-    
-    
-    
     .btn-secondary {
       background-color: #ebebeb;
       color: #333;
@@ -234,9 +231,13 @@
       background-color: #ddd;
     }
     .btn-green {
-	  background-color: #02b757;
-	  color: white;
-	  border: none;
+	  background-color: #02b757 !important;
+	  color: white !important;
+	  border: 1px solid #02b757 !important;
+	  border-radius: 4px !important;
+	  padding: 8px 16px !important;
+	  font-weight: bold !important;
+	  display: inline-block !important;
 	}
 	.btn-green:hover {
 	  background-color: #009345;
@@ -315,7 +316,7 @@
 	          	<option ${email[1]=='hatmail.com' ? 'selected' : ''}>hatmail.com</option>
 	          	<option ${email[1]=='nate.com'    ? 'selected' : ''}>nate.com</option>
 	          </select>
-	          <button type="button" onclick="emailCertification()" id="certificationBtn" class="btn btn-info btn-sm ms-2 rounded">인증번호받기</button>
+	          <button type="button" onclick="emailCertification()" id="certificationBtn" class="btn btn-success btn-sm ms-2 rounded">인증번호받기</button>
 			  <div id="spinner" class="ms-2" style="display: none;">
 				<div class="spinner-border text-success spinner-border-sm" role="status">
 				  <span class="visually-hidden">Loading...</span>
@@ -387,7 +388,7 @@
 		      <div class="input-group mb-2">
 		        <c:set var="address" value="${fn:split(vo.address, '/')}"/>
 		        <input type="text" name="postcode" id="sample6_postcode" value="${fn:trim(address[0])}" class="form-control">
-		        <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" class="btn btn-info btn-sm ms-2 rounded">
+		        <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" class="btn btn-success btn-sm ms-2 rounded">
 		      </div>
 		      <input type="text" name="roadAddress" id="sample6_address" value="${fn:trim(address[1])}" class="form-control mb-2">
 		      <div class="input-group mb-1">
@@ -408,7 +409,7 @@
     </div>
       <div class="text-center mt-4">
 	    <div class="d-flex justify-content-center gap-2 mb-3">
-    	  <input type="button" value="회원정보수정" onclick="fCheck()" class="btn btn-green" />
+    	  <button type="button" onclick="fCheck()" class="btn btn-success">회원정보수정</button>
   		</div>
   		<div style="text-align: right; margin-right: 10px; margin-top: 10px;">
 		  <a href="${ctp}/member/pwdCheck/d" style="font-size: 1rem; color: #cc0000;">회원 탈퇴하기</a>
