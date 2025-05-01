@@ -36,5 +36,9 @@
   	update reservation set status = '리뷰작성' where status = '이용완료' and roomIdx = #{vo.roomIdx};
   </update>
   
+  <!-- 마이페이지 예약취소 처리 -->
+  <update id="setReservationCancel">
+  	update reservation set status = '예약취소' where status = '결제대기' and reservationNo = #{reservationNo} and mid = #{mid};
+  </update>
   
 </mapper>

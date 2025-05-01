@@ -21,4 +21,6 @@ public interface ReservationService {
 	
 	void setReviewCheckOk(ReviewVo vo);
 
+	int setReservationCancel(String mid, String reservationNo);
+
 }

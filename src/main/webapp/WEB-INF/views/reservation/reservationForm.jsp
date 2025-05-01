@@ -9,7 +9,7 @@
 	<title>예약하기</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
 	<style>
-		.reservation-box {
+.reservation-box {
 			max-width: 800px;
 			margin: 50px auto;
 			padding: 30px;
@@ -97,19 +97,48 @@
 			overflow-y: auto;
 			min-height: 100px; 
 		}
+		.auth-phone-box,
+		.auth-code-box {
+		  display: flex;
+		  gap: 10px;
+		}
+		
+		.auth-phone-box input[type="text"],
+		.auth-code-box input[type="text"] {
+		  flex: 1;
+		}
+		
+		.btn.btn-auth,
+		.btn.btn-auth-verify {
+		  padding: 10px 16px;
+		  border: none;
+		  border-radius: 8px;
+		  font-weight: 600;
+		  background-color: #5A8DEE;
+		  color: white;
+		  white-space: nowrap;
+		  transition: background-color 0.3s ease;
+		}
+		
+		.btn.btn-auth:hover,
+		.btn.btn-auth-verify:hover {
+		  background-color: #3f6fd1;
+		}
 	</style>
 	<script>
+		let authenticationSw = false;
+	
 		document.addEventListener('DOMContentLoaded', function () {
 			// 이용약관 체크시 결제 버튼 활성화
-			const allAgreeCheck = document.getElementById('allAgreeCheck');
-			const termsCheck = document.getElementById('termsCheck');
-			const privacyCheck = document.getElementById('privacyCheck');
-			const ageCheck = document.getElementById('ageCheck');
-			const reserveBtn = document.getElementById('reserveBtn');
-			const autoFillCheck = document.getElementById('autoFillCheck');
-			const name = document.getElementById('name');
-			const tel = document.getElementById('tel');
-			const email = document.getElementById('email');
+			let allAgreeCheck = document.getElementById('allAgreeCheck');
+			let termsCheck = document.getElementById('termsCheck');
+			let privacyCheck = document.getElementById('privacyCheck');
+			let ageCheck = document.getElementById('ageCheck');
+			let reserveBtn = document.getElementById('reserveBtn');
+			let autoFillCheck = document.getElementById('autoFillCheck');
+			let name = document.getElementById('name');
+			let tel = document.getElementById('tel');
+			let email = document.getElementById('email');
 
 			allAgreeCheck.addEventListener('change', function () {
 				if (this.checked) {
@@ -202,6 +231,12 @@
 	      document.getElementById('memo').focus();
 	      return false;
 	    }
+			if (!authenticationSw) {
+	      alert("인증번호 확인이 필요합니다. 인증을 진행해주세요.");
+	      document.getElementById('tel').focus();
+	      return false;
+	    }
+
 			return true;
 		}
 		
@@ -227,6 +262,72 @@
 		    modal2.style.display = "none";
 		    overlay.style.display = "none";
 		}
+		
+		
+		// 인증문자 폰으로 전송하기
+    function smsAuthentication() {
+    	let fromNumber = "01021512965";
+    	let tel = document.getElementById("tel").value.trim().replace(/-/g, "");
+    	let num = 6;
+    	if(tel == "") {
+    		alert("핸드폰 번호를 입력하세요");
+    		document.getElementById("tel").focus();
+    		return false;
+    	}
+    	
+    	$.ajax({
+    		type : "post",
+    		url  : "${ctp}/reservation/smsAuthentication",
+    		data : {
+    			fromNumber: fromNumber,
+    			tel: tel,
+    			num: num
+    		},
+    		success:function(res) {
+    			alert(res);
+    			$("#autenticationDiv").show();
+    			document.getElementById("authenticationNumber").focus();
+    		},
+    		error : function() {
+    			alert("다시 시도해주세요.");
+    		}
+    	});
+    }
+		
+		
+    // 전송받은 인증번호를 확인하기위해 다시 컨트롤러로 전송하여 비교처리한다.
+    function authenticationCheck() {
+    	let authenticationNumber = document.getElementById("authenticationNumber").value;
+    	if(authenticationNumber == "") {
+    		alert("인증번호를 입력하세요.");
+    		document.getElementById("authenticationNumber").focus();
+    		return false;
+    	}
+    	
+    	$.ajax({
+    		type : "post",
+    		url  : "${ctp}/reservation/smsAuthenticationCheck",
+    		data : {
+    			authenticationNumber: authenticationNumber
+    		},
+    		success:function(res) {
+    			if(res == "1") {
+	    			alert("인증되었습니다.");
+	    			authenticationSw = true;
+	    			$("#autenticationDiv").hide();
+	    			$("#requestAutenticationNumber").hide();
+	    			$("#tel").prop("readonly", true);
+    			}
+    			else {
+    				alert("인증번호가 일치하지 않습니다. 다시 입력해 주세요.");
+    				document.getElementById("authenticationNumber").focus();
+    			}
+    		},
+    		error : function() {
+    			alert("다시 시도해주세요.");
+    		}
+    	});
+    }
 	</script>
 </head>
 <body>
@@ -250,8 +351,18 @@
 				<input type="text" name="name" id="name" class="form-control" required placeholder="예 : 홍길동 또는 John">
 			</div>
 			<div class="form-group">
-				<label for="tel">예약자 연락처</label>
-				<input type="text" name="tel" id="tel" class="form-control" required placeholder="예 : 010-1234-5678">
+			  <label for="tel">예약자 연락처</label>
+			  <div class="auth-phone-box">
+			    <input type="text" name="tel" id="tel" class="form-control" required placeholder="예 : 010-1234-5678">
+			    <input type="button" id="requestAutenticationNumber" value="인증번호 받기" onclick="smsAuthentication()" class="btn btn-auth" />
+			  </div>
+			</div>
+			<div class="form-group" id="autenticationDiv" style="display:none">
+			  <label for="authenticationNumber">인증번호</label>
+			  <div class="auth-code-box">
+			    <input type="text" name="authenticationNumber" id="authenticationNumber" class="form-control" placeholder="인증번호를 입력하세요">
+			    <input type="button" value="인증하기" onclick="authenticationCheck()" class="btn btn-auth-verify" />
+			  </div>
 			</div>
 			<div class="form-group">
 				<label for="email">예약자 이메일</label>

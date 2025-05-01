@@ -23,4 +23,6 @@ public interface ReservationDao {
 	
 	void setReviewCheckOk(@Param("vo") ReviewVo vo);
 
+	int setReservationCancel(@Param("mid") String mid, @Param("reservationNo") String reservationNo);
+
 }

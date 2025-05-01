@@ -27,7 +27,8 @@ public class MessageController {
 			@RequestParam(name="searchString", defaultValue = "", required = false) String searchString,
 			@RequestParam(name="part", defaultValue = "전체", required = false) String part,
 			@RequestParam(name="mSw", defaultValue = "1", required = false) String mSw,
-			@RequestParam(name="tempFlag", defaultValue = "", required = false) String tempFlag
+			@RequestParam(name="tempFlag", defaultValue = "", required = false) String tempFlag,
+			@RequestParam(name="reservationNo", defaultValue = "", required = false) String reservationNo
 		) {
 		
 		if(msgFlag.equals("hotelInputNo")) {
@@ -93,6 +94,14 @@ public class MessageController {
 		else if(msgFlag.equals("invalidValue")) {
 			model.addAttribute("message", "선택하신 숙소의 정보를 불러오는 데 실패했습니다.\\n다시 시도해주세요.");
 			model.addAttribute("url", "hotel/hotelList");
+		}
+		else if(msgFlag.equals("reservationCancelOk")) {
+			model.addAttribute("message", "예약이 취소되었습니다.");
+			model.addAttribute("url", "reservation/reservationDetail/"+reservationNo);
+		}
+		else if(msgFlag.equals("reservationCancelNo")) {
+			model.addAttribute("message", "예약 취소 중 오류가 발생했습니다.\\n다시 시도해주세요.");
+			model.addAttribute("url", "reservation/reservationDetail/"+reservationNo);
 		}
 		
 		

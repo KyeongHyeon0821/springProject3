@@ -411,7 +411,7 @@
 		.image-modal-content {
 		  position: relative;
 		  background-color: white;
-		  margin: 5vh auto;
+		  margin: auto auto;
 		  padding: 3rem 0 1rem 0;
 		  width: 90%;
 		  max-width: 1000px;

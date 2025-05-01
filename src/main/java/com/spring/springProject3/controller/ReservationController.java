@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.spring.springProject3.common.ProjectProvide;
 import com.spring.springProject3.service.HotelService;
 import com.spring.springProject3.service.MemberService;
 import com.spring.springProject3.service.ReservationService;
@@ -23,6 +25,12 @@ import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.MemberVo;
 import com.spring.springProject3.vo.ReservationVo;
 import com.spring.springProject3.vo.RoomVo;
+
+import net.nurigo.sdk.NurigoApp;
+import net.nurigo.sdk.message.model.Message;
+import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
+import net.nurigo.sdk.message.response.SingleMessageSentResponse;
+import net.nurigo.sdk.message.service.DefaultMessageService;
 
 @Controller
 @RequestMapping("/reservation")
@@ -39,6 +47,18 @@ public class ReservationController {
 	
 	@Autowired
 	MemberService memberService;
+	
+	@Autowired
+	ProjectProvide projectProvide;
+	
+	//sms 를 위한 라이브러리를 스프링컨테이너에 등록하기
+	final DefaultMessageService messageService;
+
+	public ReservationController() {
+	 	String INSERT_API_KEY = "NCS9YW7FGTKBEAU6";
+	 	String INSERT_API_SECRET_KEY = "BMHJCUIZ8KLECRKN1DK4XBXHPTJWNKKT";
+    this.messageService = NurigoApp.INSTANCE.initialize(INSERT_API_KEY, INSERT_API_SECRET_KEY, "https://api.coolsms.co.kr");
+	}
 	
 	// 예약 폼 보기
 	@RequestMapping(value = "/reservationForm", method = RequestMethod.GET)
@@ -169,5 +189,46 @@ public class ReservationController {
 		return "reservation/payment";
 	}
 	
+	
+	// 마이페이지 결제 취소 처리
+	@RequestMapping(value = "/reservationCancel/{reservationNo}", method = RequestMethod.GET)
+	public String reservationCancelGet(HttpSession session, @PathVariable("reservationNo") String reservationNo) {
+		String mid = session.getAttribute("sMid") + "";
+		if(mid == null || mid.equals("")) return "redirect:/message/loginRequired"; // 로그인 체크
+		
+		int res = reservationService.setReservationCancel(mid, reservationNo);
+		if(res != 0) return "redirect:/message/reservationCancelOk?reservationNo="+reservationNo;
+		else return "redirect:/message/reservationCancelNo?reservationNo="+reservationNo;
+	}
+	
+	// 폰으로 인증번호 발송하기
+	@ResponseBody
+	@RequestMapping(value = "/smsAuthentication", method = RequestMethod.POST, produces="application/text; charset=utf8")
+	public String smsAuthenticationPost(HttpSession session, String fromNumber, String tel, int num) {
+		Message message = new Message();
+		String authenticationNumber = projectProvide.newNumberCreate(num);	// 랜덤한 숫자 인증코드 발급받기
+
+		message.setFrom(fromNumber);
+		message.setTo(tel);
+		message.setText("[본인확인 인증번호] " + authenticationNumber);
+		
+		SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+		System.out.println(response);
+		
+		session.setAttribute("sAuthenticationNumber", authenticationNumber);
+		
+		return "인증번호가 발송되었습니다.\n인증번호를 아래 입력란에 입력후 인증하기 버튼을 눌러주세요.";
+	}
+	
+	
+	//폰으로 보낸 인증번호 확인처리하기
+	@ResponseBody
+	@RequestMapping(value = "/smsAuthenticationCheck", method = RequestMethod.POST, produces="application/text; charset=utf8")
+	public String smsAuthenticationCheckPost(HttpSession session, String authenticationNumber) {
+		String sAuthenticationNumber = (String) session.getAttribute("sAuthenticationNumber");
+		
+		if(sAuthenticationNumber.equals(authenticationNumber)) return "1";
+		else return "0";
+	}
 	
 }

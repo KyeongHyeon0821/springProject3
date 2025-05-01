@@ -49,4 +49,9 @@ public class ReservationServiceImpl implements ReservationService {
 	public void setReviewCheckOk(ReviewVo vo) {
 		reservationDao.setReviewCheckOk(vo);
 	}
+
+	@Override
+	public int setReservationCancel(String mid, String reservationNo) {
+		return reservationDao.setReservationCancel(mid, reservationNo);
+	}
 }

@@ -159,6 +159,19 @@ public class ProjectProvide {
 		
 	}
 	
+	// 지정길이만큼의 숫자 입력받기 : (int) (Math.random()*(최대값-최소값+1)) + 최소값
+	public String newNumberCreate(int num) {
+		long randomNum = 0;
+		
+		if(num >= 8)      randomNum = (int)(Math.random()*(99999999-10000000+1)) + 10000000;
+		else if(num >= 7) randomNum = (int)(Math.random()*(9999999 -1000000 +1)) + 1000000;
+		else if(num >= 6) randomNum = (int)(Math.random()*(999999  -100000  +1)) + 100000;
+		else if(num >= 5) randomNum = (int)(Math.random()*(99999   -10000   +1)) + 10000;
+		else              randomNum = (int)(Math.random()*(9999    -1000    +1)) + 1000;
+		
+		return randomNum + "";
+	}
+	
 
 	
 }
