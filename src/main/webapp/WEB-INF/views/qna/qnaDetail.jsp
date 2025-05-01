@@ -145,7 +145,6 @@
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <div class="container">
   <div class="col m-3 text-center">
-    <img src="${ctp}/images/logo.png" width="100px"/>
 	  <span class="my-page-header">QnA 상세보기</span>
 	</div>
   <div class="section-box">

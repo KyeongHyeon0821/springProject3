@@ -75,38 +75,61 @@
       font-size: 1rem;
     }
   </style>
-  
   <script>
-  'use strict';
-  function fCheck() {
-	  let part = myform.part.value;
-    let title = myform.title.value;
-    if (privacyRegit(privacy_editor)) return false;
-    else if (title == "") {
-      alert("제목을 입력해주세요.");
-      myform.title.focus();
-      return false;
-    }
-    else if (part == "") {
-      alert("장소를 선택해주세요.");
-      return false;
-    }
-    else myform.submit();
-  }
-
-  function privacyRegit(privacy_editor){ 
-    if(privacy_editor.getData().trim() == ''){ 
-      alert("내용을 입력해주세요."); 
-      return true; 
-    } 
-  }
+	  'use strict';
+	  function fCheck() {
+		  let part = myform.part.value;
+	    let title = myform.title.value;
+	    if (privacyRegit(privacy_editor)) return false;
+	    else if (title == "") {
+	      alert("제목을 입력해주세요.");
+	      myform.title.focus();
+	      return false;
+	    }
+	    else if (part == "") {
+	      alert("장소를 선택해주세요.");
+	      return false;
+	    }
+	    else myform.submit();
+	  }
+	
+	  function privacyRegit(privacy_editor){ 
+	    if(privacy_editor.getData().trim() == ''){ 
+	      alert("내용을 입력해주세요."); 
+	      return true; 
+	    } 
+	  }
+	  
+	  // 장소리스트
+	  function jansoCheck() {
+		  //alert("ddd : " + '${pVos[0]}');
+		 
+	  	$(".modal-header #cnt").html(${fn:length(pVos)});
+			let jusorok = '';
+			jusorok += '<table class="table table-hover">';
+			jusorok += '<tr class="table-dark text-dark text-center">';
+			jusorok += '<th class="text-center">번호</th><th class="text-center">장소</th>';
+			jusorok += '</tr>';
+			jusorok += '<c:forEach var="vo" items="${pVos}" varStatus="st">';
+			jusorok += '<tr onclick="javascript:inputJangsoCheck(\'${vo}\')" class="text-center">';
+			jusorok += '<td>${st.count}</td>';
+			jusorok += '<td>${vo}</td>';
+			jusorok += '</tr>';
+			jusorok += '</c:forEach>';
+			jusorok += '';
+			jusorok += '</table>';
+			$(".modal-body #jangsoCheck").html(jusorok);
+	  }
+	  function inputJangsoCheck(pVos) {
+	    	$("#jangso").val(pVos);
+	    	$(".btn-close").click();
+	    }
   </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <div class="container">
   <div class="col m-3 text-center">
-    <img src="${ctp}/images/logo.png" width="100px"/>
 	  <span class="my-page-header">포토갤러리 작성하기</span>
 	</div>
 	
@@ -124,17 +147,10 @@
         <tr>
           <th>장소</th>
           <td>
-            <select name="part" id="part" class="form-select">
-              <option selected value="">선택해주세요.</option>
-              <option>양양복골온천</option> <!-- 애견동반 온천 여행 -->
-              <option>태안 코리아플라워파크</option> <!-- 애견동반 꽃구경 -->
-              <option>허브아일랜드</option> <!-- 애견동반 이색 테마파크 -->
-              <option>오산반려동물테마파크</option> <!-- 애견동반 실내 테마파크  -->
-              <option>평창 육백마지기</option> <!-- 산책길?   -->
-              <option>남해 독일마을</option> <!-- 반려동물과 둘러볼수있고 동반카페,식당이 있음   -->
-              <option>바다</option>
-              <option>여행</option>
-            </select>
+          	<div style="display: flex; align-items: center; gap: 10px;">
+							<input type="button" value="장소선택" onclick="jansoCheck()" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#myModal" />
+	          	<input type="text" name="jangso" id="jangso" class="form-control" readonly style="width: 300px"/>
+						</div>
           </td>
         </tr>
 	      <tr>
@@ -160,6 +176,23 @@
 	    </table>
 	    <input type="hidden" name="mid" value="${sMid}"/>
 	  </form>
+	</div>
+</div>
+
+<div class="modal fade" id="myModal">
+	<div class="modal-dialog modal-dialog-centered">
+	  <div class="modal-content" style="width:600px">
+	  	<div class="modal-header" style="width:600px">
+	  		<h4 class="modal-title">장소 선택</h4>
+	  		<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+	  	</div>
+	  	<div class="modal-body" style="width:600px;height:400px;overflow:auto;">
+	  		<span id="jangsoCheck"></span>
+	  	</div>
+	  	<div class="modal-footer" style="width:600px">
+	  		<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+	  	</div>
+	  </div>
 	</div>
 </div>
 <p><br/></p>

@@ -103,6 +103,17 @@
       padding: 30px 0;
       color: #888;
     }
+    
+   .btn-outline-success.custom-hover {
+	    border-color: #2e7d32;
+	    color: #2e7d32;
+	    transition: 0.3s;
+	  }
+	
+	  .btn-outline-success.custom-hover:hover {
+	    background-color: #2e7d32;
+	    color: white;
+	  }
   </style>
   <script>
     'use strict';
@@ -123,7 +134,6 @@
 
 <div class="container">
   <div class="col m-3 text-center">
-    <img src="${ctp}/images/logo.png" width="100px"/>
 	  <span class="my-page-header">QnA 리스트</span>
 	</div>
   <div class="section-box">
@@ -228,22 +238,22 @@
 <!-- 블록페이지 끝 -->
 
     <!-- 검색기 -->
-    <div class="text-center mt-4">
-      <form name="searchForm" method="post" action="qnaSearch">
-        <b>검색 : </b>
-        <select name="search" id="search">
-          <option value="title">제목</option>
-          <option value="nickName">작성자</option>
-          <option value="content">글내용</option>
-        </select>
-        <input type="text" name="searchString" id="searchString" required />
-        <input type="submit" value="검색" class="btn btn-outline-secondary btn-sm" />
-        <input type="hidden" name="pag" value="${pageVo.pag}" />
-        <input type="hidden" name="pageSize" value="${pageVo.pageSize}" />
-      </form>
-    </div>
-
-  </div>
+		<div class="text-center mt-4">
+		  <form class="search-box" name="searchForm" method="post" action="qnaSearch" style="display: inline-flex; align-items: center; gap: 10px;">
+		    <select name="search" id="search" style="border: 1px solid #2e7d32; border-radius: 5px; padding: 5px 10px; color: #2e7d32;">
+		      <option value="title">제목</option>
+		      <option value="nickName">작성자</option>
+		      <option value="content">글내용</option>
+		    </select>
+		    <input type="text" name="searchString" id="searchString" required
+		           style="border: 1px solid #2e7d32; border-radius: 5px; padding: 5px 10px;" />
+		    <input type="submit" value="검색" 
+		           class="btn btn-outline-success btn-sm custom-hover" />
+		    <input type="hidden" name="pag" value="${pageVo.pag}" />
+		    <input type="hidden" name="pageSize" value="${pageVo.pageSize}" />
+		  </form>
+		</div>
+	</div>
 </div>
 <p><br/></p>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />

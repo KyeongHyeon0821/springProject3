@@ -133,7 +133,6 @@
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <div class="col m-3 text-center">
-  <img src="${ctp}/images/logo.png" width="100px"/>
   <span class="my-page-header">포토갤러리 모아보기</span>
 </div>
   <div class="section-box" id="section-box-id">

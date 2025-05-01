@@ -7,7 +7,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>QnA 상세보기</title>
+  <title>포토갤러리 상세보기</title>
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
   <style>
     body {
@@ -131,7 +131,6 @@
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <div class="container">
   <div class="col m-3 text-center">
-    <img src="${ctp}/images/logo.png" width="100px"/>
 	  <span class="my-page-header">포토갤러리 상세보기</span>
 	</div>
   <div class="section-box">

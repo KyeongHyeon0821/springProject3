@@ -50,7 +50,17 @@ public class PhotogalleryController {
 	
 	// 포토갤러리 게시글 입력 폼보기
 	@RequestMapping(value = "/photogalleryInput", method = RequestMethod.GET)
-	public String photogalleryInputGet() {
+	public String photogalleryInputGet(Model model) {
+		//List<관광지VO> pVos = photogalleryService.get관관지List();
+		List<String> pVos = new ArrayList<>();
+		pVos.add("허브아일랜드");
+		pVos.add("양양복골온천");
+		pVos.add("평창 육백마지기");
+		pVos.add("바다");
+		pVos.add("여행");
+		
+		model.addAttribute("pVos", pVos);
+		
 		return "photogallery/photogalleryInput";
 	}
 	
@@ -66,7 +76,6 @@ public class PhotogalleryController {
 		String str2 = str1.substring(0,str1.indexOf("\""));
 		//vo.setThumbnail(vo.getContent().substring(vo.getContent().indexOf("src=\"")+48,vo.getContent().indexOf("\","+vo.getContent().indexOf("src=\"")+39+"")));
 		vo.setThumbnail(str2);
-		//System.out.println("vo : " + vo);
 		int res = photogalleryService.setPhotogalleryInputOk(vo);
 		
 		if(res != 0) return "redirect:/message/photogalleryInputOK";
