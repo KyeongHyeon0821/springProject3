@@ -312,4 +312,8 @@ public class HotelServiceImpl implements HotelService {
 		return hotelDao.getHotelSearch(idx);
 	}
 
+	@Override
+  public List<HotelVo> getRecentHotels(int limit) {
+     return hotelDao.getRecentHotels(limit);
+  }
 }

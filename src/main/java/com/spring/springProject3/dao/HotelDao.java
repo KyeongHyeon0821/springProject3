@@ -34,5 +34,6 @@ public interface HotelDao {
 
 	List<HotelVo> getHotelSearch(@Param("idx") int idx);
 
+	List<HotelVo> getRecentHotels(@Param("limit") int limit);
 
 }

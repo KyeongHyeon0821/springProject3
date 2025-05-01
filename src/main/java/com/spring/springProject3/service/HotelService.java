@@ -33,6 +33,7 @@ public interface HotelService {
 	List<HotelVo> getHotelListByMid(String mid);
 
 	List<HotelVo> getHotelSearch(int idx);
-
+	
+	List<HotelVo> getRecentHotels(int limit);
 
 }

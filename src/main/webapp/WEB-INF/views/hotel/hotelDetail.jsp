@@ -442,6 +442,7 @@
 	  <div id="map" style="width:100%; height:350px; position:relative;">
 	    <ul id="category">
 	      <li id="TOUR" data-order="99"><span class="category_bg tour"></span>관광지</li>
+	      <li id="mapBig" data-order="99"><span class="category_bg tour"></span>지도크게보기</li>
 	    </ul>
 	  </div>
   </div>
@@ -516,12 +517,12 @@
 	// 지도를 생성합니다
 	var map = new kakao.maps.Map(mapContainer, mapOption);
 	
-	map.setDraggable(false); // 지도 드래그 막기
-	map.setZoomable(true);   // 지도 확대, 축소
+	//map.setDraggable(false); // 지도 드래그 막기
+	//map.setZoomable(false);   // 지도 확대, 축소
 	// 더블 클릭 확대 막기
-	kakao.maps.event.addListener(map, 'dblclick', function(event) {
+	/* kakao.maps.event.addListener(map, 'dblclick', function(event) {
 	    event.preventDefault(); // 더블 클릭으로 인한 확대 막기
-	});
+	}); */
 	
 	// 주소-좌표 변환 객체를 생성합니다
 	var geocoder = new kakao.maps.services.Geocoder();
@@ -548,11 +549,11 @@
 	
 	// 지도 클릭 시 전체 화면을 열기 위한 스크립트
 	// 기존 지도 클릭 시 모달 열기
-	 document.getElementById('map').addEventListener('click', function(e) {
+	 document.getElementById('mapBig').addEventListener('click', function(e) {
 		const target = e.target;
 		// 마커, 관광지 버튼을 클릭한 경우에는 모달 열지 않게 막기
-		if (target.closest('#category')) return;
-		if (target.tagName === 'IMG') return;
+		//if (target.closest('#category')) return;
+		//if (target.tagName === 'IMG') return;
 		  openHotelModalMap();
 	 });
 	
@@ -681,7 +682,7 @@
 	});
 	
 	// 지도 위에 마우스 올렸을 때 커서 변경
-    document.addEventListener("DOMContentLoaded", function () {
+  /*   document.addEventListener("DOMContentLoaded", function () {
   	  setTimeout(() => {
   	    const mapArea = document.querySelector('#map > div');
   	    if (mapArea) {
@@ -690,7 +691,7 @@
   	      console.warn('지도 내부 요소를 찾을 수 없습니다.');
   	    }
   	  }, 500); // 지도가 렌더링될 시간 기다려줌
-  	});
+  	}); */
 </script>
 <p><br/></p>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
