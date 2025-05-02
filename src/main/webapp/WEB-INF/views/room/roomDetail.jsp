@@ -405,8 +405,7 @@
 		  justify-content: center;
 		  align-items: flex-start; /* 스크롤 시 위에서부터 보이게 */
 		  overflow-y: auto; 
-		  padding: 4vh 0;
-		}
+			}
 		
 		.image-modal-content {
 		  position: relative;
@@ -415,7 +414,7 @@
 		  padding: 3rem 0 1rem 0;
 		  width: 90%;
 		  max-width: 1000px;
-		  max-height: 90vh; /* ✅ 화면의 90%만 차지하도록 제한 */
+		  height: 100vh; 
 		  overflow-y: auto; /* ✅ 내부 스크롤 가능하게 */
 		  border-radius: 16px;
 		  box-shadow: 0 0 20px rgba(0,0,0,0.6);
