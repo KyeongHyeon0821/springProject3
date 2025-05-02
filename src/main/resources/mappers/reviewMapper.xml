@@ -53,5 +53,17 @@
 	</insert>
 
 
+	<!-- 리뷰 수정 처리 -->
+	<update id="setReviewUpdateCheckOk">
+		update review set content = #{vo.content} where idx = #{vo.idx};
+	</update>
 
+
+
+
+
+	<!-- 리뷰 삭제처리 -->
+	<delete id="setReviewDelete">
+		delete from review where idx = #{idx.idx};
+	</delete>
 </mapper>

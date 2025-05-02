@@ -56,4 +56,14 @@ public class ReviewServiceImpl implements ReviewService {
 	public List<Integer> getExistReviewedCheck(String mid) {
 		return reviewDao.getExistReviewedCheck(mid);
 	}
+
+	@Override
+	public int setReviewDelete(ReviewVo idx) {
+		return reviewDao.setReviewDelete(idx);
+	}
+
+	@Override
+	public int setReviewUpdateCheckOk(ReviewVo vo) {
+		return reviewDao.setReviewUpdateCheckOk(vo);
+	}
 }

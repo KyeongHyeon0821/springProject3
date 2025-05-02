@@ -11,7 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.springProject3.service.HotelService;
 import com.spring.springProject3.service.ReservationService;
@@ -48,17 +49,15 @@ public class ReviewController {
 		// 내가 쓴 리뷰 목록을 볼 수 있게 예약테이블에서 값을 가져온다.
 		List<Integer> isReviewed = reviewService.getExistReviewedCheck(mid);
 		
-		// 리뷰를 달 준비가 된 객실의 정보도 함께 가져오도록 한다.3
-		List<ReservationListVo> rsVos = reviewService.getRoomUsedList(mid);
+		// 리뷰를 달 준비가 된 객실의 정보도 함께 가져오도록 한다.
+		List<ReservationListVo> rsVos = roomService.getRoomUsedList(mid);
 		List<ReviewVo> rVos = reviewService.getRoomReviewAllList();
-		model.addAttribute("sLevel", sLevel);
 		model.addAttribute("rsVos", rsVos);
 		model.addAttribute("rVos", rVos);
 		model.addAttribute("isReviewed", isReviewed);
-		System.out.println("rsVos : " + rsVos);
 		// sMid select * from reservation where mid = #{sMid} and status = '이용완료';
 		
-		return "review/memberReviewInput";
+		return "review/memberReview";
 	}
 	
 	//리뷰 등록하기
@@ -76,6 +75,18 @@ public class ReviewController {
 		else return "redirect:/message/reviewInputNo"; 
 	}
 	
+	// 리뷰 삭제처리
+	@ResponseBody
+	@RequestMapping(value="/reviewDelete", method = RequestMethod.POST)
+	public String reviewDeletePost(ReviewVo idx) {
+		return reviewService.setReviewDelete(idx) + "";
+	}
 
+	// 리뷰 수정처리
+	@ResponseBody
+	@RequestMapping(value="/reviewUpdateCheckOk", method = RequestMethod.POST)
+	public String boardReplyUpdateCheckOkPost(ReviewVo vo) {
+		return reviewService.setReviewUpdateCheckOk(vo) + "";
+	}
 	
 }

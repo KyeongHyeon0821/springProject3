@@ -12,7 +12,14 @@
 	<link rel="stylesheet" type="text/css" href="${ctp}/css/linkOrange.css"/>
 	<style>
 		.container-review {
-			background-color: white;
+			max-width: 900px;
+		  margin: 40px auto;
+		  padding: 30px;
+		  background: #fff;
+		  border-radius: 16px;
+		  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+		  font-family: 'Pretendard', sans-serif;
+		  font-size: 1em;
 		}
 		.room-detail {
 			display: flex;
@@ -171,7 +178,7 @@
 		<p><br></p>
 	  <table class="table text-center">
 	  	<tr>
-        <th class="table-secondary">숙소 이용 내역</th>
+        <th class="table-success">숙소 이용 내역</th>
       </tr>
       <tr>
       	<td>
@@ -183,7 +190,7 @@
 				    <img class="room-photo" src="${ctp}/roomThumbnail/${ReservationListVo.roomThumbnail}" alt="객실 사진" style="width:200px;max-height:180px;border:none;"/>
 					</td>
 			    <td class="room-items2 ms-4 border border-0">
-				    <div class="room-info"><span class="room-label"><a href="${ctp}/hotel/hotelDetail?idx=${ReservationListVo.hotelIdx}"><b style="color: blue">호텔 이름:${ReservationListVo.hotelName}</b></a></span></div>
+				    <div class="room-info"><span class="room-label"><a href="${ctp}/hotel/hotelDetail?idx=${ReservationListVo.hotelIdx}"><b style="color: green">호텔 이름:${ReservationListVo.hotelName}</b></a></span></div>
 				    <div class="room-info"><span class="room-label">객실 명칭: ${ReservationListVo.roomName}</span></div>
 				    <div class="room-info"><span class="room-label">가격: ${ReservationListVo.price}</span>₩</div>
 				    <div class="room-info"><span class="room-label">최대숙박인원: ${ReservationListVo.maxPeople}</span></div>
@@ -198,7 +205,7 @@
 			    </td>
 			    <td class="room-items3 border border-0">
  		    		<a href="#" onclick="modalCheck('${ReservationListVo.hotelIdx}','${ReservationListVo.roomIdx}','${ReservationListVo.roomName}'
- 		    		,'${ReservationListVo.reservationIdx}','${ReservationListVo.reservationNo}')" class="btn btn-primary btn-sm ms-3 text-end" data-bs-toggle="modal" 
+ 		    		,'${ReservationListVo.reservationIdx}','${ReservationListVo.reservationNo}')" class="btn btn-success btn-sm ms-3 text-end" data-bs-toggle="modal" 
  		    		data-bs-target="#myModal">리뷰작성</a>
  		    		<%-- <input type="button" value="리뷰작성" onclick="reviewCheck('${ReservationListVo.reservationNo}')" class="btn btn-success btn-sm"/> --%>
 			    </td>
@@ -222,7 +229,7 @@
 	  <div class="modal-dialog modal-dialog-centered">
 	    <div class="modal-content">
 	    	<div class="modal-header">
-	      	<h4>리뷰달기 </h4><span class="btn btn-info ms-3">${sNickName} 님</span>
+	      	<h4>리뷰달기 </h4><span class="btn btn-success ms-3">${sNickName} 님</span>
 	    	</div>
 				<form name="reviewForm" id="reviewForm" action="${ctp}/review/reviewInput" method="post">
 		      <div class="modal-body text-end">
@@ -256,7 +263,7 @@
 		      	</div>
 					</div>
 					<div class="modal-footer">
-		      	<button type="button" class="btn btn-dark" onclick="reviewUploadCheck()">등록하기</button>
+		      	<button type="button" class="btn btn-success" onclick="reviewUploadCheck()">등록하기</button>
 		      	<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
 					</div>   
 					<input type="hidden" name="roomIdx" id="roomIdx" />

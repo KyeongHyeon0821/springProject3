@@ -57,7 +57,7 @@
 					 rs.totalPrice from reservation rs
 					 join room r on rs.roomIdx = r.idx
 					 join hotel h on r.hotelIdx = h.idx
-					 where rs.mid = #{mid} and (rs.status ='이용완료' or rs.status ='리뷰작성') order by rs.checkinDate desc;
+					 where rs.mid = #{mid} and rs.status ='이용완료' order by rs.checkinDate desc;
 	</select>
   
  	<!-- 예약상태가 '리뷰작성' 상태인 '멤버의 이용 reservationNo'와 'roomIdx'를 가져온다 --> 

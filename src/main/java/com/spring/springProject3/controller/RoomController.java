@@ -276,7 +276,7 @@ public class RoomController {
 		else return "redirect:/message/roomDeleteCheckNo?roomIdx="+idx;
 	}
 	
-	// 마이페이지에서 리뷰 보기 (리뷰서비스사용)
+	// 리뷰 보기 (리뷰서비스사용)
 	@ResponseBody
 	@RequestMapping(value = ("/roomReviewList"), method = RequestMethod.POST)
 	public List<ReviewVo> roomReviewListPost(int roomIdx) {
@@ -284,7 +284,7 @@ public class RoomController {
 		return reviewVos;
 	}
 	
-	// 마이페이지에서 내 이용내역 관리 보기
+	// 마이페이지에서 리뷰 등록하러 가기
 	@GetMapping("/roomUseList")
 	public String roomUseListGet(Model model, HttpSession session) {
 		String mid = (String)session.getAttribute("sMid")+"";

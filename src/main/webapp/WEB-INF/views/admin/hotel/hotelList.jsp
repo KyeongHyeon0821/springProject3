@@ -127,12 +127,7 @@
       text-decoration: underline;
       color: orange;
     }
-    .hotel-headLow{
-    	
-    }
-    .hotel-low {
-    	
-    }
+
   </style>
 </head>
 <body>

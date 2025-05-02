@@ -26,5 +26,9 @@ public interface ReviewDao {
 
 	List<Integer> getExistReviewedCheck(@Param("mid") String mid);
 
+	int setReviewDelete(@Param("idx") ReviewVo idx);
+
+	int setReviewUpdateCheckOk(@Param("vo") ReviewVo vo);
+
 
 }
