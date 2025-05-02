@@ -5,12 +5,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>homeMain.jsp</title>
-	<jsp:include page="/WEB-INF/views/include/bs5.jsp" />
-	<link rel="stylesheet" type="text/css" href="${ctp}/css/linkMain.css?v=2.0"/>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<title>homeMain.jsp</title>
+<jsp:include page="/WEB-INF/views/include/bs5.jsp" />
+<link rel="stylesheet" type="text/css" href="${ctp}/css/linkMain.css?v=2.0"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Montserrat:wght@600&display=swap" rel="stylesheet">
 	<style>
+		body {
+		  font-family: 'Noto Sans KR', sans-serif !important;
+		}
+		
+		.section-header h2, .hero-heading, .product-title {
+		  font-family: 'Montserrat', sans-serif !important;
+		  font-weight: 600;
+		}
+		
 		ul, li {
 			text-decoration: none;
 			list-style: none;
@@ -242,8 +251,8 @@
 <section class="featured">
   <div class="container">
     <div class="section-header">
-      <h2>신규 등록 숙소</h2>
-      <p>여유롭게 즐길 수 있는 시설을 찾아드려요.</p>
+      <h2>New Arrivals</h2>
+      <p>새로운 감성 숙소, 지금 바로 만나보세요.</p>
     </div>
     <div class="product-grid">
 	  <c:forEach var="hotel" items="${recentHotels}" varStatus="status">
@@ -272,7 +281,7 @@
 <section class="featured">
   <div class="container">
     <div class="section-header">
-      <h2>평점 높은 숙소</h2>
+      <h2>Top Rated Hotels</h2>
       <p>고객들이 가장 만족한 호텔을 만나보세요!</p>
     </div>
     <div class="product-grid">
@@ -302,7 +311,7 @@
 <section class="reviews">
   <div class="container">
     <div class="section-header">
-      <h2>고객 리뷰</h2>
+      <h2>Customer Reviews</h2>
       <p>내맘에 쏙 드는 체험</p>
     </div>
 	<div class="reviews-grid">
@@ -334,7 +343,7 @@
 <section class="benefits">
   <div class="container">
     <div class="section-header">
-      <h2>위드펫의 혜택정보</h2>
+      <h2>Member Benefits</h2>
       <p>반려동물과 꿈꾸는 숙박이 무엇이든 회원가로 할인받으세요.</p>
     </div>
     <div class="benefits-grid">

@@ -30,4 +30,9 @@
   <update id="setReservationPaymentOk">
   	update reservation set status = '결제완료', regDate=now() where status = '결제대기' and reservationNo = #{reservationNo};
   </update>
+  
+  <!-- 이용완료 후 리뷰를 달면 상태수정 -->
+  <update id="setReviewSave">
+  	update reservation set status = '리뷰작성' where status = '이용완료' and roomIdx = #{vo.roomIdx};
+  </update>
 </mapper>

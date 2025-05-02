@@ -7,11 +7,13 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,9 +22,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.springProject3.service.HotelService;
+import com.spring.springProject3.service.ReviewService;
 import com.spring.springProject3.service.RoomService;
 import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.OptionVo;
+import com.spring.springProject3.vo.ReservationListVo;
+import com.spring.springProject3.vo.ReservationVo;
+import com.spring.springProject3.vo.ReviewVo;
 import com.spring.springProject3.vo.RoomVo;
 
 @Controller
@@ -34,6 +40,9 @@ public class RoomController {
 	
 	@Autowired
 	HotelService hotelService;
+	
+	@Autowired
+	ReviewService reviewService;
 	
 	// 객실 등록 폼 보기
 	@RequestMapping(value = ("/roomInput"), method = RequestMethod.GET)
@@ -84,6 +93,10 @@ public class RoomController {
       checkinDate = today.toString();
       checkoutDate = tomorrow.toString();
 		}
+		
+	  // 객실상세페이지에서 리뷰 보여주기
+		List<ReviewVo> rVos = reviewService.getRoomReviewList(roomIdx);
+		
 		// 날짜 차이 계산
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     LocalDate checkin = LocalDate.parse(checkinDate, formatter);
@@ -229,5 +242,36 @@ public class RoomController {
 		else return "redirect:/message/roomDeleteCheckNo?roomIdx="+idx;
 	}
 	
+  //마이페이지에서 리뷰 보기 (리뷰서비스사용)
+	@ResponseBody
+	@RequestMapping(value = ("/roomReviewList"), method = RequestMethod.POST)
+	public List<ReviewVo> roomReviewListPost(int roomIdx) {
+		List<ReviewVo> reviewVos = reviewService.getRoomReviewList(roomIdx);
+		return reviewVos;
+	}
+	
+//마이페이지에서 내 이용내역 관리 보기
+	@GetMapping("/roomUseList")
+	public String roomUseListGet(Model model, HttpSession session) {
+		String mid = (String)session.getAttribute("sMid")+"";
+		List<ReservationListVo> rsVos = roomService.getRoomUsedList(mid);
+		List<ReservationVo> vos = roomService.getReviewSave(mid);
+		
+		model.addAttribute("vos", vos);
+		model.addAttribute("rsVos",rsVos);
+		System.out.println("vos :" + vos );
+		System.out.println("rsVos :" + rsVos);
+		
+		return "room/roomUseList";
+	}
+	
+	// 마이페이지에서 내 이용내역에 리뷰를 달았는지 체크
+	@ResponseBody
+	@GetMapping("/reviewSaveCheck")
+	public String ReviewSaveCheckGet(String reservationNo) {
+		ReviewVo vo = roomService.getReviewSaveCheck(reservationNo);
+		if(vo != null) return "1";
+		else return "0";
+	}
 	
 }
