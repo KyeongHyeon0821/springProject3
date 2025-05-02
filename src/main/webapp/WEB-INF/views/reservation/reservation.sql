@@ -1,7 +1,7 @@
 /* 예약 테이블 */
 create table reservation (
   idx           int auto_increment primary key,         /* 예약 아이디	*/
-  reservationNo varchar(20) not null,										/* 예약 번호 (년월일시분 10자리 + uuid 2자리 + 객실idx) */
+  reservationNo varchar(20) not null unique,					  /* 예약 번호 (년월일시분 10자리 + uuid 2자리 + 객실idx) */
   mid      		  varchar(20) not null,                		/* 예약한 회원 아이디 */
   name					varchar(10) not null,										/* 예약자 이름 */
   tel						varchar(15) not null,										/* 예약자 연락처 */
@@ -18,6 +18,7 @@ create table reservation (
   foreign key (mid) references member(mid) on delete cascade,
   foreign key (roomIdx) references room(idx) on delete cascade
 );
+ALTER TABLE reservation ADD CONSTRAINT unique_reservationNo UNIQUE (reservationNo);
 select * from reservation;
 SELECT * FROM room 
 WHERE hotelIdx = 29 AND maxPeople >= 1 AND petCountLimit >= 1

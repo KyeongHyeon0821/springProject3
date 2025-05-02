@@ -3,6 +3,8 @@ create table review (
   idx			  int not null auto_increment,	/* 댓글 고유번호 */
   hotelIdx  int not null,						/* 원본글 호텔의 고유번호 - 외래키로 지정 */
   roomIdx		int not null, 					/* 원본글 호텔-객실의 고유번호*/
+  reservationIdx int not null,			/* 예약 아이디 */
+  reservationNo varchar(20) not null unique, /* 예약 번호 */
   mid			  varchar(20) not null,		/* 댓글 올린이 아이디 */
   nickName  varchar(20) not null,		/* 댓글 올린이 닉네임 */
   roomName	varchar(50) not null,		/* room테이블의 name 참조. 객실명*/
@@ -12,10 +14,9 @@ create table review (
   hostIp		varchar(50) not null,		/* 댓글 올린 PC의 고유 IP */
   reviewDate	datetime default now(),	/* 댓글 올린 날짜/시간 */
   primary key(idx),
-  foreign key(hotelIdx) references hotel(idx),
-  foreign key(roomIdx) references room(idx)
-  on update cascade
-  on delete cascade
+  foreign key(hotelIdx) references hotel(idx) on delete cascade,
+  foreign key(roomIdx) references room(idx) on delete cascade,
+  foreign key(reservationIdx) references reservation(idx),
+  foreign key(reservationNo) references reservation(reservationNo)
 );
 
-select * from review;
