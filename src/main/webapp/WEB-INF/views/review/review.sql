@@ -19,3 +19,8 @@ create table review (
 );
 
 select * from review;
+
+insert into review(hotelIdx, roomIdx, mid, nickName, roomName, purpose, star, content, hostIp) values 
+(1066, 1, 'test1', '테스터1', '디럭스룸', '기념일 여행', 5, '반려견이 너무 좋아했어요!', '127.0.0.1'),
+(1067, 2, 'test2', '테스터2', '스탠다드룸', '휴식이 필요해서', 4, '조용하고 깨끗했어요.', '127.0.0.1'),
+(1068, 3, 'test3', '테스터3', '펫스위트', '일상 탈출', 5, '강아지 용품이 잘 갖춰져 있었어요.', '127.0.0.1');

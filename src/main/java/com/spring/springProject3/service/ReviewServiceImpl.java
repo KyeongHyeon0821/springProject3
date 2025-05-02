@@ -61,5 +61,10 @@ public class ReviewServiceImpl implements ReviewService {
 	public List<ReviewVo> getLatestReviews() {
 	    return reviewDao.getLatestReviews();
 	}
+	
+	@Override
+	public List<HotelVo> getTopRatedHotels() {
+	    return reviewDao.getTopRatedHotels();
+	}
 
 }

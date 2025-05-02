@@ -28,4 +28,6 @@ public interface ReviewDao {
 
 	List<ReviewVo> getLatestReviews();
 
+	List<HotelVo> getTopRatedHotels();
+
 }

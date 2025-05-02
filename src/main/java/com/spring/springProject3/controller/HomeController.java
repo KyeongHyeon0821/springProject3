@@ -56,6 +56,10 @@ public class HomeController {
     List<HotelVo> recentHotels = hotelService.getRecentHotels(4);
     model.addAttribute("recentHotels", recentHotels);
     
+    // 평점순 호텔 출력
+    List<HotelVo> topRatedHotels = reviewService.getTopRatedHotels();
+    model.addAttribute("topRatedHotels", topRatedHotels);
+
     // 신규 등록 리뷰 출력
     List<ReviewVo> latestReviews = reviewService.getLatestReviews();
     model.addAttribute("latestReviews", latestReviews);

@@ -27,4 +27,6 @@ public interface ReviewService {
 
 	List<ReviewVo> getLatestReviews();
 
+	List<HotelVo> getTopRatedHotels();
+
 }

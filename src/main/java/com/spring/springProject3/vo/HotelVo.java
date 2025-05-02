@@ -52,6 +52,8 @@ public class HotelVo {
   private String spotLat;         
   private String spotLng;         
   private String spotAddress;     
-  private String spotDescription; 
+  private String spotDescription;
+  
+  private double averageStar;
 	
 }

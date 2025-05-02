@@ -269,6 +269,36 @@
  </div>
 </section>
 
+<section class="featured">
+  <div class="container">
+    <div class="section-header">
+      <h2>평점 높은 숙소</h2>
+      <p>고객들이 가장 만족한 호텔을 만나보세요!</p>
+    </div>
+    <div class="product-grid">
+      <c:forEach var="hotel" items="${topRatedHotels}">
+        <div class="product-card">
+          <div class="product-image">
+            <img src="${ctp}/data/hotelThumbnail/${empty hotel.thumbnail ? 'default.png' : hotel.thumbnail}" alt="${hotel.name}" />
+          </div>
+          <div class="product-info">
+            <span class="product-tag">⭐ ${hotel.averageStar}</span>
+            <h3 class="product-title">${hotel.name}</h3>
+            <p class="mb-3">${hotel.address}</p>
+            <div class="product-price">
+              <span class="price">₩${hotel.minPrice}</span>
+              <a href="${ctp}/hotel/hotelDetail?idx=${hotel.idx}" class="add-to-cart btn btn-success"
+                 style="font-size: 1em; width: 80px; border-radius: 10%; display:inline-block; text-align:center; text-decoration: none;">
+                보기
+              </a>
+            </div>
+          </div>
+        </div>
+      </c:forEach>
+    </div>
+  </div>
+</section>
+
 <section class="reviews">
   <div class="container">
     <div class="section-header">
@@ -283,12 +313,9 @@
 	        <c:forEach begin="1" end="${r.star}">★</c:forEach>
 	      </div>
 	      <p class="review-text">
-	        ${fn:substring(r.content, 0, 50)}...
+	        ${fn:substring(r.content, 0, 50)}
 	      </p>
 	      <div class="review-author">
-	        <div class="author-avatar">
-	          <img src="${ctp}/images/default-profile.png" alt="기본 프로필" />
-	        </div>
 	        <div class="author-info">
 	          <h4>${r.nickName}</h4>
 	          <p>
