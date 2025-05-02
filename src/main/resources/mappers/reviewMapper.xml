@@ -12,6 +12,7 @@
 				   where rs.mid = #{mid} and rs.status ='이용완료' r.idx = #{roomIdx}; 
 	</select>
 	
+	<!-- 해당 객실 리뷰리스트 조회 -->
 	<select id="getRoomReviewList" resultType="com.spring.springProject3.vo.ReviewVo">
 		select * from review where roomIdx = #{roomIdx} order by idx desc;
 	</select>

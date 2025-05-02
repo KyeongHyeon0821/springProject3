@@ -156,18 +156,21 @@
 		
 	</script>
 	<style>
-		body	{
-			 background-color: #f9fefb !important;
-			 margin:0;
+		body {
+		  background-color: #f1f1f1; /* 연회색 배경 */
+		  margin: 0;
 		}
-	
+		
 		.hotel-list-container {
+		  background-color: #ffffff;  /* 컨테이너는 흰색 */
+		  padding: 20px;
+		  border-radius: 12px;
+		  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+		  max-width: 1000px;
+		  margin: 40px auto;
 		  display: grid;
 		  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 		  gap: 24px;
-		  padding: 20px;
-		  max-width: 1000px;
-		  margin: 0 auto;
 		}
 		
 		/* 호텔 카드 전체 */
@@ -329,6 +332,9 @@
 		.search-button:hover {
 		  background-color: #3e8f52;
 		}
+		.star {
+			color: gold;
+		}
 	</style>
 </head>
 <body>
@@ -395,6 +401,7 @@
             </c:otherwise>
           </c:choose>
         </div>
+        <div class="hotel-start"><span class="star">★ </span>${vo.averageStar} (${vo.reviewCnt})</div>
         <div class="hotel-address">${vo.address}</div>
         <div class="hotel-tel">${vo.tel}</div>
         <div class="hotel-minPrice"><fmt:formatNumber value="${vo.minPrice}" type="number" pattern="#,##0" />원~</div>

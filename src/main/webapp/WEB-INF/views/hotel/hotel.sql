@@ -106,28 +106,92 @@ SELECT * FROM hotel
   );
   
   
-select h.idx, h.name, h.thumbnail, h.address, h.tel, min(r.price) as minprice
+select h.idx, h.name, h.thumbnail, h.address, h.tel, min(r.price) as minprice, round(avg(rv.star), 1) as averageStar 
 from hotel h
 left outer join room r on h.idx = r.hotelidx
-where h.name like concat('%', '서울', '%') 
-   or h.address like concat('%', '서울', '%')
+left outer join review rv on rv.hotelidx = h.idx
+where (h.name like concat('%', '소노', '%') 
+   or h.address like concat('%', '서울', '%'))
    and h.status = '정상'
    and exists (
        select 1 
-       from room r
-       where r.hotelidx = h.idx 
-         and r.maxpeople >= 1
-         and r.petcountlimit >= 1
-         and r.status = '정상'
+       from room r2
+       where r2.hotelidx = h.idx 
+         and r2.maxpeople >= 1
+         and r2.petcountlimit >= 1
+         and r2.status = '정상'
          and not exists (
              select 1 
              from reservation res
-             where res.roomidx = r.idx
+             where res.roomidx = r2.idx
                and res.status in ('결제대기', '결제완료')
-               and (res.checkindate < '2025-04-30' and res.checkoutdate > '2025-04-29')
+               and (res.checkindate < '2025-05-03' and res.checkoutdate > '2025-05-02')
          )
    )
 group by h.idx
 order by h.idx desc
 limit 0, 6
 ;
+
+
+/* 전체 호텔리스트 조회 최종 */
+select 
+  h.idx, h.name, h.thumbnail, h.address, h.tel,
+  min(r.price) as minPrice,
+  ifnull(round(avg(rv.star), 1), 0.0) as averageStar,
+  count(rv.idx) as reviewCount
+from hotel h
+left join room r on h.idx = r.hotelIdx
+left join review rv on h.idx = rv.hotelIdx
+where h.status = '정상'
+group by h.idx
+order by h.idx desc
+limit 0, 6;
+
+
+/* 검색으로 호텔리스트 조회 최종 */
+/* 예약 가능한 객실의 최저가와 평점 */
+select 
+  h.idx, 
+  h.name, 
+  h.thumbnail, 
+  h.address, 
+  h.tel, 
+  (
+    select min(r2.price)
+    from room r2
+    where r2.hotelidx = h.idx
+      and r2.maxpeople >= 1
+      and r2.petcountlimit >= 1
+      and r2.status = '정상'
+      and not exists (
+        select 1
+        from reservation res
+        where res.roomidx = r2.idx
+          and res.status in ('결제대기', '결제완료')
+          and (res.checkindate < '2025-05-03' and res.checkoutdate > '2025-05-02')
+      )
+  ) as minPrice,
+  ifnull(round(avg(rv.star), 1), 0.0) as averageStar, count(rv.idx) as reviewCount
+from hotel h
+left join review rv on rv.hotelidx = h.idx
+where (h.name like concat('%', '소노', '%') or h.address like concat('%', '서울', '%'))
+  and h.status = '정상'
+  and exists (
+    select 1
+    from room r2
+    where r2.hotelidx = h.idx
+      and r2.maxpeople >= 1
+      and r2.petcountlimit >= 1
+      and r2.status = '정상'
+      and not exists (
+        select 1
+        from reservation res
+        where res.roomidx = r2.idx
+          and res.status in ('결제대기', '결제완료')
+          and (res.checkindate < '2025-05-03' and res.checkoutdate > '2025-05-02')
+      )
+  )
+group by h.idx
+order by h.idx desc
+limit 0, 6;
