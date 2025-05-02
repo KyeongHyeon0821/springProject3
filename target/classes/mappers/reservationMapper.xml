@@ -34,7 +34,7 @@
   
   <!-- 이용완료 후 리뷰를 달면 상태수정 -->
   <update id="setReviewSave">
-  	update reservation set status = '리뷰작성' where status = '이용완료' and roomIdx = #{vo.roomIdx};
+  	update reservation set status = '리뷰작성' where status = '이용완료' and reservationNo = #{vo.reservationNo};
   </update>
   
   

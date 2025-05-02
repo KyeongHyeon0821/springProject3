@@ -68,7 +68,7 @@ public class ReviewController {
 		vo.setHostIp(request.getRemoteAddr());
 		
 		int res = reviewService.setReviewInputOk(vo);
-		//룸 상태를 리뷰작성 상태로 교체
+		//지정된 예약번호의 상태를 리뷰작성 상태로 교체
 		reservationService.setReviewSave(vo);
 		
 		if(res != 0) return "redirect:/message/reviewInputOk?status=" + resVo.getStatus(); 
@@ -78,8 +78,10 @@ public class ReviewController {
 	// 리뷰 삭제처리
 	@ResponseBody
 	@RequestMapping(value="/reviewDelete", method = RequestMethod.POST)
-	public String reviewDeletePost(ReviewVo idx) {
-		return reviewService.setReviewDelete(idx) + "";
+	public String reviewDeletePost(ReviewVo vo) {
+		//리뷰를 삭제하면 예약상태를 이용완료로 되돌린다
+		reviewService.setReviewStatusBack(vo);
+		return reviewService.setReviewDelete(vo) + "";
 	}
 
 	// 리뷰 수정처리

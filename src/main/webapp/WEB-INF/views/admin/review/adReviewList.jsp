@@ -132,7 +132,7 @@
 				  else {
 					  str += '<hr class="border-secondary mt-1 p-0">댓글이 존재하지 않습니다.';
 				  }
-				  $("#reviewDispaly"+reservationIdx).html(str);
+				  $("#reviewDispaly"+roomIdx).html(str);
 			  }
 		  });
 	  }
@@ -195,12 +195,12 @@
       <c:forEach var="ReservationListVo" items="${rsVos}" varStatus="st">
 	      <tr class="room-detail">
 					<td class="room-items1 border border-0 ">
-				    <div class="room-info"><span class="room-label">예약번호: ${ReservationListVo.reservationNo}</span></div>
 				    <img class="room-photo" src="${ctp}/roomThumbnail/${ReservationListVo.roomThumbnail}" alt="객실 사진" style="width:200px;max-height:180px;border:none;"/>
 					</td>
 			    <td class="room-items2 ms-4 border border-0">
 				    <div class="room-info"><span class="room-label"><a href="${ctp}/hotel/hotelDetail?idx=${ReservationListVo.hotelIdx}"><b style="color: blue">호텔 이름:${ReservationListVo.hotelName}</b></a></span></div>
 				    <div class="room-info"><span class="room-label">객실 명칭: ${ReservationListVo.roomName}</span></div>
+				    <div class="room-info"><span class="room-label">객실 고유번호: ${ReservationListVo.roomIdx}</span></div>
 				    <div class="room-info"><span class="room-label">가격: ${ReservationListVo.price}</span>₩</div>
 				    <div class="room-info"><span class="room-label">최대숙박인원: ${ReservationListVo.maxPeople}</span></div>
 				    <div class="room-info"><span class="room-label">반려견크기제한: ${ReservationListVo.petSizeLimit}</span></div>
@@ -210,8 +210,8 @@
 				    <div class="room-info"><span class="room-label" style="color: red">총 숙박비용: ${ReservationListVo.totalPrice}</span></div>
 			    </td>
 			    <td class="room-items3 border border-0">
-			      <a href="javascript:reviewShowCheck(${st.index})" id="reviewShowBtn${st.index}" class="btn btn-success btn-sm">리뷰보기</a>
-			    	<a href="javascript:reviewHideCheck(${st.index})" id="reviewHideBtn${st.index}" class="btn btn-warning btn-sm" style="display:none" >리뷰가리기</a>
+<%-- 			      <a href="javascript:reviewShowCheck(${st.index})" id="reviewShowBtn${st.index}" class="btn btn-success btn-sm">리뷰보기</a>
+			    	<a href="javascript:reviewHideCheck(${st.index})" id="reviewHideBtn${st.index}" class="btn btn-warning btn-sm" style="display:none" >리뷰가리기</a> --%>
 			    	<a href="javascript:reviewShowCheck(${ReservationListVo.roomIdx})" id="reviewShowBtn${ReservationListVo.roomIdx}" class="btn btn-success btn-sm">리뷰보기</a>
 			    	<a href="javascript:reviewHideCheck(${ReservationListVo.roomIdx})" id="reviewHideBtn${ReservationListVo.roomIdx}" class="btn btn-warning btn-sm" style="display:none" >리뷰가리기</a>
 			    </td>

@@ -25,9 +25,11 @@ public interface ReviewService {
 
 	List<Integer> getExistReviewedCheck(String mid);
 
-	int setReviewDelete(ReviewVo idx);
+	int setReviewDelete(ReviewVo vo);
 
 	int setReviewUpdateCheckOk(ReviewVo vo);
+
+	void setReviewStatusBack(ReviewVo vo);
 
 
 }

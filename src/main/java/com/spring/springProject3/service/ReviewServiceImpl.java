@@ -58,12 +58,17 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public int setReviewDelete(ReviewVo idx) {
-		return reviewDao.setReviewDelete(idx);
+	public int setReviewDelete(ReviewVo vo) {
+		return reviewDao.setReviewDelete(vo);
 	}
 
 	@Override
 	public int setReviewUpdateCheckOk(ReviewVo vo) {
 		return reviewDao.setReviewUpdateCheckOk(vo);
+	}
+
+	@Override
+	public void setReviewStatusBack(ReviewVo vo) {
+		reviewDao.setReviewStatusBack(vo);
 	}
 }

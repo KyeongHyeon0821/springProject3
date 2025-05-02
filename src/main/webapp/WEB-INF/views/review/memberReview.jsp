@@ -44,7 +44,7 @@
 	  	});
 	  	
 	  	
-	  	function replyDeleteCheck(idx) {
+	  	function replyDeleteCheck(idx,reservationNo) {
 	  		let ans = confirm("선택한 댓글을 삭제하시겠습니까?");
 	  		if(!ans) return false;
 	  		
@@ -53,6 +53,7 @@
 	  			type : "post",
 	  			data : {
 	  				idx : idx,
+	  				reservationNo : reservationNo,
 	  			},
 	  			success:function(res) {
 	  				if(res != "0") {
@@ -136,7 +137,7 @@
 					<td>${vo.reservationNo}</td>
 					<td>${vo.mid}
 						<c:if test="${sMid == vo.mid || sLevel == 0}">
-		  				 	<a href="javascript:replyDeleteCheck(${vo.idx})" style="color: white" class="btn btn-sm btn-danger" title="리뷰삭제">삭제</a>
+		  				 	<a href="javascript:replyDeleteCheck('${vo.idx}','${vo.reservationNo}')" style="color: white" class="btn btn-sm btn-danger" title="리뷰삭제">삭제</a>
 		  				 <c:if test="${sMid == vo.mid}">
 		  				 	<a href="javascript:replyUpdateCheck(${vo.idx})" style="color: white" class="btn btn-sm btn-primary" title="리뷰수정">수정</a>
 		  				 </c:if>
