@@ -22,10 +22,13 @@ public class BoardReplyController {
   // 댓글 입력 처리
   @PostMapping("/insert")
   public String insertReply(BoardReplyVo vo, HttpSession session) {
-    vo.setMid((String) session.getAttribute("sMid"));
-    vo.setNickName((String) session.getAttribute("sNickName"));
-    replyService.insertReply(vo);
-    return "redirect:/board/content?idx=" + vo.getBoardIdx();
+      String mid = (String) session.getAttribute("sMid");
+      if (mid == null) return "redirect:/message/loginRequired";
+
+      vo.setMid(mid);
+      vo.setNickName((String) session.getAttribute("sNickName"));
+      replyService.insertReply(vo);
+      return "redirect:/board/content?idx=" + vo.getBoardIdx();
   }
   
   // 댓글 삭제 처리
@@ -35,5 +38,13 @@ public class BoardReplyController {
     replyService.deleteReply(idx, mid);
     return "redirect:/board/content?idx=" + boardIdx;
   }
+  
+  // 댓글 수정 처리
+  @PostMapping("/update")
+  public String replyUpdatePost(BoardReplyVo vo) {
+      replyService.updateReply(vo); // 댓글 내용 업데이트
+      return "redirect:/board/content?idx=" + vo.getBoardIdx();
+  }
+
 }
 

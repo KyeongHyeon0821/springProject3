@@ -82,7 +82,7 @@ public class BoardController {
         if (mid == null) return "redirect:/message/loginRequired";
         vo.setMid(mid);
         boardService.insertBoard(vo);
-        return "redirect:/board/list";
+        return "redirect:/message/boardInputOk";
     }
 
     // 게시글 상세 보기
@@ -112,9 +112,9 @@ public class BoardController {
       BoardVo vo = boardService.getBoardContent(idx);
       if (sMid.equals(vo.getMid()) || (sLevel != null && sLevel == 0)) {
           boardService.deleteBoard(idx);
-          return "redirect:/board/list";
+          return "redirect:/message/boardDeleteOk";
       }
-      return "redirect:/message/unauthorized";
+      return "redirect:/message/boardDeleteOk";
     }
 
     // 게시글 수정 폼
@@ -134,7 +134,7 @@ public class BoardController {
     @RequestMapping(value="/update", method=RequestMethod.POST)
     public String boardUpdatePost(BoardVo vo, HttpSession session) {
         boardService.updateBoard(vo); // 리턴값 받을 필요 없음
-        return "redirect:/board/content?idx=" + vo.getIdx();
+        return "redirect:/message/boardUpdateOk?idx=" + vo.getIdx();
     }
 
 }

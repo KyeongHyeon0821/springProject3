@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
@@ -8,6 +9,7 @@
 	<title>homeMain.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp" />
 	<link rel="stylesheet" type="text/css" href="${ctp}/css/linkMain.css?v=2.0"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 	<style>
 		ul, li {
 			text-decoration: none;
@@ -267,6 +269,41 @@
  </div>
 </section>
 
+<section class="reviews">
+  <div class="container">
+    <div class="section-header">
+      <h2>고객 리뷰</h2>
+      <p>내맘에 쏙 드는 체험</p>
+    </div>
+	<div class="reviews-grid">
+	  <c:forEach var="r" items="${latestReviews}">
+	    <div class="review-card">
+	      <div class="review-quote">"</div>
+	      <div class="stars">
+	        <c:forEach begin="1" end="${r.star}">★</c:forEach>
+	      </div>
+	      <p class="review-text">
+	        ${fn:substring(r.content, 0, 50)}...
+	      </p>
+	      <div class="review-author">
+	        <div class="author-avatar">
+	          <img src="${ctp}/images/default-profile.png" alt="기본 프로필" />
+	        </div>
+	        <div class="author-info">
+	          <h4>${r.nickName}</h4>
+	          <p>
+	            <a href="${ctp}/hotel/hotelDetail?idx=${r.hotelIdx}" style="text-decoration:none;">
+	              ${r.hotelName}
+	            </a>
+	          </p>
+	        </div>
+	      </div>
+	    </div>
+	  </c:forEach>
+	</div>
+  </div>
+</section>
+
 <section class="benefits">
   <div class="container">
     <div class="section-header">
@@ -281,7 +318,7 @@
           </svg>
         </div>
         <h3 class="benefit-title">럭셔리 호텔을 더 저렴하게</h3>
-        <p>수준은 높게, 가격은 저렴하게 즐길 수 있는 호텔을 만나보세요.</p>
+        <p style="word-break: keep-all;">수준은 높게, 가격은 저렴하게 즐길 수 있는 호텔을 만나보세요.</p>
       </div>
       <div class="benefit-card">
         <div class="benefit-icon">
@@ -301,7 +338,7 @@
           </svg>
         </div>
         <h3 class="benefit-title">호텔링 체험</h3>
-        <p>호텔에서 제공하는 반려동물 호텔링 서비스도 체험해보세요.</p>
+        <p style="word-break: keep-all;">호텔에서 제공하는 반려동물 호텔링 서비스도 체험해보세요.</p>
       </div>
       <div class="benefit-card">
         <div class="benefit-icon">
@@ -317,7 +354,7 @@
   </div>
 </section>
 
-<section class="collections">
+<%-- <section class="collections">
   <div class="container">
     <div class="section-header">
       <h2>나에게 꼭 맞는 추천 숙소리스트</h2>
@@ -350,66 +387,8 @@
       </div>
     </div>
   </div>
-</section>
+</section> --%>
 
-<section class="reviews">
-  <div class="container">
-    <div class="section-header">
-      <h2>고객 리뷰</h2>
-      <p>내맘에 쏙 드는 체험</p>
-    </div>
-    <div class="reviews-grid">
-      <div class="review-card">
-        <div class="review-quote">"</div>
-        <div class="stars">
-          ★★★★★
-        </div>
-        <p class="review-text">경치좋고 풍경좋습니다.나이스.<br/>편안히 쉬다 갑니다.</p>
-        <div class="review-author">
-          <div class="author-avatar">
-            <img src="https://assets.codepen.io/406785/avatar3.webp" alt="" />
-          </div>
-          <div class="author-info">
-            <h4>Sarah M.</h4>
-            <p>메종호텔</p>
-          </div>
-        </div>
-      </div>
-      <div class="review-card">
-        <div class="review-quote">"</div>
-        <div class="stars">
-          ★★★★★
-        </div>
-        <p class="review-text">경치좋고 풍경좋습니다.나이스.<br/>편안히 쉬다 갑니다.</p>
-        <div class="review-author">
-          <div class="author-avatar">
-            <img src="https://assets.codepen.io/406785/avatar2.jpg" alt="" />
-          </div>
-          <div class="author-info">
-            <h4>David L.</h4>
-            <p>산수유호텔</p>
-          </div>
-        </div>
-      </div>
-      <div class="review-card">
-        <div class="review-quote">"</div>
-        <div class="stars">
-          ★★★★★
-        </div>
-        <p class="review-text">경치좋고 풍경좋습니다.나이스.<br/>편안히 쉬다 갑니다.</p>
-        <div class="review-author">
-          <div class="author-avatar">
-            <img src="https://assets.codepen.io/406785/avatar1.jpg" alt="" />
-          </div>
-          <div class="author-info">
-            <h4>Emma T.</h4>
-            <p>멍동반호텔</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 <script>
 	'use strict';
 	function hotelSearch() {

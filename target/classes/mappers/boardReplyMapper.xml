@@ -18,6 +18,15 @@
   <insert id="insertReply">
     insert into boardreply (boardidx, mid, nickname, content) values (#{boardIdx}, #{mid}, #{nickName}, #{content})
   </insert>
+  
+  
+  
+  <!-- 댓글 수정 -->
+  <update id="updateReply">
+	update boardreply set content = #{content} where idx = #{idx}
+  </update>
+  
+  
 
   <!-- 댓글 삭제 (작성자 본인만 삭제 가능) -->
   <delete id="deleteReply">

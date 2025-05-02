@@ -70,6 +70,8 @@
     .nav-links {
       display: flex;
       align-items: center;
+      margin-top: 20px;
+      margin-left: 40px;
     }
     
     .nav-links a {
@@ -80,7 +82,6 @@
     /* Style The Dropdown Button */
     .dropbtn {
       color: black;
-      padding: 16px;
       font-size: 16px;
       border: none;
       cursor: pointer;
@@ -167,10 +168,17 @@
             <li class="nav-item"><a class="nav-link" href="${ctp}/member/memberMyPage">마이페이지</a></li>
         </c:if>
         <li class="nav-item dropdown">
-            <a class="nav-link dropbtn" href="#" role="button" data-bs-toggle="modal" data-bs-target="#myModal3">고객센터</a>
+          <a class="nav-link dropbtn" href="#">커뮤니티</a>
+          <div class="dropdown-content">
+            <a href="${ctp}/board/list">자유게시판</a>
+            <a href="${ctp}/photogallery/photogalleryList">포토갤러리</a>
+          </div>
+        </li>  
+        <li class="nav-item dropdown">
+            <a class="nav-link dropbtn" href="#">고객센터</a>
             <div class="dropdown-content">
                 <a href="#">1:1문의</a>
-                <a href="#">FQA</a>
+                <a href="#">FAQ</a>
                 <a href="#">Q&A</a>
             </div>
         </li>

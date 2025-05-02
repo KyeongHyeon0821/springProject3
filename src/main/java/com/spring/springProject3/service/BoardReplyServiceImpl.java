@@ -33,5 +33,10 @@ public class BoardReplyServiceImpl implements BoardReplyService {
     public int getReplyCount(int boardIdx) {
       return boardReplyDao.getReplyCount(boardIdx);
     }
+    
+    @Override
+    public void updateReply(BoardReplyVo vo) {
+        boardReplyDao.updateReply(vo);
+    }
 
 }

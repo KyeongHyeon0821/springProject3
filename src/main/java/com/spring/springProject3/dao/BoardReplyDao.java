@@ -14,4 +14,6 @@ public interface BoardReplyDao {
     
     int getReplyCount(int boardIdx);
 
+		void updateReply(BoardReplyVo vo);
+
 }

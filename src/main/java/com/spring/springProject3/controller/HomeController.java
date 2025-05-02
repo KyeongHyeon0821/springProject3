@@ -21,13 +21,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.springProject3.service.HotelService;
+import com.spring.springProject3.service.ReviewService;
 import com.spring.springProject3.vo.HotelVo;
+import com.spring.springProject3.vo.ReviewVo;
 
 @Controller
 public class HomeController {
 	
 	@Autowired
 	HotelService hotelService;
+	
+	@Autowired
+	ReviewService reviewService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model,
@@ -47,8 +52,13 @@ public class HomeController {
     model.addAttribute("guestCount", guestCount);
     model.addAttribute("petCount", petCount);
     
+    // 신규 등록 호텔 출력
     List<HotelVo> recentHotels = hotelService.getRecentHotels(4);
     model.addAttribute("recentHotels", recentHotels);
+    
+    // 신규 등록 리뷰 출력
+    List<ReviewVo> latestReviews = reviewService.getLatestReviews();
+    model.addAttribute("latestReviews", latestReviews);
 		
 		return "home";
 	}

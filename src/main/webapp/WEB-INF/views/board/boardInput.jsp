@@ -14,9 +14,13 @@
     body {
       display: flex;
       flex-direction: column;
+      background-color: #f9f9f9;
     }
     .container {
       flex: 1;
+    }
+    .extra-top-margin {
+      margin-top: 60px;
     }
     footer {
       margin-top: auto;
@@ -26,22 +30,23 @@
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 
-<div class="container mt-4" style="max-width: 800px;">
-  <h2 class="mb-4">글쓰기</h2>
+<h2 class="fw-bold text-success text-center extra-top-margin">게시글 작성</h2>
+<div class="container mt-5 mb-5 p-4 shadow-sm bg-white rounded" style="max-width: 800px;">
   <form action="${ctp}/board/input" method="post">
-    <div class="mb-3">
-      <label for="title" class="form-label">제목</label>
-      <input type="text" class="form-control" id="title" name="title" required>
+  
+    <div class="mb-4">
+      <label for="title" class="form-label fw-semibold">제목</label>
+      <input type="text" class="form-control border-success" id="title" name="title" required placeholder="제목을 입력하세요">
     </div>
 
-    <div class="mb-3">
-      <label for="content" class="form-label">내용</label>
-      <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
+    <div class="mb-4">
+      <label for="content" class="form-label fw-semibold">내용</label>
+      <textarea class="form-control border-success" id="content" name="content" rows="10" required placeholder="내용을 입력하세요" style="word-break: keep-all;"></textarea>
     </div>
 
     <div class="text-end">
-      <button type="submit" class="btn btn-primary">작성</button>
-      <a href="${pageContext.request.contextPath}/board/list" class="btn btn-secondary">목록</a>
+      <button type="submit" class="btn btn-success px-4 me-2">작성</button>
+      <a href="${ctp}/board/list" class="btn btn-outline-secondary px-4">목록</a>
     </div>
   </form>
 </div>

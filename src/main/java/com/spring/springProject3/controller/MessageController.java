@@ -175,6 +175,19 @@ public class MessageController {
 		}
 		
 		
+		if(msgFlag.equals("boardInputOk")) {
+	    model.addAttribute("message", "게시글이 등록되었습니다.");
+	    model.addAttribute("url", "board/list");
+	  }
+		else if(msgFlag.equals("boardDeleteOk")) {
+	    model.addAttribute("message", "게시글이 삭제되었습니다.");
+	    model.addAttribute("url", "board/list");
+		}
+		else if(msgFlag.equals("boardUpdateOk")) {
+		    model.addAttribute("message", "게시글이 수정되었습니다.");
+		    model.addAttribute("url", "board/content?idx=" + idx);
+		}
+
 		
 		
 		
