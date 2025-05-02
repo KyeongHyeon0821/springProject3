@@ -163,21 +163,6 @@
 	    text-align: center;
 	  }
 	
-	  .form-group.text-center input[type="submit"] {
-	    background-color: #6ac47e;
-	    color: #fff;
-	    padding: 10px 20px;
-	    font-weight: bold;
-	    border-radius: 6px;
-	    border: none;
-	    cursor: pointer;
-	    margin-right: 10px;
-	  }
-	
-	  .form-group.text-center input[type="submit"]:hover {
-	    background-color: #519d63;
-	  }
-	
 	  .form-group.text-center .btn-secondary {
 	    background-color: #b0bec5;
 	    color: #fff;
@@ -205,20 +190,6 @@
 		.option-item input[type="checkbox"] {
 		  margin-right: 5px;
 		}
-		.btn-link {
-		  display: inline-block;
-		  padding: 10px 20px;
-		  margin-left: 10px;
-		  background-color: #17a2b8;
-		  color: #fff;
-		  text-decoration: none !important;
-		  font-weight: bold;
-		  border-radius: 6px;
-		  transition: background-color 0.2s ease;
-		}
-		
-		.btn-link:hover {
-		  background-color: #138496;
 		}
 		.form-text.text-muted {
 		  display: block;
@@ -249,6 +220,42 @@
 		.placeholder-text {
 		  color: #999;
 		  font-size: 0.9em;
+		}
+		
+		/* 공통 버튼 스타일 */
+		.custom-btn {
+		  padding: 10px 18px;
+		  font-size: 15px;
+		  border: none;
+		  border-radius: 8px;
+		  text-decoration: none;
+		  color: white;
+		  transition: background-color 0.3s ease;
+		  cursor: pointer;
+		  margin: 0 6px;
+		}
+		
+		/* 각 버튼 색상 */
+		.submit-btn {
+		  background-color: #28a745;
+		}
+		.submit-btn:hover {
+		  background-color: #218838;
+		}
+		
+		.reset-btn {
+		  background-color: #ffc107; /* 노란 계열 (다시입력) */
+		  color: black;
+		}
+		.reset-btn:hover {
+		  background-color: #e0a800;
+		}
+		
+		.back-btn {
+		  background-color: #6c757d; /* 회색 계열 (돌아가기) */
+		}
+		.back-btn:hover {
+		  background-color: #5a6268;
 		}
 	</style>
 </head>
@@ -350,8 +357,9 @@
 		</div>
 
     <div class="form-group text-center">
-      <input type="submit" value="등록하기" />
-      <a href="${ctp}/hotel/hotelDetail?idx=${hotelIdx}" class="btn-link">돌아가기</a>
+      <input type="submit" value="등록하기" class="custom-btn submit-btn" />
+      <input type="reset" value="다시입력" class="custom-btn reset-btn" onclick="location.reload()">
+      <a href="${ctp}/hotel/hotelDetail?idx=${hotelIdx}"  class="custom-btn back-btn">돌아가기</a>
     </div>
   </form>
 </div>

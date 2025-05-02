@@ -249,10 +249,10 @@
 		
 		.heart-icon {
 		  position: absolute;
-		  top: 10px;
+		  top: 14px;
 		  right: 0;
-		  width: 20px;
-		  height: 20px;
+		  width: 18px;
+		  height: 18px;
 		}
 		
 	  .hotel-search-container {

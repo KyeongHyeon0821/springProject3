@@ -207,10 +207,11 @@
 		}
 		
 		.button-group {
-		  margin-top: 30px;
 		  display: flex;
 		  flex-wrap: wrap;
+		  justify-content: center; 
 		  gap: 10px;
+		  margin-top: 20px;
 		}
 		
 		.custom-btn {
@@ -220,25 +221,34 @@
 		  border-radius: 8px;
 		  text-decoration: none;
 		  color: white;
+		  background-color: #007bff; /* 밝은 파란색 */
 		  transition: background-color 0.3s ease;
 		}
 		
+		.custom-btn:hover {
+		  filter: brightness(85%); /* hover 시 살짝 어두워짐 */
+		}
+		
 		.back-btn {
-		  background-color: #6c757d;
+		  background-color: #6c757d; /* 회색 */
+		}
+		
+		.green-btn {
+		  background-color: #28a745; /* 밝은 초록색 */
+		}
+		
+		.orange-btn {
+		  background-color: #fd7e14; /* 밝은 주황색 */
 		}
 		
 		.blue-btn {
-		  background-color: #007bff;
-		}
-		
-		.yellow-btn {
-		  background-color: #ffc107;
-		  color: black;
+		  background-color: #007bff; /* 파란색 */
 		}
 		
 		.red-btn {
-		  background-color: #dc3545;
+		  background-color: #dc3545; /* 밝은 빨간색 */
 		}
+
 		
 		.reservation-search {
 		  border-radius: 10px;
@@ -417,7 +427,6 @@
 		  justify-content: center;
 		  align-items: flex-start; /* 스크롤 시 위에서부터 보이게 */
 		  overflow-y: auto; 
-		  padding: 4vh 0;
 		}
 		
 		.image-modal-content {
@@ -427,7 +436,7 @@
 		  padding: 3rem 0 1rem 0;
 		  width: 90%;
 		  max-width: 1000px;
-		  max-height: 90vh; /* ✅ 화면의 90%만 차지하도록 제한 */
+		  height: 100vh; 
 		  overflow-y: auto; /* ✅ 내부 스크롤 가능하게 */
 		  border-radius: 16px;
 		  box-shadow: 0 0 20px rgba(0,0,0,0.6);
@@ -456,12 +465,11 @@
 		  gap: 1.2rem;
 		}
 		
-		/* 이미지 크기: 슬라이드와 동일 */
 		.modal-images img {
-		  width: 100%;
-		  max-width: 48%;
-		  height: auto;
-		  object-fit: cover;
+		  width: 100% !important;
+		  max-width: 48% !important;
+		  height: auto !important;
+		  object-fit: cover !important;
 		  border-radius: 12px;
 		  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
 		}
@@ -492,6 +500,19 @@
 		  font-size: 1rem;
 		  color: #555;
 		  font-style: italic;
+		}
+		
+		.hotel-images img {
+		  width: 245px !important;
+		  height: auto !important;
+		  margin: 5px 5px 0 0;
+		  border-radius: 8px;
+		  cursor:pointer;
+		}
+		.hotel-images p {
+			display: flex;
+   	  justify-content: center;
+	    margin-top: -30px;
 		}
 	</style>
 
@@ -642,6 +663,13 @@
 	  <div class="swiper-pagination"></div>
 	</div>
 	
+	<div class="hotel-images" onclick="openModal()">
+    ${hotelVo.images}
+  </div>
+	
+	
+	<c:set var="images" value="${fn:replace(hotelVo.images, '<p>', '')}" />
+	<c:set var="images" value="${fn:replace(images, '</p>', '')}" />
 	<!-- 이미지 모달 -->
 	<div id="imageModal" class="image-modal" onclick="closeModal(event)">
 	  <div class="image-modal-content">
@@ -649,7 +677,7 @@
 	    <div class="modal-images">
 	      <img src="${ctp}/hotelThumbnail/${hotelVo.thumbnail}" alt="썸네일" />
 	      <c:if test="${!empty hotelVo.images}">
-	      	${hotelVo.images}
+	      	${images}
 	      </c:if>
 	    </div>
 	  </div>
@@ -875,18 +903,18 @@
 	</div>
   
   <div class="button-group">
-    <a href="${ctp}/hotel/hotelList?searchString?${searchString}&checkinDate=${checkinDate}&checkoutDate=${checkoutDate}&guestCount=${guestCount}&petCount=${petCount}" class="custom-btn back-btn">목록으로</a>
-
-    <c:if test="${hotelVo.mid == sMid || sLevel == 0}">
-      <a href="${ctp}/room/roomInput?hotelIdx=${hotelVo.idx}" class="btn btn-primary">객실 등록</a>
-      <a href="${ctp}/touristSpotInput?hotelIdx=${hotelVo.idx}" class="btn btn-success">주변 관광지 등록</a>
-      <a href="hotelUpdate?idx=${hotelVo.idx}" class="btn btn-warning">호텔 정보 수정</a>
-      <c:if test="${vo.status != '서비스중지요청'}">
-        <a href="javascript:hotelDeleteCheck()" class="custom-btn red-btn">서비스 중지 요청</a>
-      </c:if>
-    </c:if>
-  </div>
-  
+	  <a href="${ctp}/hotel/hotelList?searchString=${searchString}&checkinDate=${checkinDate}&checkoutDate=${checkoutDate}&guestCount=${guestCount}&petCount=${petCount}" class="custom-btn back-btn">목록으로</a>
+	
+	  <c:if test="${hotelVo.mid == sMid || sLevel == 0}">
+	    <a href="${ctp}/room/roomInput?hotelIdx=${hotelVo.idx}" class="custom-btn green-btn">객실 등록</a>
+	    <a href="${ctp}/touristSpotInput?hotelIdx=${hotelVo.idx}" class="custom-btn orange-btn">주변 관광지 등록</a>
+	    <a href="hotelUpdate?idx=${hotelVo.idx}" class="custom-btn blue-btn">호텔 정보 수정</a>
+	    <c:if test="${vo.status != '서비스중지요청'}">
+	      <a href="javascript:hotelDeleteCheck()" class="custom-btn red-btn">서비스 중지 요청</a>
+	    </c:if>
+	  </c:if>
+	</div>
+	
 </div>
 
 
@@ -1101,6 +1129,19 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
+	// 호텔 썸네일 외 이미지 3개만 보여주기
+	document.addEventListener("DOMContentLoaded", function () {
+    var imagesContainer = document.querySelector('.hotel-images');
+    var imgTags = imagesContainer.querySelectorAll('img');
+
+    for (var i = 0; i < imgTags.length; i++) {
+      if (i >= 3) {
+        imgTags[i].style.display = 'none';
+      }
+    }
+  });
+
+
 	new Swiper('.hotel-slider', {
 	  loop: true,
 	  pagination: {
