@@ -109,7 +109,7 @@
       background-color: #f9fefb;
     }
     .review-complete-container {
-		  max-width: 900px;
+		  max-width: 1000px;
 		  margin: 40px auto;
 		  padding: 30px;
 		  background: #fff;
@@ -135,7 +135,7 @@
 			<c:forEach var="vo" items="${rVos}" varStatus="st">
 				<tr class="">
 					<td>${vo.reservationNo}</td>
-					<td>${vo.mid}
+					<td style="width: 100px;">${vo.mid}
 						<c:if test="${sMid == vo.mid || sLevel == 0}">
 		  				 	<a href="javascript:replyDeleteCheck('${vo.idx}','${vo.reservationNo}')" style="color: white" class="btn btn-sm btn-danger" title="리뷰삭제">삭제</a>
 		  				 <c:if test="${sMid == vo.mid}">
@@ -150,14 +150,14 @@
 				</tr>
 				<!-- 아래로 댓글 수정 폼 보기 -->
 				<tr>
-	  			<td colspan="4">
+	  			<td colspan="6">
 	  				<div id="replyUpdateForm${vo.idx}" class="replyUpdateForm">
 						  <form name="replyUpdateForm">
 						  	<table class="table text-center table-borderless">
 						  		<tr>
 						  			<td class="text-start" style="width:85%">
 						  				글내용 : 
-						  				<textarea rows="4" name="content" id="content${vo.idx}" class="form-control">${vo.content}</textarea>
+						  				<textarea rows="4" name="content" id="content${vo.idx}" class="form-control" >${vo.content}</textarea>
 						  			</td>
 						  			<td style="width:15%"><br/>
 						  				<p>작성자 : ${sNickName}</p>
