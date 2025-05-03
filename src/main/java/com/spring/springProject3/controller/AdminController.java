@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,10 +19,13 @@ import com.spring.springProject3.common.Pagination;
 import com.spring.springProject3.service.AdminService;
 import com.spring.springProject3.service.HotelService;
 import com.spring.springProject3.service.MemberService;
+import com.spring.springProject3.service.ReviewService;
 import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.InquiryVo;
 import com.spring.springProject3.vo.MemberVo;
 import com.spring.springProject3.vo.PageVo;
+import com.spring.springProject3.vo.ReservationListVo;
+import com.spring.springProject3.vo.ReviewVo;
 
 @Controller
 @RequestMapping("/admin")
@@ -35,6 +39,9 @@ public class AdminController {
 	
 	@Autowired
 	HotelService hotelService;
+	
+	@Autowired
+	ReviewService reviewService;
 	
 	@Autowired
 	Pagination pagination;
@@ -137,6 +144,44 @@ public class AdminController {
 		}
 		model.addAttribute("vos", vos);
 		return "hotel/hotelList";
+	}
+	
+	//관리자 실시간 1:1 채팅창 폼 보여주기
+	@GetMapping("/liveChat/adminChat")
+	public String adminChatGet() {
+		return "admin/liveChat/adminChat";
+	}
+	
+	//리뷰 리스트 불러오기
+	@GetMapping("/review/adReviewList")
+	public String memberReviewFormGet(Model model, HttpSession session,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "8", required = false) int pageSize,
+			@RequestParam(name="choice", defaultValue = "전체", required = false) String choice
+			) {
+		String mid = session.getAttribute("sMid") + "";
+		
+		//페이징 처리
+		
+		// 리뷰가 달린 객실과 리뷰들의 정보를 가져올 수 있도록 한다.
+		PageVo pageVo = pagination.getTotRecCnt(pag,pageSize,"adminReview","",choice);	// (페이지번호,한 페이지분량,section,part,검색어)
+		List<ReservationListVo> rsVos = reviewService.getRoomUsedAllList(pageVo.getStartIndexNo(),pageSize, choice, mid);
+		List<ReviewVo> rVos = reviewService.getRoomReviewAllList();
+		model.addAttribute("rsVos", rsVos);
+		model.addAttribute("rVos", rVos);
+		model.addAttribute("pageVo", pageVo);
+		model.addAttribute("choice", choice);
+		// sMid select * from reservation where mid = #{sMid} and status = '이용완료';
+		
+		return "admin/review/adReviewList";
+	}
+	
+	// 리뷰 삭제하기
+	@ResponseBody
+	@PostMapping("/reviewDelete")
+	public String reviewDeletePost(String reviewStr) {
+		
+		return adminService.setReviewDelete(reviewStr);
 	}
 	
 }

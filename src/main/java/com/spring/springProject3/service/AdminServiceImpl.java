@@ -48,4 +48,18 @@ public class AdminServiceImpl implements AdminService {
 	public int setAdInquiryDetailHold(int idx) {
 		return adminDao.setAdInquiryDetailHold(idx);
 	}
+
+	@Override
+	public String setReviewDelete(String reviewStr) {
+		String[] reviewNum = reviewStr.split("/");
+		System.out.println("reviewStr : " + reviewStr );
+		
+		String str = "0";
+		for(String idx : reviewNum) {
+			adminDao.setReviewDelete(Integer.parseInt(idx));
+			str = "1";
+		}
+		return str;
+	}
+	
 }

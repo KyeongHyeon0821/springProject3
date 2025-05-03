@@ -8,6 +8,8 @@ public class ReviewVo {
 	private int idx;
 	private int hotelIdx;
 	private int roomIdx;
+	private int reservationIdx;
+	private String reservationNo;
 	private int reviewTotCnt;
 	private int reviewCnt;
 	private String mid;
@@ -18,4 +20,5 @@ public class ReviewVo {
 	private String content;
 	private String hostIp;
 	private String reviewDate;
+	private String hotelName;
 }

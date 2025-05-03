@@ -19,6 +19,8 @@ public interface AdminService {
 	int setAdInquiryDetailUpdate(int reIdx, String reContent);
 
 	int setAdInquiryDetailHold(int idx);
+
+	String setReviewDelete(String reviewStr);
 	
 	
 }

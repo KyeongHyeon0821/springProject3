@@ -1,31 +1,49 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>homeMain.jsp</title>
-	<jsp:include page="/WEB-INF/views/include/bs5.jsp" />
-	<link rel="stylesheet" type="text/css" href="${ctp}/css/linkMain.css?v=2.0"/>
+<meta charset="UTF-8">
+<title>homeMain.jsp</title>
+<jsp:include page="/WEB-INF/views/include/bs5.jsp" />
+<link rel="stylesheet" type="text/css" href="${ctp}/css/linkMain.css?v=2.0"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Montserrat:wght@600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 	<style>
+		body {
+		  font-family: 'Noto Sans KR', sans-serif !important;
+		}
+		
+		.section-header h2, .hero-heading, .product-title {
+		  font-family: 'Montserrat', sans-serif !important;
+		  font-weight: 600;
+		}
+		
 		ul, li {
 			text-decoration: none;
 			list-style: none;
 		}
 				
 		body.modal-open {
-  		padding-right: 0 !important;
+	 		padding-right: 0 !important;
 		}
 		
 		.nav-container {
-      display: flex; /* flex로 설정 */
-      justify-content: space-between; /* 항목 간 간격을 고르게 배치 */
-      align-items: center; /* 세로로 중앙 정렬 */
-      padding: 20px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+		     display: flex; /* flex로 설정 */
+		     justify-content: space-between; /* 항목 간 간격을 고르게 배치 */
+		     align-items: center; /* 세로로 중앙 정렬 */
+		     padding: 20px;
+		     max-width: 1200px;
+		     margin: 0 auto;
+		   }
+    
+	    .nav-links a {
+		  font-size: 18px;
+		  font-weight: 500;
+		}
 		
 
 		/* Style The Dropdown Button */
@@ -74,142 +92,127 @@
 		  background-color: #eee;
 		}
 		
-.hero-section {
-  background: url("${ctp}/images/background.png") no-repeat center center/cover;
-  padding: 80px 20px;
-  text-align: center;
-  color: #fff;
-}
-
-.hero-heading {
-  font-size: 2.0rem;
-  font-weight: bold;
-  max-width: 1200px;
-  text-align: start;
-  margin: 0 auto 30px;
-}
-
-.hotel-search-container {
-  background-color: rgba(255, 255, 255, 0.95);
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.hotel-search-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  align-items: center; 
-  padding-top: 20px; 
-  padding-bottom: 10px; 
-}
-
-.search-field {
-  flex: 1 1 180px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  min-width: 150px;
-}
-
-.search-field.large {
-  flex: 2 1 260px;
-}
-
-.search-field.small {
-  flex: 0 1 100px;
-}
-
-.search-field label {
-  font-size: 14px;
-  color: #555;
-  margin-bottom: 6px;
-}
-
-.search-field input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  font-size: 16px;
-}
-
-.search-button {
-  height: 50px;
-  padding: 0 25px;
-  background-color: #4da764;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  align-self: center;
-  margin-top:24px;
-}
-
-.search-button:hover {
-  background-color: #3e8f52;
-}
-
+		.hero-section {
+		  background: url("${ctp}/images/background.png") no-repeat center center/cover;
+		  padding: 80px 20px;
+		  text-align: center;
+		  color: #fff;
+		}
+		
+		.hero-heading {
+		  font-size: 2.0rem;
+		  font-weight: bold;
+		  max-width: 1200px;
+		  text-align: start;
+		  margin: 0 auto 30px;
+		}
+		
+		.hotel-search-container {
+		  background-color: rgba(255, 255, 255, 0.95);
+		  padding: 30px;
+		  border-radius: 16px;
+		  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+		  max-width: 1200px;
+		  margin: 0 auto;
+		}
+		
+		.hotel-search-form {
+		  display: flex;
+		  flex-wrap: wrap;
+		  gap: 20px;
+		  justify-content: center;
+		  align-items: center; 
+		  padding-top: 20px; 
+		  padding-bottom: 10px; 
+		}
+		
+		.search-field {
+		  flex: 1 1 180px;
+		  display: flex;
+		  flex-direction: column;
+		  align-items: flex-start;
+		  min-width: 150px;
+		}
+		
+		.search-field.large {
+		  flex: 2 1 260px;
+		}
+		
+		.search-field.small {
+		  flex: 0 1 100px;
+		}
+		
+		.search-field label {
+		  font-size: 14px;
+		  color: #555;
+		  margin-bottom: 6px;
+		}
+		
+		.search-field input {
+		  width: 100%;
+		  padding: 12px;
+		  border: 1px solid #ddd;
+		  border-radius: 10px;
+		  font-size: 16px;
+		}
+		
+		.search-button {
+		  height: 50px;
+		  padding: 0 25px;
+		  background-color: #4da764;
+		  color: #fff;
+		  border: none;
+		  border-radius: 10px;
+		  font-size: 16px;
+		  font-weight: bold;
+		  cursor: pointer;
+		  transition: background-color 0.3s ease;
+		  align-self: center;
+		  margin-top:24px;
+		}
+		
+		.search-button:hover {
+		  background-color: #3e8f52;
+		}
+		.section-header h2 {
+		  color: #2e7d32 !important;
+		}
+		.benefit-icon {
+		  background-color: #81c784 !important;  /* 초록색 */
+		}
+		
+		.product-card {
+		  position: relative;
+		  padding: 20px;
+		  background-color: #fff;
+		  border-radius: 12px;
+		  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+		  min-height: 500px;
+		}
+		.product-image img {
+		  border-radius: 12px;
+		  width: 100%;
+		  height: auto;
+		  object-fit: cover;
+		}
+		.product-info {
+		  padding-bottom: 100px;
+		  min-height: 200px;
+		}
+		.product-price {
+		  position: absolute;
+		  bottom: 20px;
+		  left: 40px;
+		  right: 20px;
+		  margin-top: 20px;
+		  display: flex;
+		  justify-content: space-between;
+		  align-items: center;
+		}
 	</style>
 </head>
 <body>
-<nav>
-  <div class="nav-container">
-    <a href="${ctp}/" class="logo" style="display:flex; line-height: 80px;"><img src="${ctp}/images/logo.png" width="80px"/>withPet</a>
-    <ul class="nav-links">
-    	<c:if test="${sLevel == 0 || sLevel == 1}">
-    		<li><a href="${ctp}/hotel/hotelInput">숙박시설 등록</a></li>
-    	</c:if>
-    	<li>
-      	<a href="${ctp}/hotel/hotelList">전체 숙소 보기</a>
-      </li>
-      <c:if test="${empty sessionScope.sLogin}">
-	      <li>
-	      	<a href="${ctp}/member/memberLogin">로그인</a>
-	      </li>
-      </c:if>
-      <c:if test="${sMid == 'admin'}">
-	      <li>
-	      	<a href="${ctp}/admin/adminMain">관리자</a>
-	      </li>
-      </c:if>
-      <!-- 로그인 상태일 때만 로그아웃 & 마이페이지 표시 -->
-			<c:if test="${not empty sessionScope.sLogin}">
-		  	<li class="nav-item">
-		    	<a class="nav-link" href="${ctp}/member/memberLogout">로그아웃</a>
-		  	</li>
-			  <li class="nav-item">
-			    <a class="nav-link" href="${ctp}/member/memberMyPage">마이페이지</a>
-			  </li>
-			</c:if>
-			<li class="nav-item dropdown">
-		    <a class="nav-link dropbtn" href="#" role="button" data-bs-toggle="modal" data-bs-target="#myModal3" id="customButton3">커뮤니티</a>
-		    <div class="dropdown-content">
-		      <a href="${ctp}/board/list">자유게시판</a>
-		      <a href="${ctp}/photogallery/photogalleryList">포토갤러리</a>
-		    </div>
-	    <li class="nav-item dropdown">
-        <a class="nav-link dropbtn" href="#" role="button" data-bs-toggle="modal" data-bs-target="#myModal3" id="customButton3">고객센터</a>
-        <div class="dropdown-content">
-			    <a class="dropdown-item" href="${ctp}/inquiry/inquiryList?mid=hkd1234">1:1문의</a><!-- 수정해야함 -->
-          <a class="dropdown-item" href="${ctp}/admin/inquiry/adInquiryList">1:1문의(관리자답변)</a>
-          <a class="dropdown-item" href="#">FAQ</a>
-          <a class="dropdown-item" href="${ctp}/qna/qnaLogin?mid=admin&nickName=관리맨&level=0">Q&A(관리자)</a>
-          <a class="dropdown-item" href="${ctp}/qna/qnaLogin?mid=hkd1234&nickName=홍장군&level=1">Q&A(홍길동)</a>
-          <a class="dropdown-item" href="${ctp}/qna/qnaLogin?mid=kms1234&nickName=김장미&level=2">Q&A(김말숙)</a>
-				</div>
-      </li>
-    </ul>
-   </div>
-</nav>
-
+<jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <section class="hero-section">
   <h2 class="hero-heading">위드펫, 반려견 동반 여행을 위한 최적의 선택!</h2>
 
@@ -233,7 +236,7 @@
 
       <div class="search-field small">
         <label>인원</label>
-        <input type="number" id="guestCount" name="guestCount" min="1" max="10" value="${guestCount}" required />
+        <input type="number" id="guestCount" name="guestCount" min="1" max="5" value="${guestCount}" required />
       </div>
 
       <div class="search-field small">
@@ -247,80 +250,103 @@
   </div>
 </section>
 
-
+<section class="featured">
+  <div class="container">
+    <div class="section-header">
+      <h2>New Arrivals</h2>
+      <p>새로운 감성 숙소, 지금 바로 만나보세요.</p>
+    </div>
+    <div class="product-grid">
+	  <c:forEach var="hotel" items="${recentHotels}" varStatus="status">
+	    <div class="product-card">
+	      <div class="product-image">
+	        <img src="${ctp}/data/hotelThumbnail/${empty hotel.thumbnail ? 'default.png' : hotel.thumbnail}" alt="${hotel.name}" />
+	      </div>
+	      <div class="product-info">
+	        <span class="product-tag">NEW</span>
+	        <h3 class="product-title">${hotel.name}</h3>
+	        <p class="mb-3">${hotel.address}</p>
+	        <div class="product-price">
+	          <span class="price">₩&nbsp;<fmt:formatNumber value="${hotel.minPrice}" type="number" groupingUsed="true" /></span>
+	          <a href="${ctp}/hotel/hotelDetail?idx=${hotel.idx}" class="add-to-cart btn btn-success" 
+	             style="font-size: 1em; width: 80px; border-radius: 10%; display:inline-block; text-align:center; text-decoration: none;">
+	            보기
+	          </a>
+	        </div>
+	      </div>
+	    </div>
+	  </c:forEach>
+  </div>
+ </div>
+</section>
 
 <section class="featured">
   <div class="container">
     <div class="section-header">
-      <h2>편하고 쾌적한 숙소</h2>
-      <p>여유롭게 즐길 수 있는 시설을 찾아드려요.</p>
+      <h2>Top Rated Hotels</h2>
+      <p>고객들이 가장 만족한 호텔을 만나보세요!</p>
     </div>
     <div class="product-grid">
-      <div class="product-card">
-        <div class="product-image">
-          <img src="${ctp}/images/hotel1.jpg" alt="" />
-        </div>
-        <div class="product-info">
-          <span class="product-tag">9.7</span>
-          <h3 class="product-title">시그니엘 부산</h3>
-          <p>부산</p>
-          <div class="product-price">
-            <span class="price">₩369,000</span>
-            <button class="add-to-cart" style="font-size: 0.8em; width: 80px; border-radius: 10%;">20%할인</button>
+      <c:forEach var="hotel" items="${topRatedHotels}">
+        <div class="product-card">
+          <div class="product-image">
+            <img src="${ctp}/data/hotelThumbnail/${empty hotel.thumbnail ? 'default.png' : hotel.thumbnail}" alt="${hotel.name}" />
+          </div>
+          <div class="product-info">
+            <span class="product-tag">⭐ ${hotel.averageStar}</span>
+            <h3 class="product-title">${hotel.name}</h3>
+            <p class="mb-3">${hotel.address}</p>
+            <div class="product-price">
+              <span class="price">₩&nbsp;<fmt:formatNumber value="${hotel.minPrice}" type="number" groupingUsed="true" /></span>
+              <a href="${ctp}/hotel/hotelDetail?idx=${hotel.idx}" class="add-to-cart btn btn-success"
+                 style="font-size: 1em; width: 80px; border-radius: 10%; display:inline-block; text-align:center; text-decoration: none;">
+                보기
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="product-card">
-        <div class="product-image">
-          <img src="${ctp}/images/hotel2.jpg" alt="" />
-        </div>
-        <div class="product-info">
-          <span class="product-tag">10.0</span>
-          <h3 class="product-title">신라스테이 해운대 벡스코</h3>
-          <p>부산</p>
-          <div class="product-price">
-            <span class="price">₩340.950</span>
-            <button class="add-to-cart" style="font-size: 0.8em; width: 80px; border-radius: 10%;">회원가 제공</button>
-          </div>
-        </div>
-      </div>
-      <div class="product-card">
-        <div class="product-image">
-          <img src="${ctp}/images/hotel3.jpg" alt="" />
-        </div>
-        <div class="product-info">
-          <span class="product-tag">9.0</span>
-          <h3 class="product-title">ENA 스위트 호텔 남대문</h3>
-          <p>서울</p>
-          <div class="product-price">
-            <span class="price">₩490,803</span>
-            <button class="add-to-cart" style="font-size: 0.8em; width: 80px; border-radius: 10%;">31%할인</button>
-          </div>
-        </div>
-      </div>
-      <div class="product-card">
-        <div class="product-image">
-          <img src="${ctp}/images/hotel4.jpg" alt="" />
-        </div>
-        <div class="product-info">
-          <span class="product-tag">8.1</span>
-          <h3 class="product-title">메종 글래드 제주</h3>
-          <p>제주시</p>
-          <div class="product-price">
-            <span class="price">₩528,338</span>
-            <button class="add-to-cart" style="font-size: 0.8em; width: 80px; border-radius: 10%;">회원가 제공</button>
-          </div>
-        </div>
-      </div>
+      </c:forEach>
     </div>
+  </div>
+</section>
+
+<section class="reviews">
+  <div class="container">
+    <div class="section-header">
+      <h2>Reviews</h2>
+      <p>내맘에 쏙 드는 체험</p>
+    </div>
+	<div class="reviews-grid">
+	  <c:forEach var="r" items="${latestReviews}">
+	    <div class="review-card">
+	      <div class="review-quote">"</div>
+	      <div class="stars">
+	        <c:forEach begin="1" end="${r.star}">★</c:forEach>
+	      </div>
+	      <p class="review-text">
+	        ${fn:substring(r.content, 0, 50)}
+	      </p>
+	      <div class="review-author">
+	        <div class="author-info">
+	          <h4>${r.nickName}</h4>
+	          <p>
+	            <a href="${ctp}/hotel/hotelDetail?idx=${r.hotelIdx}" style="text-decoration:none;">
+	              ${r.hotelName}
+	            </a>
+	          </p>
+	        </div>
+	      </div>
+	    </div>
+	  </c:forEach>
+	</div>
   </div>
 </section>
 
 <section class="benefits">
   <div class="container">
     <div class="section-header">
-      <h2>위드펫의 혜택정보</h2>
-      <p>반려동물과 꿈꾸는 숙박이 무엇이든 회원가로 할인받으세요.</p>
+      <h2>Member Benefits</h2>
+      <p>반려동물과 함께하는 꿈같은 숙박을 회원가로 할인받으세요.</p>
     </div>
     <div class="benefits-grid">
       <div class="benefit-card">
@@ -330,7 +356,7 @@
           </svg>
         </div>
         <h3 class="benefit-title">럭셔리 호텔을 더 저렴하게</h3>
-        <p>수준은 높게, 가격은 저렴하게 즐길 수 있는 호텔을 만나보세요.</p>
+        <p style="word-break: keep-all;">수준은 높게, 가격은 저렴하게 즐길 수 있는 호텔을 만나보세요.</p>
       </div>
       <div class="benefit-card">
         <div class="benefit-icon">
@@ -350,7 +376,7 @@
           </svg>
         </div>
         <h3 class="benefit-title">호텔링 체험</h3>
-        <p>호텔에서 제공하는 반려동물 호텔링 서비스도 체험해보세요.</p>
+        <p style="word-break: keep-all;">호텔에서 제공하는 반려동물 호텔링 서비스도 체험해보세요.</p>
       </div>
       <div class="benefit-card">
         <div class="benefit-icon">
@@ -366,7 +392,7 @@
   </div>
 </section>
 
-<section class="collections">
+<%-- <section class="collections">
   <div class="container">
     <div class="section-header">
       <h2>나에게 꼭 맞는 추천 숙소리스트</h2>
@@ -399,126 +425,7 @@
       </div>
     </div>
   </div>
-</section>
-
-<section class="reviews">
-  <div class="container">
-    <div class="section-header">
-      <h2>고객 리뷰</h2>
-      <p>내맘에 쏙 드는 체험</p>
-    </div>
-    <div class="reviews-grid">
-      <div class="review-card">
-        <div class="review-quote">"</div>
-        <div class="stars">
-          ★★★★★
-        </div>
-        <p class="review-text">경치좋고 풍경좋습니다.나이스.<br/>편안히 쉬다 갑니다.</p>
-        <div class="review-author">
-          <div class="author-avatar">
-            <img src="https://assets.codepen.io/406785/avatar3.webp" alt="" />
-          </div>
-          <div class="author-info">
-            <h4>Sarah M.</h4>
-            <p>메종호텔</p>
-          </div>
-        </div>
-      </div>
-      <div class="review-card">
-        <div class="review-quote">"</div>
-        <div class="stars">
-          ★★★★★
-        </div>
-        <p class="review-text">경치좋고 풍경좋습니다.나이스.<br/>편안히 쉬다 갑니다.</p>
-        <div class="review-author">
-          <div class="author-avatar">
-            <img src="https://assets.codepen.io/406785/avatar2.jpg" alt="" />
-          </div>
-          <div class="author-info">
-            <h4>David L.</h4>
-            <p>산수유호텔</p>
-          </div>
-        </div>
-      </div>
-      <div class="review-card">
-        <div class="review-quote">"</div>
-        <div class="stars">
-          ★★★★★
-        </div>
-        <p class="review-text">경치좋고 풍경좋습니다.나이스.<br/>편안히 쉬다 갑니다.</p>
-        <div class="review-author">
-          <div class="author-avatar">
-            <img src="https://assets.codepen.io/406785/avatar1.jpg" alt="" />
-          </div>
-          <div class="author-info">
-            <h4>Emma T.</h4>
-            <p>멍동반호텔</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-about">
-        <a href="#" class="footer-logo">withPet</a>
-        <p>반려동물 동반 호텔 예약사이트</p>
-        <div class="social-icons">
-          <a href="#" class="social-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-            </svg>
-          </a>
-          <a href="#" class="social-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
-          </a>
-          <a href="#" class="social-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-            </svg>
-          </a>
-        </div>
-      </div>
-      <div class="footer-links">
-        <h3>메뉴1</h3>
-        <ul>
-          <li><a href="#">All Products</a></li>
-          <li><a href="#">New Arrivals</a></li>
-          <li><a href="#">Best Sellers</a></li>
-          <li><a href="#">Gift Sets</a></li>
-        </ul>
-      </div>
-      <div class="footer-links">
-        <h3>메뉴2(About)</h3>
-        <ul>
-          <li><a href="#">Our Story</a></li>
-          <li><a href="#">Sustainability</a></li>
-          <li><a href="#">Ingredients</a></li>
-          <li><a href="#">Blog</a></li>
-        </ul>
-      </div>
-      <div class="footer-links">
-        <h3>메뉴3(Help)</h3>
-        <ul>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">Shipping & Returns</a></li>
-          <li><a href="#">FAQs</a></li>
-          <li><a href="#">Track Order</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2025 withPet All rights reserved. | Designed in Korea</p>
-    </div>
-  </div>
-</footer>
+</section> --%>
 
 <script>
 	'use strict';
@@ -574,5 +481,6 @@
 	  });
 	});
 </script>
+<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>
 </html>

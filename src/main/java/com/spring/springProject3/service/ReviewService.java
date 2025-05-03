@@ -9,8 +9,6 @@ import com.spring.springProject3.vo.RoomVo;
 
 public interface ReviewService {
 
-	List<ReservationListVo> getRoomUsedList(String mid);
-
 	int setReviewInputOk(ReviewVo vo);
 
 	ReservationListVo getRoomIdxCheck(int roomIdx, String mid);
@@ -21,9 +19,22 @@ public interface ReviewService {
 
 	List<ReviewVo> getRoomReviewAllList();
 
-	List<ReservationListVo> getRoomUsedAllList(String mid);
-
 	List<ReviewVo> getHotelReviewList(int idx);
+
+	List<ReviewVo> getLatestReviews();
+
+	List<HotelVo> getTopRatedHotels();
+	
+	List<Integer> getExistReviewedCheck(String mid);
+
+	void setReviewStatusBack(ReviewVo vo);
+
+	int setReviewDelete(ReviewVo vo);
+
+	int setReviewUpdateCheckOk(ReviewVo vo);
+	
+	List<ReservationListVo> getRoomUsedAllList(int startIndexNo, int pageSize, String choice, String mid);
+	
 
 
 }

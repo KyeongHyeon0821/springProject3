@@ -18,11 +18,6 @@ public class ReviewServiceImpl implements ReviewService {
 	ReviewDao reviewDao;
 
 	@Override
-	public List<ReservationListVo> getRoomUsedList(String mid) {
-		return reviewDao.getRoomUsedList(mid);
-	}
-
-	@Override
 	public int setReviewInputOk(ReviewVo vo) {
 		return reviewDao.setReviewInputOk(vo);
 	}
@@ -48,12 +43,43 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public List<ReservationListVo> getRoomUsedAllList(String mid) {
-		return reviewDao.getRoomUsedAllList(mid);
+	public List<ReservationListVo> getRoomUsedAllList(int startIndexNo, int pageSize, String choice, String mid) {
+		return reviewDao.getRoomUsedAllList(startIndexNo, pageSize, choice, mid);
 	}
 
 	@Override
 	public List<ReviewVo> getHotelReviewList(int idx) {
 		return reviewDao.getHotelReviewList(idx);
 	}
+	
+	@Override
+	public List<ReviewVo> getLatestReviews() {
+	    return reviewDao.getLatestReviews();
+	}
+	
+	@Override
+	public List<HotelVo> getTopRatedHotels() {
+	    return reviewDao.getTopRatedHotels();
+	}
+	
+	@Override
+	public List<Integer> getExistReviewedCheck(String mid) {
+		return reviewDao.getExistReviewedCheck(mid);
+	}
+
+	@Override
+	public void setReviewStatusBack(ReviewVo vo) {
+		reviewDao.setReviewStatusBack(vo);
+	}
+
+	@Override
+	public int setReviewDelete(ReviewVo vo) {
+		return reviewDao.setReviewDelete(vo);
+	}
+
+	@Override
+	public int setReviewUpdateCheckOk(ReviewVo vo) {
+		return reviewDao.setReviewUpdateCheckOk(vo);
+	}
+	
 }

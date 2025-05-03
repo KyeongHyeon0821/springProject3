@@ -17,6 +17,13 @@
   	select *,(select reIdx from inquiryReply where inquiryIdx=a.idx) as reIdx,(select reContent from inquiryReply where inquiryIdx=a.idx) as reContent from inquiry a where idx = #{idx};
   </select>
   
+  <select id="getReviewTotRecCnt" resultType="int">
+	  <if test='choice == "전체"'> select count(*)
+		  from reservation rs
+		  join room r on rs.roomIdx = r.idx
+		  join hotel h on r.hotelIdx = h.idx
+		  where rs.status ='리뷰작성'; </if>
+  </select>
 
   <insert id="setInquiryReplyOk">
 		insert into inquiryReply values (default,#{idx},default,#{reContent})
@@ -43,6 +50,10 @@
   <delete id="setInquiryDelete">
   	delete from inquiry where idx = #{idx};
   </delete> -->
+  
+  <delete id="setReviewDelete">
+  	delete from review where idx = #{idx};
+  </delete>
   
   
 </mapper>

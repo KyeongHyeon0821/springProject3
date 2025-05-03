@@ -23,4 +23,6 @@ public interface ReservationService {
 
 	int setReservationCancel(String mid, String reservationNo);
 
+	void setReviewSave(ReviewVo vo);
+
 }

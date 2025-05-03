@@ -10,13 +10,13 @@
 	<style>
 	
 		body {
-			background-color: #eee;
+			background-color: #F6F5F2;
 		}
 		.grid-container {
 		  display: grid;
 		  grid-template-columns: auto auto;
 		  gap: 20px;
-		  background-color:#eee;
+		  background-color:#F6F5F2;
 		  padding: 130px 30px 30px 30px;
 		}
 		

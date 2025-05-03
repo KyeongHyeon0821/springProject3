@@ -23,5 +23,9 @@ public interface AdminDao {
 	int setAdInquiryDetailUpdate(@Param("reIdx") int reIdx, @Param("reContent") String reContent);
 
 	int setAdInquiryDetailHold(@Param("idx") int idx);
+	
+  int getReviewTotRecCnt(@Param("choice") String choice);
+
+  void setReviewDelete(@Param("idx") int idx);
 
 }

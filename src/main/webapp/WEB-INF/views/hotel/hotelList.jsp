@@ -8,6 +8,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>hotelList.jsp</title>
+	<link rel="icon" href="${ctp}/images/favicon.ico" type="image/x-icon">
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
 	<script>
 		'use strict';

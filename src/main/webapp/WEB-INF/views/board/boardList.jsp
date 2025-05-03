@@ -34,7 +34,7 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-<div class="container mt-4">
+<div class="container mt-4" style="max-width: 1000px;">
   <h2 class="board-title mb-4">자유게시판</h2>
   <form method="get" action="${ctp}/board/list" class="d-flex justify-content-end mb-3" role="search">
     <select name="searchType" class="form-select me-2" style="width: 120px;">

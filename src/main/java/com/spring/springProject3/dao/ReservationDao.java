@@ -25,4 +25,6 @@ public interface ReservationDao {
 
 	int setReservationCancel(@Param("mid") String mid, @Param("reservationNo") String reservationNo);
 
+	void setReviewSave(@Param("vo") ReviewVo vo);
+	
 }

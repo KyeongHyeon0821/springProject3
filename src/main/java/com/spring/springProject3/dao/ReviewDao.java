@@ -10,8 +10,6 @@ import com.spring.springProject3.vo.ReviewVo;
 
 public interface ReviewDao {
 
-	List<ReservationListVo> getRoomUsedList(@Param("mid") String mid);
-
 	int setReviewInputOk(@Param("vo") ReviewVo vo);
 
 	ReservationListVo getRoomIdxCheck(@Param("roomIdx") int roomIdx,@Param("mid") String mid);
@@ -22,9 +20,20 @@ public interface ReviewDao {
 
 	List<ReviewVo> getRoomReviewAllList();
 
-	List<ReservationListVo> getRoomUsedAllList(@Param("mid") String mid);
+	List<ReservationListVo> getRoomUsedAllList(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize,@Param("choice") String choice, @Param("mid") String mid);
 
 	List<ReviewVo> getHotelReviewList(@Param("idx") int idx);
+	
+	List<ReviewVo> getLatestReviews();
 
+	List<HotelVo> getTopRatedHotels();
+
+	List<Integer> getExistReviewedCheck(@Param("mid") String mid);
+
+	void setReviewStatusBack(@Param("vo") ReviewVo vo);
+
+	int setReviewDelete(@Param("vo") ReviewVo vo);
+
+	int setReviewUpdateCheckOk(@Param("vo") ReviewVo vo);
 
 }

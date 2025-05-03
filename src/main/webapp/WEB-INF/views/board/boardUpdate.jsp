@@ -14,9 +14,13 @@
     body {
       display: flex;
       flex-direction: column;
+      background-color: #f9f9f9;
     }
     .container {
       flex: 1;
+    }
+    .extra-top-margin {
+      margin-top: 60px;
     }
     footer {
       margin-top: auto;
@@ -26,27 +30,28 @@
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 
-<div class="container mt-4" style="max-width: 800px;">
-  <h2 class="mb-4">글 수정</h2>
+<h2 class="fw-bold text-success text-center extra-top-margin">게시글 수정</h2>
+<div class="container mt-5 mb-5 p-4 shadow-sm bg-white rounded" style="max-width: 800px;">
   <form action="${ctp}/board/update" method="post">
     <input type="hidden" name="idx" value="${vo.idx}" />
 
-    <div class="mb-3">
-      <label for="title" class="form-label">제목</label>
-      <input type="text" class="form-control" id="title" name="title" value="${vo.title}" required>
+    <div class="mb-4">
+      <label for="title" class="form-label fw-semibold">제목</label>
+      <input type="text" class="form-control border-success" id="title" name="title" value="${vo.title}" required>
     </div>
-
-    <div class="mb-3">
-      <label for="content" class="form-label">내용</label>
-      <textarea class="form-control" id="content" name="content" rows="10" required>${vo.content}</textarea>
+    
+    <div class="mb-4">
+      <label for="content" class="form-label fw-semibold">내용</label>
+      <textarea class="form-control border-success" id="content" name="content" rows="10" required style="word-break: keep-all;">${vo.content}</textarea>
     </div>
-
+    
     <div class="text-end">
-      <button type="submit" class="btn btn-primary">수정</button>
-      <a href="${pageContext.request.contextPath}/board/content?idx=${vo.idx}" class="btn btn-secondary">취소</a>
+      <button type="submit" class="btn btn-success px-4 me-2">수정</button>
+      <a href="${ctp}/board/content?idx=${vo.idx}" class="btn btn-outline-secondary px-4">취소</a>
     </div>
   </form>
 </div>
+
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>
 </html>

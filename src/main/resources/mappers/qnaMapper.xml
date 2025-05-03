@@ -10,8 +10,12 @@
 		select count(*) from qna;
 	</select>
 	
-	<select id="getBoardTotRecCntSearch" resultType="int">
-		select count(*) from qna Where #{search} like concat('%',#{searchString},'%');
+	<select id="getQnaTotRecCntSearch" resultType="int">
+		select count(*) from qna Where ${search} like concat('%',#{searchString},'%');
+	</select>
+	
+	<select id="getQnaSearchList" resultType="com.spring.springProject3.vo.QnaVo">
+		select *,(select qnaAnswer from qnaAdmin where qnaIdx=q.idx) as qnaAnswer from qna q where delCheck != 'OK' and (${search} like concat('%',#{searchString},'%')) order by qnaIdx desc, qnaSw desc, ansLevel limit #{startIndexNo},#{pageSize}; 
 	</select>
 	
 	<select id="getQnaList" resultType="com.spring.springProject3.vo.QnaVo">
@@ -29,6 +33,14 @@
   <select id="getQnaIdxCheck" resultType="int">
     select count(*) from qna where qnaIdx  = #{qnaIdx};
   </select>
+  
+  <select id="getQnaTotRecCntQnaAnswer" resultType="int">
+    select count(*) from qna q where (select qnaAnswer from qnaAdmin where qnaIdx=q.idx) = #{qnaAnswer};
+  </select>
+
+	<select id="getQnaListQnaAnswer" resultType="com.spring.springProject3.vo.QnaVo">
+		select *,(select qnaAnswer from qnaAdmin where qnaIdx=q.idx) as qnaAnswer from qna q where (select qnaAnswer from qnaAdmin where qnaIdx=q.idx) = #{qnaAnswer} order by qnaIdx desc, qnaSw desc, ansLevel limit #{startIndexNo},#{pageSize};
+	</select>
 
 
 

@@ -4,11 +4,11 @@
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
-	<title>Home</title>
+	<title>위드펫 - 반려견 동반 여행</title>
+	<link rel="icon" href="${ctp}/images/favicon.ico" type="image/x-icon">
 </head>
 <body>
 <!-- search -->
 <jsp:include page="/WEB-INF/views/include/homeMain.jsp" />
-<jsp:include page="/WEB-INF/views/include/mainModal.jsp" />
 </body>
 </html>

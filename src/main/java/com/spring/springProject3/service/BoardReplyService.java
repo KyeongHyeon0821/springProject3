@@ -13,4 +13,6 @@ public interface BoardReplyService {
 	
 	int getReplyCount(int boardIdx);
 
+	void updateReply(BoardReplyVo vo);
+
 }
