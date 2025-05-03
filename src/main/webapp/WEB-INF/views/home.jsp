@@ -4,7 +4,8 @@
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
-	<title>Home</title>
+	<title>위드펫 - 반려견 동반 여행</title>
+	<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 </head>
 <body>
 <!-- search -->

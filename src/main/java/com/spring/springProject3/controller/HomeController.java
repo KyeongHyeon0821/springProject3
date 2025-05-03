@@ -53,7 +53,7 @@ public class HomeController {
     model.addAttribute("petCount", petCount);
     
     // 신규 등록 호텔 출력
-    List<HotelVo> recentHotels = hotelService.getRecentHotels(4);
+    List<HotelVo> recentHotels = hotelService.getRecentHotels(3);
     model.addAttribute("recentHotels", recentHotels);
     
     // 평점순 호텔 출력

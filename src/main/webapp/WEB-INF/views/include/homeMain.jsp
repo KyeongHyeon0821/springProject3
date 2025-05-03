@@ -10,6 +10,7 @@
 <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
 <link rel="stylesheet" type="text/css" href="${ctp}/css/linkMain.css?v=2.0"/>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Montserrat:wght@600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 	<style>
 		body {
 		  font-family: 'Noto Sans KR', sans-serif !important;
@@ -311,7 +312,7 @@
 <section class="reviews">
   <div class="container">
     <div class="section-header">
-      <h2>Customer Reviews</h2>
+      <h2>Reviews</h2>
       <p>내맘에 쏙 드는 체험</p>
     </div>
 	<div class="reviews-grid">
@@ -344,7 +345,7 @@
   <div class="container">
     <div class="section-header">
       <h2>Member Benefits</h2>
-      <p>반려동물과 꿈꾸는 숙박이 무엇이든 회원가로 할인받으세요.</p>
+      <p>반려동물과 함께하는 꿈같은 숙박을 회원가로 할인받으세요.</p>
     </div>
     <div class="benefits-grid">
       <div class="benefit-card">

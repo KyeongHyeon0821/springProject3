@@ -50,7 +50,7 @@
                 where rs.mid = #{mid} and rs.status ='이용완료' order by rs.checkinDate desc;
    </select>
   
- 	<!-- 예약상태가 '리뷰작성' 상태인 '멤버의 이용 reservationNo'와 'roomIdx'를 가져온다 --> 
+  <!-- 예약상태가 '리뷰작성' 상태인 '멤버의 이용 reservationNo'와 'roomIdx'를 가져온다 --> 
   <select id="getReviewSave" resultType="com.spring.springProject3.vo.ReservationVo">
   	select reservationNo, roomIdx from reservation where mid = #{mid} and status = '리뷰작성';
   </select>

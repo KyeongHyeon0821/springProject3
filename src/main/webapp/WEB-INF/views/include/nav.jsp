@@ -3,6 +3,7 @@
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
 <link rel="stylesheet" type="text/css" href="${ctp}/css/linkMain.css"/>
+<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 
 	<style>
 		ul, li {
