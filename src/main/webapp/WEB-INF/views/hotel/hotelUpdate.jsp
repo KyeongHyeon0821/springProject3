@@ -7,6 +7,7 @@
 	<meta charset="UTF-8">
 	<title>hotelUpdate.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
+	<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 	<jsp:include page="/WEB-INF/views/include/mapCss.jsp"/>
 	<script src="${ctp}/ckeditor/ckeditor.js"></script>
 	<script>

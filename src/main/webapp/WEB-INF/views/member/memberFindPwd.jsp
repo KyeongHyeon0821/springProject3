@@ -7,6 +7,7 @@
   <meta charset="UTF-8">
   <title>memberFindPwd.jsp</title>
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
+  <link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 <style>
   html, body {
     height: 100%;

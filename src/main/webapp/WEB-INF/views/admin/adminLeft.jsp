@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- <link rel="stylesheet" type="text/css" href="${ctp}/css/linkAdmin.css"/> -->
   <title>adminLeft.jsp</title>
+  <link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
 	<style>
 		ul, li, a {

@@ -10,6 +10,7 @@
 	<meta charset="UTF-8">
 	<title>hotelDetail.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
+	<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f5f016ee8ec4b87750154cd5e9d07dfb&libraries=services"></script>
 	<style>
@@ -514,6 +515,9 @@
    	  justify-content: center;
 	    margin-top: -30px;
 		}
+		.modal-backdrop.show {
+		  background-color: rgba(0, 0, 0, 0.2); /* 더 밝은 배경 */
+		}
 	</style>
 
 	<script>
@@ -646,17 +650,7 @@
 	    <div class="swiper-slide">
 	      <img src="${ctp}/hotelThumbnail/${hotelVo.thumbnail}" alt="${hotelVo.name}" onclick="openModal()" />
 	    </div>
-	 
-		  <!-- 나머지 이미지 -->
-	   <%--  <c:if test="${!empty hotelVo.images}">
-	      <c:set var="hotelImages" value="${fn:split(hotelVo.images, '/')}" />
-	      <c:forEach var="hotelImage" items="${hotelImages}">
-	        <div class="swiper-slide">
-	        	${hotelImage}
-	        </div>
-	      </c:forEach>
-	    </c:if> --%>
-	 </div>
+		 </div>
 	  <!-- 네비게이션 (옵션) -->
 	  <div class="swiper-button-next"></div>
 	  <div class="swiper-button-prev"></div>
@@ -780,7 +774,7 @@
 		  </label>
 		  
 		  <label class="small-input">인원
-		    <input type="number" name="guestCount" min="1" max="5" value="${guestCount}" required />
+		    <input type="number" name="guestCount" min="1" max="10" value="${guestCount}" required />
 		  </label>
 		  
 		  <label class="small-input">반려견

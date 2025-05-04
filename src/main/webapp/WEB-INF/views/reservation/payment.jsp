@@ -7,6 +7,7 @@
 	<meta charset="UTF-8">
 	<title>payment.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
+	<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 	<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 	
 	<script>

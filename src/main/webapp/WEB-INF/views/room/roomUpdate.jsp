@@ -7,6 +7,7 @@
 	<meta charset="UTF-8">
 	<title>roomUpdate.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
+	<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 	<script>
 		'use strict';
 		
@@ -169,7 +170,7 @@
     </div>
 
     <div class="form-group">
-      <label for="roomNumber">객실 번호</label>
+      <label for="roomNumber">객실 이름(번호)</label>
       <input type="text" name="roomNumber" id="roomNumber" value="${vo.roomNumber}" class="form-control" required />
     </div>
 

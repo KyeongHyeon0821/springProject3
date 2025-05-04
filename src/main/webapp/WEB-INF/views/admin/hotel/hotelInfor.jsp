@@ -7,6 +7,7 @@
 	<meta charset="UTF-8">
 	<title>hotelInfor.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp" />
+	<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 </head>
 <body>
 <p><br/></p>

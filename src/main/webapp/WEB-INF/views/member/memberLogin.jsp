@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>memberLogin.jsp</title>
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
+  <link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
   <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
   <script>
     'use strict';

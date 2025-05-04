@@ -8,6 +8,7 @@
   <meta charset="UTF-8">
   <title>1:1 문의 리스트 관리</title>
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
+  <link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
   <script>
     'use strict';
     function answerChoice() {

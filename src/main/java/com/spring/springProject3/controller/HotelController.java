@@ -127,7 +127,7 @@ public class HotelController {
 			List<Integer> likedHotelListIdx = hotelService.getLikedHotelListIdx(mid);
 			model.addAttribute("likedHotelListIdx", likedHotelListIdx);
 		}
-		
+		System.out.println("vos : " + vos);
 		model.addAttribute("vos", vos);
 		model.addAttribute("vosSize", vos.size());
 		model.addAttribute("checkinDate", checkinDate);

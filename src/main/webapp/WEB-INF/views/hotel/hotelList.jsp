@@ -162,13 +162,19 @@
 		  margin: 0;
 		}
 		
+		.con {
+			background-color: #ffffff;
+			max-width: 1000px;
+			margin: 0px auto;
+			padding-bottom: 10px;
+		}
+		
 		.hotel-list-container {
 		  background-color: #ffffff;  /* 컨테이너는 흰색 */
 		  padding: 20px;
 		  border-radius: 12px;
-		  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 		  max-width: 1000px;
-		  margin: 40px auto;
+		  margin: 0px auto;
 		  display: grid;
 		  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 		  gap: 24px;
@@ -199,6 +205,7 @@
 		  flex-grow: 1; /* 남는 공간 채우기 */
 		  padding: 12px;
 		  box-sizing: border-box;
+		  position:relative;
 		}
 		
 		/* 호텔 이름 + 하트 정렬 */
@@ -206,9 +213,7 @@
 		  display: flex;
 		  justify-content: space-between;
 		  align-items: center;
-		  margin-bottom: 10px;
 		  position: relative;
-  		margin-bottom: 10px;
 		}
 		
 		/* 호텔 이름 */
@@ -235,20 +240,19 @@
 		  color: #0077cc;
 		}
 		
-		/* 주소/연락처 */
-		.hotel-address,
-		.hotel-tel {
-		  font-size: 14px;
-		  color: #555;
-		}
 		
 		/* 가격을 항상 맨 아래로 밀기 */
 		.hotel-minPrice {
 		  margin-top: auto; /* 핵심: 남는 공간을 밀어냄 */
 		  font-weight: bold;
-		  font-size: 18px;
+		  font-size: 20px;
 		  color: #222;
 		  text-align:end;
+		}
+		.hotel-time {
+			text-align:end;
+			font-size: 13px;
+			color:#555;
 		}
 		
 		.heart-icon {
@@ -333,9 +337,30 @@
 		.search-button:hover {
 		  background-color: #3e8f52;
 		}
-		.star {
-			color: gold;
+		.hotel-star {
+			font-size: 14px;
+		  color: #222;
 		}
+		/* 평점 (검정색) */
+		.hotel-star-rating {
+		  font-size: 14px;
+		  color: #222;
+		  margin-bottom: 6px;
+		  font-weight:bold;
+		}
+		.modal-backdrop.show {
+		  background-color: rgba(0, 0, 0, 0.2); /* 더 밝은 배경 */
+		}
+		.hotel-hotel {
+			color: #555;
+			font-size:12px;
+		}
+		.hotel-time-minPrice {
+			position:absolute;
+			right:12px;
+			bottom:12px;
+		}
+		
 	</style>
 </head>
 <body>
@@ -371,51 +396,57 @@
   </form>
 </div>
 
-<div class="hotel-list-container" id="hotel-list-container">
-  <c:forEach var="vo" items="${vos}">
-    <div class="hotel-card" data-idx="${vo.idx}">
-      <div class="hotel-image">
-        <img src="${ctp}/hotelThumbnail/s_${vo.thumbnail}" alt="${vo.name}">
-      </div>
-      <div class="hotel-details">
-        <div class="hotel-header">
-          <h3 class="hotel-name">
-            <a href="${ctp}/hotel/hotelDetail?idx=${vo.idx}&searchString=${searchString}&checkinDate=${checkinDate}&checkoutDate=${checkoutDate}&guestCount=${guestCount}&petCount=${petCount}">${vo.name}</a>
-          </h3>
-          <!-- 찜 아이콘 -->
-          <c:set var="isLiked" value="false" />
-          <c:forEach var="likedIdx" items="${likedHotelListIdx}">
-            <c:if test="${likedIdx == vo.idx}">
-              <c:set var="isLiked" value="true" />
-            </c:if>
-          </c:forEach>
-          <c:choose>
-            <c:when test="${isLiked}">
-              <a id="likeFn${vo.idx}" href="javascript:hotelLikeNo(${vo.idx})">
-                <img id="likeImg${vo.idx}" src="${ctp}/images/heartRed.png" class="heart-icon" />
-              </a>
-            </c:when>
-            <c:otherwise>
-              <a id="likeFn${vo.idx}" href="javascript:hotelLikeOk(${vo.idx})">
-                <img id="likeImg${vo.idx}" src="${ctp}/images/heartBlack.png" class="heart-icon" />
-              </a>
-            </c:otherwise>
-          </c:choose>
-        </div>
-        <div class="hotel-start"><span class="star">★ </span>${vo.averageStar} (${vo.reviewCnt})</div>
-        <div class="hotel-address">${vo.address}</div>
-        <div class="hotel-tel">${vo.tel}</div>
-        <div class="hotel-minPrice"><fmt:formatNumber value="${vo.minPrice}" type="number" pattern="#,##0" />원~</div>
-      </div>
-    </div>
-  </c:forEach>
-</div>
-<c:if test="${empty vos}">
-	<div class="text-center mb-5">검색 조건에 맞는 호텔이 없습니다. 조건을 변경하거나 다른 날짜를 시도해 보세요.</div>
-</c:if>
-<div class="text-center mb-5">
+<div class="con">
+	<img src="${ctp}/images/dogImage.png" width="100%"/>
+	<div class="hotel-list-container" id="hotel-list-container">
+	  <c:forEach var="vo" items="${vos}">
+	    <div class="hotel-card" data-idx="${vo.idx}">
+	      <div class="hotel-image">
+	        <img src="${ctp}/hotelThumbnail/s_${vo.thumbnail}" alt="${vo.name}">
+	      </div>
+	      <div class="hotel-details">
+	        <div class="hotel-header">
+	          <h3 class="hotel-name">
+	            <a href="${ctp}/hotel/hotelDetail?idx=${vo.idx}&searchString=${searchString}&checkinDate=${checkinDate}&checkoutDate=${checkoutDate}&guestCount=${guestCount}&petCount=${petCount}">${vo.name}</a>
+	          </h3>
+	          <!-- 찜 아이콘 -->
+	          <c:set var="isLiked" value="false" />
+	          <c:forEach var="likedIdx" items="${likedHotelListIdx}">
+	            <c:if test="${likedIdx == vo.idx}">
+	              <c:set var="isLiked" value="true" />
+	            </c:if>
+	          </c:forEach>
+	          <c:choose>
+	            <c:when test="${isLiked}">
+	              <a id="likeFn${vo.idx}" href="javascript:hotelLikeNo(${vo.idx})">
+	                <img id="likeImg${vo.idx}" src="${ctp}/images/heartRed.png" class="heart-icon" />
+	              </a>
+	            </c:when>
+	            <c:otherwise>
+	              <a id="likeFn${vo.idx}" href="javascript:hotelLikeOk(${vo.idx})">
+	                <img id="likeImg${vo.idx}" src="${ctp}/images/heartBlack.png" class="heart-icon" />
+	              </a>
+	            </c:otherwise>
+	          </c:choose>
+	        </div>
+	        <div class="hotel-star"><span class="hotel-star-rating">★ ${vo.averageStar}</span> (<fmt:formatNumber value="${vo.reviewCnt}" type="number" pattern="#,##0" />)</div>
+	        <div class="hotel-hotel">호텔</div>
+	        <div class="hotel-time-minPrice">
+	       	  <div class="hotel-time">숙박 15:00~</div>
+	        	<div class="hotel-minPrice"><fmt:formatNumber value="${vo.minPrice}" type="number" pattern="#,##0" />원~</div>
+	        </div>
+	      </div>
+	    </div>
+	  </c:forEach>
+	  
+	</div>
+	<c:if test="${empty vos}">
+		<div class="text-center mb-5">검색 조건에 맞는 호텔이 없습니다. 조건을 변경하거나 다른 날짜를 시도해 보세요.</div>
+	</c:if>
+		
+	<div class="text-center">
 	<button id="hotelMoreBtn" class="btn btn-secondary" onclick="moreHotels()">더보기</button>
 </div>
-
+</div>
 </body>
 </html>

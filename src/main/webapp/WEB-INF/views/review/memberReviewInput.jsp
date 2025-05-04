@@ -9,6 +9,7 @@
 	<title>memberReviewInput.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp" />
 	<jsp:include page="/WEB-INF/views/include/nav.jsp" />
+	<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 	<%-- <jsp:include page="/WEB-INF/views/review/reviewModalForm.jsp" /> --%>
 	<link rel="stylesheet" type="text/css" href="${ctp}/css/linkOrange.css"/>
 	<style>

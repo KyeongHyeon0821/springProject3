@@ -9,6 +9,7 @@
   <title>FAQ 수정하기</title>
   <script src="${ctp}/ckeditor/ckeditor.js"></script>
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
+  <link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
   <style>
     body {
       background-color: #f9fefb;

@@ -9,6 +9,7 @@
 	<meta charset="UTF-8">
 	<title>roomDetail.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
+	<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 	<script>
 		'use strict';

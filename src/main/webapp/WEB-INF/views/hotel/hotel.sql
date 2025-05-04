@@ -136,15 +136,26 @@ limit 0, 6
 
 /* 전체 호텔리스트 조회 최종 */
 select 
-  h.idx, h.name, h.thumbnail, h.address, h.tel,
-  min(r.price) as minPrice,
-  ifnull(round(avg(rv.star), 1), 0.0) as averageStar,
-  count(rv.idx) as reviewCount
+  h.idx,
+  h.name,
+  h.thumbnail,
+  h.address,
+  h.tel,
+  roomPrice.minPrice,
+  reviewStats.averageStar,
+  reviewStats.reviewCount
 from hotel h
-left join room r on h.idx = r.hotelIdx
-left join review rv on h.idx = rv.hotelIdx
+left join (
+  select hotelIdx, min(price) as minPrice
+  from room
+  group by hotelIdx
+) roomPrice on h.idx = roomPrice.hotelIdx
+left join (
+  select hotelIdx, round(avg(star), 1) as averageStar, count(*) as reviewCount
+  from review
+  group by hotelIdx
+) reviewStats on h.idx = reviewStats.hotelIdx
 where h.status = '정상'
-group by h.idx
 order by h.idx desc
 limit 0, 6;
 
@@ -157,41 +168,54 @@ select
   h.thumbnail, 
   h.address, 
   h.tel, 
+  
   (
     select min(r2.price)
     from room r2
-    where r2.hotelidx = h.idx
-      and r2.maxpeople >= 1
-      and r2.petcountlimit >= 1
+    where r2.hotelIdx = h.idx
+      and r2.maxPeople >= 1
+      and r2.petCountLimit >= 1
       and r2.status = '정상'
       and not exists (
         select 1
         from reservation res
-        where res.roomidx = r2.idx
+        where res.roomIdx = r2.idx
           and res.status in ('결제대기', '결제완료')
-          and (res.checkindate < '2025-05-03' and res.checkoutdate > '2025-05-02')
+          and (res.checkInDate < '2025-05-03' and res.checkOutDate > '2025-05-02')
       )
   ) as minPrice,
-  ifnull(round(avg(rv.star), 1), 0.0) as averageStar, count(rv.idx) as reviewCount
+  
+  (
+    select ifnull(round(avg(rv.star), 1), 0.0)
+    from review rv
+    where rv.hotelIdx = h.idx
+  ) as averageStar,
+  
+  (
+    select count(rv.idx)
+    from review rv
+    where rv.hotelIdx = h.idx
+  ) as reviewCount
+
 from hotel h
-left join review rv on rv.hotelidx = h.idx
 where (h.name like concat('%', '소노', '%') or h.address like concat('%', '서울', '%'))
   and h.status = '정상'
   and exists (
     select 1
     from room r2
-    where r2.hotelidx = h.idx
-      and r2.maxpeople >= 1
-      and r2.petcountlimit >= 1
+    where r2.hotelIdx = h.idx
+      and r2.maxPeople >= 1
+      and r2.petCountLimit >= 1
       and r2.status = '정상'
       and not exists (
         select 1
         from reservation res
-        where res.roomidx = r2.idx
+        where res.roomIdx = r2.idx
           and res.status in ('결제대기', '결제완료')
-          and (res.checkindate < '2025-05-03' and res.checkoutdate > '2025-05-02')
+          and (res.checkInDate < '2025-05-03' and res.checkOutDate > '2025-05-02')
       )
   )
-group by h.idx
 order by h.idx desc
 limit 0, 6;
+
+

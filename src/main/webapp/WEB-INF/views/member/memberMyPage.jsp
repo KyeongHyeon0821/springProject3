@@ -9,6 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>memberMyPage.jsp</title>
 <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
+<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 <script>
   function confirmAndAlert() {
     const confirmed = confirm("정말 이 반려견 정보를 목록에서 지우시겠어요?\n언제든 다시 등록할 수 있어요!");

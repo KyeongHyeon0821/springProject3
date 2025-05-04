@@ -8,6 +8,7 @@
   <meta charset="UTF-8">
   <title>1:1 문의 상세보기</title>
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
+  <link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
   <style>
     body {
       background-color: #f9fefb;

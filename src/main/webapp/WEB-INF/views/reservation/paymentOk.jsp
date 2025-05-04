@@ -9,6 +9,7 @@
 	<meta charset="UTF-8">
 	<title>paymentOk.jsp</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
+	<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 	<style>
 		.reservation-complete-container {
 		  max-width: 800px;

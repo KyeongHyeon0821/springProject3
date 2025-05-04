@@ -10,6 +10,7 @@
   <script src="https://kit.fontawesome.com/df66332deb.js" crossorigin="anonymous"></script>
   <!-- <script src="https://kit.fontawesome.com/fa3667321f.js" crossorigin="anonymous"></script> -->
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
+  <link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
   <style>
     body {
       background-color: #f9fefb;
