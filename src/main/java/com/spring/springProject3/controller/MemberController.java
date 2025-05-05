@@ -294,7 +294,7 @@ public class MemberController {
         content += "<p>" + description + "<br/>" + subMessage + "</p>";
 
         content += "<div style='padding:15px; background:#f9f9f9; border:1px solid #ccc; border-radius:5px; margin:20px 0; text-align:center;'>";
-        content += "<span style='font-size:18px; color:#000; font-weight:bold;'>임시 비밀번호 : </span>";
+        content += "<span style='font-size:18px; color:#000; font-weight:bold;'>" + prefix + "</span>";
         content += "<span style='font-size:18px; color:#2e7d32; font-weight:bold;'>" + mailFlag + "</span>";
         content += "</div>";
 
