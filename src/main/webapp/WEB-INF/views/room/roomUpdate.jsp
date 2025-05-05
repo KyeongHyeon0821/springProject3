@@ -17,14 +17,15 @@
 			let name = $("#name").val().trim();
 			let price = $("#price").val().trim();
 			let petSizeLimit = $("#petSizeLimit").val().trim();
+			let roomNumber = $("#roomNumber").val().trim();
 			
 			if(name == "") {
-				alert("객실 이름을 입력해주세요.");
+				alert("객실 타입을 입력해주세요.");
 				$("#name").focus();
 				return false;
 			}
 			else if (name.length > 50) {
-	      alert("객실 이름은 50자 이내로 입력해주세요.");
+	      alert("객실 타입은 50자 이내로 입력해주세요.");
 	      $("#name").focus();
 	      return false;
 	    }
@@ -34,6 +35,12 @@
 				$("#price").focus();
 				return false;
 			}
+			
+			if (roomNumber.length > 20) {
+	      alert("객실 이름은 20자 이내로 입력해주세요.");
+	      $("#roomNumber").focus();
+	      return false;
+	    }
 			
 			if(petSizeLimit == "") {
 				alert("반려견 크기 제한을 선택해주세요.");
@@ -171,7 +178,7 @@
 
     <div class="form-group">
       <label for="roomNumber">객실 이름(번호)</label>
-      <input type="text" name="roomNumber" id="roomNumber" value="${vo.roomNumber}" class="form-control" required />
+      <input type="text" name="roomNumber" id="roomNumber" value="${vo.roomNumber}" class="form-control" />
     </div>
 
     <div class="form-group">

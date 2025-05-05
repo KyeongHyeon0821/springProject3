@@ -146,9 +146,9 @@ public class RoomController {
 		int res = roomService.setRoomUpdate(vo);
 		
 		// 기존 객실-옵션 데이터 삭제
-		res = roomService.setDeleteRoomOptions(vo.getIdx());
 		// 객실-옵션 데이터 저장(DB)
 		if(options != null) {
+			res = roomService.setDeleteRoomOptions(vo.getIdx());
 			for(String optionIdxStr : options) {
 				System.out.println(vo.getIdx());
 				res = roomService.setRoomOptions(vo.getIdx(), Integer.parseInt(optionIdxStr));

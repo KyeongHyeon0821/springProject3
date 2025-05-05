@@ -21,7 +21,7 @@
 			let thumbnailFile = $("#thumbnailFile").val(); // 썸네일 파일 이름
 			
 			if(name == "") {
-				alert("객실 이름을 입력해주세요.");
+				alert("객실 타입을 입력해주세요.");
 				$("#name").focus();
 				return false;
 			}
