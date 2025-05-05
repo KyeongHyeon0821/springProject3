@@ -153,7 +153,7 @@
 		}
 		
 		.roomNumber {
-		  font-size: 18px;
+		  font-size: 15px;
 		  font-weight: bold;
 		  color: #333;
 		  margin-top: 0px;
@@ -171,6 +171,9 @@
 		  color: #222;
 		  text-align: right;
 		  margin-top: 12px;
+		  position: absolute;
+	    right: 16px;
+	    bottom: 20px;
 		}
 		
 		.hotel-info {

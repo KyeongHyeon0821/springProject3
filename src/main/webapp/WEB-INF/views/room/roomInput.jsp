@@ -15,6 +15,7 @@
 		function fCheck() {
 			// 유효성 체크
 			let name = $("#name").val().trim();
+			let roomNumber = $("#roomNumber").val().trim();
 			let price = $("#price").val().trim();
 			let petSizeLimit = $("#petSizeLimit").val().trim();
 			let thumbnailFile = $("#thumbnailFile").val(); // 썸네일 파일 이름
@@ -25,8 +26,14 @@
 				return false;
 			}
 			else if (name.length > 50) {
-	      alert("객실 이름은 50자 이내로 입력해주세요.");
+	      alert("객실 타입은 50자 이내로 입력해주세요.");
 	      $("#name").focus();
+	      return false;
+	    }
+			
+			if (roomNumber.length > 20) {
+	      alert("객실 이름은 20자 이내로 입력해주세요.");
+	      $("#roomNumber").focus();
 	      return false;
 	    }
 			
@@ -280,7 +287,7 @@
 
     <div class="form-group">
       <label for="roomNumber">객실 이름(번호)</label>
-      <input type="text" name="roomNumber" id="roomNumber" class="form-control" required />
+      <input type="text" name="roomNumber" id="roomNumber" class="form-control"/>
     </div>
 
     <div class="form-group">

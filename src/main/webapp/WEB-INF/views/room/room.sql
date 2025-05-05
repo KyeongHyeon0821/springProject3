@@ -4,7 +4,7 @@ create table room(
 	mid varchar(20) not null,								/* 호텔 등록자 아이디 */
 	hotelIdx int not null,									/* 연결된 호텔 아이디 */
 	name varchar(50) not null,							/* 객실명 */
-	roomNumber varchar(10) not null,				/* 객실 번호 */
+	roomNumber varchar(20),									/* 객실 이름(번호) */
 	price int not null,											/* 객실 1박 요금 */
 	maxPeople int not null,									/* 최대 인원 수 */
 	petSizeLimit varchar(10) not null,			/* 반려견 크기 제한 (소형/중형/대형) */
