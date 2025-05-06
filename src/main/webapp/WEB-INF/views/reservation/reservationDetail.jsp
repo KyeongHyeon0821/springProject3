@@ -7,7 +7,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>reservationDetail.jsp</title>
+	<title>위드펫 - 예약상세</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
 	<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 	<script>

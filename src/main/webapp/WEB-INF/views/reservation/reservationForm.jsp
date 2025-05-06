@@ -6,7 +6,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>예약하기</title>
+	<title>위드펫 - 예약하기</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
 	<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 	<style>
@@ -232,11 +232,11 @@
 	      document.getElementById('memo').focus();
 	      return false;
 	    }
-			if (!authenticationSw) {
+			/* if (!authenticationSw) {
 	      alert("인증번호 확인이 필요합니다. 인증을 진행해주세요.");
 	      document.getElementById('tel').focus();
 	      return false;
-	    }
+	    } */
 
 			return true;
 		}

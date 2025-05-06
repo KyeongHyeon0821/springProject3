@@ -8,7 +8,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>hotelDetail.jsp</title>
+	<title>위드펫 - 호텔상세</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
 	<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
@@ -681,7 +681,7 @@
 	</div>
 	
   <!-- 리뷰 미리보기 -->
-	<div class="review-preview-container">
+	<div class="review-preview-container mt-5">
 		<h4 class="mb-0" style="font-size: 1.2rem; font-weight: bold;">리뷰</h4>
 		<c:if test="${!empty rVos}">
 			<a id="allReviewShow" href="#" class="text-end" data-bs-toggle="modal" data-bs-target="#myModal" style="display:block">전체 리뷰 보기</a>

@@ -23,12 +23,7 @@
 	  	
 	<!-- 조건 검색 호텔리스트 조회 -->
 	<select id="getSearchHotelList" resultType="com.spring.springProject3.vo.HotelVo">
-	  select 
-	    h.idx, 
-	    h.name, 
-	    h.thumbnail, 
-	    h.address, 
-	    h.tel,
+	  select h.idx, h.name, h.thumbnail, h.address, h.tel,
 	    (
 	      select min(r2.price)
 	      from room r2

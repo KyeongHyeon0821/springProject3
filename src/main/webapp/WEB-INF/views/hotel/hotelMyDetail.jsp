@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>hotelMyDetail.jsp</title>
+<title>위드펫 - 호텔상세</title>
 <jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
 <link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f5f016ee8ec4b87750154cd5e9d07dfb&libraries=services"></script>

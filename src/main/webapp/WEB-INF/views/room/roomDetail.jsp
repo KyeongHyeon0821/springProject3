@@ -7,7 +7,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>roomDetail.jsp</title>
+	<title>위드펫 - 객실상세</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
 	<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>

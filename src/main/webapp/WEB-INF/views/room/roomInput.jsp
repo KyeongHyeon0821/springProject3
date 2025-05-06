@@ -5,7 +5,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>roomInput.jsp</title>
+	<title>위드펫 - 객실등록</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
 	<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 	<script>
