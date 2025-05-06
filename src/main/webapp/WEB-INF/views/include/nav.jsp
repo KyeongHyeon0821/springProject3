@@ -88,6 +88,26 @@
   .dropdown:hover .dropdown-content {
     display: block;
   }
+	  #scrollTopBtn {
+	  display: none;
+	  position: fixed;
+	  bottom: 40px;
+	  right: 40px;
+	  z-index: 1000;
+	  background-color: gray !important;
+	  color: white;
+	  border: none;
+	  padding: 10px 15px;
+	  border-radius: 50%;
+	  font-size: 18px;
+	  cursor: pointer;
+	  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+	  transition: background-color 0.3s ease;
+	}
+	
+	#scrollTopBtn:hover {
+	  background-color: #555 !important;
+	}
 </style>
 <script>
 		'use strict';
@@ -161,4 +181,25 @@
     </ul>
   </div>
 </nav>
+<!-- Top 버튼 -->
+<button id="scrollTopBtn" style="display:none; position:fixed; bottom:40px; right:40px; z-index:1000; background-color:#333; color:#fff; border:none; padding:10px 15px; border-radius:50%; font-size:16px; cursor:pointer;">
+  ↑
+</button>
+<script>
+  const scrollBtn = document.getElementById("scrollTopBtn");
+
+  // 스크롤 이벤트 감지
+  window.onscroll = function () {
+    if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
+      scrollBtn.style.display = "block";
+    } else {
+      scrollBtn.style.display = "none";
+    }
+  };
+
+  // 클릭 시 스크롤 맨 위로
+  scrollBtn.addEventListener("click", function () {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+</script>
 </body>

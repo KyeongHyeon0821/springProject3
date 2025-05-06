@@ -282,7 +282,7 @@
     	<a href="" class="btn-cancel">예약취소</a>
     </c:if>
     <c:if test="${reservationVo.status == '이용완료'}">
-    	<a href="" class="btn-review">리뷰작성</a>
+    	<a href="${ctp}/room/roomUseList" class="btn-review">리뷰작성</a>
     </c:if>
   </div>
 </div>

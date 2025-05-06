@@ -260,8 +260,6 @@ public class RoomController {
 		
 		model.addAttribute("vos", vos);
 		model.addAttribute("rsVos",rsVos);
-		System.out.println("vos :" + vos );
-		System.out.println("rsVos :" + rsVos);
 		
 		return "room/roomUseList";
 	}
