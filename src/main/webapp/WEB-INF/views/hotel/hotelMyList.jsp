@@ -7,8 +7,8 @@
 <head>
   <meta charset="UTF-8">
   <title>hotelMyList.jsp</title>
+  <link rel="icon" href="${ctp}/images/favicon.ico" type="image/x-icon">
   <jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
-  <link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
   <style>
     body {
       background-color: #f9fefb;
@@ -37,6 +37,9 @@
     .hotel-details {
       flex-grow: 1;
       padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     .hotel-name a {
       font-size: 18px;
@@ -47,17 +50,23 @@
     .hotel-name a:hover {
       color: #0077cc;
     }
-    .hotel-address,
-    .hotel-tel {
+    .hotel-star {
       font-size: 14px;
-      color: #555;
+      color: #222;
+    }
+    .hotel-star-rating {
+      font-weight: bold;
+    }
+    .hotel-type {
+      font-size: 13px;
+      color: #777;
     }
     .hotel-minPrice {
-      margin-top: auto;
       font-weight: bold;
       font-size: 18px;
       color: #222;
       text-align: right;
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -78,8 +87,13 @@
         <div class="hotel-name">
           <a href="${ctp}/hotel/hotelMyDetail?idx=${vo.idx}">${vo.name}</a>
         </div>
-        <div class="hotel-address">${vo.address}</div>
-        <div class="hotel-tel">${vo.tel}</div>
+        <div class="hotel-star">
+          <span class="hotel-star-rating">★ ${vo.averageStar}</span> (<fmt:formatNumber value="${vo.reviewCnt}" type="number" pattern="#,##0" />)
+        </div>
+        <div class="hotel-type">호텔</div>
+        <div class="hotel-minPrice">
+          <fmt:formatNumber value="${vo.minPrice}" type="number" pattern="#,##0" />원~
+        </div>
       </div>
     </div>
   </c:forEach>
