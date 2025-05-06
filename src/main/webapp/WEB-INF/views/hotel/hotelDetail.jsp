@@ -788,7 +788,9 @@
 		</form>
 	</div>
 
-  
+	<c:if test="${empty roomVos}">
+		<div class="text-center mb-5">예약 가능한 객실이 없습니다. 조건을 변경하거나 다른 날짜를 시도해 보세요.</div>
+	</c:if>
 	<div class="roomList">
 	  <c:set var="previousRoomType" value="" />
 	
