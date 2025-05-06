@@ -530,7 +530,7 @@
 		function hotelDeleteCheck() {
 			let ans = confirm("해당 호텔 서비스 중지를 요청하시겠습니까?");
 			if(!ans) return false;
-			else location.href="hotelDeleteCheck?idx=${vo.idx}";
+			else location.href="hotelDeleteCheck?idx=${hotelVo.idx}";
 		}
 		
 		// 호텔 찜 추가하기

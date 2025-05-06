@@ -101,7 +101,7 @@ public class HotelServiceImpl implements HotelService {
 			File realFileName = new File(realPath + sFileName);
 			file.transferTo(realFileName);
 			
-			// 썸메일 이미지 생성 저장하기
+			// 썸네일 이미지 생성 저장하기
 			String thumbnailSaveName = realPath + "s_" + sFileName;
 			File thumbnailFile = new File(thumbnailSaveName);
 			

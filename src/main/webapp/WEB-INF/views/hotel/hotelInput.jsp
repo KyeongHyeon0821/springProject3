@@ -297,7 +297,7 @@
 
     <div class="form-group text-center">
       <input type="submit" value="등록하기" class="custom-btn submit-btn">
-      <input type="reset" value="다시입력" class="custom-btn reset-btn">
+      <input type="button" value="다시입력" class="custom-btn reset-btn" onclick="location.reload()">
       <input type="button" value="돌아가기" onclick="location.href='${ctp}/';" class="custom-btn back-btn">
     </div>
 
