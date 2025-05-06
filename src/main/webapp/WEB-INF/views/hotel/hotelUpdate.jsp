@@ -207,7 +207,7 @@
     <div id="menu_wrap" class="bg_white">
       <div class="option">
         <form onsubmit="searchPlaces(); return false;">
-          키워드 : <input type="text" value="반려견 동반 호텔" id="keyword" size="15">
+          키워드 : <input type="text" value="${vo.address}" id="keyword" size="15">
           <button type="submit">검색하기</button>
         </form>
       </div>
