@@ -30,7 +30,7 @@ public interface MemberService {
 
 	MemberVo getMemberBizNoCheck(String businessNo);
 	
-	List<MemberVo> getMemberList();
+	List<MemberVo> getMemberList(int section);
 
 	MemberVo getMemberIdxSearch(int idx);
 

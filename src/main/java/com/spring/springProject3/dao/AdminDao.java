@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.InquiryVo;
 
 public interface AdminDao {
@@ -27,5 +28,7 @@ public interface AdminDao {
   int getReviewTotRecCnt(@Param("choice") String choice);
 
   void setReviewDelete(@Param("idx") int idx);
+
+	List<HotelVo> getAdHotelList(@Param("startIndexNo") int startIndexNo, @Param("pageSize") int pageSize);
 
 }

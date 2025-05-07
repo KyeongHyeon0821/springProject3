@@ -24,6 +24,11 @@
 		  join hotel h on r.hotelIdx = h.idx
 		  where rs.status ='리뷰작성'; </if>
   </select>
+  
+  <!-- 전체 호텔 조회 -->
+  <select id="getAdHotelList" resultType="com.spring.springProject3.vo.HotelVo">
+    select * from hotel order by idx desc;
+  </select>
 
   <insert id="setInquiryReplyOk">
 		insert into inquiryReply values (default,#{idx},default,#{reContent})

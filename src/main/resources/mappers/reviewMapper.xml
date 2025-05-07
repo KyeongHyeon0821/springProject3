@@ -30,20 +30,19 @@
 	
 	<!-- AdminController에서 리뷰작성된 룸 목록 불러오기 -->
 	<select id="getRoomUsedAllList" resultType="com.spring.springProject3.vo.ReservationListVo">
-		select r.name as roomName, r.roomNumber, r.price, r.maxPeople, r.petSizeLimit, r.petCountLimit, r.thumbnail as roomThumbnail, r.idx as roomIdx,
-					 h.name as hotelName, h.thumbnail as hotelThumbnail, h.idx as hotelIdx,
-					 rs.idx as reservationIdx,
-					 rs.checkinDate,
-					 rs.checkoutDate,
-					 rs.guestCount,
-					 rs.petCount,
-					 rs.totalPrice,
-					 (select count(*)) as roomTotal
-					 from reservation rs
-					 join room r on rs.roomIdx = r.idx
-					 join hotel h on r.hotelIdx = h.idx
-					 where rs.mid = #{mid} and rs.status ='리뷰작성' GROUP BY r.idx order by rs.checkinDate desc limit #{startIndexNo},#{pageSize};
-	</select>
+     select r.name as roomName, r.roomNumber, r.price, r.maxPeople, r.petSizeLimit, r.petCountLimit, r.thumbnail as roomThumbnail, r.idx as roomIdx,
+	     h.name as hotelName, h.thumbnail as hotelThumbnail, h.idx as hotelIdx,
+	     rs.idx as reservationIdx, reservationNo,
+	     rs.checkinDate,
+	     rs.checkoutDate,
+	     rs.guestCount,
+	     rs.petCount,
+	     rs.totalPrice  
+	   from reservation rs
+	     join room r on rs.roomIdx = r.idx
+	     join hotel h on r.hotelIdx = h.idx
+     where rs.status ='리뷰작성' group by r.idx order by rs.checkinDate desc limit #{startIndexNo},#{pageSize};
+  </select>
 	
 	<!-- 리뷰를 달았는지 확인한다 -->
 	<select id="getExistReviewedCheck" resultType="int">

@@ -336,6 +336,10 @@ public class MessageController {
 			model.addAttribute("message", "리뷰 작성에 실패했습니다.\\n다시 시도해주세요.");
 			model.addAttribute("url", "review/memberReviewInput");
 		}
+		else if(msgFlag.equals("levelError0")) {
+			model.addAttribute("message", "관리자만 접근가능합니다.");
+			model.addAttribute("url", "member/memberMain");
+		}
 		
 		
 		return "include/message";

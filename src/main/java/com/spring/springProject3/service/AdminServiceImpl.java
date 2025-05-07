@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.springProject3.dao.AdminDao;
+import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.InquiryVo;
 
 @Service
@@ -60,6 +61,11 @@ public class AdminServiceImpl implements AdminService {
 			str = "1";
 		}
 		return str;
+	}
+
+	@Override
+	public List<HotelVo> getAdHotelList(int startIndexNo, int pageSize) {
+		return adminDao.getAdHotelList(startIndexNo, pageSize);
 	}
 	
 }

@@ -32,7 +32,7 @@ public interface MemberDao {
 
 	MemberVo getMemberBizNoCheck(String businessNo);
 	
-	List<MemberVo> getMemberList();
+	List<MemberVo> getMemberList(@Param("section") int section);
 
 	MemberVo getMemberIdxSearch(@Param("idx") int idx);
 

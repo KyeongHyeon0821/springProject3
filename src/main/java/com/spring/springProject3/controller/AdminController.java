@@ -19,6 +19,7 @@ import com.spring.springProject3.common.Pagination;
 import com.spring.springProject3.service.AdminService;
 import com.spring.springProject3.service.HotelService;
 import com.spring.springProject3.service.MemberService;
+import com.spring.springProject3.service.ReservationService;
 import com.spring.springProject3.service.ReviewService;
 import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.InquiryVo;
@@ -46,8 +47,16 @@ public class AdminController {
 	@Autowired
 	Pagination pagination;
 	
+	@Autowired
+	ReservationService reservationService;
+	
+	
 	@GetMapping("/adminMain")
 	public String admiMainGet() {
+		// 결제 안 한 예약 자동 취소 ('대기중' -> '예약취소' 예약 당일 안 했을 경우)
+		reservationService.setReservationAutoCancel();
+		// 예약상태 업데이트(체크아웃 날짜가 오늘 날짜랑 같거나 이전이면 이용완료 처리(오늘 날짜부터 새 예약을 받을 수 있도록)
+		reservationService.setReservationUpdateToDone();
 		return "admin/adminMain";
 	}
 	@GetMapping("/adminLeft")
@@ -66,10 +75,11 @@ public class AdminController {
 	}
 	
 	// 회원리스트 보기
-	@GetMapping("/member/memberList")
-	public String memberListGet(Model model) {
-		List<MemberVo> vos = memberService.getMemberList();
+	@GetMapping("/member/memberList/{section}")
+	public String memberListGet(Model model,@PathVariable int section) {
+		List<MemberVo> vos = memberService.getMemberList(section);
 		model.addAttribute("vos",vos);
+		model.addAttribute("section", section);
 		
 		return "admin/member/memberList";
 	}
@@ -130,20 +140,20 @@ public class AdminController {
 	}
 	
 	//호텔리스트 부르기
-	@RequestMapping("/hotelList")
+	@RequestMapping("/hotel/hotelList")
 	public String hotelListGet(Model model, HttpSession session,
 			 @RequestParam(name="startIndexNo", defaultValue = "0", required = false) int startIndexNo,
-			 @RequestParam(name="pageSize", defaultValue = "6", required = false) int pageSize
+			 @RequestParam(name="pageSize", defaultValue = "1000", required = false) int pageSize
 		) {
 		String mid = session.getAttribute("sMid") + "";
-		List<HotelVo> vos = hotelService.getHotelList(startIndexNo, pageSize);
+		List<HotelVo> vos = adminService.getAdHotelList(startIndexNo, pageSize);
 		
 		if(!mid.equals("")) {
 			List<Integer> likedHotelListIdx = hotelService.getLikedHotelListIdx(mid);
 			model.addAttribute("likedHotelListIdx", likedHotelListIdx);
 		}
 		model.addAttribute("vos", vos);
-		return "hotel/hotelList";
+		return "admin/hotel/hotelList";
 	}
 	
 	//관리자 실시간 1:1 채팅창 폼 보여주기

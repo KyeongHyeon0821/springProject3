@@ -14,5 +14,5 @@ public class PhotogalleryVo {
 	private String wDate;
 	private String thumbnail;
 	private int readNum;
-
+	private int spotIdx;
 }

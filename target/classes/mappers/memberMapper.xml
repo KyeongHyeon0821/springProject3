@@ -4,9 +4,8 @@
 
   <!-- 회원 전체 조회 -->
   <select id="getMemberList" resultType="com.spring.springProject3.vo.MemberVo">
-		select * from member order by idx desc;
+    select *,datediff(now(), lastDate) as deleteDiff from member where (#{section}=1 and (level=1 or level=888)) or (#{section}=2 and (level=2 or level=0 or level=999)) order by idx desc;
   </select>
-
 	<!-- 회원 개별 조회 -->
 	<select id="getMemberIdxSearch" resultType="com.spring.springProject3.vo.MemberVo">
 		select * from member where idx=#{idx};

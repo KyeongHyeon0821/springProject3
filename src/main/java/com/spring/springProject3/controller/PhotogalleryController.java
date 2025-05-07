@@ -19,6 +19,7 @@ import com.spring.springProject3.common.ProjectProvide;
 import com.spring.springProject3.service.PhotogalleryService;
 import com.spring.springProject3.vo.PageVo;
 import com.spring.springProject3.vo.PhotogalleryVo;
+import com.spring.springProject3.vo.TouristSpotVo;
 
 @Controller
 @RequestMapping("/photogallery")
@@ -51,14 +52,14 @@ public class PhotogalleryController {
 	// 포토갤러리 게시글 입력 폼보기
 	@RequestMapping(value = "/photogalleryInput", method = RequestMethod.GET)
 	public String photogalleryInputGet(Model model) {
-		//List<관광지VO> pVos = photogalleryService.get관관지List();
-		List<String> pVos = new ArrayList<>();
-		pVos.add("허브아일랜드");
-		pVos.add("양양복골온천");
-		pVos.add("평창 육백마지기");
-		pVos.add("바다");
-		pVos.add("여행");
-		
+		List<TouristSpotVo> pVos = photogalleryService.getTouristSpotList();
+//		List<String> pVos = photogalleryService.getTouristSpotList();
+//		List<String> pVos = new ArrayList<>();
+//		pVos.add("허브아일랜드");
+//		pVos.add("양양복골온천");
+//		pVos.add("평창 육백마지기");
+//		pVos.add("바다");
+//		pVos.add("여행");
 		model.addAttribute("pVos", pVos);
 		
 		return "photogallery/photogalleryInput";

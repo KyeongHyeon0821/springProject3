@@ -10,9 +10,11 @@ create table photogallery (
 	good int not null default 0,     /* 게시글의 좋아요 수 */ 
 	wDate datetime not null default now(),  /* 게시글 작성날짜 */
 	readNum int not null default 0,       /* 조회수 */
-	thumbnail varchar(50) not null,  /* 썸네일 */ 
+	thumbnail varchar(50) not null,  /* 썸네일 */
+	spotIdx int not null,
 	primary key(idx),
-	foreign key (mid) references member(mid)
+	foreign key (mid) references member(mid),
+	foreign key (spotIdx) references tourist_spot(idx)
 );
 
 drop table photogallery;
