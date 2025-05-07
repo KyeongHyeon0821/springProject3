@@ -111,18 +111,19 @@
 			jusorok += '<th class="text-center">번호</th><th class="text-center">장소</th>';
 			jusorok += '</tr>';
 			jusorok += '<c:forEach var="vo" items="${pVos}" varStatus="st">';
-			jusorok += '<tr onclick="javascript:inputJangsoCheck(\'${vo}\')" class="text-center">';
+			jusorok += '<tr onclick="javascript:inputJangsoCheck(${vo.idx},\'${vo.name}\')" class="text-center">';
 			jusorok += '<td>${st.count}</td>';
-			jusorok += '<td>${vo}</td>';
+			jusorok += '<td>${vo.name}</td>';
 			jusorok += '</tr>';
 			jusorok += '</c:forEach>';
 			jusorok += '';
 			jusorok += '</table>';
 			$(".modal-body #jangsoCheck").html(jusorok);
 	  }
-	  function inputJangsoCheck(pVos) {
-	    	$("#jangso").val(pVos);
-	    	$(".btn-close").click();
+	  function inputJangsoCheck(idx, name) {
+    	$("#spotIdx").val(idx);
+    	$("#part").val(name);
+    	$(".btn-close").click();
 	    }
   </script>
 </head>
@@ -149,7 +150,7 @@
           <td>
           	<div style="display: flex; align-items: center; gap: 10px;">
 							<input type="button" value="장소선택" onclick="jansoCheck()" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#myModal" />
-	          	<input type="text" name="jangso" id="jangso" class="form-control" readonly style="width: 300px"/>
+	          	<input type="text" name="part" id="part" class="form-control" readonly style="width: 300px"/>
 						</div>
           </td>
         </tr>
@@ -175,6 +176,7 @@
 	      </tr>
 	    </table>
 	    <input type="hidden" name="mid" value="${sMid}"/>
+	    <input type="hidden" name="spotIdx" id="spotIdx" />
 	  </form>
 	</div>
 </div>

@@ -16,6 +16,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.spring.springProject3.dao.PhotogalleryDao;
 import com.spring.springProject3.vo.PhotogalleryVo;
+import com.spring.springProject3.vo.TouristSpotVo;
 
 @Service
 public class PhotogalleryServiceImpl implements PhotogalleryService {
@@ -100,6 +101,11 @@ public class PhotogalleryServiceImpl implements PhotogalleryService {
 		@Override
 		public int setPhotogalleryReadNumPlus(int idx) {
 			return photogalleryDao.setPhotogalleryReadNumPlus(idx);
+		}
+
+		@Override
+		public List<TouristSpotVo> getTouristSpotList() {
+			return photogalleryDao.getTouristSpotList();
 		}
 
 }

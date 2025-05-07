@@ -18,6 +18,10 @@
 		select * from photogallery where idx=#{idx};
 	</select>
 	
+	<select id="getTouristSpotList" resultType="com.spring.springProject3.vo.TouristSpotVo">
+		select * from tourist_spot;
+	</select>
+	
 	
 	<select id="getPhotogalleryTotRecCntSearch" resultType="int">
 		select count(*) from photogallery;
@@ -28,7 +32,7 @@
 	
 	
 	<insert id="setPhotogalleryInputOk">
-		insert into photogallery values (default,#{vo.mid},#{vo.nickName},#{vo.title},#{vo.content},#{vo.part},#{vo.good},default,default,#{vo.thumbnail});
+		insert into photogallery values (default,#{vo.mid},#{vo.nickName},#{vo.title},#{vo.content},#{vo.part},#{vo.good},default,default,#{vo.thumbnail},#{vo.spotIdx});
 	</insert>
 	
 	<update id="setPhotogalleryGoodCheck">

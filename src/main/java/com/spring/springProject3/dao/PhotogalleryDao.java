@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.spring.springProject3.vo.PhotogalleryVo;
+import com.spring.springProject3.vo.TouristSpotVo;
 
 public interface PhotogalleryDao {
 
@@ -21,5 +22,7 @@ public interface PhotogalleryDao {
 	int setPhotogalleryDelete(@Param("idx") int idx);
 
 	int setPhotogalleryReadNumPlus(@Param("idx") int idx);
+
+	List<TouristSpotVo> getTouristSpotList();
 
 }
