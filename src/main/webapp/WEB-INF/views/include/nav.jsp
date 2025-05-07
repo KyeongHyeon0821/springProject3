@@ -3,115 +3,160 @@
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
 <link rel="stylesheet" type="text/css" href="${ctp}/css/linkMain.css"/>
+<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 
-	<style>
-		ul, li {
-			text-decoration: none;
-			list-style: none;
-		}
-				
-		body.modal-open {
-  		padding-right: 0 !important;
-		}
-		
-		.nav-container {
-		  display: grid;
-		  grid-template-columns: auto 1fr auto;
-		  align-items: center;
-		  padding: 20px;
-		  max-width: 1400px;
-		  margin: 0 auto;
-		}
+<style>
+  ul, li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
 
-		.nav-links {
-			display: flex;
-			align-items: center;
-		}
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px 10px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .logo img {
+    width: 110px;
+    vertical-align: middle;
+    margin-left: 50px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .nav-links li {
+    text-align: center;
+  }
+
+  .nav-links li a {
+    text-decoration: none;
+    color: #000000;
+    font-weight: 500;
+    font-size: 17px;
+    padding: 8px 10px;
+    border-radius: 12px;
+    transition: background-color 0.2s ease;
+  }
+
+  .nav-links li a:hover {
+    background-color: #f3f3f3;
+  }
+
+  ul.nav-links {
+    margin-bottom: 0 !important;
+  }
+
+  .dropdown {
+    position: relative;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 140px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+    z-index: 1000;
+    padding: 8px 0;
+    border-radius: 10px;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .dropdown-content a {
+    color: #333;
+    padding: 10px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 13px;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #f2f2f2;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+</style>
+<script>
+		'use strict';
 		
-		/* Style The Dropdown Button */
-		.dropbtn {
-		  color: black;
-		  padding: 16px;
-		  font-size: 16px;
-		  border: none;
-		  cursor: pointer;
-		}
-		
-		/* The container <div> - needed to position the dropdown content */
-		.dropdown {
-		  position: relative;
-		  display: inline-block;
-		}
-		
-		/* Dropdown Content (Hidden by Default) */
-		.dropdown-content {
-		  display: none;
-		  position: absolute;
-		  background-color: #f9f9f9;
-		  min-width: 160px;
-		  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-		  z-index: 1;
-		}
-		
-		/* Links inside the dropdown */
-		.dropdown-content a {
-		  color: black;
-		  padding: 12px 16px;
-		  text-decoration: none;
-		  display: block;
-		}
-		
-		/* Change color of dropdown links on hover */
-		.dropdown-content a:hover {background-color: #f1f1f1}
-		
-		/* Show the dropdown menu on hover */
-		.dropdown:hover .dropdown-content {
-		  display: block;
-		}
-		
-		/* Change the background color of the dropdown button when the dropdown content is shown */
-		.dropdown:hover .dropbtn {
-		  background-color: #eee;
-		}
-	</style>
+	  // 실시간 채팅창 열기
+	  function chatEndUserCheck() {
+		  window.open("${ctp}/webSocket/chatEndUserWin","chatWin","width=300px,height=380px");
+	  }
+</script>
 
 <body>
 <nav>
   <div class="nav-container">
-    <a href="${ctp}/" class="logo" style="display:flex; line-height: 80px;"><img src="${ctp}/images/logo.png" width="80px"/>withPet</a>
-    <ul class="nav-links">
-    	<li class="nav-item">
-      	<a class="nav-link" href="${ctp}/hotel/hotelInput">숙박시설 등록</a>
-      </li>
-      <c:if test="${empty sessionScope.sLogin}">
-	      <li class="nav-item">
-	      	<a class="nav-link" href="${ctp}/member/memberLogin">로그인</a>
-	      </li>
-      </c:if>
-      <c:if test="${sMid == 'admin'}">
-	      <li class="nav-item">
-	      	<a class="nav-link" href="${ctp}/admin/adminMain">관리자</a>
-	      </li>
-      </c:if>
-              <!-- 로그인 상태일 때만 로그아웃 & 마이페이지 표시 -->
-			<c:if test="${not empty sessionScope.sLogin}">
-		  	<li class="nav-item">
-		    	<a class="nav-link" href="${ctp}/member/memberLogout">로그아웃</a>
-		  	</li>
-			  <li class="nav-item">
-			    <a class="nav-link" href="${ctp}/member/memberMyPage">마이페이지</a>
-			  </li>
-			</c:if>
-	    <li class="nav-item dropdown">
-        <a class="nav-link dropbtn" href="#" role="button" data-bs-toggle="modal" data-bs-target="#myModal3" id="customButton3">고객센터</a>
-        <div class="dropdown-content">
-			    <a href="#">1:1문의</a>
-			    <a href="#">FQA</a>
-			    <a href="#">Q&A</a>
-				</div>
-      </li>
-    </ul>
-   </div>
-</nav>
+    <!-- 로고 -->
+    <div class="logo">
+      <a href="${ctp}/"><img src="${ctp}/images/logo.png" alt="로고"></a>
+    </div>
 
+    <!-- 네비 메뉴 -->
+    <ul class="nav-links">
+      <li><a href="${ctp}/">홈</a></li>
+
+      <c:if test="${sLevel == 0 || sLevel == 1}">
+        <li><a href="${ctp}/hotel/hotelInput">숙소 등록</a></li>
+      </c:if>
+
+      <li><a href="${ctp}/hotel/hotelList">전체 숙소</a></li>
+
+      <c:if test="${empty sessionScope.sLogin}">
+        <li><a href="${ctp}/member/memberLogin">로그인</a></li>
+      </c:if>
+
+      <li><a href="${ctp}/admin/adminMain">관리자</a></li>
+
+      <c:if test="${not empty sessionScope.sLogin}">
+        <li><a href="${ctp}/member/memberLogout">로그아웃</a></li>
+        <li><a href="${ctp}/member/memberMyPage">마이페이지</a></li>
+      </c:if>
+
+      <li class="dropdown">
+        <a href="#">커뮤니티</a>
+        <div class="dropdown-content">
+          <a href="${ctp}/board/list">자유게시판</a>
+          <a href="${ctp}/photogallery/photogalleryList">포토갤러리</a>
+        </div>
+      </li>
+
+      <li class="dropdown">
+      	<a class="nav-link dropbtn" href="#" role="button">고객센터</a>
+	      <div class="dropdown-content">
+	        <!-- 관리자 메뉴 -->
+	        <c:if test="${sLevel eq 0}">
+	          <a href="${ctp}/admin/inquiry/adInquiryList">1:1문의</a>
+	          <a href="${ctp}/faq/adFaqList">FAQ</a>
+	          <a href="${ctp}/qna/qnaList">Q&A</a>
+	          <a href="${ctp}/admin/liveChat/adminChat" target="_blank">실시간채팅</a>
+	        </c:if>
+	        <!-- 일반/사업자회원 메뉴 -->
+	        <c:if test="${sLevel ne 0}">
+	          <a href="${ctp}/inquiry/inquiryList">1:1문의</a>
+	          <a href="${ctp}/faq/faqList">FAQ</a>
+	          <a href="${ctp}/qna/qnaList">Q&A</a>
+	          <c:if test="${not empty sessionScope.sLogin}">
+	         	 <a href="javascript:chatEndUserCheck()">실시간채팅</a>
+	          </c:if>
+	        </c:if>
+	      </div>
+     </li>
+    </ul>
+  </div>
+</nav>
 </body>

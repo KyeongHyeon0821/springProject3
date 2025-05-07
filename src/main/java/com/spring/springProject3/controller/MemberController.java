@@ -1,5 +1,6 @@
 package com.spring.springProject3.controller;
 
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -27,7 +28,11 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.spring.springProject3.service.MemberService;
+import com.spring.springProject3.service.PetService;
+import com.spring.springProject3.service.ReservationService;
 import com.spring.springProject3.vo.MemberVo;
+import com.spring.springProject3.vo.PetVo;
+import com.spring.springProject3.vo.ReservationVo;
 
 @Controller
 @RequestMapping("/member")
@@ -37,22 +42,16 @@ public class MemberController {
     MemberService memberService;
     
     @Autowired
+    PetService petService;
+    
+    @Autowired
     JavaMailSender mailSender;
     
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
     
-    
-    
-    
-    // 아름.멤버리스트 보기
-  	@GetMapping("/memberList")
-  	public String memberListGet() {
-  		return "/member/memberList";
-  	}
-    
-    
-    
+    @Autowired
+    ReservationService reservationService;
     
     // 로그인 폼 보기
     @RequestMapping(value = "/memberLogin", method = RequestMethod.GET)
@@ -74,82 +73,74 @@ public class MemberController {
     @RequestMapping(value = "/memberLogin", method = RequestMethod.POST)
     public String memberLoginPost(HttpSession session, HttpServletRequest request, HttpServletResponse response, String mid, String pwd, String idSave) {
     	final long LOCK_DURATION = 60 * 1000; // 1분
-      // 실패 횟수 및 제한 시간 확인
-      Integer failCount = (Integer) session.getAttribute("loginFailCount");
-      Long lockTime = (Long) session.getAttribute("lockTime");
-      
-      if (failCount == null) failCount = 0;
-      
-      // 1분 내에 5회 실패 시 로그인 차단
-      if (failCount >= 5 && lockTime != null) {
-          long elapsed = System.currentTimeMillis() - lockTime;
-          if (elapsed < LOCK_DURATION) {
-              long remaining = (LOCK_DURATION - elapsed) / 1000;
-              session.setAttribute("remainingTime", remaining);
-              return "redirect:/message/loginLockTimer";
-          } else {
-              // 제한 시간 지난 경우 초기화
-              session.removeAttribute("lockTime");
-              session.setAttribute("loginFailCount", 0);
-              failCount = 0;
-          }
-      }
+
+        // 실패 횟수 및 제한 시간 확인
+        Integer failCount = (Integer) session.getAttribute("loginFailCount");
+        Long lockTime = (Long) session.getAttribute("lockTime");
+        
+        if (failCount == null) failCount = 0;
+        
+        // 1분 내에 5회 실패 시 로그인 차단
+        if (failCount >= 5 && lockTime != null) {
+            long elapsed = System.currentTimeMillis() - lockTime;
+            if (elapsed < LOCK_DURATION) {
+                long remaining = (LOCK_DURATION - elapsed) / 1000;
+                session.setAttribute("remainingTime", remaining);
+                return "redirect:/message/loginLockTimer";
+            } else {
+                // 제한 시간 지난 경우 초기화
+                session.removeAttribute("lockTime");
+                session.setAttribute("loginFailCount", 0);
+                failCount = 0;
+            }
+        }
     	
     	MemberVo vo = memberService.getMemberIdCheck(mid);
-      if (vo != null && vo.getUserDel().equals("NO") && pwd.equals(vo.getPwd())) {
-    	//if (vo != null && vo.getUserDel().equals("NO") && passwordEncoder.matches(pwd, vo.getPwd())) {
-        	
-      		// 0. 방문수 증가
-      		memberService.setVisitCount(mid);   //방문수 + 1
-      	
-      	
-      		// 1. 세션 설정
-          String strLevel = "";
-          if (vo.getLevel() == 0) strLevel = "관리자";
-          else if (vo.getLevel() == 1) strLevel = "사업자";
-          else if (vo.getLevel() == 2) strLevel = "일반회원";
-          
-          session.setAttribute("sMid", mid);
-          session.setAttribute("sNickName", vo.getNickName());
-          session.setAttribute("sLevel", vo.getLevel());
-          session.setAttribute("strLevel", strLevel);
-          session.setAttribute("sLogin", "로그인");
+        if (vo != null) {
+            // 1. 세션 설정
+            String strLevel = "";
+            if (vo.getLevel() == 0) strLevel = "관리자";
+            else if (vo.getLevel() == 1) strLevel = "사업자";
+            else if (vo.getLevel() == 2) strLevel = "일반회원";
+            
+            session.setAttribute("sMid", mid);
+            session.setAttribute("sNickName", vo.getNickName());
+            session.setAttribute("sLevel", vo.getLevel());
+            session.setAttribute("strLevel", strLevel);
+            session.setAttribute("sLogin", "로그인");
+            
+            // 2. 쿠키 처리
+            if (idSave != null && idSave.equals("on")) {
+                Cookie cookieMid = new Cookie("cMid", vo.getMid());
+                cookieMid.setPath("/");
+                cookieMid.setMaxAge(60 * 60 * 24 * 7); // 7일
+                response.addCookie(cookieMid);
+            } else {
+                Cookie[] cookies = request.getCookies();
+                if (cookies != null) {
+                    for (Cookie cookie : cookies) {
+                        if (cookie.getName().equals("cMid")) {
+                            cookie.setPath("/");
+                            cookie.setMaxAge(0);
+                            response.addCookie(cookie);
+                            break;
+                        }
+                    }
+                }
+            }
+            return "redirect:/message/memberLoginOk";
+        } else {
+        	failCount++;
+            session.setAttribute("loginFailCount", failCount);
 
-          
-          // 2. 쿠키 처리
-          if (idSave != null && idSave.equals("on")) {
-              Cookie cookieMid = new Cookie("cMid", vo.getMid());
-              cookieMid.setPath("/");
-              cookieMid.setMaxAge(60 * 60 * 24 * 7); // 7일
-              response.addCookie(cookieMid);
-          } else {
-              Cookie[] cookies = request.getCookies();
-              if (cookies != null) {
-                  for (Cookie cookie : cookies) {
-                      if (cookie.getName().equals("cMid")) {
-                          cookie.setPath("/");
-                          cookie.setMaxAge(0);
-                          response.addCookie(cookie);
-                          break;
-                      }
-                  }
-              }
-          }
-          return "redirect:/message/memberLoginOk";
-      } else {
-    	  failCount++;
-        session.setAttribute("loginFailCount", failCount);
-
-        if (failCount >= 5) {
-            session.setAttribute("lockTime", System.currentTimeMillis());
-            session.setAttribute("remainingTime", 60L); // 60초 제한
-            return "redirect:/message/loginLockTimer";
+            if (failCount >= 5) {
+                session.setAttribute("lockTime", System.currentTimeMillis());
+                session.setAttribute("remainingTime", 60L); // 60초 제한
+                return "redirect:/message/loginLockTimer";
+            }
+            return "redirect:/message/memberLoginNo";
         }
-        return "redirect:/message/memberLoginNo";
-      }
     }
-    
-    
     // 카카오 로그인 처리
     @RequestMapping(value = "/kakaoLogin", method = RequestMethod.GET)
     public String kakaoLoginGet(HttpSession session, HttpServletRequest request, HttpServletResponse response,
@@ -177,7 +168,7 @@ public class MemberController {
             memberService.setKakaoMemberInput(mid, nickName, email, passwordEncoder.encode(pwd));
             vo = memberService.getMemberIdCheck(mid);
             // 임시 비밀번호를 이메일로 전송
-            mailSend(email, "임시비밀번호를 발송하였습니다.", "임시비밀번호 : " + pwd);
+            mailSend(email, "[withPET] 임시 비밀번호", pwd);
             session.setAttribute("sLoginNew", "OK");
         }
         
@@ -209,9 +200,8 @@ public class MemberController {
             return "redirect:/message/idCheckNo";
         }
         // 비밀번호 암호화
-        //vo.setPwd(passwordEncoder.encode(vo.getPwd()));
+        vo.setPwd(passwordEncoder.encode(vo.getPwd()));
         
-        System.out.println("vo : " + vo);
         int res = memberService.setMemberJoinOk(vo);
         return (res != 0) ? "redirect:/message/memberJoinOk" : "redirect:/message/memberJoinNo";
     }
@@ -247,7 +237,7 @@ public class MemberController {
         UUID uid = UUID.randomUUID();
         String emailKey = uid.toString().substring(0,8);
         session.setAttribute("sEmailKey", emailKey);
-        mailSend(email, "이메일 인증키입니다.", "인증키 : " + emailKey);
+        mailSend(email, "[withPET] 이메일 인증키", emailKey);
         return "1";
     }
     
@@ -260,36 +250,74 @@ public class MemberController {
         return (checkKey.equals(sCheckKey)) ? "1" : "0";
     }
     
-    // 메일 전송하기(인증번호, 아이디찾기, 비밀번호 찾기)
- 	public void mailSend(String toMail, String title, String mailFlag) throws MessagingException {
- 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
- 		String content = "";		
- 		
- 		MimeMessage message = mailSender.createMimeMessage();
- 		MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
- 		
- 		// 메일보관함에 메세지 내용 저장...후... 처리
- 		messageHelper.setTo(toMail);
- 		messageHelper.setSubject(title);
- 		messageHelper.setText(content);
- 		
- 		// 메세지에 추가로 필요한 사항을 messageHelper에 추가로 넣어준다.
- 		content = content.replace("\n", "<br>");
- 		content += "<br><hr><h3>"+mailFlag+"</h3><br>";
- 		content += "<p><img src=\"cid:\" width='550px'></p>";
- 		content += "<p>방문하기 : <a href='http://withpet'>withpet</a></p>";
- 		content += "<hr>";
- 		messageHelper.setText(content, true);
- 		
- 		// 본문에 기재된 그림파일의 경로
- 		FileSystemResource file = new FileSystemResource(request.getSession().getServletContext().getRealPath("/resources/images/bandmember.jpg"));
- 		messageHelper.addInline("bandmember.jpg", file);
- 		
- 		// 메일 전송하기
- 		mailSender.send(message);
- 	}
-    
-    // 회원 메인 (마이페이지)
+ // 메일 전송하기 (인증번호, 임시 비밀번호)
+    public void mailSend(String toMail, String title, String mailFlag) throws MessagingException {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+
+        messageHelper.setTo(toMail);
+
+        // 메일 제목/내용 분기
+        String mainTitle = "";
+        String description = "";
+        String subMessage = "";
+        String subject = title;
+        String prefix = "";
+
+        if (title.contains("임시 비밀번호")) {
+            subject = "[withPET] 임시 비밀번호";
+            mainTitle = "withPET 임시 비밀번호 안내";
+            description = "회원님의 요청으로 아래와 같이 임시 비밀번호를 발급해드렸습니다.";
+            subMessage = "보안을 위해 <strong>로그인 후 반드시 비밀번호를 변경</strong>해 주세요.";
+            prefix = "임시 비밀번호 : ";
+        } else if (title.contains("인증키")) {
+            subject = "[withPET] 이메일 인증키";
+            mainTitle = "withPET 이메일 인증 안내";
+            description = "회원가입을 위해 이메일 인증이 필요합니다.";
+            subMessage = "아래 인증키를 입력해 주세요.";
+            prefix = "인증키 : ";
+        }
+
+        messageHelper.setSubject(subject);
+
+        // HTML 메일 본문 구성
+        String content = "";
+        content += "<div style='font-family:Arial,sans-serif; font-size:16px; color:#333; max-width:600px; margin:0 auto; padding:20px; border:1px solid #eee; border-radius:8px;'>";
+        content += "<div style='text-align:center; margin-bottom:10px;'>";
+        content += "<img src='cid:logo' alt='withPet 로고' style='max-width:180px;'/>";
+        content += "</div>";
+
+        content += "<h2 style='color:#2e7d32; text-align:center; margin-top:0;'>" + mainTitle + "</h2>";
+        content += "<p>안녕하세요, <strong>withPET</strong>입니다.</p>";
+        content += "<p>" + description + "<br/>" + subMessage + "</p>";
+
+        content += "<div style='padding:15px; background:#f9f9f9; border:1px solid #ccc; border-radius:5px; margin:20px 0; text-align:center;'>";
+        content += "<span style='font-size:18px; color:#000; font-weight:bold;'>임시 비밀번호 : </span>";
+        content += "<span style='font-size:18px; color:#2e7d32; font-weight:bold;'>" + mailFlag + "</span>";
+        content += "</div>";
+
+        content += "<p style='text-align:center;'><a href='http://localhost:9090/springProject3/' style='background-color:#2e7d32; color:#fff; padding:10px 20px; text-decoration:none; border-radius:4px;'>withPET 바로가기</a></p>";
+
+        content += "<hr style='margin:40px 0;'>";
+        content += "<p style='font-size:12px; color:#999;'>본 메일은 발신전용입니다. 문의사항은 홈페이지를 통해 남겨주세요.</p>";
+        content += "</div>";
+
+        // 본문 적용
+        messageHelper.setText(content, true);
+
+        // 로고 이미지 연결
+        FileSystemResource file = new FileSystemResource(
+            request.getSession().getServletContext().getRealPath("/resources/images/logo.png"));
+        messageHelper.addInline("logo", file);
+
+        // 메일 전송
+        mailSender.send(message);
+    }
+
+
+    // 마이페이지(일반회원, 사업자회원, 관리자)
     @RequestMapping(value = "/memberMyPage", method = RequestMethod.GET)
     public String memberMyPageGet(HttpSession session, Model model) {
         String mid = (String) session.getAttribute("sMid");
@@ -306,7 +334,17 @@ public class MemberController {
         }
         
         model.addAttribute("mVo", mVo);
-        return "member/memberMyPage";
+        
+        // 반려견 리스트 조회 추가
+        List<PetVo> dogList = petService.getPetList(mid);
+        model.addAttribute("dogList", dogList);
+
+        // level 값에 따라 다른 JSP로 보내기
+        if (mVo.getLevel() == 1 || mVo.getLevel() == 0) {
+            return "member/memberMyPageBiz"; // 사업자회원, 관리자
+        } else {
+            return "member/memberMyPage"; // 일반회원
+        }
     }
     
     // 로그아웃 처리
@@ -326,10 +364,8 @@ public class MemberController {
     // 비밀번호 확인 후 처리 (탈퇴, 비밀번호 변경, 회원 정보 수정)
     @RequestMapping(value = "/pwdCheck/{pwdFlag}", method = RequestMethod.POST)
     public String pwdCheckPost(HttpSession session, @PathVariable String pwdFlag, String pwd) {
-    		int level = (int) session.getAttribute("sLevel");
         String mid = (String) session.getAttribute("sMid");
-        
-        if (!pwd.equals(memberService.getMemberIdCheck(mid).getPwd())) {
+        if (!passwordEncoder.matches(pwd, memberService.getMemberIdCheck(mid).getPwd())) {
             if (pwdFlag.equals("d"))
                 return "redirect:/message/pwdCheckNo";
             else if (pwdFlag.equals("p"))
@@ -337,19 +373,11 @@ public class MemberController {
             else if (pwdFlag.equals("u"))
                 return "redirect:/message/pwdCheckNoU";
         }
-//        if (!passwordEncoder.matches(pwd, memberService.getMemberIdCheck(mid).getPwd())) {
-//        	if (pwdFlag.equals("d"))
-//        		return "redirect:/message/pwdCheckNo";
-//        	else if (pwdFlag.equals("p"))
-//        		return "redirect:/message/pwdCheckNoP";
-//        	else if (pwdFlag.equals("u"))
-//        		return "redirect:/message/pwdCheckNoU";
-//        }
         if (pwdFlag.equals("d")) {
-            memberService.setMemberDeleteCheck(mid, level);
+            memberService.setMemberDeleteCheck(mid);
             return "redirect:/message/memberDeleteCheck";
         } else if (pwdFlag.equals("p")) {
-            return "member/memberPassCheckForm";
+            return "member/pwdChange";
         } else if (pwdFlag.equals("u")) {
             return "redirect:/member/memberUpdate";
         }
@@ -434,7 +462,7 @@ public class MemberController {
 
         // 4. 이메일로 임시 비밀번호 전송
         try {
-            mailSend(email, "임시비밀번호를 발송하였습니다.", "임시비밀번호 : " + tempPwd);
+            mailSend(email, "[withPET] 임시 비밀번호", tempPwd);
         } catch (MessagingException e) {
             e.printStackTrace();
             model.addAttribute("msg", "이메일 전송에 실패했습니다.");
@@ -455,6 +483,15 @@ public class MemberController {
             sb.append(chars.charAt(rnd.nextInt(chars.length())));
         }
         return sb.toString();
+    }
+    
+    // 예약 내역 조회 및 관리
+    @RequestMapping("/myReservation")
+    public String myReservationGet(HttpSession session, Model model) {
+    	String mid = session.getAttribute("sMid") + "";
+    	List<ReservationVo> vos = reservationService.getMyReservations(mid);
+    	model.addAttribute("vos", vos);
+    	return "member/myReservation";
     }
 
 }

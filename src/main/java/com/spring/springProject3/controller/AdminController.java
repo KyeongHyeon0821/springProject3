@@ -21,7 +21,6 @@ import com.spring.springProject3.service.HotelService;
 import com.spring.springProject3.service.MemberService;
 import com.spring.springProject3.service.ReservationService;
 import com.spring.springProject3.service.ReviewService;
-import com.spring.springProject3.service.RoomService;
 import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.InquiryVo;
 import com.spring.springProject3.vo.MemberVo;
@@ -35,19 +34,13 @@ import com.spring.springProject3.vo.RoomVo;
 public class AdminController {
 	
 	@Autowired
-	AdminService adminService;
-	
-	@Autowired
-	HotelService hotelService;
-	
-	@Autowired
-	RoomService roomService;
+	AdminService adminService; 
 	
 	@Autowired
 	MemberService memberService;
 	
 	@Autowired
-	ReservationService reservationService;
+	HotelService hotelService;
 	
 	@Autowired
 	ReviewService reviewService;
@@ -55,39 +48,41 @@ public class AdminController {
 	@Autowired
 	Pagination pagination;
 	
+	@Autowired
+	ReservationService reservationService;
+	
+	
 	@GetMapping("/adminMain")
 	public String admiMainGet() {
 		// 결제 안 한 예약 자동 취소 ('대기중' -> '예약취소' 예약 당일 안 했을 경우)
 		reservationService.setReservationAutoCancel();
 		// 예약상태 업데이트(체크아웃 날짜가 오늘 날짜랑 같거나 이전이면 이용완료 처리(오늘 날짜부터 새 예약을 받을 수 있도록)
 		reservationService.setReservationUpdateToDone();
-		return "/admin/adminMain";
+		return "admin/adminMain";
 	}
 	@GetMapping("/adminLeft")
 	public String admiLeftGet() {
-		return "/admin/adminLeft";
+		return "admin/adminLeft";
 	}
 	@GetMapping("/adminContent")
 	public String admiContentGet() {
-		return "/admin/adminContent";
+		return "admin/adminContent";
 	}
 	
-	// 관리자 메인화면(대시보드)폼 보기
+	//관리자 메인화면(대시보드)폼 보기
 	@GetMapping("/dashBoard/dashBoard")
 	public String adminMainFormGet() {
 		return "/admin/dashBoard/dashBoard";
 	}
 	
-	
-	
-	// 고객리스트/사업자리스트 보기
+	// 회원리스트 보기
 	@GetMapping("/member/memberList/{section}")
 	public String memberListGet(Model model,@PathVariable int section) {
 		List<MemberVo> vos = memberService.getMemberList(section);
 		model.addAttribute("vos",vos);
 		model.addAttribute("section", section);
 		
-		return "/admin/member/memberList";
+		return "admin/member/memberList";
 	}
 	
 	// 개별 회원 정보 상세보기
@@ -95,63 +90,8 @@ public class AdminController {
 	public String memberInforGet(Model model, @PathVariable int idx) {
 		MemberVo vo = memberService.getMemberIdxSearch(idx);
 		model.addAttribute("vo",vo);
-		return "/admin/member/memberInfor";
+		return "admin/member/memberInfor";
 	}
-	
-	
-	
-	// 호텔 리스트 보기
-	@RequestMapping(value = "/hotel/hotelList", method = RequestMethod.GET)
-	public String adminHotelListGet(Model model, HttpSession session
-			) {
-		String mid = session.getAttribute("sMid") + "";
-		List<HotelVo> vos = adminService.getAdminHotelList();
-		
-		if(!mid.equals("")) {
-			List<Integer> likedHotelListIdx = hotelService.getLikedHotelListIdx(mid);
-			model.addAttribute("likedHotelListIdx", likedHotelListIdx);
-		}
-		
-		model.addAttribute("vos", vos);
-		return "/admin/hotel/hotelList";
-	}
-	
-	// 선택한 호텔 전체적으로 상태 변경하기
-	@ResponseBody
-	@RequestMapping(value = "/hotel/hotelStatusSelectCheck", method = RequestMethod.POST)
-	public String hotelStatusSelectCheckPost(String idxSelectArray, String statusSelect) {
-		System.out.println("idxSelectArray:" + idxSelectArray + ", statusSelect: " + statusSelect);
-		return adminService.setHotelStatusSelectCheck(idxSelectArray, statusSelect);
-	}
-	
-	// 객실(room) 리스트 보기
-	@RequestMapping(value = "/room/roomList", method = RequestMethod.GET)
-	public String adminRoomListGet(Model model, HttpSession session, @RequestParam int hotelIdx) {
-		String mid = session.getAttribute("sMid") + "";
-		List<RoomVo> vos = adminService.getAdminRoomList(hotelIdx);
-		
-		model.addAttribute("vos", vos);
-		return "/admin/room/roomList";
-	}
-	
-	// 객실(room) 상세화면 보기
-	@ResponseBody
-	@RequestMapping(value = "/room/roomDetail/{idx}", method = RequestMethod.GET)
-	public RoomVo roomDetailGet(@PathVariable int idx) {
-		RoomVo vo = adminService.getRoomDetailSearch(idx);
-		
-		return vo;
-	}
-
-	
-	// 선택한 객실 전체적으로 상태 변경하기
-	@ResponseBody
-	@RequestMapping(value = "/room/roomStatusSelectCheck", method = RequestMethod.POST)
-	public String roomStatusSelectCheckPost(String idxSelectArray, String statusSelect) {
-		System.out.println("idxSelectArray:" + idxSelectArray + ", statusSelect: " + statusSelect);
-		return adminService.setRoomStatusSelectCheck(idxSelectArray, statusSelect);
-	}
-	
 	
 	// 1:1문의 리스트 보기
 	@GetMapping("/inquiry/adInquiryList")
@@ -200,23 +140,70 @@ public class AdminController {
 		return adminService.setAdInquiryDetailHold(idx) + "";
 	}
 	
-	
-	
-	// 호텔리스트 부르기
-	@RequestMapping("/hotelList")
-	public String hotelListGet(Model model, HttpSession session) {
+	//호텔리스트 부르기
+	@RequestMapping("/hotel/hotelList")
+	public String hotelListGet(Model model, HttpSession session,
+			 @RequestParam(name="startIndexNo", defaultValue = "0", required = false) int startIndexNo,
+			 @RequestParam(name="pageSize", defaultValue = "6", required = false) int pageSize
+		) {
 		String mid = session.getAttribute("sMid") + "";
-		List<HotelVo> vos = hotelService.getHotelList();
+		List<HotelVo> vos = adminService.getAdHotelList(startIndexNo, pageSize);
 		
 		if(!mid.equals("")) {
 			List<Integer> likedHotelListIdx = hotelService.getLikedHotelListIdx(mid);
 			model.addAttribute("likedHotelListIdx", likedHotelListIdx);
 		}
 		model.addAttribute("vos", vos);
-		return "hotel/hotelList";
+		return "admin/hotel/hotelList";
 	}
 	
-	// 리뷰 리스트 불러오기
+	
+	// 선택한 호텔 전체적으로 상태 변경하기
+	@ResponseBody
+	@RequestMapping(value = "/hotel/hotelStatusSelectCheck", method = RequestMethod.POST)
+	public String hotelStatusSelectCheckPost(String idxSelectArray, String statusSelect) {
+		System.out.println("idxSelectArray:" + idxSelectArray + ", statusSelect: " + statusSelect);
+		return adminService.setHotelStatusSelectCheck(idxSelectArray, statusSelect);
+	}
+	
+	// 객실(room) 리스트 보기
+	@RequestMapping(value = "/room/roomList", method = RequestMethod.GET)
+	public String adminRoomListGet(Model model, HttpSession session, @RequestParam int hotelIdx) {
+		String mid = session.getAttribute("sMid") + "";
+		List<RoomVo> vos = adminService.getAdminRoomList(hotelIdx);
+		
+		model.addAttribute("vos", vos);
+		return "/admin/room/roomList";
+	}
+	
+	// 객실(room) 상세화면 보기
+	@ResponseBody
+	@RequestMapping(value = "/room/roomDetail/{idx}", method = RequestMethod.GET)
+	public RoomVo roomDetailGet(@PathVariable int idx) {
+		RoomVo vo = adminService.getRoomDetailSearch(idx);
+		
+		return vo;
+	}
+
+	
+	
+	
+	// 선택한 객실 전체적으로 상태 변경하기
+	@ResponseBody
+	@RequestMapping(value = "/room/roomStatusSelectCheck", method = RequestMethod.POST)
+	public String roomStatusSelectCheckPost(String idxSelectArray, String statusSelect) {
+		System.out.println("idxSelectArray:" + idxSelectArray + ", statusSelect: " + statusSelect);
+		return adminService.setRoomStatusSelectCheck(idxSelectArray, statusSelect);
+	}
+	
+	
+	//관리자 실시간 1:1 채팅창 폼 보여주기
+	@GetMapping("/liveChat/adminChat")
+	public String adminChatGet() {
+		return "admin/liveChat/adminChat";
+	}
+	
+	//리뷰 리스트 불러오기
 	@GetMapping("/review/adReviewList")
 	public String memberReviewFormGet(Model model, HttpSession session,
 			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
@@ -236,6 +223,8 @@ public class AdminController {
 		model.addAttribute("pageVo", pageVo);
 		model.addAttribute("choice", choice);
 		// sMid select * from reservation where mid = #{sMid} and status = '이용완료';
+		System.out.println("rsVos : " + rsVos);
+		System.out.println("rVos : " + rVos);
 		
 		return "admin/review/adReviewList";
 	}
@@ -247,4 +236,6 @@ public class AdminController {
 		
 		return adminService.setReviewDelete(reviewStr);
 	}
+	
 }
+

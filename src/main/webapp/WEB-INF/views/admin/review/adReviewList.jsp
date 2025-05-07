@@ -42,17 +42,12 @@
 		.room-detail {
 			display: flex;
 			align-items: center;
-			margin: 40px auto;
-		  padding: 30px;
-		  background: #fff;
-		  border-radius: 16px;
-		  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-		  font-family: 'Pretendard', sans-serif;
 		}
 		.room-items2 {
 			width: 500px;		
 		}
 		.room-items3 {
+			width: 500px;
 		}
     #starForm input[type=radio] {
       display: none;
@@ -182,18 +177,7 @@
 <p><br/></p>
 <div class="container container-review">
 		<p><br></p>
-<!--   	<div class="input-group">
-	    <select name="part" id="part" class="form-select bg-success-subtle">
-	      <option value="mid">아이디</option>
-	      <option value="name">성명</option>
-	      <option value="address">주소</option>
-	    </select>
-	    <input type="text" name="content" id="content" placeholder="검색할 내용을 입력하세요" class="form-control"/>
-	    <div class="input-group-append">
-	      <input type="button" value="검색(완전일치)" onclick="formSearch()" class="btn btn-success ms-1 me-1"/>
-	    </div>
-	  </div>
- -->	  <table class="table text-center">
+	  <table class="table text-center">
 	  	<tr>
         <th class="table-secondary">숙소 이용 내역</th>
       </tr>
@@ -210,6 +194,8 @@
 				    <div class="room-info"><span class="room-label">최대숙박인원: ${ReservationListVo.maxPeople}</span></div>
 				    <div class="room-info"><span class="room-label">반려견크기제한: ${ReservationListVo.petSizeLimit}</span></div>
 				    <div class="room-info"><span class="room-label">최대마리수: ${ReservationListVo.petCountLimit}</span></div>
+				    <div class="room-info"><span class="room-label">체크인 날짜: ${ReservationListVo.checkinDate}</span></div>
+				    <div class="room-info"><span class="room-label">체크아웃 날짜: ${ReservationListVo.checkoutDate}</span></div>
 				    <div class="room-info"><span class="room-label" style="color: red">총 숙박비용: ${ReservationListVo.totalPrice}</span></div>
 			    </td>
 			    <td class="room-items3 border border-0">
@@ -218,7 +204,7 @@
 			    	<a href="javascript:reviewShowCheck(${ReservationListVo.roomIdx})" id="reviewShowBtn${ReservationListVo.roomIdx}" class="btn btn-success btn-sm">리뷰보기</a>
 			    	<a href="javascript:reviewHideCheck(${ReservationListVo.roomIdx})" id="reviewHideBtn${ReservationListVo.roomIdx}" class="btn btn-warning btn-sm" style="display:none" >리뷰가리기</a>
 			    </td>
-			    <td class="room-items4 border border-0 ">
+			    <td class="room-items4 border border-0 ms-10">
 			    	<a href="${ctp}/room/roomDetail?roomIdx=${ReservationListVo.roomIdx}&checkinDate=${ReservationListVo.checkinDate}&checkoutDate=${ReservationListVo.checkoutDate}&guestCount=${guestCount}&petCount=${petCount}" class="btn btn-danger btn-sm">상세보기</a>
 			    </td>
 	      </tr>

@@ -8,39 +8,33 @@ import com.spring.springProject3.vo.MemberVo;
 
 public interface MemberDao {
 
-		// 아름
-		List<MemberVo> getMemberList(@Param("section") int section);
-		
-		MemberVo getMemberIdxSearch(@Param("idx") int idx);
+  MemberVo getMemberIdCheck(@Param("mid") String mid);
+
+  int setMemberJoinOk(@Param("vo") MemberVo vo);
+
+  MemberVo getMemberNickNameEmailCheck(@Param("nickName") String nickName, @Param("email") String email);
+
+  void setKakaoMemberInput(@Param("mid") String mid, @Param("nickName") String nickName, @Param("email") String email, @Param("pwd") String pwd);
+
+  MemberVo getMemberNickCheck(@Param("nickName") String nickName);
+
+  void setMemberDeleteCheck(@Param("mid") String mid);
+
+  int setMemberPwdChange(@Param("mid") String mid, @Param("pwd") String pwd);
+
+  int setMemberUpdateOk(@Param("vo") MemberVo vo);
+
+  MemberVo getMemberIdByNameEmail(@Param("name") String name, @Param("email") String email);
+
+  MemberVo getMemberByNameMidEmail(@Param("name") String name, @Param("mid") String mid, @Param("email") String email);
+  
+  void updatePassword(@Param("mid") String mid, @Param("pwd") String pwd);
+
+	MemberVo getMemberBizNoCheck(String businessNo);
 	
-		
-		
-		
-		// 서리님
-    MemberVo getMemberIdCheck(@Param("mid") String mid);
+	List<MemberVo> getMemberList(@Param("section") int section);
 
-    int setMemberJoinOk(@Param("vo") MemberVo vo);
+	MemberVo getMemberIdxSearch(@Param("idx") int idx);
 
-    MemberVo getMemberNickNameEmailCheck(@Param("nickName") String nickName, @Param("email") String email);
-
-    void setKakaoMemberInput(@Param("mid") String mid, @Param("nickName") String nickName, @Param("email") String email, @Param("pwd") String pwd);
-
-    MemberVo getMemberNickCheck(@Param("nickName") String nickName);
-
-    void setMemberDeleteCheck(@Param("mid") String mid,@Param("level") int level);
-
-    int setMemberPwdChange(@Param("mid") String mid, @Param("pwd") String pwd);
-
-    int setMemberUpdateOk(@Param("vo") MemberVo vo);
-
-    MemberVo getMemberIdByNameEmail(@Param("name") String name, @Param("email") String email);
-
-    MemberVo getMemberByNameMidEmail(@Param("name") String name, @Param("mid") String mid, @Param("email") String email);
-    
-    void updatePassword(@Param("mid") String mid, @Param("pwd") String pwd);
-
-    MemberVo getMemberBizNoCheck(String businessNo);
-
-		void setVisitCount(@Param("mid") String mid);
 
 }

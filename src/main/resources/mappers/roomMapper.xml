@@ -31,34 +31,38 @@
   <select id="getAvailableRoomList" resultType="com.spring.springProject3.vo.RoomVo">
   	select * from room 
   		where hotelidx = #{idx} and <![CDATA[maxpeople >= #{guestCount}]]> and <![CDATA[petcountlimit >= #{petCount}]]> and status = '정상' 
-  			and idx not in (select roomidx from reservation where status in ('대기중', '예약완료')  and (<![CDATA[checkinDate < #{checkoutDate}]]> and <![CDATA[checkoutDate > #{checkinDate}]]>))
+  			and idx not in (select roomidx from reservation where status in ('결제대기', '결제완료')  and (<![CDATA[checkinDate < #{checkoutDate}]]> and <![CDATA[checkoutDate > #{checkinDate}]]>))
   		order by name desc;
   </select>
   
-  <!-- 내가 예약,이용했던 객실 리스트 조회 -->
- 	<!-- <select id="getRoomUseList" resultType="com.spring.springProject3.vo.ReservationListVo">
-  	select rs.idx as reservationIdx,
-					 rs.checkinDate,
-					 rs.checkoutDate,
-					 rs.guestCount,
-					 rs.petCount,
-					 rs.totalPrice, r.name as roomName, r.roomNumber, r.price, r.maxPeople, r.petSizeLimit, r.petCountLimit, r.thumbnail as roomThumbnail, r.idx as roomIdx, h.name as hotelName, h.idx as hotelIdx from reservation rs, room r, hotel h where rs.mid = #{mid} and rs.roomIdx=r.idx and (rs.status = '이용완료' or rs.status = '리뷰작성') order by checkoutDate desc;
-  </select> --> 
+  
+   <!-- 객실 1개 조회 -->
+  <select id="getRoom" resultType="com.spring.springProject3.vo.RoomVo">
+  	select * from room where idx=#{roomIdx};
+  </select>
+  
+  <!-- 객실별 옵션 리스트 조회 -->
+  <select id="getRoomOptionList" resultType="com.spring.springProject3.vo.OptionVo">
+  	select * from options where idx in (select optionIdx from roomOptions where roomIdx = ${roomIdx});
+  </select>
+  
   
   <!-- 멤버가 예약 후 이용완료한 객실 정보를 마이페이지에 불러온다 -->
-	<select id="getRoomUsedList" resultType="com.spring.springProject3.vo.ReservationListVo">
-		select r.name as roomName, r.roomNumber, r.price, r.maxPeople, r.petSizeLimit, r.petCountLimit, r.thumbnail as roomThumbnail, r.idx as roomIdx,
-					 h.name as hotelName, h.thumbnail as hotelThumbnail, h.idx as hotelIdx,
-					 rs.idx as reservationIdx, reservationNo,
-					 rs.checkinDate,
-					 rs.checkoutDate,
-					 rs.guestCount,
-					 rs.petCount,
-					 rs.totalPrice from reservation rs
-					 join room r on rs.roomIdx = r.idx
-					 join hotel h on r.hotelIdx = h.idx
-					 where rs.mid = #{mid} and rs.status ='이용완료' order by rs.checkinDate desc;
-	</select>
+   <select id="getRoomUsedList" resultType="com.spring.springProject3.vo.ReservationListVo">
+     select r.name as roomName, r.roomNumber, r.price, r.maxPeople, r.petSizeLimit, r.petCountLimit, r.thumbnail as roomThumbnail, r.idx as roomIdx,
+	     h.name as hotelName, h.thumbnail as hotelThumbnail, h.idx as hotelIdx,
+	     rs.idx as reservationIdx, reservationNo,
+	     rs.checkinDate,
+	     rs.checkoutDate,
+	     rs.guestCount,
+	     rs.petCount,
+	     rs.totalPrice  
+	   from reservation rs
+	     join room r on rs.roomIdx = r.idx
+	     join hotel h on r.hotelIdx = h.idx
+     where rs.mid = #{mid} and rs.status ='이용완료' order by rs.checkinDate desc;
+   </select>
+
   
  	<!-- 예약상태가 '리뷰작성' 상태인 '멤버의 이용 reservationNo'와 'roomIdx'를 가져온다 --> 
   <select id="getReviewSave" resultType="com.spring.springProject3.vo.ReservationVo">
@@ -71,21 +75,6 @@
   	select * from review where reservationNo = #{reservationNo}; 
   </select>
   
-  
-  
-  
-  
-  
-  
-   <!-- 객실 1개 조회 -->
-  <select id="getRoom" resultType="com.spring.springProject3.vo.RoomVo">
-  	select * from room where idx=#{roomIdx};
-  </select>
-  
-  <!-- 객실별 옵션 리스트 조회 -->
-  <select id="getRoomOptionList" resultType="com.spring.springProject3.vo.OptionVo">
-  	select * from options where idx in (select optionIdx from roomOptions where roomIdx = ${roomIdx});
-  </select>
   
   <!-- 객실 정보 수정 처리 -->
   <update id="setRoomUpdate">
@@ -111,9 +100,6 @@
   <update id="setroomStatusUpdate">
   	update room set status = #{status} where idx = #{idx};
   </update>
-  
-  
-  
   
   
   <!-- 기존 객실-옵션 데이터 삭제 -->

@@ -1,10 +1,13 @@
 package com.spring.springProject3.vo;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString
 public class MemberVo {
-	
 	private int idx;
 	private String mid;
 	private String pwd;
@@ -19,6 +22,7 @@ public class MemberVo {
 	private int level;
 	private String businessNo;
 	private String userInfor;
+	
 	private int visitCnt;
 	private int todayCnt;
 	private String startDate;
@@ -27,5 +31,4 @@ public class MemberVo {
 	
 	private int section;
 	private String deleteDiff;
-	
 }

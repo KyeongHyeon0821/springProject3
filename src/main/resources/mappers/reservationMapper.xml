@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.springProject3.dao.ReservationDao">
   
-<!-- 예약번호로 예약정보 가져오기 -->
+  <!-- 예약번호로 예약정보 가져오기 -->
   <select id="getReservation" resultType="com.spring.springProject3.vo.ReservationVo">
   	select * from reservation where reservationNo = #{reservationNo};
   </select>
@@ -31,6 +31,15 @@
   	update reservation set status = '결제완료', regDate=now() where status = '결제대기' and reservationNo = #{reservationNo};
   </update>
   
+  <!-- 이용완료 후 리뷰를 달면 상태수정 -->
+  <update id="setReviewCheckOk">
+  	update reservation set status = '리뷰작성' where status = '이용완료' and roomIdx = #{vo.roomIdx};
+  </update>
+  
+  <!-- 마이페이지 예약취소 처리 -->
+  <update id="setReservationCancel">
+  	update reservation set status = '예약취소' where status = '결제대기' and reservationNo = #{reservationNo} and mid = #{mid};
+  </update>
   
   <!-- 이용완료 후 리뷰를 달면 상태수정 -->
   <update id="setReviewSave">

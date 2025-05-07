@@ -5,12 +5,7 @@ import java.util.List;
 import com.spring.springProject3.vo.MemberVo;
 
 public interface MemberService {
-	//아름
-	List<MemberVo> getMemberList(int section);
 
-	MemberVo getMemberIdxSearch(int idx);
-	
-	//서리님
 	MemberVo getMemberIdCheck(String mid);
 
 	MemberVo getMemberNickNameEmailCheck(String nickName, String email);
@@ -21,7 +16,7 @@ public interface MemberService {
 
 	MemberVo getMemberNickCheck(String nickName);
 
-	void setMemberDeleteCheck(String mid, int level);
+	void setMemberDeleteCheck(String mid);
 
 	int setMemberPwdChange(String mid, String pwd);
 
@@ -34,10 +29,11 @@ public interface MemberService {
 	void updatePassword(String mid, String pwd);
 
 	MemberVo getMemberBizNoCheck(String businessNo);
-
-	void setVisitCount(String mid);
-
-
 	
+	List<MemberVo> getMemberList(int section);
+
+	MemberVo getMemberIdxSearch(int idx);
+
+
 
 }
