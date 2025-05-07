@@ -27,6 +27,7 @@ import com.spring.springProject3.vo.MemberVo;
 import com.spring.springProject3.vo.PageVo;
 import com.spring.springProject3.vo.ReservationListVo;
 import com.spring.springProject3.vo.ReviewVo;
+import com.spring.springProject3.vo.RoomVo;
 
 @Controller
 @RequestMapping("/admin")
@@ -143,7 +144,7 @@ public class AdminController {
 	@RequestMapping("/hotel/hotelList")
 	public String hotelListGet(Model model, HttpSession session,
 			 @RequestParam(name="startIndexNo", defaultValue = "0", required = false) int startIndexNo,
-			 @RequestParam(name="pageSize", defaultValue = "1000", required = false) int pageSize
+			 @RequestParam(name="pageSize", defaultValue = "6", required = false) int pageSize
 		) {
 		String mid = session.getAttribute("sMid") + "";
 		List<HotelVo> vos = adminService.getAdHotelList(startIndexNo, pageSize);
@@ -155,6 +156,46 @@ public class AdminController {
 		model.addAttribute("vos", vos);
 		return "admin/hotel/hotelList";
 	}
+	
+	
+	// 선택한 호텔 전체적으로 상태 변경하기
+	@ResponseBody
+	@RequestMapping(value = "/hotel/hotelStatusSelectCheck", method = RequestMethod.POST)
+	public String hotelStatusSelectCheckPost(String idxSelectArray, String statusSelect) {
+		System.out.println("idxSelectArray:" + idxSelectArray + ", statusSelect: " + statusSelect);
+		return adminService.setHotelStatusSelectCheck(idxSelectArray, statusSelect);
+	}
+	
+	// 객실(room) 리스트 보기
+	@RequestMapping(value = "/room/roomList", method = RequestMethod.GET)
+	public String adminRoomListGet(Model model, HttpSession session, @RequestParam int hotelIdx) {
+		String mid = session.getAttribute("sMid") + "";
+		List<RoomVo> vos = adminService.getAdminRoomList(hotelIdx);
+		
+		model.addAttribute("vos", vos);
+		return "/admin/room/roomList";
+	}
+	
+	// 객실(room) 상세화면 보기
+	@ResponseBody
+	@RequestMapping(value = "/room/roomDetail/{idx}", method = RequestMethod.GET)
+	public RoomVo roomDetailGet(@PathVariable int idx) {
+		RoomVo vo = adminService.getRoomDetailSearch(idx);
+		
+		return vo;
+	}
+
+	
+	
+	
+	// 선택한 객실 전체적으로 상태 변경하기
+	@ResponseBody
+	@RequestMapping(value = "/room/roomStatusSelectCheck", method = RequestMethod.POST)
+	public String roomStatusSelectCheckPost(String idxSelectArray, String statusSelect) {
+		System.out.println("idxSelectArray:" + idxSelectArray + ", statusSelect: " + statusSelect);
+		return adminService.setRoomStatusSelectCheck(idxSelectArray, statusSelect);
+	}
+	
 	
 	//관리자 실시간 1:1 채팅창 폼 보여주기
 	@GetMapping("/liveChat/adminChat")
@@ -182,6 +223,8 @@ public class AdminController {
 		model.addAttribute("pageVo", pageVo);
 		model.addAttribute("choice", choice);
 		// sMid select * from reservation where mid = #{sMid} and status = '이용완료';
+		System.out.println("rsVos : " + rsVos);
+		System.out.println("rVos : " + rVos);
 		
 		return "admin/review/adReviewList";
 	}

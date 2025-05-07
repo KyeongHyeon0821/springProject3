@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.InquiryVo;
+import com.spring.springProject3.vo.RoomVo;
 
 public interface AdminService {
 
@@ -24,6 +25,14 @@ public interface AdminService {
 	String setReviewDelete(String reviewStr);
 
 	List<HotelVo> getAdHotelList(int startIndexNo, int pageSize);
+	
+	String setHotelStatusSelectCheck(String idxSelectArray, String statusSelect);
+
+	List<RoomVo> getAdminRoomList(int hotelIdx);
+
+	String setRoomStatusSelectCheck(String idxSelectArray, String statusSelect);
+
+	RoomVo getRoomDetailSearch(int idx);
 	
 	
 }

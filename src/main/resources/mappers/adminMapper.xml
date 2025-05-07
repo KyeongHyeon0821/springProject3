@@ -29,6 +29,14 @@
   <select id="getAdHotelList" resultType="com.spring.springProject3.vo.HotelVo">
     select * from hotel order by idx desc;
   </select>
+  
+  <select id="getAdminRoomList" resultType="com.spring.springProject3.vo.RoomVo">
+   select * from room where hotelIdx=#{hotelIdx};
+  </select>
+  
+  <select id="getRoomDetailSearch" resultType="com.spring.springProject3.vo.RoomVo">
+    select * from room where idx=#{idx};
+  </select>
 
   <insert id="setInquiryReplyOk">
 		insert into inquiryReply values (default,#{idx},default,#{reContent})
@@ -44,6 +52,14 @@
   
   <update id="setAdInquiryDetailHold">
   	update inquiry set reply='답변보류' where idx=#{idx};
+  </update>
+  
+   <update id="setHotelStatusSelectCheck">
+    update hotel set status=#{statusSelect} where idx=#{idx}; 
+  </update>
+
+  <update id="setRoomStatusSelectCheck">
+    update room set status=#{statusSelect} where idx=#{idx}; 
   </update>
 <!-- 
   <update id="setInquiryImageDelete">
