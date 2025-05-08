@@ -103,6 +103,10 @@ public class MessageController {
 			model.addAttribute("message", "예약 취소 중 오류가 발생했습니다.\\n다시 시도해주세요.");
 			model.addAttribute("url", "reservation/reservationDetail/"+reservationNo);
 		}
+		else if(msgFlag.equals("touristInputOk")) {
+	    model.addAttribute("message", "관광지 등록이 완료되었습니다.");
+	    model.addAttribute("url", "hotel/hotelDetail?idx=" + hotelIdx);
+		}
 		
 		
 		
@@ -211,7 +215,10 @@ public class MessageController {
 		    model.addAttribute("message", "게시글이 수정되었습니다.");
 		    model.addAttribute("url", "board/content?idx=" + idx);
 		}
-		
+		else if(msgFlag.equals("touristInputOk")) {
+	    model.addAttribute("message", "관광지 등록이 완료되었습니다.");
+	    model.addAttribute("url", "hotel/hotelDetail?idx=" + hotelIdx);
+		}
 		
 		
 		
