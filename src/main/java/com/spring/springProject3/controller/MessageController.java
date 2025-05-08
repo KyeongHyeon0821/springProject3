@@ -338,7 +338,7 @@ public class MessageController {
 		}
 		else if(msgFlag.equals("levelError0")) {
 			model.addAttribute("message", "관리자만 접근가능합니다.");
-			model.addAttribute("url", "member/memberMain");
+			model.addAttribute("url", "");
 		}
 		
 		
