@@ -1,81 +1,162 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
-<script>
-	'use strict';
-	
-	function deleteCheck() {
-		let ans = confirm("정말 탈퇴하시겠습니까?");
-		if(ans) {
-			ans = confirm("탈퇴후 1달간 같은 아이디로 재가입 할 수 없습니다.\n\n계속 진행하시겠습니까?");
-			if(ans) location.href="${ctp}/member/pwdCheck/d";
-		}
-	}
-</script>
+<jsp:include page="/WEB-INF/views/include/bs5.jsp" />
+<link rel="stylesheet" type="text/css" href="${ctp}/css/linkMain.css"/>
+<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
+
 <style>
-	.custom-light-pink {
-    background-color: #FFB6C1; /* 연한 분홍색 */
+  ul, li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px 10px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .logo img {
+    width: 110px;
+    vertical-align: middle;
+    margin-left: 50px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .nav-links li {
+    text-align: center;
+  }
+
+  .nav-links li a {
+    text-decoration: none;
+    color: #000000;
+    font-weight: 500;
+    font-size: 17px;
+    padding: 8px 10px;
+    border-radius: 12px;
+    transition: background-color 0.2s ease;
+  }
+
+  .nav-links li a:hover {
+    background-color: #f3f3f3;
+  }
+
+  ul.nav-links {
+    margin-bottom: 0 !important;
+  }
+
+  .dropdown {
+    position: relative;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 140px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+    z-index: 1000;
+    padding: 8px 0;
+    border-radius: 10px;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .dropdown-content a {
+    color: #333;
+    padding: 10px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 13px;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #f2f2f2;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
   }
 </style>
-<!-- Navbar -->
-<div class="w3-top">
-  <div class="w3-bar custom-light-pink w3-card">
-    <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
-    <a href="http://192.168.50.57:9090/JspringProject" class="w3-bar-item w3-button w3-padding-large">HOME</a>
-    <a href="${ctp}/guest/guestList" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Guest</a>
-    
-    <c:if test="${!empty sLevel}">
-	    <a href="${ctp}/board/boardList" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Board</a>
-	    <a href="${ctp}/pds/pdsList" class="w3-bar-item w3-button w3-padding-large w3-hide-small">PDS</a>
-	    <div class="w3-dropdown-hover w3-hide-small">
-	      <button class="w3-padding-large w3-button" title="More">Study1 <i class="fa fa-caret-down"></i></button>     
-	      <div class="w3-dropdown-content w3-bar-block w3-card-4">
-	        <a href="${ctp}/user/userMain" class="w3-bar-item w3-button">SessionTempleat</a>
-	        <a href="${ctp}/user2/userMain" class="w3-bar-item w3-button">Mybatis 연습</a>
-	        <a href="${ctp}/study/ajax/ajaxForm" class="w3-bar-item w3-button">Ajax연습</a>
-	        <a href="${ctp}/study/fileUpload/fileUpload" class="w3-bar-item w3-button">파일 업로드 연습</a>
-	        <a href="${ctp}/study/mail/mailForm" class="w3-bar-item w3-button">메일 연습</a>
-	        <a href="${ctp}/study/modal/modalForm" class="w3-bar-item w3-button">모달 연습</a>
-	        <a href="${ctp}/study/calendar" class="w3-bar-item w3-button">인터넷 달력</a>
-	      </div>
-	    </div>
-	    <div class="w3-dropdown-hover w3-hide-small">
-	      <button class="w3-padding-large w3-button" title="More">Study2 <i class="fa fa-caret-down"></i></button>     
-	      <div class="w3-dropdown-content w3-bar-block w3-card-4">
-	        <a href="#" class="w3-bar-item w3-button">카카오맵</a>
-	        <a href="#" class="w3-bar-item w3-button">날씨API</a>
-	        <a href="#" class="w3-bar-item w3-button">웹차트</a>
-	        <a href="${ctp}/study/crawling/jsoup" class="w3-bar-item w3-button">웹크롤링(jsoup)</a>
-	        <a href="${ctp}/study/crawling/selenium" class="w3-bar-item w3-button">웹크롤링(selenium)</a>
-	      </div>
-	    </div>
-	    <div class="w3-dropdown-hover w3-hide-small">
-	      <button class="w3-padding-large w3-button" title="More" onclick="location.href='${ctp}/member/memberMain'">MyPage <i class="fa fa-caret-down"></i></button>     
-	      <div class="w3-dropdown-content w3-bar-block w3-card-4">
-	        <a href="${ctp}/schedule/schedule" class="w3-bar-item w3-button">일정관리</a>
-	        <a href="${ctp}/webMessage/webMessage" class="w3-bar-item w3-button">웹메세지</a>
-	        <a href="${ctp}/member/memberList" class="w3-bar-item w3-button">회원리스트</a>
-	        <a href="${ctp}/member/pwdCheck/p" class="w3-bar-item w3-button">비밀번호변경</a>
-	        <a href="${ctp}/member/pwdCheck/u" class="w3-bar-item w3-button">회원정보수정</a>
-	        <a href="javascript:deleteCheck()" class="w3-bar-item w3-button">회원탈퇴</a>
-	        <c:if test="${sLevel == 0}"> <a href="${ctp}/admin/adminMain" class="w3-bar-item w3-button">관리자메뉴</a></c:if>
-	      </div>
-	    </div>
-    	<a href="${ctp}/member/memberLogout" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Logout</a>
-    </c:if>
-    <c:if test="${empty sLevel}">
-    	<a href="${ctp}/member/memberLogin" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Login</a>
-	    <a href="${ctp}/member/memberJoin" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Join</a>
-    </c:if>
-  </div>
-</div>
+<script>
+		'use strict';
+		
+	  // 실시간 채팅창 열기
+	  function chatEndUserCheck() {
+		  window.open("${ctp}/webSocket/chatEndUserWin","chatWin","width=300px,height=380px");
+	  }
+</script>
 
-<!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
-<div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
-  <a href="${ctp}/guest/guestList" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Guest</a>
-  <a href="${ctp}/board/boardList" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Board</a>
-  <a href="${ctp}/pds/pdsList" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">PDS</a>
-  <a href="${ctp}/member/memberLogin" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Login</a>
-  <a href="${ctp}/member/memberLogout" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Logout</a>
-  <a href="${ctp}/member/memberJoin" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Join</a>
-</div>
+<body>
+<nav>
+  <div class="nav-container">
+    <!-- 로고 -->
+    <div class="logo">
+      <a href="${ctp}/"><img src="${ctp}/images/logo.png" alt="로고"></a>
+    </div>
+
+    <!-- 네비 메뉴 -->
+    <ul class="nav-links">
+      <li><a href="${ctp}/">홈</a></li>
+
+      <c:if test="${sLevel == 0 || sLevel == 1}">
+        <li><a href="${ctp}/hotel/hotelInput">숙소 등록</a></li>
+      </c:if>
+
+      <li><a href="${ctp}/hotel/hotelList">전체 숙소</a></li>
+
+      <c:if test="${empty sessionScope.sLogin}">
+        <li><a href="${ctp}/member/memberLogin">로그인</a></li>
+      </c:if>
+
+      <li><a href="${ctp}/admin/adminMain">관리자</a></li>
+
+      <c:if test="${not empty sessionScope.sLogin}">
+        <li><a href="${ctp}/member/memberLogout">로그아웃</a></li>
+        <li><a href="${ctp}/member/memberMyPage">마이페이지</a></li>
+      </c:if>
+
+      <li class="dropdown">
+        <a href="#">커뮤니티</a>
+        <div class="dropdown-content">
+          <a href="${ctp}/board/list">자유게시판</a>
+          <a href="${ctp}/photogallery/photogalleryList">포토갤러리</a>
+        </div>
+      </li>
+
+      <li class="dropdown">
+      	<a class="nav-link dropbtn" href="#" role="button">고객센터</a>
+	      <div class="dropdown-content">
+	        <!-- 관리자 메뉴 -->
+	        <c:if test="${sLevel eq 0}">
+	          <a href="${ctp}/admin/inquiry/adInquiryList">1:1문의</a>
+	          <a href="${ctp}/faq/adFaqList">FAQ</a>
+	          <a href="${ctp}/qna/qnaList">Q&A</a>
+	          <a href="${ctp}/admin/liveChat/adminChat" target="_blank">실시간채팅</a>
+	        </c:if>
+	        <!-- 일반/사업자회원 메뉴 -->
+	        <c:if test="${sLevel ne 0}">
+	          <a href="${ctp}/inquiry/inquiryList">1:1문의</a>
+	          <a href="${ctp}/faq/faqList">FAQ</a>
+	          <a href="${ctp}/qna/qnaList">Q&A</a>
+	          <c:if test="${not empty sessionScope.sLogin}">
+	         	 <a href="javascript:chatEndUserCheck()">실시간채팅</a>
+	          </c:if>
+	        </c:if>
+	      </div>
+     </li>
+    </ul>
+  </div>
+</nav>
+</body>
