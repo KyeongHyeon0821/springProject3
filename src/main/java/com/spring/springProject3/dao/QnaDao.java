@@ -41,4 +41,10 @@ public interface QnaDao {
 
 	int getQnaTotRecCntSearch(@Param("search") String search, @Param("searchString") String searchString);
 
+	List<QnaVo> getQnaSearchList(@Param("startIndexNo") int startIndexNo, @Param("pageSize") int pageSize, @Param("search") String search, @Param("searchString") String searchString);
+
+	int getQnaTotRecCntQnaAnswer(@Param("qnaAnswer") String qnaAnswer);
+
+	List<QnaVo> getQnaListQnaAnswer(@Param("startIndexNo") int startIndexNo, @Param("pageSize") int pageSize, @Param("mid") String mid, @Param("qnaAnswer") String qnaAnswer);
+
 }

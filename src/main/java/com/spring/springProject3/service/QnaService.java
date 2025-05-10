@@ -42,4 +42,8 @@ public interface QnaService {
 
 	void setQnaDelCheckUpdate(int idx);
 
+	List<QnaVo> getQnaSearchList(int startIndexNo, int pageSize, String search, String searchString);
+
+	List<QnaVo> getQnaListQnaAnswer(int startIndexNo, int pageSize, String mid, String qnaAnswer);
+
 }

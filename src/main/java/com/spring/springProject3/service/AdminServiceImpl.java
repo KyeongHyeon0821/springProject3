@@ -48,4 +48,5 @@ public class AdminServiceImpl implements AdminService {
 	public int setAdInquiryDetailHold(int idx) {
 		return adminDao.setAdInquiryDetailHold(idx);
 	}
+
 }

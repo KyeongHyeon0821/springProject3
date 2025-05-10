@@ -100,7 +100,7 @@
       <input type="text" name="mid" id="mid" value="${mid}" class="form-control" placeholder="아이디를 입력해주세요" autofocus />
     </div>
     <div class="mb-3">
-      <input type="password" name="pwd" id="pwd" class="form-control" placeholder="비밀번호를 입력해주세요" />
+      <input type="password" name="pwd" id="pwd" value="1234" class="form-control" placeholder="비밀번호를 입력해주세요" />
     </div>
 
     <div class="form-check mb-3 text-start">

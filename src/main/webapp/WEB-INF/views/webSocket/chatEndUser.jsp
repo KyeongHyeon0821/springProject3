@@ -15,7 +15,8 @@
 		  $("#chatBackScreen").hide();
       const username = document.getElementById('username').value;
       if (username) {
-        socket = new WebSocket('ws://192.168.50.20:9090/JspringProject/webSocket/endPoint/' + username);
+        //socket = new WebSocket('ws://192.168.50.65:9090/JspringProject/webSocket/endPoint/' + username);
+      	socket = new WebSocket('ws://49.142.157.251:9090/springProject3/webSocket/endPoint/' + username);
 
         // 상대방 유저가 접속/종료 하거나, 메세지를 날릴때 처리되는 곳
         socket.onmessage = (event) => {

@@ -195,4 +195,14 @@ public class QnaServiceImpl implements QnaService {
 		qnaDao.setQnaDelete(idx);
 	}
 
+	@Override
+	public List<QnaVo> getQnaSearchList(int startIndexNo, int pageSize, String search, String searchString) {
+		return qnaDao.getQnaSearchList(startIndexNo, pageSize, search, searchString);
+	}
+
+	@Override
+	public List<QnaVo> getQnaListQnaAnswer(int startIndexNo, int pageSize, String mid, String qnaAnswer) {
+		return qnaDao.getQnaListQnaAnswer(startIndexNo, pageSize, mid, qnaAnswer);
+	}
+
 }

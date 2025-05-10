@@ -229,6 +229,50 @@ public class MessageController {
 			model.addAttribute("message", "QnA답변이 등록되었습니다.");
 			model.addAttribute("url", "qna/qnaList");
 		}
+		else if(msgFlag.equals("adFaqInputOk")) {
+			model.addAttribute("message", "FAQ가 등록되었습니다.");
+			model.addAttribute("url", "faq/adFaqList");
+		}
+		else if(msgFlag.equals("adFaqInputNo")) {
+			model.addAttribute("message", "FAQ 등록에 실패하였습니다.");
+			model.addAttribute("url", "faq/adFaqInput");
+		}
+		else if(msgFlag.equals("adFaqDeleteOk")) {
+			model.addAttribute("message", "FAQ가 삭제되었습니다.");
+			model.addAttribute("url", "faq/adFaqList");
+		}
+		else if(msgFlag.equals("adFaqDeleteNo")) {
+			model.addAttribute("message", "FAQ가 삭제가 실패되었습니다.");
+			model.addAttribute("url", "faq/adFaqDetail?idx="+idx);
+		}
+		else if(msgFlag.equals("adFaqUpdateOk")) {
+			model.addAttribute("message", "FAQ가 수정되었습니다.");
+			model.addAttribute("url", "faq/adFaqList");
+		}
+		else if(msgFlag.equals("adFaqUpdateNo")) {
+			model.addAttribute("message", "FAQ 수정이 실패되었습니다.");
+			model.addAttribute("url", "faq/adFaqDetail?idx="+idx);
+		}
+		else if(msgFlag.equals("photogalleryInputOK")) {
+			model.addAttribute("message", "게시글이 등록되었습니다.");
+			model.addAttribute("url", "photogallery/photogalleryList");
+		}
+		else if(msgFlag.equals("photogalleryInputNo")) {
+			model.addAttribute("message", "게시글 등록에 실패하였습니다.");
+			model.addAttribute("url", "photogallery/photogalleryInput");
+		}
+		else if(msgFlag.equals("photogalleryNoImage")) {
+			model.addAttribute("message", "등록된 사진이 없습니다.\\n게시글 등록에 실패하였습니다.");
+			model.addAttribute("url", "photogallery/photogalleryInput");
+		}
+		else if(msgFlag.equals("photogalleryDeleteOk")) {
+			model.addAttribute("message", "선택하신 포토갤러리가 삭제되었습니다.");
+			model.addAttribute("url", "photogallery/photogalleryList");
+		}
+		else if(msgFlag.equals("photogalleryDeleteNo")) {
+			model.addAttribute("message", "선택하신 포토갤러리 삭제가 실패되었습니다.");
+			model.addAttribute("url", "photogallery/photogalleryInput");
+		}
 
 		
 		
