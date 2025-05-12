@@ -289,8 +289,8 @@
       <script>
         CKEDITOR.replace("images",{
           height:450,
-          filebrowserUploadUrl:"hotelImageUpload?mid=admin",
-          uploadUrl:"hotelImageUpload?mid=admin"
+          filebrowserUploadUrl:"hotelImageUpload?mid=${sMid}",
+          uploadUrl:"hotelImageUpload?mid=${sMid}"
         });
       </script>
     </div>

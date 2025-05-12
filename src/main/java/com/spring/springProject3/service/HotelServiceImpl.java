@@ -202,6 +202,7 @@ public class HotelServiceImpl implements HotelService {
 		
 		if((dbVo.getImages() == null && vo.getImages() != null) || 
 		    (dbVo.getImages() != null && !dbVo.getImages().equals(vo.getImages()))) { // 기존 이미지 내용과 수정 된 이미지 내용이 다르다면 실행
+			
 			// 기존 이미지들 삭제
 			if(dbVo.getImages() != null && !dbVo.getImages().equals("")) imgDelete(dbVo.getImages());
 			
@@ -316,4 +317,32 @@ public class HotelServiceImpl implements HotelService {
   public List<HotelVo> getRecentHotels(int limit) {
      return hotelDao.getRecentHotels(limit);
   }
+
+	@Override
+	public void ImageCopy(String images) {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/");
+		//			0         1         2         3         4         4
+		//      01234567890123456789012345678901234567890123456789012345678
+		// <img src="/JspringProject/data/hotelImages/250321140356_2503.jpg" style="height:854px; width:1280px" />
+		// <img src="/JspringProject/data/ImagesTemp/250321140356_2503.jpg" style="height:854px; width:1280px" />
+		int position = 38;
+		String nextImg = images.substring(images.indexOf("src=\"/") + position);
+		boolean sw = true;
+		
+		while(sw) {
+			String imgFile = nextImg.substring(0, nextImg.indexOf("\""));
+			
+			String origFilePath = realPath + "hotelImages/" + imgFile;
+			String copyFilePath = realPath + "ImagesTemp/" + imgFile;
+			
+			fileCopyCheck(origFilePath, copyFilePath);
+			
+			if(nextImg.indexOf("src=\"/") == -1) sw = false;
+			else nextImg = nextImg.substring(nextImg.indexOf("src=\"/") + position);
+		}
+	}
+	
+	
+	
 }

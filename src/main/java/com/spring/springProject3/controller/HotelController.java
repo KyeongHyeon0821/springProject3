@@ -269,8 +269,12 @@ public class HotelController {
 	
 	// 호텔 정보 수정 페이지 보기
 	@RequestMapping(value =  "/hotelUpdate", method = RequestMethod.GET)
-	public String hotelUpdateGet(Model model, int idx) {
+	public String hotelUpdateGet(HttpServletRequest request, Model model, int idx) {
+		
+		// 추가 이미지가 있을 경우 hotelImages -> imagesTemp에 이미지 파일 복사 처리
 		HotelVo vo = hotelService.getHotel(idx);
+		if(vo.getImages() != null || !vo.getImages().equals("")) hotelService.ImageCopy(vo.getImages());
+		
 		model.addAttribute("vo", vo);
 		return "hotel/hotelUpdate";
 	}

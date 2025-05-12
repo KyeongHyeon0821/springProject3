@@ -36,4 +36,6 @@ public interface HotelService {
 	
 	List<HotelVo> getRecentHotels(int limit);
 
+	void ImageCopy(String images);
+
 }
