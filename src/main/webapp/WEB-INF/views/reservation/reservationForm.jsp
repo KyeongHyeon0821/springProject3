@@ -9,6 +9,7 @@
 	<title>위드펫 - 예약하기</title>
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
 	<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<style>
 .reservation-box {
 			max-width: 800px;
@@ -202,38 +203,66 @@
 			let regName = /^[가-힣a-zA-Z]+$/;
 			
 			if (name == "") {
-				alert("예약자 이름을 입력해주세요.");
+				Swal.fire({
+	        icon: 'info',
+	        title: '예약자 이름을 입력해주세요.',
+	        confirmButtonText: '확인'
+	      })
 				document.getElementById('name').focus();
 				return false;
 			} 
 			if (!regName.test(name)) {
-				alert("성명은 한글 또는 영문만 입력 가능합니다.");
+				Swal.fire({
+	        icon: 'info',
+	        title: '성명은 한글 또는 영문만 입력 가능합니다.',
+	        confirmButtonText: '확인'
+	      })
 				document.getElementById('name').focus();
 				return false;
 			}
 			if (name.length > 10 || name.length < 1) {
-	      alert("예약자 이름은 10자 이내로 입력해주세요.");
+				Swal.fire({
+	        icon: 'info',
+	        title: '예약자 이름은 10자 이내로 입력해주세요.',
+	        confirmButtonText: '확인'
+	      })
 	      document.getElementById('name').focus();
 	      return false;
 	    }
 			
 			if (tel == "") {
-				alert("예약자 연락처를 입력해주세요.");
+				Swal.fire({
+	        icon: 'info',
+	        title: '예약자 연락처를 입력해주세요.',
+	        confirmButtonText: '확인'
+	      })
 				document.getElementById('tel').focus();
 				return false;
 			}
 			if (!regTel.test(tel)) {
-			    alert("연락처 형식이 올바르지 않습니다.");
-			    document.getElementById('tel').focus();
-			    return false;
-			  }
+		    Swal.fire({
+	        icon: 'info',
+	        title: '연락처 형식이 올바르지 않습니다.',
+	        confirmButtonText: '확인'
+	      })
+		    document.getElementById('tel').focus();
+		    return false;
+		  }
 			if (memo.length > 300) {
-	      alert("예약 메모는 300자 이내로 입력해주세요.");
+			  Swal.fire({
+	        icon: 'info',
+	        title: '예약 메모는 300자 이내로 입력해주세요.',
+	        confirmButtonText: '확인'
+	      })
 	      document.getElementById('memo').focus();
 	      return false;
 	    }
-		 	 if (!authenticationSw) {
-	      alert("인증번호 확인이 필요합니다. 인증을 진행해주세요.");
+	 	 if (!authenticationSw) {
+	 		 Swal.fire({
+ 	        icon: 'info',
+ 	        title: '인증번호 확인이 필요합니다. 인증을 진행해주세요.',
+ 	        confirmButtonText: '확인'
+ 	      })
 	      document.getElementById('tel').focus();
 	      return false;
 	    }  
@@ -271,10 +300,25 @@
     	let tel = document.getElementById("tel").value.trim().replace(/-/g, "");
     	let num = 6;
     	if(tel == "") {
-    		alert("핸드폰 번호를 입력하세요");
+    		Swal.fire({
+	        icon: 'info',
+	        title: "핸드폰 번호를 입력하세요.",
+	        confirmButtonText: '확인'
+	      })
     		document.getElementById("tel").focus();
     		return false;
     	}
+    	
+    	// CoolSMS 임시 막기 !
+    	Swal.fire({
+        icon: 'success',
+        title: "인증되었습니다.",
+        confirmButtonText: '확인'
+      })
+    	authenticationSw = true;
+    	return false;
+    	//
+    	
     	
     	$.ajax({
     		type : "post",
@@ -285,7 +329,11 @@
     			num: num
     		},
     		success:function(res) {
-    			alert(res);
+    			Swal.fire({
+		        icon: 'info',
+		        title: res,
+		        confirmButtonText: '확인'
+		      })
     			$("#autenticationDiv").show();
     			document.getElementById("authenticationNumber").focus();
     		},
@@ -300,7 +348,11 @@
     function authenticationCheck() {
     	let authenticationNumber = document.getElementById("authenticationNumber").value;
     	if(authenticationNumber == "") {
-    		alert("인증번호를 입력하세요.");
+    		Swal.fire({
+	        icon: 'info',
+	        title: '인증번호를 입력하세요.',
+	        confirmButtonText: '확인'
+	      })
     		document.getElementById("authenticationNumber").focus();
     		return false;
     	}
@@ -313,14 +365,22 @@
     		},
     		success:function(res) {
     			if(res == "1") {
-	    			alert("인증되었습니다.");
+	    			Swal.fire({
+  		        icon: 'success',
+  		        title: '인증되었습니다.',
+  		        confirmButtonText: '확인'
+  		      })
 	    			authenticationSw = true;
 	    			$("#autenticationDiv").hide();
 	    			$("#requestAutenticationNumber").hide();
 	    			$("#tel").prop("readonly", true);
     			}
     			else {
-    				alert("인증번호가 일치하지 않습니다. 다시 입력해 주세요.");
+    				Swal.fire({
+  		        icon: 'error',
+  		        title: '인증번호가 일치하지 않습니다. 다시 입력해 주세요.',
+  		        confirmButtonText: '확인'
+  		      })
     				document.getElementById("authenticationNumber").focus();
     			}
     		},

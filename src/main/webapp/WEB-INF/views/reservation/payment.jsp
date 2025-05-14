@@ -9,6 +9,7 @@
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
 	<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 	<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	
 	<script>
 		IMP.init("imp76101506");
@@ -24,14 +25,24 @@
 		    buyer_tel: "${vo.tel}",
 		  },
 		  function (res) {
-			  if(res.success) {
-				  alert("결제가 완료되었습니다.");
-				  location.href="${ctp}/reservation/paymentOk";
-			  }
-			  else {
-				  alert("결제가 취소되었습니다.\n마이페이지에서 다시 결제를 진행해 주세요.");
-				  location.href="${ctp}/member/memberMyPage";
-			  }
+			  if (res.success) {
+				  Swal.fire({
+				    icon: 'success',
+				    title: "결제가 완료되었습니다.",
+				    confirmButtonText: '확인'
+				  }).then(() => {
+				    location.href = "${ctp}/reservation/paymentOk";
+				  });
+				} else {
+				  Swal.fire({
+				    icon: 'warning',
+				    title: "결제가 취소되었습니다.",
+				    text: "마이페이지에서 다시 결제를 진행해 주세요.",
+				    confirmButtonText: '확인'
+				  }).then(() => {
+				    location.href = "${ctp}/member/memberMyPage";
+				  });
+				}
 		  },
 		);
 	</script>

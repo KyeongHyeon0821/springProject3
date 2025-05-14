@@ -13,6 +13,7 @@
 	<link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f5f016ee8ec4b87750154cd5e9d07dfb&libraries=services"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<style>
 		.hotel-detail-container {
 		  max-width: 800px;
@@ -539,7 +540,11 @@
 			let hotelIdx = ${hotelVo.idx};
 			
 			if(mid == "") {
-				alert("로그인 후 이용해주세요.");
+				Swal.fire({
+	        icon: 'info',
+	        title: "로그인 후 이용해주세요.",
+	        confirmButtonText: '확인'
+	      })
 				return false;
 			}
 			
@@ -569,7 +574,11 @@
 			let hotelIdx = ${hotelVo.idx};
 			
 			if(mid == "") {
-				alert("로그인 후 이용해주세요.");
+				Swal.fire({
+	        icon: 'info',
+	        title: "로그인 후 이용해주세요.",
+	        confirmButtonText: '확인'
+	      })
 				return false;
 			}
 			

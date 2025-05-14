@@ -97,6 +97,7 @@ public class MessageController {
 		}
 		else if(msgFlag.equals("reservationCancelOk")) {
 			model.addAttribute("message", "예약이 취소되었습니다.");
+			model.addAttribute("msgType", "success");
 			model.addAttribute("url", "reservation/reservationDetail/"+reservationNo);
 		}
 		else if(msgFlag.equals("reservationCancelNo")) {

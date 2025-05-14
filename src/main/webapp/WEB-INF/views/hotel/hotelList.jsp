@@ -10,13 +10,18 @@
 	<title>위드펫 - 호텔검색</title>
 	<link rel="icon" href="${ctp}/images/favicon.ico" type="image/x-icon">
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script>
 		'use strict';
 		// 호텔 찜 추가하기
 		function hotelLikeOk(hotelIdx) {
 			let mid = '${sMid}';
 			if(mid == "") {
-				alert("로그인 후 이용해주세요.");
+				Swal.fire({
+	        icon: 'info',
+	        title: "로그인 후 이용해주세요.",
+	        confirmButtonText: '확인'
+	      })
 				return false;
 			}
 			
@@ -44,7 +49,11 @@
 		function hotelLikeNo(hotelIdx) {
 			let mid = '${sMid}';
 			if(mid == "") {
-				alert("로그인 후 이용해주세요.");
+				Swal.fire({
+	        icon: 'info',
+	        title: "로그인 후 이용해주세요.",
+	        confirmButtonText: '확인'
+	      })
 				return false;
 			}
 			
