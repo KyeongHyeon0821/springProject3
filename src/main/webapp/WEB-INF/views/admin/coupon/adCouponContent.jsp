@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
@@ -82,55 +83,7 @@
   </style>
   <script>
     'use strict';
-    
-    function discountTypeCheck(discountType) {
-    	if(discountType == 'P') {
-    		$("#discountValueP").show();
-    		$("#discountValueA").hide();
-    	}
-    	else {
-    		$("#discountValueP").hide();
-    		$("#discountValueA").show();
-    	}
-    }
-    
-    function fCheck() {
-    	let couponType = $("#couponType").val();
-    	let couponName = $("#couponName").val();
-    	let discountType = couponForm.discountType.value;
-    	let discountValue = '';
-    	if(discountType == 'P') $("#discountValueP").val();
-    	else $("#discountValueA").val();
-    	let issueDate = $("#issueDate").val();
-    	let expiryDate = $("#expiryDate").val();
-    	let isActive = $("#isActive").val();
-    	
-    	if(couponName.trim() == "") {
-    		alert("쿠폰 이름을 적어주세요");
-    		$("#couponName").focus();
-    		return false;
-    	}
-    	
-			// 전송전에 파일에 관련된 사항들을 체크해준다.
-			let fName = document.getElementById("fName").value;
-			if(fName.trim() != "") {
-				let ext = fName.substring(fName.lastIndexOf(".")+1).toLowerCase();
-				let maxSize = 1024 * 1024 * 5;
-				let fileSize = document.getElementById("fName").files[0].size;
-				
-				if(ext != 'jpg' && ext != 'gif' && ext != 'png') {
-					alert("그림파일만 업로드 가능합니다.");
-					return false;
-				}
-				else if(fileSize > maxSize) {
-					alert("업로드할 파일의 최대용량은 5MByte입니다.");
-					return false;
-				}
-			}
-			
-			couponForm.submit();
-    }
-    
+  
     // QR코드 모달로 보기
     function qrCodeView(photo) {
 			$(".modal-body #imgSrc").attr("src","${ctp}/resources/data/coupon/"+photo);
@@ -197,7 +150,7 @@
       </c:if>
       <c:if test="${vo.discountType == 'A'}">
         <label class="form-label">할인액</label>
-        <p class="form-control-plaintext">${vo.discountValue} 원</p>
+        <p class="form-control-plaintext"><fmt:formatNumber value="${vo.discountValue}" type="number" pattern="#,##0" /> 원</p>
       </c:if>
     </div>
 
