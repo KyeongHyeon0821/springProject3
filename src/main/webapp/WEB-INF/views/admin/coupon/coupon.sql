@@ -25,7 +25,7 @@ create table couponUser (
   mid		varchar(20) not null,											/* 쿠폰 발급받은 사용자 아이디 */
   email	varchar(50) not null,											/* 쿠폰 발급받은 사용자 이메일 */
   userIssueDate datetime not null default now(),	/* 사용자 쿠폰 발행일 */
-  isUse   char(4) not null default '사용중',			/* 쿠폰 사용 여부(사용중, 사용완료) */
+  isUse   char(4) not null default '미사용',				/* 쿠폰 사용 여부(미사용, 사용완료) */
   usedDate datetime not null default now(),				/* 쿠폰 사용날짜 */
   couponQrcode varchar(50) not null,							/* 발행한 쿠폰의 Qr코드(쿠폰코드+'_'+아이디+'.png') */
   primary key(userCouponIdx),
@@ -44,3 +44,5 @@ select u.*, (select expiryDate from coupon where couponCode=u.userCouponCode) as
 select u.*, (select expiryDate from coupon where couponCode=u.userCouponCode) as expiryDate from coupon c, couponUser u where u.userCouponCode = c.couponCode and mid = 'atom1234' order by expiryDate;
 
 delete from coupon where idx = 5;
+
+select count(*) from couponuser where usercouponCode = '202505206326E' and mid = 'yd12321';

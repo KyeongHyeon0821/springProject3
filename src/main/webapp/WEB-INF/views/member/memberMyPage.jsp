@@ -173,8 +173,9 @@
     <div class="link-list">
       <a href="${ctp}/member/myReservation">예약 내역 조회 및 관리</a>
       <a href="${ctp}/room/roomUseList">리뷰 등록</a>
-      <a href="#">찜 목록</a>
       <a href="${ctp}/review/memberReview">내 리뷰보기</a>
+      <a href="${ctp}/coupon/couponForm">쿠폰</a>
+      <a href="#">찜 목록</a>
       <a href="#">1:1 문의 내역</a>
     </div>
   </div>

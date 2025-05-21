@@ -45,7 +45,7 @@
 	</select>
 	
 	<select id="getUseCouponList" resultType="com.spring.springProject3.vo.CouponVo">
-	  select * from coupon where isActive = 0 order by expiryDate;
+	  select * from coupon where isActive = 1 order by expiryDate;
 	</select>
 	
 	<select id="getCouponCodeList" resultType="com.spring.springProject3.vo.CouponVo">
@@ -56,6 +56,10 @@
 	<select id="getCouponMidList" resultType="com.spring.springProject3.vo.CouponVo">
 	  select u.*, (select expiryDate from coupon where couponCode=u.userCouponCode) as expiryDate, (select idx from coupon where couponCode=u.userCouponCode) as idx 
 	    from coupon c, couponUser u where u.userCouponCode = c.couponCode and mid = #{mid} order by expiryDate;
+	</select>
+	
+	<select id="getCouponIssuedCheck" resultType="int">
+		select count(*) from couponuser where usercouponCode = #{couponCode} and mid = #{mid};		
 	</select>
 	
 	

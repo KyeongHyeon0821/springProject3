@@ -30,4 +30,6 @@ public interface CouponDao {
 
 	int setUserCouponCodeUsed(@Param("userCouponCode") String userCouponCode);
 
+	int getCouponIssuedCheck(@Param("mid") String mid, @Param("couponCode") String couponCode);
+
 }

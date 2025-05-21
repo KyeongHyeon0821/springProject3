@@ -92,5 +92,10 @@ public class CouponServiceImpl implements CouponService {
 	public int setUserCouponCodeUsed(String userCouponCode) {
 		return couponDao.setUserCouponCodeUsed(userCouponCode);
 	}
+
+	@Override
+	public int getCouponIssuedCheck(String mid, String couponCode) {
+		return couponDao.getCouponIssuedCheck(mid, couponCode);
+	}
 	
 }

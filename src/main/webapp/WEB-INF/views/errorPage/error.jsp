@@ -11,9 +11,10 @@
 	<jsp:include page="/WEB-INF/views/include/bs5.jsp"/>
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/include/nav.jsp"/>
 <p><br/></p>
-<div class="container text-center mb-5">
+<p><br/></p>
+<p><br/></p>
+<div class="container text-center mt-5 mb-5">
 	<h2>현재 시스템 점검중입니다.</h2>
 
   <div>사용에 불편을 드려서 죄송합니다.</div>
@@ -25,6 +26,5 @@
   </div>
 </div>
 
-<jsp:include page="/WEB-INF/views/include/footer.jsp"/>
 </body>
 </html>

@@ -28,4 +28,6 @@ public interface CouponService {
 
 	int setUserCouponCodeUsed(String userCouponCode);
 
+	int getCouponIssuedCheck(String mid, String couponCode);
+
 }

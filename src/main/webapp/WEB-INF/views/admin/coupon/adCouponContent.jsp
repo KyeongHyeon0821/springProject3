@@ -209,12 +209,12 @@
           <td>${cvo.email}</td>
           <td>${fn:substring(cvo.userIssueDate,0,16)}</td>
           <td>
-            <c:if test="${cvo.isUse == '사용중'}"><span class="badge bg-success">${cvo.isUse}</span></c:if>
-            <c:if test="${cvo.isUse != '사용중'}"><span class="badge bg-warning">${cvo.isUse}</span></c:if>
+            <c:if test="${cvo.isUse == '미사용'}"><span class="badge bg-success">${cvo.isUse}</span></c:if>
+            <c:if test="${cvo.isUse != '미사용'}"><span class="badge bg-warning">${cvo.isUse}</span></c:if>
           </td>
           <td>
-            <c:if test="${cvo.isUse == '사용중'}">미사용</c:if>
-            <c:if test="${cvo.isUse != '사용중'}">${fn:substring(cvo.usedDate,0,16)}</c:if>
+            <c:if test="${cvo.isUse == '미사용'}">미사용</c:if>
+            <c:if test="${cvo.isUse != '미사용'}">${fn:substring(cvo.usedDate,0,16)}</c:if>
           </td>
           <td>
             <a href="#" onclick="qrCodeView('${cvo.photo}')" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#myCouponModal">상세보기</a>

@@ -69,8 +69,8 @@
     <div class="col">
       <select name="couponActive" id="couponActive" onchange="couponTypeCheck()" class="form-select">
         <option value=""  ${couponActive=='9' ? 'selected' : ''}>전체쿠폰</option>
-        <option value="1" ${couponActive=='1' ? 'selected' : ''}>사용중</option>
-        <option value="0" ${couponActive=='0' ? 'selected' : ''}>사용중지</option>
+        <option value="1" ${couponActive=='1' ? 'selected' : ''}>활성쿠폰</option>
+        <option value="0" ${couponActive=='0' ? 'selected' : ''}>비활성쿠폰</option>
       </select>
     </div>
     <div class="col"></div>
@@ -104,7 +104,7 @@
         </td>
         <td>${fn:substring(vo.issueDate,0,10)}</td>
         <td>${fn:substring(vo.expiryDate,0,10)}</td>
-        <td>${vo.isActive==1 ? "<div class='badge bg-success'>사용중</div>" : "<div class='badge bg-info'>사용중지</div>"}</td>
+        <td>${vo.isActive==1 ? "<div class='badge bg-success'>진행중</div>" : "<div class='badge bg-info'>사용중지</div>"}</td>
         <td>
           <a href="adCouponUpdate/${vo.idx}" class="badge bg-warning">수정</a>
           <a href="javascript:deleteCheck(${vo.idx})" class="badge bg-danger">삭제</a>
