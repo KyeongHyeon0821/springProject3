@@ -84,6 +84,11 @@
 		  background-color: #6fb56f;
 		  border-color: #6fb56f;
 		}
+		
+	  .modal-backdrop.show {
+	    opacity: 0.2 !important; 
+	  }
+	
 
   </style>
   <script>
@@ -228,7 +233,7 @@
     <div class="modal-content modal-sm">
       <!-- Modal Header -->
       <div class="modal-header">
-        <h5><span id="title"></span>발행된 쿠폰 이미지</h5>
+        <h5><span id="title"></span>발행된 QR코드</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <!-- Modal body -->

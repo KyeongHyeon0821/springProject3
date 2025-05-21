@@ -7,115 +7,137 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>adCouponContent.jsp</title>
+  <title>위드펫 - 내 쿠폰</title>
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
   <link rel="stylesheet" type="text/css" href="${ctp}/css/linkOrange.css"/>
   <style>
-    th {
+    .detail-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .detail-label {
+      width: 30%;
+      font-weight: bold;
+      color: #555;
+    }
+    .detail-value {
+      width: 65%;
+      color: #333;
+    }
+    .coupon-image img {
+      width: 120px;
+      border-radius: 8px;
+    }
+    .text-center {
       text-align: center;
-      vertical-align: middle;
-      background-color: #eee !important;
+    }
+    .btn-custom {
+      padding: 10px 25px;
+      background-color: #6c757d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+    .btn-custom:hover {
+      background-color: #5a6268;
     }
   </style>
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <p><br/></p>
 <div class="container">
   <h2 class="text-center mb-4">쿠폰 정보 상세보기</h2>
-  <form name="couponForm" method="post" enctype="multipart/form-data">
-    <table class="table table-bordered p-3">
-      <tr>
-        <th>쿠폰타입</th>
-        <td>
-          <select name="couponType" id="couponType" class="form-select">
-	          <option value="R" ${vo.couponType == 'R' ? 'selected' : ''}>예약쿠폰</option>
-	          <option value="E" ${vo.couponType == 'E' ? 'selected' : ''}>이벤트쿠폰</option>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <th>발행쿠폰이름</th>
-        <td><input type="text" name="couponName" id="couponName" value="${vo.couponName}" class="form-control"/></td>
-      </tr>
-      <tr>
-        <th>할인형태</th>
-        <td>
-          <input type="radio" name="discountType" id="discountTypeP" value="P" ${vo.discountType=='P' ? 'checked' : ''} onclick="discountTypeCheck('P')"> <label for="discountTypeP">%(퍼센트) &nbsp;</label>
-          <input type="radio" name="discountType" id="discountTypeA" value="A" ${vo.discountType=='A' ? 'checked' : ''} onclick="discountTypeCheck('A')"> <label for="discountTypeA">원(현금)</label>
-        </td>
-      </tr>
-      <c:if test="${vo.discountType=='P'}">
-	      <tr id="discountValueP">
-	        <th>할인율</th>
-	        <td>
-	          <div class="input-group">
-	          	<input type="number" name="discountValue" id="discountValueP" value="${vo.discountValue}" class="form-control"/>
-	          	<div class="input-group-text">%(퍼센트)</div>
-	          </div>
-	        </td>
-	      </tr>
-      </c:if>
-      <c:if test="${vo.discountType=='A'}">
-	      <tr id="discountValueA">
-	        <th>할인액</th>
-	        <td>
-	          <div class="input-group">
-	            <input type="number" name="discountValue" id="discountValueA" value="${vo.discountValue}" class="form-control"/>
-	            <div class="input-group-text">원(금액)</div>
-	          </div>
-	        </td>
-	      </tr>
-      </c:if>
-      <tr>
-        <th>쿠폰발행일</th>
-        <td><input type="date" name="issueDate" id="issueDate" value="${fn:substring(vo.issueDate,0,10)}" class="form-control"/></td>
-      </tr>
-      <tr>
-        <th>쿠폰만료일</th>
-        <td><input type="date" name="expiryDate" id="expiryDate" value="${fn:substring(vo.expiryDate,0,10)}" class="form-control"/></td>
-      </tr>
-      <tr>
-        <th>쿠폰활성화</th>
-        <td>
-          <input type="radio" name="isActive" id="isActive0" value="0" ${vo.isActive=='0' ? 'checked' : ''}> 비활성화 &nbsp;
-          <input type="radio" name="isActive" id="isActive1" value="1" ${vo.isActive=='1' ? 'checked' : ''} /> 활성화
-        </td>
-      </tr>
-      <tr>
-        <th>안내사진</th>
-        <td>
-          <div><img src="${ctp}/coupon/${vo.photo}" width="120px"/></div>
-        </td>
-      </tr>
-    </table>
-    <div class="text-center">
-      <input type="button" value="돌아가기" onclick="location.href='${ctp}/coupon/couponForm';" class="btn btn-primary"/>
-    </div>
-  </form>
-</div>
 
-<!-- The Modal -->
-<div class="modal fade" id="myCouponModal">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content modal-sm">
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h5 id="title"><span>발행된 쿠폰 이미지</span></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <!-- Modal body -->
-      <div class="modal-body">
-        <img id="imgSrc" width="470px" /><br/>
-      </div>
-      <!-- Modal footer -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+  <div class="detail-container">
+
+    <div class="detail-row">
+      <div class="detail-label">쿠폰 타입</div>
+      <div class="detail-value">
+        <c:choose>
+          <c:when test="${vo.couponType == 'R'}">예약쿠폰</c:when>
+          <c:when test="${vo.couponType == 'E'}">이벤트쿠폰</c:when>
+          <c:otherwise>알 수 없음</c:otherwise>
+        </c:choose>
       </div>
     </div>
+
+    <div class="detail-row">
+      <div class="detail-label">쿠폰 이름</div>
+      <div class="detail-value">${vo.couponName}</div>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-label">할인 형태</div>
+      <div class="detail-value">
+        <c:choose>
+          <c:when test="${vo.discountType == 'P'}">퍼센트(%)</c:when>
+          <c:when test="${vo.discountType == 'A'}">금액(원)</c:when>
+          <c:otherwise>없음</c:otherwise>
+        </c:choose>
+      </div>
+    </div>
+
+    <c:if test="${vo.discountType == 'P'}">
+      <div class="detail-row">
+        <div class="detail-label">할인율</div>
+        <div class="detail-value">${vo.discountValue}%</div>
+      </div>
+    </c:if>
+
+    <c:if test="${vo.discountType == 'A'}">
+      <div class="detail-row">
+        <div class="detail-label">할인액</div>
+        <div class="detail-value">${vo.discountValue}원</div>
+      </div>
+    </c:if>
+
+    <div class="detail-row">
+      <div class="detail-label">발행일</div>
+      <div class="detail-value">${fn:substring(vo.issueDate,0,10)}</div>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-label">만료일</div>
+      <div class="detail-value">${fn:substring(vo.expiryDate,0,10)}</div>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-label">쿠폰 상태</div>
+      <div class="detail-value">
+        <c:choose>
+          <c:when test="${vo.isActive == '1'}">활성화</c:when>
+          <c:otherwise>비활성화</c:otherwise>
+        </c:choose>
+      </div>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-label">안내 사진</div>
+      <div class="detail-value coupon-image">
+        <img src="${ctp}/coupon/${vo.photo}" alt="쿠폰 이미지"/>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <button type="button" class="btn-custom" onclick="location.href='${ctp}/coupon/couponForm';">돌아가기</button>
+    </div>
+
   </div>
 </div>
 
 <p><br/></p>
+<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>
 </html>
