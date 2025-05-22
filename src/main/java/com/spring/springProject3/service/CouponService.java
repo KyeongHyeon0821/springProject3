@@ -30,4 +30,6 @@ public interface CouponService {
 
 	int getCouponIssuedCheck(String mid, String couponCode);
 
+	List<CouponVo> getAvailableMyCoupons(String mid);
+
 }

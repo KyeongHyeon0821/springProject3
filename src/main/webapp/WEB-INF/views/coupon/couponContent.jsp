@@ -35,7 +35,7 @@
       color: #333;
     }
     .coupon-image img {
-      width: 120px;
+      width: 40%;
       border-radius: 8px;
     }
     .text-center {

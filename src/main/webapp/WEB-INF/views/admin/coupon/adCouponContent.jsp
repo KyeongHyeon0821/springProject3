@@ -185,7 +185,7 @@
     <!-- 안내사진 -->
 		<div class="mb-3">
 		  <label class="form-label">안내사진</label><br/>
-		  <img src="${ctp}/coupon/${vo.photo}" style="width: 20%;" />
+		  <img src="${ctp}/coupon/${vo.photo}" style="width: 40%;" />
 		</div>
 
   </div>

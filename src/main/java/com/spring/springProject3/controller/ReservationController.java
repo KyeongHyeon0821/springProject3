@@ -2,6 +2,7 @@ package com.spring.springProject3.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -17,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.springProject3.common.ProjectProvide;
+import com.spring.springProject3.service.CouponService;
 import com.spring.springProject3.service.HotelService;
 import com.spring.springProject3.service.MemberService;
 import com.spring.springProject3.service.ReservationService;
 import com.spring.springProject3.service.RoomService;
+import com.spring.springProject3.vo.CouponVo;
 import com.spring.springProject3.vo.HotelVo;
 import com.spring.springProject3.vo.MemberVo;
 import com.spring.springProject3.vo.ReservationVo;
@@ -47,6 +50,9 @@ public class ReservationController {
 	
 	@Autowired
 	MemberService memberService;
+	
+	@Autowired
+	CouponService couponService;
 	
 	@Autowired
 	ProjectProvide projectProvide;
@@ -93,11 +99,13 @@ public class ReservationController {
     if (nights == null || nights <= 0) {
         return "redirect:/message/invalidValue";
     }
-		
+    String mid = session.getAttribute("sMid") + "";
+		List<CouponVo> couponList = couponService.getAvailableMyCoupons(mid);
 		RoomVo roomVo = roomService.getRoom(roomIdx);
 		HotelVo hotelVo = hotelService.getHotel(roomVo.getHotelIdx());
 		MemberVo memberVo = memberService.getMemberIdCheck(session.getAttribute("sMid")+"");
-				
+		System.out.println("couponList : " + couponList);
+		model.addAttribute("couponList", couponList);
 		model.addAttribute("roomVo", roomVo);
 		model.addAttribute("hotelVo", hotelVo);
 		model.addAttribute("memberVo", memberVo);

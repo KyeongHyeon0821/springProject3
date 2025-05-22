@@ -58,12 +58,17 @@
 	    from coupon c, couponUser u where u.userCouponCode = c.couponCode and mid = #{mid} order by expiryDate;
 	</select>
 	
+	<!-- 쿠폰 중복 발급 체크 -->
 	<select id="getCouponIssuedCheck" resultType="int">
 		select count(*) from couponuser where usercouponCode = #{couponCode} and mid = #{mid};		
 	</select>
 	
-	
-	
+	<!-- 사용 가능 쿠폰 (예약 시) -->
+	<select id="getAvailableMyCoupons" resultType="com.spring.springProject3.vo.CouponVo">
+		select couponuser.*, coupon.discountType as discountType, coupon.discountValue as discountValue, coupon.couponname as couponName
+		from couponuser, coupon
+		where couponuser.usercouponcode = coupon.couponcode and couponuser.mid = #{mid} and couponuser.isUse = '미사용';
+	</select>
 	
 	
 	<insert id="setCouponInput">

@@ -97,5 +97,10 @@ public class CouponServiceImpl implements CouponService {
 	public int getCouponIssuedCheck(String mid, String couponCode) {
 		return couponDao.getCouponIssuedCheck(mid, couponCode);
 	}
+
+	@Override
+	public List<CouponVo> getAvailableMyCoupons(String mid) {
+		return couponDao.getAvailableMyCoupons(mid);
+	}
 	
 }

@@ -32,4 +32,6 @@ public interface CouponDao {
 
 	int getCouponIssuedCheck(@Param("mid") String mid, @Param("couponCode") String couponCode);
 
+	List<CouponVo> getAvailableMyCoupons(@Param("mid") String mid);
+
 }

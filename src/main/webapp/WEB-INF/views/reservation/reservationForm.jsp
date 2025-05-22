@@ -389,6 +389,8 @@
     		}
     	});
     }
+    
+    
 	</script>
 </head>
 <body>
@@ -454,8 +456,28 @@
 				<fmt:formatNumber value="${roomVo.price}" type="number" pattern="#,##0" />원 x ${nights}박 =
 				<strong><fmt:formatNumber value="${roomVo.price * nights}" type="number" pattern="#,##0" />원</strong>
 			</p>
-
-			<!-- 약관 동의 영역 -->
+			
+			
+			<!-- 쿠폰 선택 -->
+			<div class="mb-3">
+			  <label for="couponSelect" class="form-label">사용할 쿠폰</label>
+			  <select class="form-select" id="couponSelect">
+			    <option value="0">-- 쿠폰을 선택하세요 --</option>
+			    <c:forEach var="coupon" items="${couponList}">
+			      <option value="${coupon.discountType}/${coupon.discountValue}">
+			      	<c:if test="${coupon.discountType == 'P'}">
+			        	${coupon.couponName}&nbsp;${coupon.discountValue}%
+			        </c:if>
+			      	<c:if test="${coupon.discountType == 'A'}">
+			        	${coupon.couponName}&nbsp;<fmt:formatNumber value="${coupon.discountValue}" type="number" pattern="#,##0" />원
+			        </c:if>
+			      </option>
+			    </c:forEach>
+			  </select>
+			</div>
+			
+	
+		<!-- 약관 동의 영역 -->
 		<div class="checkbox-area">
 		  <!-- 전체 동의 -->
 		  <div class="form-check mb-2">
@@ -484,10 +506,21 @@
 		
 		  <div class="form-check mt-2">
 		    <input class="form-check-input sub-check" type="checkbox" id="ageCheck" />
-		    <label class="form-check-label" for="ageCheck">
+		    <label class="form-check-label mb-3" for="ageCheck">
 		      [필수] 만 14세 이상입니다
 		    </label>
 		  </div>
+		  
+			<!-- 할인 금액 표시 -->
+			<p class="discount-price text-end" style="font-size:1.2rem; color: #28a745;">
+			  할인금액: <strong id="discountAmount">0원</strong>
+			</p>
+			
+			<!-- 최종 금액 표시 -->
+			<p class="total-price mt-3 mb-3 text-end" style="font-size:1.4rem">
+			  최종금액 <strong id="finalPrice"><fmt:formatNumber value="${roomVo.price * nights}" type="number" pattern="#,##0" />원</strong>
+			</p>
+		  
 		</div>
 
 			<!-- 결제 버튼 -->
@@ -497,7 +530,9 @@
 		<input type="hidden" name="roomIdx" value="${roomVo.idx}" />
 		<input type="hidden" name="guestCount" value="${guestCount}" />
 		<input type="hidden" name="petCount" value="${petCount}" />
-		<input type="hidden" name="totalPrice" value="${roomVo.price * nights}" />
+		<input type="hidden" name="totalPrice" id="totalPrice" value="${roomVo.price * nights}" />
+		<%-- <input type="hidden" name="couponCode" id="couponCode" value="${}" /> --%>
+		
 	</form>
 </div>
 
@@ -575,5 +610,49 @@
 	<!-- 모달 백그라운드 -->
  <div id="modalOverlay" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0, 0, 0, 0.4); z-index: 9998;" onclick="closeTerms()"></div>
+      
+      
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const couponSelect = document.getElementById("couponSelect");
+    const finalPriceTag = document.getElementById("finalPrice");
+    const discountTag = document.getElementById("discountAmount");
+
+    const totalPrice = document.getElementById("totalPrice");
+    const discountAmountInput = document.getElementById("discountAmountInput");
+
+    const originalTotalPrice = ${roomVo.price * nights};
+
+    couponSelect.addEventListener("change", function () {
+      const selected = couponSelect.value;
+
+      let finalPrice = originalTotalPrice;
+      let discount = 0;
+
+      if (selected && selected !== "0") {
+        const [type, value] = selected.split("/");
+        if (type === "P") {
+          const percent = parseFloat(value);
+          discount = originalTotalPrice * (percent / 100);
+        } else if (type === "A") {
+          discount = parseInt(value);
+        }
+      }
+
+      // 최소 0원까지
+      finalPrice = Math.max(originalTotalPrice - discount, 0);
+
+      // 반영
+      finalPriceTag.innerText = Math.floor(finalPrice).toLocaleString() + "원";
+      discountTag.innerText = Math.floor(discount).toLocaleString() + "원";
+
+      // hidden 필드에도 저장
+      totalPrice.value = Math.floor(finalPrice);
+      discountAmountInput.value = Math.floor(discount);
+    });
+  });
+</script>
+
+      
 </body>
 </html>
