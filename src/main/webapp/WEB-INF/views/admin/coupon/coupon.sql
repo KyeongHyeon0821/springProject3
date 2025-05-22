@@ -40,7 +40,7 @@ select * from coupon order by idx desc limit 0,10;
 select * from coupon where isActive = 1 order by idx desc limit 0,10;
 select * from coupon where couponType = 'R' order by idx desc limit 0,10;
 select * from coupon where couponType = 'R' and isActive = 0 order by idx desc limit 0,10;
-select u.*, (select expiryDate from coupon where couponCode=u.userCouponCode) as expiryDate, (select photo from coupon where couponCode=u.userCouponCode) as photo from coupon c, couponUser u where u.userCouponCode = c.couponCode and u.userCouponCode = '2025043035E' order by expiryDate;
+select u.*, (select expiryDate from coupon where couponCode=u.userCouponCode) as expiryDate, (select photo from coupon where couponCode=u.userCouponCode) as photo from coupon c, couponUser u where u.userCouponCode = c.couponCode and u.userCouponCode = '202505208050E' order by expiryDate;
 select u.*, (select expiryDate from coupon where couponCode=u.userCouponCode) as expiryDate from coupon c, couponUser u where u.userCouponCode = c.couponCode and mid = 'atom1234' order by expiryDate;
 
 delete from coupon where idx = 5;

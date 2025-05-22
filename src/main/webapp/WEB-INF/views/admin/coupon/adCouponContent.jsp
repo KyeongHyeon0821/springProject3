@@ -13,9 +13,9 @@
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
   <link rel="stylesheet" type="text/css" href="${ctp}/css/linkOrange.css"/>
   <style>
-  	/* 전체 레이아웃 컨테이너 */
+		  /* 전체 레이아웃 컨테이너 */
 		.container {
-		  max-width: 1000px;
+		  max-width: 1100px;
 		  margin: 0 auto;
 		  padding: 40px 20px;
 		  background-color: #fff;
@@ -27,6 +27,9 @@
 		.form-container {
 		  display: flex;
 		  flex-direction: column;
+		  gap: 20px;
+		  max-width: 600px; /* ✅ 추가: 쿠폰 상세보기 내용만 줄이기 */
+		  margin: 0 auto;   /* 가운데 정렬 */
 		}
 		
 		/* 항목 간 여백 및 정렬 */
@@ -56,6 +59,9 @@
 		  border: 1px solid #dee2e6;
 		  border-radius: 8px;
 		  color: #333;
+		  max-width: 100%;       /* ✅ 전체 박스 안에서만 */
+		  width: 100%;           /* ✅ 내용 너비를 꽉 채움 */
+		  box-sizing: border-box;
 		}
 		
 		/* 이미지 */
@@ -73,20 +79,21 @@
 		    font-size: 1.4rem;
 		  }
 		}
-  	
-  
-    th {
-      text-align: center;
-      vertical-align: middle;
-      background-color: #eee !important;
-    }
+		
+		/* 테이블 헤더 스타일 */
+		th {
+		  text-align: center;
+		  vertical-align: middle;
+		  background-color: #eee !important;
+		}
+
   </style>
   <script>
     'use strict';
   
     // QR코드 모달로 보기
-    function qrCodeView(photo) {
-			$(".modal-body #imgSrc").attr("src","${ctp}/resources/data/coupon/"+photo);
+    function qrCodeView(qrcode) {
+			$(".modal-body #imgSrc").attr("src","${ctp}/resources/data/couponQrcode/"+qrcode);
     }
     
     // 쿠폰 사용처리
@@ -95,7 +102,7 @@
     	if(!ans) return false;
     	
     	$.ajax({
-    		url  : "${ctp}/coupon/adUserCouponCodeUsed",
+    		url  : "${ctp}/admin/adUserCouponCodeUsed",
     		type : "post",
     		data : {userCouponCode : userCouponCode},
     		success:function(res) {
@@ -176,10 +183,10 @@
     </div>
 
     <!-- 안내사진 -->
-    <div class="mb-3">
-      <label class="form-label">안내사진</label><br/>
-      <img src="${ctp}/coupon/${vo.photo}" width="120px"/>
-    </div>
+		<div class="mb-3">
+		  <label class="form-label">안내사진</label><br/>
+		  <img src="${ctp}/coupon/${vo.photo}" style="width: 20%;" />
+		</div>
 
   </div>
   
@@ -217,7 +224,7 @@
             <c:if test="${cvo.isUse != '미사용'}">${fn:substring(cvo.usedDate,0,16)}</c:if>
           </td>
           <td>
-            <a href="#" onclick="qrCodeView('${cvo.photo}')" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#myCouponModal">상세보기</a>
+            <a href="#" onclick="qrCodeView('${cvo.couponQrcode}')" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#myCouponModal">상세보기</a>
           </td>
           <td>
             <input type="button" value="사용처리" onclick="couponCheck('${cvo.userCouponCode}')" class="btn btn-primary btn-sm"/>
@@ -239,7 +246,7 @@
     <div class="modal-content modal-sm">
       <!-- Modal Header -->
       <div class="modal-header">
-        <h5 id="title"><span>발행된 쿠폰 이미지</span></h5>
+        <h5 id="title"><span>발행된 QR코드 이미지</span></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <!-- Modal body -->

@@ -85,8 +85,8 @@ public class CouponController {
 		qrCodeImage += "할인율(원) : ";
 		if(vo.getDiscountType().equals("P")) qrCodeImage += vo.getDiscountValue() + "%\n";
 		else qrCodeImage += vo.getDiscountValue() + "원\n";
-		qrCodeImage += "쿠폰 발급날짜 : " + qrCodeName.substring(0,4) + "년, " + qrCodeName.substring(4,6) + "월, " + qrCodeName.substring(6,8) + "일\n";
-		qrCodeImage += "쿠폰 사용만료일 : " + vo.getExpiryDate();
+		qrCodeImage += "쿠폰 발급날짜 : " + qrCodeName.substring(0,2) + "-" + qrCodeName.substring(2,4) + "-" + qrCodeName.substring(4,6) + "\n";
+		qrCodeImage += "쿠폰 사용만료일 : " + vo.getExpiryDate().substring(0,11);
 		projectProvide.qrCodeCreate(qrCodeName, qrCodeImage, "couponQrcode");	// Qr코드 만들기
 		
 		// 메일 전송처리

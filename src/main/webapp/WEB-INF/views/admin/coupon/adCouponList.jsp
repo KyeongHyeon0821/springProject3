@@ -81,8 +81,8 @@
   <table class="table table-hover text-center">
     <tr class="table-secondary">
       <th>번호</th>
-      <th>티켓용도</th>
-      <th>티켓명</th>
+      <th>쿠폰타입</th>
+      <th>쿠폰명</th>
       <th>할인값(율)</th>
       <th>쿠폰최초발급일</th>
       <th>쿠폰사용만료일</th>
