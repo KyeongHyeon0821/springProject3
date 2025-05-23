@@ -105,7 +105,6 @@ public class ReservationController {
 		RoomVo roomVo = roomService.getRoom(roomIdx);
 		HotelVo hotelVo = hotelService.getHotel(roomVo.getHotelIdx());
 		MemberVo memberVo = memberService.getMemberIdCheck(session.getAttribute("sMid")+"");
-		System.out.println("couponList : " + couponList);
 		model.addAttribute("couponList", couponList);
 		model.addAttribute("roomVo", roomVo);
 		model.addAttribute("hotelVo", hotelVo);

@@ -15,38 +15,6 @@
   <script>
     'use strict';
     
-    function deleteCheck(idx) {
-  	  let ans = confirm("선택하신 쿠폰을 삭제하시겠습니까?");
-  	  if (!ans) return false;
-
-  	  $.ajax({
-  	    url: "couponDeleteCheck",
-  	    type: "post",
-  	    data: { idx: idx },
-  	    success: function(res) {
-  	      if (res != "0") {
-  	        Swal.fire({
-  	          icon: 'success',
-  	          title: "삭제되었습니다",
-  	          confirmButtonText: '확인'
-  	        }).then((result) => {
-  	          if (result.isConfirmed) {
-  	            location.reload();  // 확인 누른 후 새로고침
-  	          }
-  	        });
-  	      } else {
-  	        Swal.fire({
-  	          icon: 'error',
-  	          title: '삭제 불가',
-  	          text: '현재 쿠폰의 내역이 남아있어서 삭제하실 수 없습니다.',
-  	          confirmButtonText: '확인'
-  	        });
-  	      }
-  	    }
-  	  });
-  	}
-
-    
     function couponTypeCheck() {
     	let couponType = $("#couponType").val();
     	let couponActive = $("#couponActive").val();
@@ -107,7 +75,6 @@
         <td>${vo.isActive==1 ? "<div class='badge bg-success'>진행중</div>" : "<div class='badge bg-info'>사용중지</div>"}</td>
         <td>
           <a href="adCouponUpdate/${vo.idx}" class="badge bg-warning">수정</a>
-          <a href="javascript:deleteCheck(${vo.idx})" class="badge bg-danger">삭제</a>
         </td>
       </tr>
       <c:set var="curScrStartNo" value="${curScrStartNo - 1}"/>

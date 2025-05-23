@@ -260,7 +260,7 @@
 	 	 if (!authenticationSw) {
 	 		 Swal.fire({
  	        icon: 'info',
- 	        title: '인증번호 확인이 필요합니다. 인증을 진행해주세요.',
+ 	        title: '인증번호 확인이 필요합니다.\n인증을 진행해주세요.',
  	        confirmButtonText: '확인'
  	      })
 	      document.getElementById('tel').focus();
@@ -378,7 +378,7 @@
     			else {
     				Swal.fire({
   		        icon: 'error',
-  		        title: '인증번호가 일치하지 않습니다. 다시 입력해 주세요.',
+  		        title: '인증번호가 일치하지 않습니다.\n다시 입력해 주세요.',
   		        confirmButtonText: '확인'
   		      })
     				document.getElementById("authenticationNumber").focus();

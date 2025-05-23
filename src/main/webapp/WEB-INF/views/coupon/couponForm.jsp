@@ -10,6 +10,7 @@
   <title>위드펫 - 내 쿠폰</title>
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
   <link rel="stylesheet" type="text/css" href="${ctp}/css/linkOrange.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
 		.coupon-container {
 		  max-width: 1000px;
@@ -112,7 +113,11 @@
     			data : { couponCode : couponCode},
     			success : function(res) {
     				if(res != "0") {
-    					alert("이미 발급받은 쿠폰입니다.");
+    					Swal.fire({
+				        icon: 'warning',
+				        title: '이미 발급받은 쿠폰입니다.',
+				        confirmButtonText: '확인'
+				      })
     					return false;
     				}
     				else {
@@ -120,12 +125,13 @@
     			    	
   		    		let str = '<div class="spinner-border"></div> 쿠폰 발행중입니다. <div class="spinner-border"></div>';
   		    		$("#demo").html(str);
-  		    		let ans = confirm("회원님의 아래 메일주소로 쿠폰을 발행합니다.\n메일주소 : "+email+"\n쿠폰발행을 원하십니까?");
+  		    		let ans = confirm("쿠폰을 발급받으시겠습니까?");
+  		    		
   		    		if(!ans) {
   			    		$("#demo").html("");
   		    			return false;
   		    		}
-    					
+  		    		
   		    		$.ajax({
   		    			url  : "couponIssue",
   		    			type : "post",
@@ -137,7 +143,11 @@
   		    			},
   		    			success:function(res) {
   		    				if(res != "0") {
-  		    					alert("쿠폰이 발송되었습니다. 메일을 확인하세요");
+  		    					Swal.fire({
+	    				        icon: 'success',
+	    				        title: '쿠폰이 발송되었습니다.\n메일을 확인하세요',
+	    				        confirmButtonText: '확인'
+	    				      })
   		    					$("#demo").html("쿠폰이 발송된 메일주소 : ${email}");
   		    				}
   		    				else {
