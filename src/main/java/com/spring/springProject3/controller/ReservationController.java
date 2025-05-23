@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -120,8 +121,9 @@ public class ReservationController {
 	}
 	
 	// 예약 처리
+	@Transactional
 	@RequestMapping(value = "/reservationForm", method = RequestMethod.POST)
-	public String reservationFormPost(HttpSession session, Model model, ReservationVo vo) {
+	public String reservationFormPost(HttpSession session, Model model, ReservationVo vo, String couponCode) {
 		String mid = session.getAttribute("sMid") + "";
 		if(mid == null || mid.equals("")) return "redirect:/message/loginRequired"; // 로그인 체크
 		
@@ -136,6 +138,7 @@ public class ReservationController {
 		int res = reservationService.setReservationInput(vo); // 예약 테이블 입력 처리
 		
 		if(res != 0) { // 결제대기 처리 되었으면 실행
+			if(!couponCode.equals("") && couponCode != null) couponService.setMyCouponUse(mid, couponCode); // 쿠폰 사용 시 쿠폰사용처리;
 			RoomVo roomVo = roomService.getRoom(vo.getRoomIdx());
 			HotelVo hotelVo = hotelService.getHotel(roomVo.getHotelIdx());
 			

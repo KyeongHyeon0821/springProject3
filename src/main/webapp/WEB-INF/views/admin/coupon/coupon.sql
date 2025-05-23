@@ -50,3 +50,5 @@ select count(*) from couponuser where usercouponCode = '202505206326E' and mid =
 select couponuser.*, coupon.discountType as discountType, coupon.discountValue as discountValue, coupon.couponname as couponName
 from couponuser, coupon
 where couponuser.usercouponcode = coupon.couponcode and couponuser.mid = 'yd12321' and couponuser.isUse = '미사용';
+
+update couponUser set isUse='사용완료', usedDate = now() where mid = 'yd12321' and userCouponCode = '202505208050E';

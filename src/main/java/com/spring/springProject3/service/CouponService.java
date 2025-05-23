@@ -32,4 +32,6 @@ public interface CouponService {
 
 	List<CouponVo> getAvailableMyCoupons(String mid);
 
+	void setMyCouponUse(String mid, String couponCode);
+
 }

@@ -22,20 +22,20 @@ public class Scheduler {
   }
   
   
-//  // 매일 새벽 1시 imagesTemp폴더 내 모든 파일 삭제
-//  @Scheduled(cron = "0 0 1 * * *")
-//  public void deleteAllFilesInFolder() {
-//		File folder = new File("D:\\springProject\\project\\works\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\springProject3\\resources\\data\\imagesTemp");
-//		if(!folder.exists()) return;
-//		
-//		File[] files = folder.listFiles();
-//		
-//		if(files.length != 0) {
-//			for(File file : files) {
-//				file.delete();
-//			}
-//		}
-//	}
-//  	
+  // 매일 새벽 1시 imagesTemp폴더 내 모든 파일 삭제
+  @Scheduled(cron = "0 0 1 * * *")
+  public void deleteAllFilesInFolder() {
+		File folder = new File("D:\\springProject\\project\\works\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\springProject3\\resources\\data\\imagesTemp");
+		if(!folder.exists()) return;
+		
+		File[] files = folder.listFiles();
+		
+		if(files.length != 0) {
+			for(File file : files) {
+				file.delete();
+			}
+		}
+	}
+  	
   
 }

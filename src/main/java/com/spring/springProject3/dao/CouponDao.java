@@ -34,4 +34,6 @@ public interface CouponDao {
 
 	List<CouponVo> getAvailableMyCoupons(@Param("mid") String mid);
 
+	void setMyCouponUse(@Param("mid") String mid, @Param("couponCode") String couponCode);
+
 }

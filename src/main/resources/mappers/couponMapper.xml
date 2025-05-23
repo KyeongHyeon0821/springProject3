@@ -89,6 +89,11 @@
 	  update couponUser set isUse='사용완료', usedDate = now() where userCouponCode = #{userCouponCode};
 	</update>
 	
+	<!-- 예약시 사용된 쿠폰 사용완료처리 -->
+	<update id="setMyCouponUse">
+		update couponUser set isUse='사용완료', usedDate = now() where mid = #{mid} and userCouponCode = #{couponCode};
+	</update>
+	
 	
 	<delete id="setCouponDeleteCheck">
 	  delete from coupon where idx = #{idx};

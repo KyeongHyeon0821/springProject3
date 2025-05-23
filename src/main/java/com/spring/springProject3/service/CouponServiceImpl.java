@@ -102,5 +102,10 @@ public class CouponServiceImpl implements CouponService {
 	public List<CouponVo> getAvailableMyCoupons(String mid) {
 		return couponDao.getAvailableMyCoupons(mid);
 	}
+
+	@Override
+	public void setMyCouponUse(String mid, String couponCode) {
+		couponDao.setMyCouponUse(mid, couponCode);
+	}
 	
 }

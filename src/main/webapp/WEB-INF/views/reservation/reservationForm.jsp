@@ -416,7 +416,7 @@
 			<div class="form-group">
 			  <label for="tel">예약자 연락처</label>
 			  <div class="auth-phone-box">
-			    <input type="text" name="tel" id="tel" class="form-control" required placeholder="예 : 010-1234-5678">
+			    <input type="text" name="tel" id="tel" class="form-control" placeholder="예 : 010-1234-5678">
 			    <input type="button" id="requestAutenticationNumber" value="인증번호 받기" onclick="smsAuthentication()" class="btn btn-auth" />
 			  </div>
 			</div>
@@ -429,7 +429,7 @@
 			</div>
 			<div class="form-group">
 				<label for="email">예약자 이메일</label>
-				<input type="email" name="email" id="email" class="form-control" required placeholder="abcdefg1234@naver.com">
+				<input type="email" name="email" id="email" class="form-control" placeholder="abcdefg1234@naver.com">
 			</div>
 			
 			<div class="form-group">
@@ -464,7 +464,7 @@
 			  <select class="form-select" id="couponSelect">
 			    <option value="0">-- 쿠폰을 선택하세요 --</option>
 			    <c:forEach var="coupon" items="${couponList}">
-			      <option value="${coupon.discountType}/${coupon.discountValue}">
+			      <option value="${coupon.discountType}/${coupon.discountValue}/${coupon.userCouponCode}">
 			      	<c:if test="${coupon.discountType == 'P'}">
 			        	${coupon.couponName}&nbsp;${coupon.discountValue}%
 			        </c:if>
@@ -531,7 +531,7 @@
 		<input type="hidden" name="guestCount" value="${guestCount}" />
 		<input type="hidden" name="petCount" value="${petCount}" />
 		<input type="hidden" name="totalPrice" id="totalPrice" value="${roomVo.price * nights}" />
-		<%-- <input type="hidden" name="couponCode" id="couponCode" value="${}" /> --%>
+		<input type="hidden" name="couponCode" id="couponCode" />
 		
 	</form>
 </div>
@@ -618,8 +618,8 @@
     const finalPriceTag = document.getElementById("finalPrice");
     const discountTag = document.getElementById("discountAmount");
 
-    const totalPrice = document.getElementById("totalPrice");
-    const discountAmountInput = document.getElementById("discountAmountInput");
+    const totalPriceInput = document.getElementById("totalPrice");
+    const couponCodeInput = document.getElementById("couponCode");
 
     const originalTotalPrice = ${roomVo.price * nights};
 
@@ -628,30 +628,35 @@
 
       let finalPrice = originalTotalPrice;
       let discount = 0;
+      let couponCode = "";
 
       if (selected && selected !== "0") {
-        const [type, value] = selected.split("/");
+        const [type, value, code] = selected.split("/");
+
         if (type === "P") {
           const percent = parseFloat(value);
           discount = originalTotalPrice * (percent / 100);
         } else if (type === "A") {
           discount = parseInt(value);
         }
+
+        couponCode = code;
+        console.log(code);
       }
 
-      // 최소 0원까지
       finalPrice = Math.max(originalTotalPrice - discount, 0);
 
-      // 반영
+      // 화면 반영
       finalPriceTag.innerText = Math.floor(finalPrice).toLocaleString() + "원";
       discountTag.innerText = Math.floor(discount).toLocaleString() + "원";
 
-      // hidden 필드에도 저장
-      totalPrice.value = Math.floor(finalPrice);
-      discountAmountInput.value = Math.floor(discount);
+      // hidden 필드 반영
+      totalPriceInput.value = Math.floor(finalPrice);
+      couponCodeInput.value = couponCode;
     });
   });
 </script>
+
 
       
 </body>
